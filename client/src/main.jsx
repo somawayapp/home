@@ -13,7 +13,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
      authorizationParams={{
       redirect_uri: "https://homeclient.vercel.app"
      }}
-     audience="https://home-teal-mu.vercel.app/api/user/register"
+     audience="https://dev-o5a05odll5uw2ohu.au.auth0.com/api/v2/"
      scope="openid profile email"
     >
       <App />
