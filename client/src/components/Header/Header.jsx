@@ -9,7 +9,6 @@ import { useAuth0 } from "@auth0/auth0-react";
 import ProfileMenu from "../ProfileMenu/ProfileMenu";
 import AddPropertyModal from "../AddPropertyModal/AddPropertyModal";
 import useAuthCheck from "../../hooks/useAuthCheck.jsx";
-import { div } from "framer-motion/client";
 
 const Header = () => {
   const [menuOpened, setMenuOpened] = useState(false);
