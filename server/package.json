@@ -4,6 +4,9 @@
   "main": "index.js",
   "license": "MIT",
   "type": "module",
+  "engines": {
+    "node": "20.2.0"
+  },
   "scripts": {
     "start": "nodemon index.js",
     "postinstall": "prisma generate"
