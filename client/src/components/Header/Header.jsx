@@ -9,6 +9,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import ProfileMenu from "../ProfileMenu/ProfileMenu";
 import AddPropertyModal from "../AddPropertyModal/AddPropertyModal";
 import useAuthCheck from "../../hooks/useAuthCheck.jsx";
+import { div } from "framer-motion/client";
 
 const Header = () => {
   const [menuOpened, setMenuOpened] = useState(false);
@@ -55,7 +56,10 @@ const Header = () => {
                 Login
               </button>
             ) : (
-              <ProfileMenu user={user} logout={logout} />
+              <div className="h-5 w-5">
+              <ProfileMenu  user={user}  logout={logout} />
+
+              </div>
             )}
           </div>
         </OutsideClickHandler>
