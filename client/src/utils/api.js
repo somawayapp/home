@@ -166,22 +166,20 @@ export const getAllBookings = async (email, token) => {
 }
 
 
+// api call
 export const createResidency = async (data, token) => {
-  console.log(data)
-  try{
+  try {
     const res = await api.post(
-      `/residency/create`,
-      {
-        data
-      },
+      "/residency/create",
+      data,
       {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       }
-    )
-  }catch(error)
-  {
-    throw error
+    );
+    return res.data;
+  } catch (error) {
+    throw error;
   }
-}
+};

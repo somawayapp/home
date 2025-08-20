@@ -27,7 +27,7 @@ const Layout = () => {
 
       const res = await getAccessTokenWithPopup({
         authorizationParams: {
-          audience: "http://localhost:8000",
+          audience: "https://home-teal-mu.vercel.app/api",
           scope: "openid profile email",
         },
       });
