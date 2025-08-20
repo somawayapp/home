@@ -8,7 +8,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <Auth0Provider
      domain="dev-o5a05odll5uw2ohu.au.auth0.com"
-     clientId="vtGPFtLS2dKG6aUMv0lvgaFMqJskypbC"
+     clientId="XWMeaRceAxszpY2KiEJ31IEBOJ7PwQwu"
 
      authorizationParams={{
       redirect_uri: "https://homeclient.vercel.app"
