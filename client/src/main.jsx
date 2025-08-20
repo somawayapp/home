@@ -9,7 +9,6 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <Auth0Provider
      domain="dev-o5a05odll5uw2ohu.au.auth0.com"
      clientId="vtGPFtLS2dKG6aUMv0lvgaFMqJskypbC"
-          clientSecret="Aq4MDwvn2h5YVFqLsdU6OVImLPV1eCsZrB36b3RE_0cd56oi0WT5WW5mCL-w-Js2"
 
      authorizationParams={{
       redirect_uri: "https://homeclient.vercel.app"
