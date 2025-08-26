@@ -161,7 +161,7 @@ const Hero = () => {
      <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="fixed inset-0 bg-white/80 flex items-center justify-center z-50"
+      className="fixed inset-0 bg-white/40 flex items-center justify-center z-50"
        >
 
           <motion.div
