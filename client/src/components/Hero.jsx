@@ -63,6 +63,8 @@ const Hero = () => {
             </p>
           </div>
 
+    <span className="h-9 w-px bg-gray-300"></span>
+
           {/* Price Per Day */}
           <div className='flex flex-col items-start gap-2'>
             <label htmlFor='price-per-day'>Price Per Day</label>
@@ -76,6 +78,9 @@ const Hero = () => {
               required
             />
           </div>
+
+    <span className="h-9 w-px bg-gray-300"></span>
+
 
           {/* Seating Capacity */}
           <div className='flex flex-col items-start gap-2'>
@@ -116,13 +121,15 @@ const Hero = () => {
       className="w-5 h-5 brightness-300"
     />
 
-    {/* Divider */}
-    <span className="h-6 w-px bg-gray-300"></span>
 
     {/* Texts spaced out */}
     <div className="flex-1 flex justify-between text-xs sm:text-sm">
       <span>Any location</span>
+          <span className="h-6 w-px bg-gray-300"></span>
+
       <span>Any price</span>
+          <span className="h-6 w-px bg-gray-300"></span>
+
       <span>Any size</span>
     </div>
   </button>
