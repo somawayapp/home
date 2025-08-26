@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { assets, cityList } from '../assets/assets'
 import { useAppContext } from '../context/AppContext'
-import { motion } from 'motion/react'
 import { useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from "framer-motion"  // make sure it's from framer-motion
 
