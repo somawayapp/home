@@ -122,22 +122,29 @@ const Hero = () => {
 
 
     {/* Texts spaced out */}
-    <div className="flex-1 flex justify-between  sm:text-sm">
+  <div className="flex-1 flex justify-between items-center text-xs sm:text-sm">
+  {/* Any location */}
+  <span className="px-4 py-2 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+    {pickupLocation || "Any location"}
+  </span>
 
-      <span className="px-4 py-3 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
-        Any location
-      </span>
-                <span className="h-6 w-px py-3 bg-gray-300"></span>
+  {/* Divider */}
+  <span className="self-stretch w-px bg-gray-300"></span>
 
-      <span className="px-4 py-3  rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
-        Any price
-      </span>
-                <span className="h-6 w-px py-3 bg-gray-300"></span>
+  {/* Any price */}
+  <span className="px-4 py-2 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+    {pricePerDay || "Any price"}
+  </span>
 
-      <span className="px-4 py-3  rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
-        Any size
-      </span>
-    </div>
+  {/* Divider */}
+  <span className="self-stretch w-px bg-gray-300"></span>
+
+  {/* Any size */}
+  <span className="px-4 py-2 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+    {seatingCapacity || "Any size"}
+  </span>
+</div>
+
      <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
@@ -153,11 +160,12 @@ const Hero = () => {
 
       {/* Popup Modal for Mobile Filters */}
       {showModal && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="fixed inset-0 bg-white bg-opacity-80 flex items-center justify-center z-50"
-        >
+     <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="fixed inset-0 bg-white/40 backdrop-blur-sm flex items-center justify-center z-50"
+       >
+
           <motion.div
             initial={{ y: 100, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
