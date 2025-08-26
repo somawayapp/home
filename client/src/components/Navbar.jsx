@@ -3,6 +3,7 @@ import { assets, menuLinks } from '../assets/assets'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useAppContext } from '../context/AppContext'
 import toast from 'react-hot-toast'
+import Hero from './Hero'
 import { motion } from 'motion/react'
 
 const Navbar = () => {
@@ -63,6 +64,11 @@ const Navbar = () => {
       <Link to='/'>
         <motion.img whileHover={{ scale: 1.05 }} src={assets.logo} alt='logo' className='h-8' />
       </Link>
+
+
+        <Hero/>
+
+
 
       <div className='flex flex-row gap-4'>
 
