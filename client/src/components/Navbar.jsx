@@ -4,7 +4,9 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useAppContext } from '../context/AppContext'
 import toast from 'react-hot-toast'
 import Hero from './Hero'
+import NavbarLinks from './NavbarLinks'
 import { motion } from 'motion/react'
+import { div } from 'framer-motion/client'
 
 const Navbar = () => {
   const { setShowLogin, user, logout, isOwner, axios, setIsOwner } = useAppContext()
@@ -53,20 +55,29 @@ const Navbar = () => {
   }, [open])
 
   return (
+
+
+    
     <motion.div
       initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className={`flex items-center bg-white sticky top-0 z-50  justify-between px-6 md:px-16 lg:px-24 xl:px-32 py-4 text-gray-600
+      className={`flex  flex-col items-center bg-white sticky top-0 z-50 justify-between  px-6 md:px-16 lg:px-24 xl:px-32 py-4 text-gray-600
        border-b border-light relative transition-all ${location.pathname === '/' && 'bg-light'}`}
     >
+
+        <div className=' flex  items-center justify-between  '>
+
+    
       {/* Logo */}
       <Link to='/'>
         <motion.img whileHover={{ scale: 1.05 }} src={assets.logo} alt='logo' className='h-8' />
       </Link>
 
 
-        <Hero/>
+
+
+        <NavbarLinks/>
 
 
 
@@ -193,8 +204,13 @@ const Navbar = () => {
 </div>
 
             </div>
+    </div>
+
+
+        <Hero/>
 
     </motion.div>
+
   )
 }
 

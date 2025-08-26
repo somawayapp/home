@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { assets, cityList } from '../assets/assets'
 import { useAppContext } from '../context/AppContext'
 import { motion } from 'motion/react'
-import { Link, useLocation } from "react-router-dom"
-
+import { useLocation } from 'react-router-dom'
 
 
 const Hero = () => {
@@ -12,14 +11,6 @@ const Hero = () => {
 
   const { pricePerDay, setPricePerDay, seatingCapacity, setSeatingCapacity, navigate } = useAppContext()
   const location = useLocation()
-
-  const currentPath = location.pathname
-
-  const links = [
-    { name: "Home", path: "/" },
-    { name: "Agents", path: "/agents" },
-    { name: "Projects", path: "/projects" },
-  ]
 
   // On mount, read query params and update state
   useEffect(() => {
@@ -63,34 +54,12 @@ const Hero = () => {
     <>
       {/* Desktop / Tablet View */}
 
-      <div className='flex flex-col items-center mt-5 justify-center '>
-       <div className="flex flex-row mb-5 gap-15">
-      {links.map((link) => {
-        const isActive = currentPath === link.path
-        return (
-       <Link
-  key={link.path}
-  to={link.path}
-  className={`relative text-gray-700 transition-colors 
-    hover:text-black ${isActive ? "text-black" : ""}`}
->
-  <span className="inline-block px-1">{link.name}</span>
-  {isActive && (
-    <span className="absolute left-[-6px] -bottom-1 w-[calc(100%+15px)] h-[3px] bg-black rounded-full"></span>
-  )}
-</Link>
+      <div className='flex flex-col  '>
+      <div className='flex flex-row  '>
+            
+        </div>
 
-        )
-      })}
-    </div>
-
-
-
-
-
-
-
-
+      </div>
       <motion.form
         initial={{ scale: 0.95, opacity: 0, y: 50 }}
         animate={{ scale: 1, opacity: 1, y: 0 }}
@@ -145,7 +114,6 @@ const Hero = () => {
        
       </motion.form>
 
-      </div>
 
 
 
