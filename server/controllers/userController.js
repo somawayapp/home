@@ -66,33 +66,31 @@ export const getUserData = async (req, res) =>{
     }
 }
 // Get All Cars for the Frontend with Filters
+// Get All Cars for the Frontend with Filters
 export const getCars = async (req, res) => {
-    try {
-        const { pickupLocation, pricePerDay, seatingCapacity } = req.query;
+  try {
+    const { pickupLocation, pricePerDay, seatingCapacity } = req.query;
 
-        // Base filter: only available cars
-        const filter = { isAvaliable: true };
+    // Base filter
+    const filter = { isAvaliable: true };
 
-        if (pickupLocation) {
-            // assuming your Car model has a field like `location` or `city`
-            filter.location = pickupLocation;
-        }
-
-        if (pricePerDay) {
-            // Use $lte so users can search "up to this price"
-            filter.pricePerDay = { $lte: Number(pricePerDay) };
-            // If you want exact match instead:
-            // filter.pricePerDay = Number(pricePerDay)
-        }
-
-        if (seatingCapacity) {
-            filter.seatingCapacity = Number(seatingCapacity);
-        }
-
-        const cars = await Car.find(filter);
-        res.json({ success: true, cars });
-    } catch (error) {
-        console.log(error.message);
-        res.json({ success: false, message: error.message });
+    if (pickupLocation) {
+      // Case-insensitive location match
+      filter.location = { $regex: new RegExp(pickupLocation, "i") };
     }
+
+    if (pricePerDay) {
+      filter.pricePerDay = { $lte: Number(pricePerDay) };
+    }
+
+    if (seatingCapacity) {
+      filter.seating_capacity = Number(seatingCapacity); // ✅ matches schema
+    }
+
+    const cars = await Car.find(filter);
+    res.json({ success: true, cars });
+  } catch (error) {
+    console.log(error.message);
+    res.json({ success: false, message: error.message });
+  }
 };
