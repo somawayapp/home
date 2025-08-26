@@ -63,8 +63,8 @@ const Hero = () => {
     <>
       {/* Desktop / Tablet View */}
 
-      <div className='flex flex-col items-center mb-5 justify-center '>
-       <div className="flex flex-row gap-15">
+      <div className='flex flex-col items-center mt-5 justify-center '>
+       <div className="flex flex-row mb-5 gap-15">
       {links.map((link) => {
         const isActive = currentPath === link.path
         return (
@@ -76,7 +76,7 @@ const Hero = () => {
 >
   <span className="inline-block px-1">{link.name}</span>
   {isActive && (
-    <span className="absolute left-[-6px] -bottom-1 w-[calc(100%+12px)] h-[2px] bg-black rounded-full"></span>
+    <span className="absolute left-[-6px] -bottom-1 w-[calc(100%+15px)] h-[3px] bg-black rounded-full"></span>
   )}
 </Link>
 
