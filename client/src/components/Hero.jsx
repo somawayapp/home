@@ -47,10 +47,11 @@ const Hero = () => {
         className='hidden md:flex flex-row items-center justify-between p-2 rounded-full w-full max-w-200 
          bg-white shadow-[0px_8px_20px_rgba(0,0,0,0.1)]'
       >
-        <div className='flex flex-row items-center gap-8 ml-4'>
+        <div className='flex flex-row items-center gap-8 ml-4'     onClick={() => setShowModal(true)}
+>
           {/* Pickup Location */}
           <div className='flex flex-col items-start gap-1'>
-            <select required value={pickupLocation} onChange={(e) => setPickupLocation(e.target.value)}>
+            <select  value={pickupLocation} onChange={(e) => setPickupLocation(e.target.value)}>
               <option value=''>Pickup Location</option>
               {cityList.map((city) => (
                 <option key={city} value={city}>
@@ -75,7 +76,7 @@ const Hero = () => {
               id='price-per-day'
               placeholder='Enter price per day'
               className='text-sm text-gray-500'
-              required
+              
             />
           </div>
 
@@ -92,7 +93,6 @@ const Hero = () => {
               id='seating-capacity'
               placeholder='Enter seating capacity'
               className='text-sm text-gray-500'
-              required
             />
           </div>
         </div>
@@ -115,7 +115,7 @@ const Hero = () => {
     {/* Mobile View */}
   <button
     onClick={() => setShowModal(true)}
-    className="w-full max-w-120 flex items-center justify-between gap-2 
+    className="w-full max-w-120 flex items-center  md:hidden justify-between gap-2 
                bg-white shadow-md rounded-full text-gray-600 text-sm border border-light"
   >
 
@@ -161,21 +161,21 @@ const Hero = () => {
      <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="fixed inset-0 bg-white/40 flex items-center justify-center z-50"
+      className="fixed inset-0 bg-white/20 flex items-center justify-center z-50"
        >
 
           <motion.div
             initial={{ y: 100, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.3 }}
-            className="bg-white rounded-2xl p-6 w-full max-w-md shadow-xl"
+            className="bg-white rounded-2xl p-6 w-full border border-light  max-w-md shadow-xl"
           >
             <h2 className="text-lg font-semibold mb-4">Filter Cars</h2>
             <form onSubmit={handleSearch} className="flex flex-col gap-4">
               {/* Pickup Location */}
               <div>
                 <label className="block mb-1">Pickup Location</label>
-                <select required value={pickupLocation} onChange={(e) => setPickupLocation(e.target.value)} className="w-full border rounded-lg p-2">
+                <select  value={pickupLocation} onChange={(e) => setPickupLocation(e.target.value)} className="w-full border rounded-lg p-2">
                   <option value=''>Select Location</option>
                   {cityList.map((city) => (
                     <option key={city} value={city}>
@@ -194,7 +194,7 @@ const Hero = () => {
                   type='number'
                   placeholder='Enter price per day'
                   className="w-full border rounded-lg p-2"
-                  required
+                  
                 />
               </div>
 
@@ -207,7 +207,6 @@ const Hero = () => {
                   type='number'
                   placeholder='Enter seating capacity'
                   className="w-full border rounded-lg p-2"
-                  required
                 />
               </div>
 
