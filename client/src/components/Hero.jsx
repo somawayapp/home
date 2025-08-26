@@ -40,7 +40,7 @@ const Hero = () => {
         animate={{ scale: 1, opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.4 }}
         onSubmit={handleSearch}
-        className='flex flex-row items-center justify-between p-6 rounded-full w-full max-w-80
+        className='flex flex-row items-center justify-between p-3 rounded-full w-full max-w-80
          md:max-w-200 bg-white shadow-[0px_8px_20px_rgba(0,0,0,0.1)]'
       >
         <div className='flex flex-row items-center gap-10 min-md:ml-8'>
