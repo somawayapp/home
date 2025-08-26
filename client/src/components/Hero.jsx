@@ -116,25 +116,25 @@ const Hero = () => {
 <div className="md:hidden w-full flex justify-center">
   <button
     onClick={() => setShowModal(true)}
-    className="w-full max-w-120 flex items-center justify-between gap-2 py-2 px-2 
-               bg-white shadow-md rounded-full text-gray-600 text-sm"
+    className="w-full max-w-120 flex items-center justify-between gap-2 
+               bg-white shadow-md rounded-full text-gray-600 text-sm border border-light"
   >
 
 
     {/* Texts spaced out */}
-    <div className="flex-1 flex justify-between px-4 sm:text-sm">
+    <div className="flex-1 flex justify-between  sm:text-sm">
 
-      <span className="px-2 py-1 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+      <span className="px-4 py-3 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
         Any location
       </span>
                 <span className="h-6 w-px bg-gray-300"></span>
 
-      <span className="px-2 py-1 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+      <span className="px-4 py-3  rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
         Any price
       </span>
                 <span className="h-6 w-px bg-gray-300"></span>
 
-      <span className="px-2 py-1 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+      <span className="px-4 py-3  rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
         Any size
       </span>
     </div>
