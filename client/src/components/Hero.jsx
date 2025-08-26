@@ -23,6 +23,18 @@ const Hero = () => {
     if (seatingCapacityParam) setSeatingCapacity(seatingCapacityParam)
   }, [location.search])
 
+  // Disable scrolling when modal is open
+  useEffect(() => {
+    if (showModal) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = 'auto'
+    }
+    return () => {
+      document.body.style.overflow = 'auto' // cleanup
+    }
+  }, [showModal])
+
   const handleSearch = (e) => {
     e.preventDefault()
     navigate(
@@ -36,6 +48,7 @@ const Hero = () => {
     setShowModal(false) // close modal after search
   }
 
+  
   return (
     <>
       {/* Desktop / Tablet View */}
@@ -85,7 +98,7 @@ const Hero = () => {
          <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className='flex items-center justify-center gap-1 px-5 py-5 bg-primary hover:bg-primary-dull text-white rounded-full cursor-pointer'
+          className='flex items-center justify-center gap-1 px-4 py-4 bg-primary hover:bg-primary-dull text-white rounded-full cursor-pointer'
         >
           <img src={assets.search_icon} alt='search' className='brightness-300 md:h-5 md:w-5' />
         </motion.button>
@@ -148,7 +161,9 @@ const Hero = () => {
      <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="fixed inset-0 bg-black/20 flex p-2 items-center justify-center z-50"
+      className="fixed inset-0 bg-black/10 flex p-2 items-center justify-center z-50"
+     onClick={() => setShowModal(false)} // clicking outside closes modal
+
        >
 
           <motion.div
@@ -156,6 +171,8 @@ const Hero = () => {
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.3 }}
             className="bg-white rounded-2xl p-6 w-full border border-light  max-w-md shadow-xl"
+            onClick={(e) => e.stopPropagation()} // prevent closing when clicking inside
+
           >
             <h2 className="text-lg font-semibold mb-4">Filter Cars</h2>
             <form onSubmit={handleSearch} className="flex flex-col gap-4">

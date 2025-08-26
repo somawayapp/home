@@ -111,7 +111,7 @@ const Navbar = () => {
 
   {open && (
     <div
-      className="fixed inset-0 bg-black/20 z-30"
+      className="fixed inset-0 bg-black/10 z-30"
       onClick={() => setOpen(false)} // clicking backdrop closes menu
     ></div>
   )}
