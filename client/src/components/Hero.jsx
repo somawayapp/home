@@ -117,22 +117,27 @@ const Hero = () => {
   <button
     onClick={() => setShowModal(true)}
     className="w-full max-w-120 flex items-center justify-between gap-2 py-2 px-2 
-               bg-white shadow-md rounded-full text-gray-600 text-sm 
-               hover:bg-gray-100 transition-colors duration-200"
+               bg-white shadow-md rounded-full text-gray-600 text-sm"
   >
 
 
     {/* Texts spaced out */}
-    <div className="flex-1 flex justify-between text-xs sm:text-sm">
-      <span>Any location</span>
-          <span className="h-6 w-px bg-gray-300"></span>
+    <div className="flex-1 flex justify-between px-4 sm:text-sm">
 
-      <span>Any price</span>
-          <span className="h-6 w-px bg-gray-300"></span>
+      <span className="px-2 py-1 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+        Any location
+      </span>
+                <span className="h-6 w-px bg-gray-300"></span>
 
-      <span>Any size</span>
+      <span className="px-2 py-1 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+        Any price
+      </span>
+                <span className="h-6 w-px bg-gray-300"></span>
+
+      <span className="px-2 py-1 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+        Any size
+      </span>
     </div>
-
      <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
