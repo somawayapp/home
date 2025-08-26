@@ -106,11 +106,17 @@ const Hero = () => {
         </motion.button>
       </motion.form>
 
+
+
+
+
+
+
     {/* Mobile View */}
-<div className="md:hidden w-full flex justify-center mt-4 px-4">
+<div className="md:hidden w-full flex justify-center">
   <button
     onClick={() => setShowModal(true)}
-    className="w-full max-w-80 flex items-center justify-between gap-2 py-3 px-4 
+    className="w-full max-w-120 flex items-center justify-between gap-2 py-2 px-2 
                bg-white shadow-md rounded-full text-gray-600 text-sm 
                hover:bg-gray-100 transition-colors duration-200"
   >
@@ -130,7 +136,7 @@ const Hero = () => {
      <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className='flex items-center justify-center gap-1 px-3 py-3 bg-primary hover:bg-primary-dull text-white rounded-full cursor-pointer'
+          className='flex items-center justify-center ml-2 gap-1 px-3 py-3 bg-primary hover:bg-primary-dull text-white rounded-full cursor-pointer'
         >
           <img src={assets.search_icon} alt='search' className='brightness-300' />
         </motion.button>
