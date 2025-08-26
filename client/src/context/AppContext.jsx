@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import axios from 'axios'
 import {toast} from 'react-hot-toast'
 import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 axios.defaults.baseURL = import.meta.env.VITE_BASE_URL
 
@@ -11,6 +12,7 @@ export const AppProvider = ({ children })=>{
 
     const navigate = useNavigate()
     const currency = import.meta.env.VITE_CURRENCY
+    const location = useLocation();
 
     const [token, setToken] = useState(null)
     const [user, setUser] = useState(null)
@@ -37,14 +39,27 @@ export const AppProvider = ({ children })=>{
     }
     // Function to fetch all cars from the server
 
-    const fetchCars = async () =>{
-        try {
-            const {data} = await axios.get('/api/user/cars')
-            data.success ? setCars(data.cars) : toast.error(data.message)
-        } catch (error) {
-            toast.error(error.message)
-        }
+
+
+const fetchCars = async () =>{
+    try {
+        // Grab query params from current URL
+        const params = new URLSearchParams(location.search);
+        const pickupLocation = params.get("pickupLocation");
+        const pricePerDay = params.get("pricePerDay");
+        const seatingCapacity = params.get("seatingCapacity");
+
+        // Send them to backend
+        const { data } = await axios.get("/api/user/cars", {
+            params: { pickupLocation, pricePerDay, seatingCapacity }
+        });
+
+        data.success ? setCars(data.cars) : toast.error(data.message);
+    } catch (error) {
+        toast.error(error.message);
     }
+};
+
 
     // Function to log out the user
     const logout = ()=>{
