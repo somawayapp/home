@@ -3,6 +3,8 @@ import { assets, cityList } from '../assets/assets'
 import { useAppContext } from '../context/AppContext'
 import { motion } from 'motion/react'
 import { useLocation } from 'react-router-dom'
+import { AnimatePresence, motion } from "framer-motion"  // make sure it's from framer-motion
+
 
 const Hero = () => {
   const [pickupLocation, setPickupLocation] = useState('')
@@ -37,23 +39,27 @@ const Hero = () => {
   }, [showModal])
 
   // Scroll listener for compressing desktop bar
-  useEffect(() => {
-    if (location.pathname !== "/") {
-      setShowDesktop(false) // never show desktop on other routes
-      return
-    }
+useEffect(() => {
+  if (location.pathname !== "/") {
+    setShowDesktop(false)
+    return
+  }
 
-    const handleScroll = () => {
+  let timeout
+  const handleScroll = () => {
+    clearTimeout(timeout)
+    timeout = setTimeout(() => {
       if (window.scrollY > 50) {
-        setShowDesktop(false) // compress to mobile
+        setShowDesktop(false)
       } else {
-        setShowDesktop(true) // show desktop again
+        setShowDesktop(true)
       }
-    }
+    }, 50) // debounce 50ms
+  }
 
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [location.pathname])
+  window.addEventListener("scroll", handleScroll)
+  return () => window.removeEventListener("scroll", handleScroll)
+}, [location.pathname])
 
   const handleSearch = (e) => {
     e.preventDefault()
