@@ -45,12 +45,12 @@ const Hero = () => {
         transition={{ duration: 0.6, delay: 0.4 }}
         onSubmit={handleSearch}
         className='hidden md:flex flex-row items-center justify-between  rounded-full w-full max-w-200 
-         bg-white shadow-[0px_8px_20px_rgba(0,0,0,0.1)]'
+         bg-white shadow-[0px_8px_20px_rgba(0,0,0,0.1)] borbder border-light'
       >
         <div className='flex flex-row items-center gap-8 ml-4'     onClick={() => setShowModal(true)}
 >
        {/* Pickup Location */}
-<div className='flex flex-col p-2 items-start gap-1 rounded-full hover:bg-gray-100 transition-colors cursor-thumb'>
+<div className='flex flex-col py-2 px-6 items-start gap-1 rounded-full hover:bg-gray-100 transition-colors cursor-pointer'>
   <p className="text-sm font-medium text-gray-700">Pickup Location</p>
   <p className='px-1 text-sm text-gray-500'>
     {pickupLocation ? pickupLocation : 'Please select location'}
@@ -60,7 +60,7 @@ const Hero = () => {
 <span className="h-10 w-px bg-gray-300"></span>
 
 {/* Price Per Day */}
-<div className='flex flex-col p-2 items-start gap-1 rounded-full hover:bg-gray-100 transition-colors cursor-thumb'>
+<div className='flex flex-col py-2 px-6  items-start gap-1 rounded-full hover:bg-gray-100 transition-colors cursor-pointer'>
   <p className="text-sm font-medium text-gray-700">Price Per Day</p>
   <p className='px-1 text-sm text-gray-500'>
     {pricePerDay ? pricePerDay : 'Enter price per day'}
@@ -70,7 +70,7 @@ const Hero = () => {
 <span className="h-10 w-px bg-gray-300"></span>
 
 {/* Seating Capacity */}
-<div className='flex flex-col p-2 items-start gap-1 rounded-full hover:bg-gray-100 transition-colors cursor-thumb'>
+<div className='flex flex-col py-2 px-6  items-start gap-1 rounded-full hover:bg-gray-100 transition-colors cursor-pointer'>
   <p className="text-sm font-medium text-gray-700">Seating Capacity</p>
   <p className='px-1 text-sm text-gray-500'>
     {seatingCapacity ? seatingCapacity : 'Enter seating capacity'}
@@ -79,13 +79,18 @@ const Hero = () => {
 
         </div>
 
-        <motion.button
+
+
+       <div  className='p-2'>
+         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           className='flex items-center justify-center gap-1 px-5 py-5 bg-primary hover:bg-primary-dull text-white rounded-full cursor-pointer'
         >
           <img src={assets.search_icon} alt='search' className='brightness-300' />
         </motion.button>
+         </div>
+       
       </motion.form>
 
 
@@ -143,7 +148,7 @@ const Hero = () => {
      <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="fixed inset-0 bg-white/20 flex p-2 items-center justify-center z-50"
+      className="fixed inset-0 bg-black/20 flex p-2 items-center justify-center z-50"
        >
 
           <motion.div
