@@ -6,19 +6,23 @@ import { useLocation } from 'react-router-dom'
 
 const Hero = () => {
   const [pickupLocation, setPickupLocation] = useState('')
-  const { pickupDate, setPickupDate, returnDate, setReturnDate, navigate } = useAppContext()
+  const { navigate } = useAppContext()
   const location = useLocation()
+
+  // New states
+  const [pricePerDay, setPricePerDay] = useState('')
+  const [seating_capacity, setSeatingCapacity] = useState('')
 
   // On mount, read query params and update state
   useEffect(() => {
     const params = new URLSearchParams(location.search)
     const pickupLocationParam = params.get('pickupLocation')
-    const pickupDateParam = params.get('pickupDate')
-    const returnDateParam = params.get('returnDate')
+    const pricePerDayParam = params.get('pricePerDay')
+    const seatingCapacityParam = params.get('seating_capacity')
 
     if (pickupLocationParam) setPickupLocation(pickupLocationParam)
-    if (pickupDateParam) setPickupDate(pickupDateParam)
-    if (returnDateParam) setReturnDate(returnDateParam)
+    if (pricePerDayParam) setPricePerDay(pricePerDayParam)
+    if (seatingCapacityParam) setSeatingCapacity(seatingCapacityParam)
   }, [location.search])
 
   const handleSearch = (e) => {
@@ -26,10 +30,10 @@ const Hero = () => {
     navigate(
       '/cars?pickupLocation=' +
         pickupLocation +
-        '&pickupDate=' +
-        pickupDate +
-        '&returnDate=' +
-        returnDate
+        '&pricePerDay=' +
+        pricePerDay +
+        '&seating_capacity=' +
+        seating_capacity
     )
   }
 
@@ -48,8 +52,9 @@ const Hero = () => {
         className='flex flex-col md:flex-row items-start md:items-center justify-between p-6 rounded-lg md:rounded-full w-full max-w-80 md:max-w-200 bg-white shadow-[0px_8px_20px_rgba(0,0,0,0.1)]'
       >
         <div className='flex flex-col md:flex-row items-start md:items-center gap-10 min-md:ml-8'>
+          {/* Pickup Location */}
           <div className='flex flex-col items-start gap-2'>
-            <select required value={pickupLocation} onChange={(e) => setPickupLocation(e.target.value)}>
+            <select value={pickupLocation} onChange={(e) => setPickupLocation(e.target.value)}>
               <option value=''>Pickup Location</option>
               {cityList.map((city) => (
                 <option key={city} value={city}>
@@ -58,33 +63,38 @@ const Hero = () => {
               ))}
             </select>
             <p className='px-1 text-sm text-gray-500'>
-              {pickupLocation ? pickupLocation : 'Please select location'}
+              {pickupLocation ? pickupLocation : 'Optional: select location'}
             </p>
           </div>
+
+          {/* Price Per Day */}
           <div className='flex flex-col items-start gap-2'>
-            <label htmlFor='pickup-date'>Pick-up Date</label>
+            <label htmlFor='price-per-day'>Price Per Day</label>
             <input
-              value={pickupDate}
-              onChange={(e) => setPickupDate(e.target.value)}
-              type='date'
-              id='pickup-date'
-              min={new Date().toISOString().split('T')[0]}
+              value={pricePerDay}
+              onChange={(e) => setPricePerDay(e.target.value)}
+              type='number'
+              id='price-per-day'
+              placeholder='Enter price per day'
               className='text-sm text-gray-500'
-              required
             />
           </div>
+
+          {/* Seating Capacity */}
           <div className='flex flex-col items-start gap-2'>
-            <label htmlFor='return-date'>Return Date</label>
+            <label htmlFor='seating-capacity'>Seating Capacity</label>
             <input
-              value={returnDate}
-              onChange={(e) => setReturnDate(e.target.value)}
-              type='date'
-              id='return-date'
+              value={seating_capacity}
+              onChange={(e) => setSeatingCapacity(e.target.value)}
+              type='number'
+              id='seating-capacity'
+              placeholder='Enter seating capacity'
               className='text-sm text-gray-500'
-              required
             />
           </div>
         </div>
+
+        {/* Search Button */}
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
