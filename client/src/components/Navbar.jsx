@@ -105,17 +105,19 @@ const Navbar = () => {
 
   {/* Dropdown Menu */}
 
-    <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="fixed inset-0 bg-black/20 flex  z-50"
-         >
-<div
-  ref={dropdownRef}   // ✅ attach ref here
-  className={`absolute top-14 right-0 w-55 md:w-60 border pb-2 pt-1 border-light bg-white rounded-lg md:rounded-xl shadow-xl 
-              flex flex-col items-stretch transition-all duration-300 z-40
-              ${open ? 'translate-x-0 opacity-100' : 'translate-x-10 opacity-0 pointer-events-none'}`}
->
+ {open && (
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    exit={{ opacity: 0 }}
+    className="fixed inset-0 bg-black/20 flex z-50"
+  >
+    <div
+      ref={dropdownRef}
+      className={`absolute top-14 right-0 w-55 md:w-60 border pb-2 pt-1 border-light bg-white rounded-lg md:rounded-xl shadow-xl 
+                  flex flex-col items-stretch transition-all duration-300 z-40
+                  ${open ? 'translate-x-0 opacity-100' : 'translate-x-10 opacity-0 pointer-events-none'}`}
+    >
 
   {menuLinks.map((link, index) => (
     <Link
@@ -176,7 +178,7 @@ const Navbar = () => {
   )}
 </div>
          </motion.div>
-
+)}
 
 
 </div>
