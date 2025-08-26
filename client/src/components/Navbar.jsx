@@ -79,7 +79,7 @@ const Navbar = () => {
       changeRole()
     }
   }}
-  className='cursor-pointer px-5 py-3 rounded-3xl hover:bg-gray-100 transition'
+  className='cursor-pointer px-4 py-2 rounded-3xl hover:bg-gray-100 transition'
 >
   {isOwner ? 'Dashboard' : 'Add listing'}
 </button>
@@ -110,7 +110,7 @@ const Navbar = () => {
     initial={{ opacity: 0 }}
     animate={{ opacity: 1 }}
     exit={{ opacity: 0 }}
-    className="fixed inset-0 bg-black/10 flex z-50"
+    className="absolute inset-0 bg-black/10 flex z-50"
   >
 <div
   ref={dropdownRef}   // ✅ attach ref here
