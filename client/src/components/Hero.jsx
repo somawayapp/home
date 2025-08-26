@@ -6,6 +6,8 @@ import { useLocation } from 'react-router-dom'
 
 const Hero = () => {
   const [pickupLocation, setPickupLocation] = useState('')
+  const [showModal, setShowModal] = useState(false)
+
   const { pricePerDay, setPricePerDay, seatingCapacity, setSeatingCapacity, navigate } = useAppContext()
   const location = useLocation()
 
@@ -31,19 +33,21 @@ const Hero = () => {
         '&seatingCapacity=' +
         seatingCapacity
     )
+    setShowModal(false) // close modal after search
   }
 
   return (
-  
+    <>
+      {/* Desktop / Tablet View */}
       <motion.form
         initial={{ scale: 0.95, opacity: 0, y: 50 }}
         animate={{ scale: 1, opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.4 }}
         onSubmit={handleSearch}
-        className='flex flex-row items-center justify-between p-3 rounded-full w-full max-w-80
-         md:max-w-200 bg-white shadow-[0px_8px_20px_rgba(0,0,0,0.1)]'
+        className='hidden md:flex flex-row items-center justify-between p-3 rounded-full w-full max-w-200 
+         bg-white shadow-[0px_8px_20px_rgba(0,0,0,0.1)]'
       >
-        <div className='flex flex-row items-center gap-10 min-md:ml-8'>
+        <div className='flex flex-row items-center gap-10 ml-4'>
           {/* Pickup Location */}
           <div className='flex flex-col items-start gap-2'>
             <select required value={pickupLocation} onChange={(e) => setPickupLocation(e.target.value)}>
@@ -91,11 +95,97 @@ const Hero = () => {
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className='flex items-center justify-center gap-1 px-3 py-3 max-sm:mt-4 bg-primary hover:bg-primary-dull text-white rounded-full cursor-pointer'
+          className='flex items-center justify-center gap-1 px-5 py-5 bg-primary hover:bg-primary-dull text-white rounded-full cursor-pointer'
         >
-          <img src={assets.search_icon} alt='search' className=' brightness-300' />
+          <img src={assets.search_icon} alt='search' className='brightness-300' />
         </motion.button>
       </motion.form>
+
+      {/* Mobile View */}
+      <div className="md:hidden w-full flex justify-center mt-4">
+        <button
+          onClick={() => setShowModal(true)}
+          className="w-full max-w-80 text-center py-3 px-4 bg-white shadow-md rounded-full text-gray-600 text-sm"
+        >
+          Any location, any price, any size
+        </button>
+      </div>
+
+      {/* Popup Modal for Mobile Filters */}
+      {showModal && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50"
+        >
+          <motion.div
+            initial={{ y: 100, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.3 }}
+            className="bg-white rounded-2xl p-6 w-full max-w-md shadow-xl"
+          >
+            <h2 className="text-lg font-semibold mb-4">Filter Cars</h2>
+            <form onSubmit={handleSearch} className="flex flex-col gap-4">
+              {/* Pickup Location */}
+              <div>
+                <label className="block mb-1">Pickup Location</label>
+                <select required value={pickupLocation} onChange={(e) => setPickupLocation(e.target.value)} className="w-full border rounded-lg p-2">
+                  <option value=''>Select Location</option>
+                  {cityList.map((city) => (
+                    <option key={city} value={city}>
+                      {city}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Price Per Day */}
+              <div>
+                <label className="block mb-1">Price Per Day</label>
+                <input
+                  value={pricePerDay}
+                  onChange={(e) => setPricePerDay(e.target.value)}
+                  type='number'
+                  placeholder='Enter price per day'
+                  className="w-full border rounded-lg p-2"
+                  required
+                />
+              </div>
+
+              {/* Seating Capacity */}
+              <div>
+                <label className="block mb-1">Seating Capacity</label>
+                <input
+                  value={seatingCapacity}
+                  onChange={(e) => setSeatingCapacity(e.target.value)}
+                  type='number'
+                  placeholder='Enter seating capacity'
+                  className="w-full border rounded-lg p-2"
+                  required
+                />
+              </div>
+
+              {/* Buttons */}
+              <div className="flex justify-between mt-4">
+                <button
+                  type="button"
+                  onClick={() => setShowModal(false)}
+                  className="px-4 py-2 rounded-lg bg-gray-200"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 rounded-lg bg-primary text-white"
+                >
+                  Apply Filters
+                </button>
+              </div>
+            </form>
+          </motion.div>
+        </motion.div>
+      )}
+    </>
   )
 }
 
