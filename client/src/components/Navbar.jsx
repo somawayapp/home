@@ -91,7 +91,7 @@ const Navbar = () => {
 <div className="relative">
   {/* Toggle Button */}
   <button
-    className='cursor-pointer border border-light rounded-full py-1 px-2 shadow-md hover:shadow-md flex items-center gap-3'
+    className='cursor-pointer border border-light rounded-full px-3 py-3  md:py-1  md:px-2  shadow-md hover:shadow-md flex items-center gap-3'
     aria-label='Menu'
     onClick={() => setOpen(!open)}
   >
@@ -104,6 +104,12 @@ const Navbar = () => {
   </button>
 
   {/* Dropdown Menu */}
+
+    <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="fixed inset-0 bg-black/20 flex  z-50"
+         >
 <div
   ref={dropdownRef}   // ✅ attach ref here
   className={`absolute top-14 right-0 w-55 md:w-60 border pb-2 pt-1 border-light bg-white rounded-lg md:rounded-xl shadow-xl 
@@ -169,6 +175,8 @@ const Navbar = () => {
     </div>
   )}
 </div>
+         </motion.div>
+
 
 
 </div>
