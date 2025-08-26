@@ -6,6 +6,7 @@ import { useSearchParams } from 'react-router-dom'
 import { useAppContext } from '../context/AppContext'
 import toast from 'react-hot-toast'
 import { motion } from 'motion/react'
+import Hero from '../components/Hero'
 
 const Cars = () => {
 
@@ -59,7 +60,9 @@ const Cars = () => {
 
   return (
     <div>
+        <Hero/>
 
+        
       <motion.div 
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
