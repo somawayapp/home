@@ -113,7 +113,6 @@ const Hero = () => {
 
 
     {/* Mobile View */}
-<div className="md:hidden flex justify-center">
   <button
     onClick={() => setShowModal(true)}
     className="w-full max-w-120 flex items-center justify-between gap-2 
@@ -155,7 +154,6 @@ const Hero = () => {
 
 
   </button>
-</div>
 
 
       {/* Popup Modal for Mobile Filters */}
@@ -163,7 +161,7 @@ const Hero = () => {
      <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="fixed inset-0 bg-white/40 backdrop-blur-sm flex items-center justify-center z-50"
+      className="fixed inset-0 bg-white/80 backdrop-blur-sm flex items-center justify-center z-50"
        >
 
           <motion.div
