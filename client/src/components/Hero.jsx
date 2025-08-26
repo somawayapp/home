@@ -113,7 +113,7 @@ const Hero = () => {
 
 
     {/* Mobile View */}
-<div className="md:hidden w-full flex justify-center">
+<div className="md:hidden flex justify-center">
   <button
     onClick={() => setShowModal(true)}
     className="w-full max-w-120 flex items-center justify-between gap-2 
@@ -127,12 +127,12 @@ const Hero = () => {
       <span className="px-4 py-3 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
         Any location
       </span>
-                <span className="h-6 w-px bg-gray-300"></span>
+                <span className="h-6 w-px py-3 bg-gray-300"></span>
 
       <span className="px-4 py-3  rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
         Any price
       </span>
-                <span className="h-6 w-px bg-gray-300"></span>
+                <span className="h-6 w-px py-3 bg-gray-300"></span>
 
       <span className="px-4 py-3  rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
         Any size
@@ -156,7 +156,7 @@ const Hero = () => {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50"
+          className="fixed inset-0 bg-white bg-opacity-80 flex items-center justify-center z-50"
         >
           <motion.div
             initial={{ y: 100, opacity: 0 }}
