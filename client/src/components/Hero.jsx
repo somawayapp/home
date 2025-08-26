@@ -6,19 +6,15 @@ import { useLocation } from 'react-router-dom'
 
 const Hero = () => {
   const [pickupLocation, setPickupLocation] = useState('')
-  const { navigate } = useAppContext()
+  const { pricePerDay, setPricePerDay, seatingCapacity, setSeatingCapacity, navigate } = useAppContext()
   const location = useLocation()
-
-  // New states
-  const [pricePerDay, setPricePerDay] = useState('')
-  const [seating_capacity, setSeatingCapacity] = useState('')
 
   // On mount, read query params and update state
   useEffect(() => {
     const params = new URLSearchParams(location.search)
     const pickupLocationParam = params.get('pickupLocation')
     const pricePerDayParam = params.get('pricePerDay')
-    const seatingCapacityParam = params.get('seating_capacity')
+    const seatingCapacityParam = params.get('seatingCapacity')
 
     if (pickupLocationParam) setPickupLocation(pickupLocationParam)
     if (pricePerDayParam) setPricePerDay(pricePerDayParam)
@@ -32,8 +28,8 @@ const Hero = () => {
         pickupLocation +
         '&pricePerDay=' +
         pricePerDay +
-        '&seating_capacity=' +
-        seating_capacity
+        '&seatingCapacity=' +
+        seatingCapacity
     )
   }
 
@@ -54,7 +50,7 @@ const Hero = () => {
         <div className='flex flex-col md:flex-row items-start md:items-center gap-10 min-md:ml-8'>
           {/* Pickup Location */}
           <div className='flex flex-col items-start gap-2'>
-            <select value={pickupLocation} onChange={(e) => setPickupLocation(e.target.value)}>
+            <select required value={pickupLocation} onChange={(e) => setPickupLocation(e.target.value)}>
               <option value=''>Pickup Location</option>
               {cityList.map((city) => (
                 <option key={city} value={city}>
@@ -63,7 +59,7 @@ const Hero = () => {
               ))}
             </select>
             <p className='px-1 text-sm text-gray-500'>
-              {pickupLocation ? pickupLocation : 'Optional: select location'}
+              {pickupLocation ? pickupLocation : 'Please select location'}
             </p>
           </div>
 
@@ -77,6 +73,7 @@ const Hero = () => {
               id='price-per-day'
               placeholder='Enter price per day'
               className='text-sm text-gray-500'
+              required
             />
           </div>
 
@@ -84,17 +81,17 @@ const Hero = () => {
           <div className='flex flex-col items-start gap-2'>
             <label htmlFor='seating-capacity'>Seating Capacity</label>
             <input
-              value={seating_capacity}
+              value={seatingCapacity}
               onChange={(e) => setSeatingCapacity(e.target.value)}
               type='number'
               id='seating-capacity'
               placeholder='Enter seating capacity'
               className='text-sm text-gray-500'
+              required
             />
           </div>
         </div>
 
-        {/* Search Button */}
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
