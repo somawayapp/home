@@ -49,52 +49,34 @@ const Hero = () => {
       >
         <div className='flex flex-row items-center gap-8 ml-4'     onClick={() => setShowModal(true)}
 >
-          {/* Pickup Location */}
-          <div className='flex flex-col items-start gap-1'>
-            <select  value={pickupLocation} onChange={(e) => setPickupLocation(e.target.value)}>
-              <option value=''>Pickup Location</option>
-              {cityList.map((city) => (
-                <option key={city} value={city}>
-                  {city}
-                </option>
-              ))}
-            </select>
-            <p className='px-1 text-sm text-gray-500'>
-              {pickupLocation ? pickupLocation : 'Please select location'}
-            </p>
-          </div>
+       {/* Pickup Location */}
+<div className='flex flex-col items-start gap-1 rounded-full hover:bg-gray-100 transition-colors cursor-not-allowed'>
+  <p className="text-sm font-medium text-gray-700">Pickup Location</p>
+  <p className='px-1 text-sm text-gray-500'>
+    {pickupLocation ? pickupLocation : 'Please select location'}
+  </p>
+</div>
 
-    <span className="h-10 w-px bg-gray-300"></span>
+<span className="h-10 w-px bg-gray-300"></span>
 
-          {/* Price Per Day */}
-          <div className='flex flex-col items-start gap-1'>
-            <label htmlFor='price-per-day'>Price Per Day</label>
-            <input
-              value={pricePerDay}
-              onChange={(e) => setPricePerDay(e.target.value)}
-              type='number'
-              id='price-per-day'
-              placeholder='Enter price per day'
-              className='text-sm text-gray-500'
-              
-            />
-          </div>
+{/* Price Per Day */}
+<div className='flex flex-col items-start gap-1 rounded-full hover:bg-gray-100 transition-colors cursor-not-allowed'>
+  <p className="text-sm font-medium text-gray-700">Price Per Day</p>
+  <p className='px-1 text-sm text-gray-500'>
+    {pricePerDay ? pricePerDay : 'Enter price per day'}
+  </p>
+</div>
 
-    <span className="h-10 w-px bg-gray-300"></span>
+<span className="h-10 w-px bg-gray-300"></span>
 
+{/* Seating Capacity */}
+<div className='flex flex-col items-start gap-1 rounded-full hover:bg-gray-100 transition-colors cursor-not-allowed'>
+  <p className="text-sm font-medium text-gray-700">Seating Capacity</p>
+  <p className='px-1 text-sm text-gray-500'>
+    {seatingCapacity ? seatingCapacity : 'Enter seating capacity'}
+  </p>
+</div>
 
-          {/* Seating Capacity */}
-          <div className='flex flex-col items-start gap-1'>
-            <label htmlFor='seating-capacity'>Seating Capacity</label>
-            <input
-              value={seatingCapacity}
-              onChange={(e) => setSeatingCapacity(e.target.value)}
-              type='number'
-              id='seating-capacity'
-              placeholder='Enter seating capacity'
-              className='text-sm text-gray-500'
-            />
-          </div>
         </div>
 
         <motion.button
@@ -161,7 +143,7 @@ const Hero = () => {
      <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="fixed inset-0 bg-white/20 flex items-center justify-center z-50"
+      className="fixed inset-0 bg-white/20 flex p-2 items-center justify-center z-50"
        >
 
           <motion.div
