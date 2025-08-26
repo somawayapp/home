@@ -101,15 +101,33 @@ const Hero = () => {
         </motion.button>
       </motion.form>
 
-      {/* Mobile View */}
-      <div className="md:hidden w-full flex justify-center mt-4">
-        <button
-          onClick={() => setShowModal(true)}
-          className="w-full max-w-80 text-center py-3 px-4 bg-white shadow-md rounded-full text-gray-600 text-sm"
-        >
-          Any location, any price, any size
-        </button>
-      </div>
+    {/* Mobile View */}
+<div className="md:hidden w-full flex justify-center mt-4 px-4">
+  <button
+    onClick={() => setShowModal(true)}
+    className="w-full max-w-80 flex items-center justify-between gap-2 py-3 px-4 
+               bg-white shadow-md rounded-full text-gray-600 text-sm 
+               hover:bg-gray-100 transition-colors duration-200"
+  >
+    {/* Search Icon */}
+    <img
+      src={assets.search_icon}
+      alt="search"
+      className="w-5 h-5 brightness-300"
+    />
+
+    {/* Divider */}
+    <span className="h-6 w-px bg-gray-300"></span>
+
+    {/* Texts spaced out */}
+    <div className="flex-1 flex justify-between text-xs sm:text-sm">
+      <span>Any location</span>
+      <span>Any price</span>
+      <span>Any size</span>
+    </div>
+  </button>
+</div>
+
 
       {/* Popup Modal for Mobile Filters */}
       {showModal && (
