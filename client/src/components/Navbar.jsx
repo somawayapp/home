@@ -79,7 +79,7 @@ const Navbar = () => {
       changeRole()
     }
   }}
-  className='cursor-pointer px-4 py-2 rounded-3xl hover:bg-light transition'
+  className='cursor-pointer px-5 py-3 rounded-3xl hover:bg-gray-100 transition'
 >
   {isOwner ? 'Dashboard' : 'Add listing'}
 </button>
@@ -95,7 +95,7 @@ const Navbar = () => {
     aria-label='Menu'
     onClick={() => setOpen(!open)}
   >
-    <img src={assets.menu_icon} alt='menu' className='h-4 w-6' />
+    <img src={assets.menu_icon} alt='menu' className='h-4 w-4 md:h-4 md:w-6 ' />
     <img
       src={user?.image || assets.user_profile}
       alt='user'
@@ -110,14 +110,14 @@ const Navbar = () => {
     initial={{ opacity: 0 }}
     animate={{ opacity: 1 }}
     exit={{ opacity: 0 }}
-    className="fixed inset-0 bg-black/20 flex z-50"
+    className="fixed inset-0 bg-black/10 flex z-50"
   >
-    <div
-      ref={dropdownRef}
-      className={`absolute top-14 right-0 w-55 md:w-60 border pb-2 pt-1 border-light bg-white rounded-lg md:rounded-xl shadow-xl 
-                  flex flex-col items-stretch transition-all duration-300 z-40
-                  ${open ? 'translate-x-0 opacity-100' : 'translate-x-10 opacity-0 pointer-events-none'}`}
-    >
+<div
+  ref={dropdownRef}   // ✅ attach ref here
+  className={`absolute top-14 right-0 w-55 md:w-60 border pb-2 pt-1 border-light bg-white rounded-lg md:rounded-xl shadow-xl 
+              flex flex-col items-stretch transition-all duration-300 z-40
+              ${open ? 'translate-x-0 opacity-100' : 'translate-x-10 opacity-0 pointer-events-none'}`}
+>
 
   {menuLinks.map((link, index) => (
     <Link
@@ -177,9 +177,8 @@ const Navbar = () => {
     </div>
   )}
 </div>
-         </motion.div>
+          </motion.div>
 )}
-
 
 </div>
 
