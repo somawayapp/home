@@ -51,15 +51,12 @@ const Hero = () => {
 
   
   return (
-    <>
+
+
+      <div className='flex items-center  justify-center '>
+   
       {/* Desktop / Tablet View */}
 
-      <div className='flex flex-col  '>
-      <div className='flex flex-row  '>
-            
-        </div>
-
-      </div>
       <motion.form
         initial={{ scale: 0.95, opacity: 0, y: 50 }}
         animate={{ scale: 1, opacity: 1, y: 0 }}
@@ -242,7 +239,7 @@ const Hero = () => {
           </motion.div>
         </motion.div>
       )}
-    </>
+      </div>
   )
 }
 
