@@ -103,15 +103,21 @@ const Navbar = () => {
     />
   </button>
 
+
+
+
+
+
+
+  {open && (
+    <div
+      className="fixed inset-0 bg-black bg-opacity-40 z-30"
+      onClick={() => setOpen(false)} // clicking backdrop closes menu
+    ></div>
+  )}
   {/* Dropdown Menu */}
 
- {open && (
-  <motion.div
-    initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    exit={{ opacity: 0 }}
-    className="absolute inset-0 bg-black/10 flex z-50"
-  >
+
 <div
   ref={dropdownRef}   // ✅ attach ref here
   className={`absolute top-14 right-0 w-55 md:w-60 border pb-2 pt-1 border-light bg-white rounded-lg md:rounded-xl shadow-xl 
@@ -177,9 +183,7 @@ const Navbar = () => {
     </div>
   )}
 </div>
-          </motion.div>
-)}
-
+      
 </div>
 
             </div>
