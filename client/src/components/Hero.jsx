@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react'
 import { assets, cityList } from '../assets/assets'
 import { useAppContext } from '../context/AppContext'
 import { motion } from 'motion/react'
-import { useLocation } from 'react-router-dom'
+import { Link, useLocation } from "react-router-dom"
+
+
 
 const Hero = () => {
   const [pickupLocation, setPickupLocation] = useState('')
@@ -10,6 +12,14 @@ const Hero = () => {
 
   const { pricePerDay, setPricePerDay, seatingCapacity, setSeatingCapacity, navigate } = useAppContext()
   const location = useLocation()
+
+  const currentPath = location.pathname
+
+  const links = [
+    { name: "Home", path: "/" },
+    { name: "Agents", path: "/agents" },
+    { name: "Projects", path: "/projects" },
+  ]
 
   // On mount, read query params and update state
   useEffect(() => {
@@ -52,6 +62,35 @@ const Hero = () => {
   return (
     <>
       {/* Desktop / Tablet View */}
+
+      <div className='flex flex-col  '>
+       <div className="flex flex-row gap-8">
+      {links.map((link) => {
+        const isActive = currentPath === link.path
+        return (
+          <Link
+            key={link.path}
+            to={link.path}
+            className={`relative font-semibold text-gray-700 transition-colors 
+              hover:text-primary
+              ${isActive ? "text-primary" : ""}`}
+          >
+            {link.name}
+            {isActive && (
+              <span className="absolute left-0 -bottom-1 w-full h-[2px] bg-primary rounded-full"></span>
+            )}
+          </Link>
+        )
+      })}
+    </div>
+
+
+
+
+
+
+
+
       <motion.form
         initial={{ scale: 0.95, opacity: 0, y: 50 }}
         animate={{ scale: 1, opacity: 1, y: 0 }}
@@ -106,6 +145,7 @@ const Hero = () => {
        
       </motion.form>
 
+      </div>
 
 
 
