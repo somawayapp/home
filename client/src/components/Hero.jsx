@@ -44,12 +44,12 @@ const Hero = () => {
         animate={{ scale: 1, opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.4 }}
         onSubmit={handleSearch}
-        className='hidden md:flex flex-row items-center justify-between p-3 rounded-full w-full max-w-200 
+        className='hidden md:flex flex-row items-center justify-between p-2 rounded-full w-full max-w-200 
          bg-white shadow-[0px_8px_20px_rgba(0,0,0,0.1)]'
       >
-        <div className='flex flex-row items-center gap-10 ml-4'>
+        <div className='flex flex-row items-center gap-8 ml-4'>
           {/* Pickup Location */}
-          <div className='flex flex-col items-start gap-2'>
+          <div className='flex flex-col items-start gap-1'>
             <select required value={pickupLocation} onChange={(e) => setPickupLocation(e.target.value)}>
               <option value=''>Pickup Location</option>
               {cityList.map((city) => (
@@ -63,10 +63,10 @@ const Hero = () => {
             </p>
           </div>
 
-    <span className="h-9 w-px bg-gray-300"></span>
+    <span className="h-10 w-px bg-gray-300"></span>
 
           {/* Price Per Day */}
-          <div className='flex flex-col items-start gap-2'>
+          <div className='flex flex-col items-start gap-1'>
             <label htmlFor='price-per-day'>Price Per Day</label>
             <input
               value={pricePerDay}
@@ -79,11 +79,11 @@ const Hero = () => {
             />
           </div>
 
-    <span className="h-9 w-px bg-gray-300"></span>
+    <span className="h-10 w-px bg-gray-300"></span>
 
 
           {/* Seating Capacity */}
-          <div className='flex flex-col items-start gap-2'>
+          <div className='flex flex-col items-start gap-1'>
             <label htmlFor='seating-capacity'>Seating Capacity</label>
             <input
               value={seatingCapacity}
@@ -114,12 +114,6 @@ const Hero = () => {
                bg-white shadow-md rounded-full text-gray-600 text-sm 
                hover:bg-gray-100 transition-colors duration-200"
   >
-    {/* Search Icon */}
-    <img
-      src={assets.search_icon}
-      alt="search"
-      className="w-5 h-5 brightness-300"
-    />
 
 
     {/* Texts spaced out */}
@@ -132,6 +126,16 @@ const Hero = () => {
 
       <span>Any size</span>
     </div>
+
+     <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className='flex items-center justify-center gap-1 px-3 py-3 bg-primary hover:bg-primary-dull text-white rounded-full cursor-pointer'
+        >
+          <img src={assets.search_icon} alt='search' className='brightness-300' />
+        </motion.button>
+
+
   </button>
 </div>
 
