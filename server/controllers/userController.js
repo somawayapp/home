@@ -65,14 +65,34 @@ export const getUserData = async (req, res) =>{
         res.json({success: false, message: error.message})
     }
 }
-
-// Get All Cars for the Frontend
-export const getCars = async (req, res) =>{
+// Get All Cars for the Frontend with Filters
+export const getCars = async (req, res) => {
     try {
-        const cars = await Car.find({isAvaliable: true})
-        res.json({success: true, cars})
+        const { pickupLocation, pricePerDay, seatingCapacity } = req.query;
+
+        // Base filter: only available cars
+        const filter = { isAvaliable: true };
+
+        if (pickupLocation) {
+            // assuming your Car model has a field like `location` or `city`
+            filter.location = pickupLocation;
+        }
+
+        if (pricePerDay) {
+            // Use $lte so users can search "up to this price"
+            filter.pricePerDay = { $lte: Number(pricePerDay) };
+            // If you want exact match instead:
+            // filter.pricePerDay = Number(pricePerDay)
+        }
+
+        if (seatingCapacity) {
+            filter.seatingCapacity = Number(seatingCapacity);
+        }
+
+        const cars = await Car.find(filter);
+        res.json({ success: true, cars });
     } catch (error) {
         console.log(error.message);
-        res.json({success: false, message: error.message})
+        res.json({ success: false, message: error.message });
     }
-}
+};
