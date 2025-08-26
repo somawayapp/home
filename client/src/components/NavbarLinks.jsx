@@ -11,7 +11,7 @@ const NavbarLinks = () => {
   ]
 
   return (
-       <div className="flex flex-row mb-5 gap-15">
+<div className="hidden md:flex flex-row mb-5 gap-15">
         {links.map((link) => {
               const isActive = currentPath === link.path
               return (

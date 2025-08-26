@@ -66,7 +66,7 @@ const Hero = () => {
         transition={{ duration: 0.6, delay: 0.4 }}
         onSubmit={handleSearch}
         className='hidden md:flex flex-row items-center justify-between  rounded-full w-full max-w-200 
-         bg-white shadow-[0px_8px_20px_rgba(0,0,0,0.1)] borbder border-light'
+         bg-white shadow-[0px_8px_20px_rgba(0,0,0,0.1)] border border-light'
       >
         <div className='flex flex-row items-center gap-8 ml-4'     onClick={() => setShowModal(true)}
 >

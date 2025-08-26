@@ -62,11 +62,11 @@ const Navbar = () => {
       initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className={`flex  flex-col items-center bg-white sticky top-0 z-50 justify-between  px-6 md:px-16 lg:px-24 xl:px-32 py-4 text-gray-600
+      className={`flex  flex-col  bg-white sticky top-0 z-50 justify-between  px-6 md:px-16 lg:px-24 xl:px-32 py-4 text-gray-600
        border-b border-light relative transition-all ${location.pathname === '/' && 'bg-light'}`}
     >
 
-        <div className=' flex  items-center justify-between  '>
+        <div className=' flex  items-center px-5 justify-between  '>
 
     
       {/* Logo */}
