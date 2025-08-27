@@ -87,7 +87,7 @@ const Hero = () => {
                
 
 
-             <div>
+             <div className=' flex flex-col'>
 
               <p>homes</p>
                             <p>homes</p>
