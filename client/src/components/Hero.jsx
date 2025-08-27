@@ -1,3 +1,8 @@
+
+
+
+ 
+
 import React, { useState, useEffect } from 'react'
 import { assets, cityList } from '../assets/assets'
 import { useAppContext } from '../context/AppContext'
@@ -53,23 +58,19 @@ const Hero = () => {
       return
     }
 
-    const threshold = 50
+   const threshold = 50
     const wall = 10
     let lastState = true
-    let timeout
 
     const handleScroll = () => {
-      clearTimeout(timeout)
-      timeout = setTimeout(() => {
-        const currentScrollY = window.scrollY
-        if (currentScrollY > threshold + wall && lastState) {
-          setShowDesktop(false)
-          lastState = false
-        } else if (currentScrollY < threshold - wall && !lastState) {
-          setShowDesktop(true)
-          lastState = true
-        }
-      }, 50)
+      const currentScrollY = window.scrollY
+      if (currentScrollY > threshold + wall && lastState) {
+        setShowDesktop(false)
+        lastState = false
+      } else if (currentScrollY < threshold - wall && !lastState) {
+        setShowDesktop(true)
+        lastState = true
+      }
     }
 
     window.addEventListener("scroll", handleScroll)
