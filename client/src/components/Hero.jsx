@@ -1,8 +1,3 @@
-
-
-
- 
-
 import React, { useState, useEffect } from 'react'
 import { assets, cityList } from '../assets/assets'
 import { useAppContext } from '../context/AppContext'
@@ -17,16 +12,10 @@ const Hero = () => {
 
   const { pricePerDay, setPricePerDay, seatingCapacity, setSeatingCapacity, navigate } = useAppContext()
   const location = useLocation()
-  const currentPath = location.pathname
-
-  const links = [
-    { name: "Homes", path: "/" },
-    { name: "Agents", path: "/agents" },
-    { name: "Projects", path: "/projects" },
-  ]
 
   // Track screen size
   const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 768)
+
   useEffect(() => {
     const handleResize = () => setIsSmallScreen(window.innerWidth < 768)
     window.addEventListener("resize", handleResize)
@@ -51,14 +40,15 @@ const Hero = () => {
     return () => { document.body.style.overflow = 'auto' }
   }, [showModal])
 
-  // Handle scroll compress (desktop only)
+  // Handle scroll compress (only desktop + home route)
   useEffect(() => {
     if (isSmallScreen || location.pathname !== "/") {
       setShowDesktop(false)
       return
     }
 
-   const threshold = 50
+
+    const threshold = 50
     const wall = 10
     let lastState = true
 
@@ -75,7 +65,7 @@ const Hero = () => {
 
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
-  }, [location.pathname, isSmallScreen])
+  }, [location.pathname])
 
   const handleSearch = (e) => {
     e.preventDefault()
@@ -86,96 +76,107 @@ const Hero = () => {
   }
 
   return (
-    <div className="flex items-center justify-center w-full flex-col">
+    <div className="flex items-center justify-center w-full">
 
       {/* === Desktop / MD+ form (expanded) */}
       {!isSmallScreen && showDesktop && location.pathname === "/" && (
-        <motion.div
-          initial={{ scale: 0.85, opacity: 0, y: -20 }}
-          animate={{ scale: 1, opacity: 1, y: 0 }}
-          transition={{ type: "spring", stiffness: 200, damping: 25, duration: 0.3 }}
-          className='flex flex-col w-full max-w-4xl'
+           <motion.div
+           initial={{ scale: 0.85, opacity: 0, y: -20 }} // Starts smaller, transparent, and higher up
+            animate={{ scale: 1, opacity: 1, y: 0 }} // Expands to full size, becomes opaque, and moves to final position
+            transition={{ type: "spring", stiffness: 200, damping: 25, duration: 0.3 }}
+            className='flex flex-col  '>
+               
+
+
+               <div className="hidden md:flex flex-row mb-5 gap-15">
+            
+             <Link
+        to={'/'}
+        className='relative text-black transition-colors 
+          hover:text-black '
+      >
+        <span className="inline-block px-1">Homes</span>
+          <span className="absolute left-[-6px] -bottom-1 w-[calc(100%+15px)] h-[3px] bg-black rounded-full"></span>
+      </Link>
+       
+    </div>
+          
+        <div  onSubmit={handleSearch}
+          className="hidden md:flex mt-5 flex-row items-center justify-between rounded-full w-full max-w-200 bg-white shadow-[0px_8px_20px_rgba(0,0,0,0.1)] border border-light"
         >
-          {/* Desktop Links */}
-          <div className="hidden md:flex flex-row mb-5 gap-8 justify-center">
-            {links.map((link) => {
-              const isActive = currentPath === link.path
-              return (
-                <Link
-                  key={link.path}
-                  to={link.path}
-                  className={`relative text-gray-700 transition-colors hover:text-black ${isActive ? "text-black" : ""}`}
-                >
-                  <span className="inline-block px-1">{link.name}</span>
-                  {isActive && (
-                    <span className="absolute left-[-6px] -bottom-1 w-[calc(100%+15px)] h-[3px] bg-black rounded-full"></span>
-                  )}
-                </Link>
-              )
-            })}
-          </div>
-
-          {/* Desktop Search Form */}
-          <div
-            onSubmit={handleSearch}
-            className="hidden md:flex mt-2 flex-row items-center justify-between rounded-full w-full bg-white shadow-[0px_8px_20px_rgba(0,0,0,0.1)] border border-light"
-          >
-            <div className="flex flex-row items-center gap-8 ml-4 cursor-pointer" onClick={() => setShowModal(true)}>
-              <div className="flex flex-col py-2 px-6 items-start gap-1 rounded-full hover:bg-gray-100 transition-colors">
-                <p className="text-sm font-medium text-gray-700">Pickup Location</p>
-                <p className="px-1 text-sm text-gray-500">{pickupLocation || 'Please select location'}</p>
-              </div>
-              <span className="h-10 w-px bg-gray-300"></span>
-              <div className="flex flex-col py-2 px-6 items-start gap-1 rounded-full hover:bg-gray-100 transition-colors">
-                <p className="text-sm font-medium text-gray-700">Price Per Day</p>
-                <p className="px-1 text-sm text-gray-500">{pricePerDay || 'Enter price per day'}</p>
-              </div>
-              <span className="h-10 w-px bg-gray-300"></span>
-              <div className="flex flex-col py-2 px-6 items-start gap-1 rounded-full hover:bg-gray-100 transition-colors">
-                <p className="text-sm font-medium text-gray-700">Seating Capacity</p>
-                <p className="px-1 text-sm text-gray-500">{seatingCapacity || 'Enter seating capacity'}</p>
-              </div>
+          <div className="flex flex-row items-center gap-8 ml-4" onClick={() => setShowModal(true)}>
+            <div className="flex flex-col py-2 px-6 items-start gap-1 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+              <p className="text-sm font-medium text-gray-700">Pickup Location</p>
+              <p className="px-1 text-sm text-gray-500">{pickupLocation || 'Please select location'}</p>
             </div>
-
-            <div className="p-2">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="flex items-center justify-center gap-1 px-4 py-4 bg-primary hover:bg-primary-dull text-white rounded-full"
-                onClick={handleSearch}
-              >
-                <img src={assets.search_icon} alt="search" className="brightness-300 md:h-5 md:w-5" />
-              </motion.button>
+            <span className="h-10 w-px bg-gray-300"></span>
+            <div className="flex flex-col py-2 px-6 items-start gap-1 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+              <p className="text-sm font-medium text-gray-700">Price Per Day</p>
+              <p className="px-1 text-sm text-gray-500">{pricePerDay || 'Enter price per day'}</p>
+            </div>
+            <span className="h-10 w-px bg-gray-300"></span>
+            <div className="flex flex-col py-2 px-6 items-start gap-1 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+              <p className="text-sm font-medium text-gray-700">Seating Capacity</p>
+              <p className="px-1 text-sm text-gray-500">{seatingCapacity || 'Enter seating capacity'}</p>
             </div>
           </div>
-        </motion.div>
+
+          <div className="p-2">
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="flex items-center justify-center gap-1 px-4 py-4 bg-primary hover:bg-primary-dull text-white rounded-full cursor-pointer"
+            >
+              <img src={assets.search_icon} alt="search" className="brightness-300 md:h-5 md:w-5" />
+            </motion.button>
+          </div>
+        </div>
+              
+              
+              
+                </motion.div>
+
       )}
 
-      {/* === Mobile / Compressed Search Bar */}
+      {/* === Compressed / other screens & routes */}
       {(isSmallScreen || !showDesktop) && (
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ type: "spring", stiffness: 200, damping: 25, duration: 0.3 }}
-          className="flex items-center justify-between w-full max-w-2xl gap-2 bg-white rounded-full text-gray-600 shadow-[0px_8px_20px_rgba(0,0,0,0.1)] border border-light mt-4 p-1"
+        <motion.button
+              initial={{ scale: 1, opacity: 1 }}
+        animate={{
+          scale: showDesktop ? 1 : 0.85,
+          opacity: showDesktop ? 1 : 0.95,
+          y: showDesktop ? 0 : -10
+        }}
+        transition={{ type: "spring", stiffness: 200, damping: 25, duration: 0.3 }}
+
+          onClick={() => setShowModal(true)}
+          className="flex items-center justify-between w-full max-w-120 gap-2 bg-white rounded-full text-gray-600
+            shadow-[0px_8px_20px_rgba(0,0,0,0.1)] border border-light mt-4  md:mt-3"
         >
-          <div className="flex-1 flex justify-between items-center text-md md:text-lg cursor-pointer" onClick={() => setShowModal(true)}>
-            <span className="px-4 py-2 rounded-full hover:bg-gray-100 transition-colors">{pickupLocation || "Any location"}</span>
+          <div className="flex-1 flex justify-between items-center text-md md:text-lg">
+            <span className="px-4 py-2 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+              {pickupLocation || "Any location"}
+            </span>
             <span className="self-stretch w-px bg-gray-300"></span>
-            <span className="px-4 py-2 rounded-full hover:bg-gray-100 transition-colors">{pricePerDay || "Any price"}</span>
+            <span className="px-4 py-2 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+              {pricePerDay || "Any price"}
+            </span>
             <span className="self-stretch w-px bg-gray-300"></span>
-            <span className="px-4 py-2 rounded-full hover:bg-gray-100 transition-colors">{seatingCapacity || "Any size"}</span>
+            <span className="px-4 py-2 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+              {seatingCapacity || "Any size"}
+            </span>
           </div>
 
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={handleSearch}
-            className="flex items-center justify-center ml-2 gap-1 px-3 py-3 bg-primary hover:bg-primary-dull text-white rounded-full"
-          >
-            <img src={assets.search_icon} alt="search" className="brightness-300" />
-          </motion.button>
-        </motion.div>
+          <div className="p-1 md:p-2">
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="flex items-center justify-center ml-2 gap-1 px-3 py-3 bg-primary hover:bg-primary-dull text-white rounded-full cursor-pointer"
+            >
+              <img src={assets.search_icon} alt="search" className="brightness-300" />
+            </motion.button>
+          </div>
+        </motion.button>
       )}
 
       {/* === Popup Modal */}
