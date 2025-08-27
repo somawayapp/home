@@ -47,8 +47,8 @@ const Hero = () => {
     }
 
 
-    const threshold = 50
-    const wall = 10
+    const threshold = 250
+    const wall = 130
     let lastState = true
 
     const handleScroll = () => {
@@ -80,8 +80,7 @@ const Hero = () => {
       {/* === Desktop / MD+ form (expanded) */}
       {!isSmallScreen && showDesktop && location.pathname === "/" && (
            <motion.div
-             initial={false}
-                 key="hero-desktop"
+           initial={{ scale: 0.85, opacity: 0, y: -20 }} // Starts smaller, transparent, and higher up
             animate={{ scale: 1, opacity: 1, y: 0 }} // Expands to full size, becomes opaque, and moves to final position
             transition={{ type: "spring", stiffness: 200, damping: 25, duration: 0.3 }}
             className='flex flex-col items-center justify-center  '>
