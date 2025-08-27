@@ -75,7 +75,7 @@ const Hero = () => {
   }
 
   return (
-    <>
+    <div className="flex items-center justify-center w-full">
 
       {/* === Desktop / MD+ form (expanded) */}
       {!isSmallScreen && showDesktop && location.pathname === "/" && (
@@ -84,7 +84,7 @@ const Hero = () => {
             animate={{ scale: 1, opacity: 1, y: 0 }} // Expands to full size, becomes opaque, and moves to final position
             transition={{ type: "spring", stiffness: 200, damping: 25, duration: 0.3 }}
           onSubmit={handleSearch}
-          className="hidden md:flex mt-5 mb-5 flex-row items-center justify-between rounded-full w-full max-w-200 bg-white shadow-[0px_8px_20px_rgba(0,0,0,0.1)] border border-light"
+          className="hidden md:flex mt-5 flex-row items-center justify-between rounded-full w-full max-w-200 bg-white shadow-[0px_8px_20px_rgba(0,0,0,0.1)] border border-light"
         >
           <div className="flex flex-row items-center gap-8 ml-4" onClick={() => setShowModal(true)}>
             <div className="flex flex-col py-2 px-6 items-start gap-1 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
@@ -210,7 +210,7 @@ const Hero = () => {
           </motion.div>
         </motion.div>
       )}
-    </>
+    </div>
   )
 }
 
