@@ -66,7 +66,7 @@ const Navbar = () => {
        border-b border-light relative transition-all ${location.pathname === '/' && 'bg-light'}`}
     >
 
-        <div className=' flex  items-center py-5 justify-between  '>
+        <div className=' flex  items-center pt-2 md:pt-5 justify-between  '>
 
     
       {/* Logo */}
