@@ -79,6 +79,9 @@ const Hero = () => {
 
       {/* === Desktop / MD+ form (expanded) */}
       {!isSmallScreen && showDesktop && location.pathname === "/" && (
+            <div className="flex flex-col items-center justify-center w-full">
+
+    <h1>my name is </h1>
         <motion.form
            initial={{ scale: 0.85, opacity: 0, y: -20 }} // Starts smaller, transparent, and higher up
             animate={{ scale: 1, opacity: 1, y: 0 }} // Expands to full size, becomes opaque, and moves to final position
@@ -113,6 +116,7 @@ const Hero = () => {
             </motion.button>
           </div>
         </motion.form>
+        </div>
       )}
 
       {/* === Compressed / other screens & routes */}
