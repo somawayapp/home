@@ -133,11 +133,18 @@ useEffect(() => {
 
       {/* Mobile View (always visible if not on / OR if desktop compressed) */}
       {(!showDesktop || location.pathname !== "/") && (
-        <button
+
+            <motion.button
+          initial={{ scale: 0.95, opacity: 0, y: 50 }}
+          animate={{ scale: 1, opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
           onClick={() => setShowModal(true)}
-          className="w-full max-w-120 flex items-center justify-between gap-2 
-                     bg-white shadow-md rounded-full text-gray-600 text-sm border border-light"
+          className="flex items-center justify-between 
+                     w-full max-w-120 gap-2  bg-white  rounded-full text-gray-600 text-sm shadow-[0px_8px_20px_rgba(0,0,0,0.1)] 
+                     border border-light"
         >
+
+    
           <div className="flex-1 flex justify-between items-center text-xs sm:text-sm">
             <span className="px-4 py-2 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
               {pickupLocation || "Any location"}
@@ -159,7 +166,8 @@ useEffect(() => {
           >
             <img src={assets.search_icon} alt="search" className="brightness-300" />
           </motion.button>
-        </button>
+                </motion.button>
+
       )}
 
       {/* Popup Modal */}
