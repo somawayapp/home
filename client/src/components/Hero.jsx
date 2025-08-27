@@ -128,9 +128,9 @@ const Hero = () => {
 
           onClick={() => setShowModal(true)}
           className="flex items-center justify-between w-full max-w-120 gap-2 bg-white rounded-full text-gray-600
-           text-sm md:text-md shadow-[0px_8px_20px_rgba(0,0,0,0.1)] border border-light mt-2 "
+           text-sm md:text-md shadow-[0px_8px_20px_rgba(0,0,0,0.1)] border border-light mt-4  md:mt-3"
         >
-          <div className="flex-1 flex justify-between items-center text-xs sm:text-sm">
+          <div className="flex-1 flex justify-between items-center text-sm md:text-md">
             <span className="px-4 py-2 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
               {pickupLocation || "Any location"}
             </span>
