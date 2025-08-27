@@ -40,46 +40,38 @@ const Hero = () => {
   }, [showModal])
 
   // Handle scroll compress (only desktop + home route)
-  useEffect(() => {
-    if (isSmallScreen || location.pathname !== "/") {
-      setShowDesktop(false)
-      return
-    }
 
 
-  const hideThreshold = 40; // scrollY at which Desktop hides
-const showThreshold = 20; // scrollY at which Desktop shows again
-let isDesktopVisible = true; // true = Desktop is currently visible
-
-const handleScroll = () => {
-  const scrollY = window.scrollY;
-
-  if (scrollY > hideThreshold && isDesktopVisible) {
-    // Scrolled far enough down → hide
-    setShowDesktop(false);
-    isDesktopVisible = false;
-  } else if (scrollY < showThreshold && !isDesktopVisible) {
-    // Scrolled far enough up → show
-    setShowDesktop(true);
-    isDesktopVisible = true;
+useEffect(() => {
+  if (isSmallScreen || location.pathname !== "/") {
+    setShowDesktop(false)
+    return
   }
-};
 
-// Optional: throttle to reduce rapid calls
-function throttle(fn, wait = 50) {
-  let lastTime = 0;
-  return function (...args) {
-    const now = Date.now();
-    if (now - lastTime > wait) {
-      fn.apply(this, args);
-      lastTime = now;
+  const topThreshold = 20    // First change after 20px
+  const wall = 20            // Dead zone between 20px and 40px
+  const bottomThreshold = topThreshold + wall // 40px
+  let lastState = 'top'      // can be 'top' or 'bottom'
+
+  const handleScroll = () => {
+    const scrollY = window.scrollY
+
+    if (scrollY < topThreshold && lastState !== 'top') {
+      // Scroll is in top zone
+      setShowDesktop(true)
+      lastState = 'top'
+    } else if (scrollY > bottomThreshold && lastState !== 'bottom') {
+      // Scroll is in bottom zone
+      setShowDesktop(false)
+      lastState = 'bottom'
     }
-  };
-}
+    // If scroll is between topThreshold and bottomThreshold, do nothing (wall)
+  }
 
-window.addEventListener("scroll", throttle(handleScroll));
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [location.pathname])
+  window.addEventListener("scroll", handleScroll)
+  return () => window.removeEventListener("scroll", handleScroll)
+}, [location.pathname])
+
 
   const handleSearch = (e) => {
     e.preventDefault()
