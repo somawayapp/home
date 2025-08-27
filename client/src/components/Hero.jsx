@@ -57,7 +57,7 @@ useEffect(() => {
     return
   }
 
-  const topThreshold = 30    // First change after 20px
+  const topThreshold = 20    // First change after 20px
   const wall = 80            // Dead zone between 20px and 40px
   const bottomThreshold = topThreshold + wall // 40px
   let lastState = 'top'      // can be 'top' or 'bottom'
@@ -91,7 +91,7 @@ useEffect(() => {
   }
 
   return (
-    <div className="flex items-center justify-center w-full">
+    <div className="flex  mt-[-120px] items-center justify-center w-full">
 
       {/* === Desktop / MD+ form (expanded) */}
       {!isSmallScreen && showDesktop && location.pathname === "/" && (
