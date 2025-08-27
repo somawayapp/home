@@ -186,9 +186,9 @@ useEffect(() => {
 
           onClick={() => setShowModal(true)}
           className="flex items-center justify-between w-full max-w-130 gap-1 md:gap-2 bg-white rounded-full text-gray-600
-            shadow-[0px_8px_20px_rgba(0,0,0,0.1)] border border-light mt-4 mx-3   md:mt-3"
+            shadow-[0px_8px_20px_rgba(0,0,0,0.1)] border border-light mt-4 mr-7  ml-4  md:mt-3"
         >
-          <div className="flex-1 flex justify-between items-center text-md md:text-lg">
+          <div className="flex-1 flex justify-between items-center">
             <span className="pr-2 pl-5 py-2 font-medium md:pr-4 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
               {pickupLocation || "Any where"}
             </span>
