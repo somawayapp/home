@@ -85,7 +85,7 @@ const Hero = () => {
   }
 
   return (
-    <div className="flex items-center justify-center w-full">
+    <div className="flex flex-col items-center justify-center w-full">
 
       {!isSmallScreen && showDesktop && location.pathname === "/" && (
 
