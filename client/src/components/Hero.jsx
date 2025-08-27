@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { assets, cityList } from '../assets/assets'
 import { useAppContext } from '../context/AppContext'
 import { useLocation } from 'react-router-dom'
-import { AnimatePresence, motion } from "framer-motion"
-
+import { motion } from "framer-motion"
 
 const Hero = () => {
   const [pickupLocation, setPickupLocation] = useState('')
@@ -79,17 +78,14 @@ const Hero = () => {
     <div className="flex items-center justify-center w-full">
 
       {/* === Desktop / MD+ form (expanded) */}
-      <AnimatePresence>
-  {!isSmallScreen && showDesktop && location.pathname === "/" && (
-    <motion.div
-      key="desktopHero"
-      initial={{ scale: 0.85, opacity: 0, y: -20 }}
-      animate={{ scale: 1, opacity: 1, y: 0 }}
-      exit={{ scale: 0.85, opacity: 0, y: -20 }}   // smooth exit
-      transition={{ type: "spring", stiffness: 200, damping: 25, duration: 0.3 }}
-      className='flex flex-col items-center justify-center'
-    >
-
+      {!isSmallScreen && showDesktop && location.pathname === "/" && (
+              
+<motion.div
+  initial={false}
+  animate={showDesktop ? { scale: 1, opacity: 1, y: 0 } : { scale: 0.85, opacity: 0, y: -20 }}
+  transition={{ type: "spring", stiffness: 200, damping: 25, duration: 0.3 }}
+  className='flex flex-col items-center justify-center'
+>
 
              <div className=' flex flex-row'>
 
@@ -136,11 +132,8 @@ const Hero = () => {
                 </motion.div>
 
       )}
-</AnimatePresence>
 
       {/* === Compressed / other screens & routes */}
-            <AnimatePresence>
-
       {(isSmallScreen || !showDesktop) && (
         <motion.button
               initial={{ scale: 1, opacity: 1 }}
@@ -180,8 +173,6 @@ const Hero = () => {
           </div>
         </motion.button>
       )}
-      </AnimatePresence>
-
 
       {/* === Popup Modal */}
       {showModal && (
