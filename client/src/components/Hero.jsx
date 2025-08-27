@@ -87,9 +87,12 @@ const Hero = () => {
                
 
 
-             <div className=' flex flex-col gap-15 items-center justify-between'>
+             <div>
 
               <p>homes</p>
+                            <p>homes</p>
+              <p>homes</p>
+
              </div>
 
 
