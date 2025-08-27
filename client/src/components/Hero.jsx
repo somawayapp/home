@@ -87,12 +87,6 @@ const Hero = () => {
                
 
 
-               <div className="flex flex-row mb-5 gap-15">
-            
-         
-        <p className="inline-block px-1">Homes</p>
-         
-    </div>
           
         <div  onSubmit={handleSearch}
           className="hidden md:flex mt-5 flex-row items-center justify-between rounded-full w-full max-w-200 bg-white shadow-[0px_8px_20px_rgba(0,0,0,0.1)] border border-light"
