@@ -58,7 +58,7 @@ useEffect(() => {
   }
 
   const topThreshold = 20    // First change after 20px
-  const wall = 80            // Dead zone between 20px and 40px
+  const wall = 90            // Dead zone between 20px and 40px
   const bottomThreshold = topThreshold + wall // 40px
   let lastState = 'top'      // can be 'top' or 'bottom'
 
@@ -131,26 +131,26 @@ useEffect(() => {
           className="hidden md:flex mt-5 mb-5 flex-row items-center justify-between rounded-full w-full max-w-250 bg-white shadow-[0px_8px_20px_rgba(0,0,0,0.1)] border border-light"
         >
           <div className="flex flex-row items-center gap-8 ml-4" onClick={() => setShowModal(true)}>
-            <div className="flex flex-col py-2 px-6 mr-9 items-start gap-1 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+            <div className="flex flex-col py-2 px-6 mr-9 items-start rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
               <p className="text-sm font-medium text-gray-700">Any where</p>
               <p className=" text-sm font-medium text-gray-500">{pickupLocation || ' search destinations'}</p>
             </div>
 
             <span className="h-10 w-px bg-gray-300"></span>
-            <div className="flex flex-col py-2 px-6 items-start gap-1 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+            <div className="flex flex-col py-2 px-6 items-start rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
               <p className="text-sm font-medium text-gray-700">Any price</p>
               <p className="text-sm font-medium text-gray-500">{pricePerDay || 'Enter max price '}</p>
             </div>
 
              <span className="h-10 w-px bg-gray-300"></span>
-             <div className="flex flex-col py-2 px-6 items-start gap-1 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+             <div className="flex flex-col py-2 px-6 items-start rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
               <p className="text-sm font-medium text-gray-700">Any type</p>
               <p className=" text-sm font-medium text-gray-500">{pickupLocation || ' select type'}</p>
             </div>
 
 
             <span className="h-10 w-px bg-gray-300"></span>
-            <div className="flex flex-col py-2 px-6 items-start gap-1 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+            <div className="flex flex-col py-2 px-6 items-start rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
               <p className="text-sm font-medium text-gray-700">Any size</p>
               <p className="text-sm text-gray-500">{seatingCapacity || 'Enter size'}</p>
             </div>
@@ -186,7 +186,7 @@ useEffect(() => {
 
           onClick={() => setShowModal(true)}
           className="flex items-center justify-between w-full max-w-130 gap-1 md:gap-2 bg-white rounded-full text-gray-600
-            shadow-[0px_8px_20px_rgba(0,0,0,0.1)] border border-light mt-4  md:mt-3"
+            shadow-[0px_8px_20px_rgba(0,0,0,0.1)] border border-light mt-4 mx-3   md:mt-3"
         >
           <div className="flex-1 flex justify-between items-center text-md md:text-lg">
             <span className="pr-2 pl-5 py-2 font-medium md:pr-4 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">

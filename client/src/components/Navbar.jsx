@@ -62,7 +62,7 @@ const Navbar = () => {
       initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className={`flex  flex-col  bg-white sticky top-0 z-50 justify-between  px-6 md:px-16 lg:px-24 xl:px-32 text-gray-600
+      className={`flex  flex-col  bg-white sticky mt-0 top-0 z-50 justify-between  px-6 md:px-16 lg:px-24 xl:px-32 text-gray-600
        border-b border-light relative transition-all ${location.pathname === '/' && 'bg-light'}`}
     >
 
