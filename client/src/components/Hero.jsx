@@ -16,7 +16,7 @@ const Hero = () => {
   const currentPath = location.pathname
 
   const links = [
-    { name: "Home", path: "/" },
+    { name: "Homes", path: "/" },
     { name: "Agents", path: "/agents" },
     { name: "Projects", path: "/projects" },
   ]
@@ -91,7 +91,7 @@ useEffect(() => {
   }
 
   return (
-    <div className="flex  mt-[-50px] items-center justify-center w-full">
+    <div className="flex  mt-[-45px] items-center justify-center w-full">
 
       {/* === Desktop / MD+ form (expanded) */}
       {!isSmallScreen && showDesktop && location.pathname === "/" && (
@@ -128,22 +128,22 @@ useEffect(() => {
 
 
         <div  onSubmit={handleSearch}
-          className="hidden md:flex mt-5 flex-row items-center justify-between rounded-full w-full max-w-200 bg-white shadow-[0px_8px_20px_rgba(0,0,0,0.1)] border border-light"
+          className="hidden md:flex mt-5 mb-5 flex-row items-center justify-between rounded-full w-full max-w-200 bg-white shadow-[0px_8px_20px_rgba(0,0,0,0.1)] border border-light"
         >
           <div className="flex flex-row items-center gap-8 ml-4" onClick={() => setShowModal(true)}>
             <div className="flex flex-col py-2 px-6 items-start gap-1 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
               <p className="text-sm font-medium text-gray-700">Pickup Location</p>
-              <p className="px-1 text-sm text-gray-500">{pickupLocation || 'Please select location'}</p>
+              <p className=" text-sm text-gray-500">{pickupLocation || 'Please select location'}</p>
             </div>
             <span className="h-10 w-px bg-gray-300"></span>
             <div className="flex flex-col py-2 px-6 items-start gap-1 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
               <p className="text-sm font-medium text-gray-700">Price Per Day</p>
-              <p className="px-1 text-sm text-gray-500">{pricePerDay || 'Enter price per day'}</p>
+              <p className="text-sm text-gray-500">{pricePerDay || 'Enter price per day'}</p>
             </div>
             <span className="h-10 w-px bg-gray-300"></span>
             <div className="flex flex-col py-2 px-6 items-start gap-1 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
               <p className="text-sm font-medium text-gray-700">Seating Capacity</p>
-              <p className="px-1 text-sm text-gray-500">{seatingCapacity || 'Enter seating capacity'}</p>
+              <p className="text-sm text-gray-500">{seatingCapacity || 'Enter seating capacity'}</p>
             </div>
           </div>
 
