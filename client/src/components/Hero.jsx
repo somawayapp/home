@@ -81,56 +81,76 @@ useEffect(() => {
   return (
     <div className="flex items-center justify-center">
       {/* Desktop Bar with compress effect */}
-      <motion.form
-        initial={{ scale: 1, opacity: 1 }}
-        animate={{
-          scale: showDesktop ? 1 : 0.85,
-          opacity: showDesktop ? 1 : 0.95,
-          y: showDesktop ? 0 : -10
-        }}
-        transition={{ type: "spring", stiffness: 200, damping: 25, duration: 0.3 }}
-        onSubmit={handleSearch}
-        className="flex flex-row items-center justify-between 
-                   rounded-full w-full max-w-200 bg-white shadow-[0px_8px_20px_rgba(0,0,0,0.1)] 
-                   border border-light"
-      >
-        <div className="flex flex-row items-center gap-8 ml-4">
-          {/* Pickup Location */}
-          <div className={`flex flex-col items-start gap-1 transition-all duration-300 
-                          ${showDesktop ? "py-2 px-6 text-sm" : "py-1 px-3 text-xs"}`}>
-            <p className="font-medium text-gray-700">Pickup Location</p>
-            <p className="text-gray-500">{pickupLocation || "Please select location"}</p>
-          </div>
+    <motion.form
+  initial={{ scale: 1, opacity: 1 }}
+  animate={{
+    scale: showDesktop ? 1 : 0.85,
+    opacity: showDesktop ? 1 : 0.95,
+    y: showDesktop ? 0 : -10
+  }}
+  transition={{ type: "spring", stiffness: 200, damping: 25, duration: 0.3 }}
+  onSubmit={handleSearch}
+  className={`
+    flex flex-row items-center justify-between
+    rounded-full bg-white shadow-[0px_8px_20px_rgba(0,0,0,0.1)] border border-light
+    ${showDesktop ? "w-full max-w-200" : "w-full max-w-120 gap-2"}  // smaller max width on small screens / other routes
+    ${location.pathname !== "/" ? "gap-2" : "gap-8"}  // reduce gaps on other routes
+    p-2
+  `}
+>
+  <div className="flex flex-row items-center ml-4">
+    {/* Pickup Location */}
+    <div className={`
+      flex flex-col items-start transition-all duration-300
+      ${showDesktop ? "py-2 px-6 text-sm gap-1" : "py-1 px-3 text-xs gap-0.5"}
+      ${location.pathname !== "/" ? "py-1 px-2 gap-0.5" : ""}
+    `}>
+      <p className="font-medium text-gray-700">Pickup Location</p>
+      {!(location.pathname !== "/" && window.innerWidth < 768) && (
+        <p className="text-gray-500">{pickupLocation || "Please select location"}</p>
+      )}
+    </div>
 
-          <span className="h-10 w-px bg-gray-300"></span>
+    {!(location.pathname !== "/" && window.innerWidth < 768) && <span className="h-10 w-px bg-gray-300"></span>}
 
-          {/* Price Per Day */}
-          <div className={`flex flex-col items-start gap-1 transition-all duration-300 
-                          ${showDesktop ? "py-2 px-6 text-sm" : "py-1 px-3 text-xs"}`}>
-            <p className="font-medium text-gray-700">Price Per Day</p>
-            <p className="text-gray-500">{pricePerDay || "Enter price per day"}</p>
-          </div>
+    {/* Price Per Day */}
+    <div className={`
+      flex flex-col items-start transition-all duration-300
+      ${showDesktop ? "py-2 px-6 text-sm gap-1" : "py-1 px-3 text-xs gap-0.5"}
+      ${location.pathname !== "/" ? "py-1 px-2 gap-0.5" : ""}
+    `}>
+      <p className="font-medium text-gray-700">Price Per Day</p>
+      {!(location.pathname !== "/" && window.innerWidth < 768) && (
+        <p className="text-gray-500">{pricePerDay || "Enter price per day"}</p>
+      )}
+    </div>
 
-          <span className="h-10 w-px bg-gray-300"></span>
+    {!(location.pathname !== "/" && window.innerWidth < 768) && <span className="h-10 w-px bg-gray-300"></span>}
 
-          {/* Seating Capacity */}
-          <div className={`flex flex-col items-start gap-1 transition-all duration-300 
-                          ${showDesktop ? "py-2 px-6 text-sm" : "py-1 px-3 text-xs"}`}>
-            <p className="font-medium text-gray-700">Seating Capacity</p>
-            <p className="text-gray-500">{seatingCapacity || "Enter seating capacity"}</p>
-          </div>
-        </div>
+    {/* Seating Capacity */}
+    <div className={`
+      flex flex-col items-start transition-all duration-300
+      ${showDesktop ? "py-2 px-6 text-sm gap-1" : "py-1 px-3 text-xs gap-0.5"}
+      ${location.pathname !== "/" ? "py-1 px-2 gap-0.5" : ""}
+    `}>
+      <p className="font-medium text-gray-700">Seating Capacity</p>
+      {!(location.pathname !== "/" && window.innerWidth < 768) && (
+        <p className="text-gray-500">{seatingCapacity || "Enter seating capacity"}</p>
+      )}
+    </div>
+  </div>
 
-        <div className={`transition-all duration-300 ${showDesktop ? "p-2" : "p-1"}`}>
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="flex items-center justify-center gap-1 px-4 py-4 bg-primary hover:bg-primary-dull text-white rounded-full cursor-pointer"
-          >
-            <img src={assets.search_icon} alt="search" className="brightness-300 md:h-5 md:w-5" />
-          </motion.button>
-        </div>
-      </motion.form>
+  <div className={`transition-all duration-300 ${showDesktop ? "p-2" : "p-1"}`}>
+    <motion.button
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
+      className="flex items-center justify-center gap-1 px-4 py-4 bg-primary hover:bg-primary-dull text-white rounded-full cursor-pointer"
+    >
+      <img src={assets.search_icon} alt="search" className="brightness-300 md:h-5 md:w-5" />
+    </motion.button>
+  </div>
+</motion.form>
+ 
 
       {/* Popup Modal */}
       {showModal && (
