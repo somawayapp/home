@@ -1,190 +1,190 @@
-import React, { useState, useEffect } from "react";
-import { assets, cityList } from "../assets/assets";
-import { useAppContext } from "../context/AppContext";
-import { useLocation } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useState, useEffect } from 'react'
+import { assets, cityList } from '../assets/assets'
+import { useAppContext } from '../context/AppContext'
+import { useLocation } from 'react-router-dom'
+import { motion } from "framer-motion"
 
 const Hero = () => {
-  const [pickupLocation, setPickupLocation] = useState("");
-  const [showModal, setShowModal] = useState(false);
-  const [isCompressed, setIsCompressed] = useState(false);
+  const [pickupLocation, setPickupLocation] = useState('')
+  const [showModal, setShowModal] = useState(false)
+  const [showDesktop, setShowDesktop] = useState(true)
 
-  const { pricePerDay, setPricePerDay, seatingCapacity, setSeatingCapacity, navigate } = useAppContext();
-  const location = useLocation();
+  const { pricePerDay, setPricePerDay, seatingCapacity, setSeatingCapacity, navigate } = useAppContext()
+  const location = useLocation()
 
-  // Read query params
+  // On mount, read query params and update state
   useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    if (params.get("pickupLocation")) setPickupLocation(params.get("pickupLocation"));
-    if (params.get("pricePerDay")) setPricePerDay(params.get("pricePerDay"));
-    if (params.get("seatingCapacity")) setSeatingCapacity(params.get("seatingCapacity"));
-  }, [location.search]);
+    const params = new URLSearchParams(location.search)
+    const pickupLocationParam = params.get('pickupLocation')
+    const pricePerDayParam = params.get('pricePerDay')
+    const seatingCapacityParam = params.get('seatingCapacity')
+
+    if (pickupLocationParam) setPickupLocation(pickupLocationParam)
+    if (pricePerDayParam) setPricePerDay(pricePerDayParam)
+    if (seatingCapacityParam) setSeatingCapacity(seatingCapacityParam)
+  }, [location.search])
 
   // Disable scrolling when modal is open
   useEffect(() => {
-    document.body.style.overflow = showModal ? "hidden" : "auto";
-    return () => (document.body.style.overflow = "auto");
-  }, [showModal]);
+    if (showModal) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = 'auto'
+    }
+    return () => {
+      document.body.style.overflow = 'auto'
+    }
+  }, [showModal])
 
-  // Scroll listener for compressing
+  // Scroll listener for compressing desktop bar
   useEffect(() => {
     if (location.pathname !== "/") {
-      setIsCompressed(true);
-      return;
+      setShowDesktop(false)
+      return
     }
 
+    let timeout
     const handleScroll = () => {
-      setIsCompressed(window.scrollY > 50);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [location.pathname]);
+      clearTimeout(timeout)
+      timeout = setTimeout(() => {
+        if (window.scrollY > 50) {
+          setShowDesktop(false)
+        } else {
+          setShowDesktop(true)
+        }
+      }, 50)
+    }
+
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [location.pathname])
 
   const handleSearch = (e) => {
-    e.preventDefault();
+    e.preventDefault()
     navigate(
-      "/cars?pickupLocation=" +
-        pickupLocation +
-        "&pricePerDay=" +
-        pricePerDay +
-        "&seatingCapacity=" +
-        seatingCapacity
-    );
-    setShowModal(false);
-  };
+      `/cars?pickupLocation=${pickupLocation}&pricePerDay=${pricePerDay}&seatingCapacity=${seatingCapacity}`
+    )
+    setShowModal(false)
+  }
 
   return (
-    <div className="flex items-center justify-center w-full">
-      {/* Desktop Form */}
-     <motion.form
-  initial={{ scale: 1, opacity: 1 }}
-  animate={{
-    scale: showDesktop ? 1 : 0.85, // compress
-    opacity: showDesktop ? 1 : 0.95,
-    y: showDesktop ? 0 : -10 // small upwards fade
-  }}
-  transition={{ type: "spring", stiffness: 200, damping: 25, duration: 0.3 }}
-  onSubmit={handleSearch}
-  className="flex flex-row items-center justify-between 
-             rounded-full w-full max-w-200 bg-white shadow-[0px_8px_20px_rgba(0,0,0,0.1)] 
-             border border-light"
->
-  <div className={`flex flex-row items-center gap-8 ml-4`}>
-    {/* Pickup Location */}
-    <div className={`flex flex-col items-start gap-1 transition-all duration-300 
-                    ${showDesktop ? "py-2 px-6 text-sm" : "py-1 px-3 text-xs"}`}>
-      <p className="font-medium text-gray-700">Pickup Location</p>
-      <p className="text-gray-500">{pickupLocation || "Please select location"}</p>
-    </div>
+    <div className="flex items-center justify-center">
+      {/* Desktop Bar with compress effect */}
+      <motion.form
+        initial={{ scale: 1, opacity: 1 }}
+        animate={{
+          scale: showDesktop ? 1 : 0.85,
+          opacity: showDesktop ? 1 : 0.95,
+          y: showDesktop ? 0 : -10
+        }}
+        transition={{ type: "spring", stiffness: 200, damping: 25, duration: 0.3 }}
+        onSubmit={handleSearch}
+        className="flex flex-row items-center justify-between 
+                   rounded-full w-full max-w-200 bg-white shadow-[0px_8px_20px_rgba(0,0,0,0.1)] 
+                   border border-light"
+      >
+        <div className="flex flex-row items-center gap-8 ml-4">
+          {/* Pickup Location */}
+          <div className={`flex flex-col items-start gap-1 transition-all duration-300 
+                          ${showDesktop ? "py-2 px-6 text-sm" : "py-1 px-3 text-xs"}`}>
+            <p className="font-medium text-gray-700">Pickup Location</p>
+            <p className="text-gray-500">{pickupLocation || "Please select location"}</p>
+          </div>
 
-    <span className="h-10 w-px bg-gray-300"></span>
+          <span className="h-10 w-px bg-gray-300"></span>
 
-    {/* Price Per Day */}
-    <div className={`flex flex-col items-start gap-1 transition-all duration-300 
-                    ${showDesktop ? "py-2 px-6 text-sm" : "py-1 px-3 text-xs"}`}>
-      <p className="font-medium text-gray-700">Price Per Day</p>
-      <p className="text-gray-500">{pricePerDay || "Enter price per day"}</p>
-    </div>
+          {/* Price Per Day */}
+          <div className={`flex flex-col items-start gap-1 transition-all duration-300 
+                          ${showDesktop ? "py-2 px-6 text-sm" : "py-1 px-3 text-xs"}`}>
+            <p className="font-medium text-gray-700">Price Per Day</p>
+            <p className="text-gray-500">{pricePerDay || "Enter price per day"}</p>
+          </div>
 
-    <span className="h-10 w-px bg-gray-300"></span>
+          <span className="h-10 w-px bg-gray-300"></span>
 
-    {/* Seating Capacity */}
-    <div className={`flex flex-col items-start gap-1 transition-all duration-300 
-                    ${showDesktop ? "py-2 px-6 text-sm" : "py-1 px-3 text-xs"}`}>
-      <p className="font-medium text-gray-700">Seating Capacity</p>
-      <p className="text-gray-500">{seatingCapacity || "Enter seating capacity"}</p>
-    </div>
-  </div>
+          {/* Seating Capacity */}
+          <div className={`flex flex-col items-start gap-1 transition-all duration-300 
+                          ${showDesktop ? "py-2 px-6 text-sm" : "py-1 px-3 text-xs"}`}>
+            <p className="font-medium text-gray-700">Seating Capacity</p>
+            <p className="text-gray-500">{seatingCapacity || "Enter seating capacity"}</p>
+          </div>
+        </div>
 
-  <div className={`p-2 transition-all duration-300 ${showDesktop ? "p-2" : "p-1"}`}>
-    <motion.button
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.95 }}
-      className="flex items-center justify-center gap-1 px-4 py-4 bg-primary hover:bg-primary-dull text-white rounded-full cursor-pointer"
-    >
-      <img src={assets.search_icon} alt="search" className="brightness-300 md:h-5 md:w-5" />
-    </motion.button>
-  </div>
-</motion.form>
-
-
-      {/* Modal */}
-      <AnimatePresence>
-        {showModal && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/10 flex p-2 items-center justify-center z-50"
-            onClick={() => setShowModal(false)}
+        <div className={`transition-all duration-300 ${showDesktop ? "p-2" : "p-1"}`}>
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="flex items-center justify-center gap-1 px-4 py-4 bg-primary hover:bg-primary-dull text-white rounded-full cursor-pointer"
           >
-            <motion.div
-              initial={{ y: 100, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: 100, opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              className="bg-white rounded-2xl p-6 w-full border border-light max-w-md shadow-xl"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <h2 className="text-lg font-semibold mb-4">Filter Cars</h2>
-              <form onSubmit={handleSearch} className="flex flex-col gap-4">
-                <div>
-                  <label className="block mb-1">Pickup Location</label>
-                  <select
-                    value={pickupLocation}
-                    onChange={(e) => setPickupLocation(e.target.value)}
-                    className="w-full border rounded-lg p-2"
-                  >
-                    <option value="">Select Location</option>
-                    {cityList.map((city) => (
-                      <option key={city} value={city}>
-                        {city}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+            <img src={assets.search_icon} alt="search" className="brightness-300 md:h-5 md:w-5" />
+          </motion.button>
+        </div>
+      </motion.form>
 
-                <div>
-                  <label className="block mb-1">Price Per Day</label>
-                  <input
-                    value={pricePerDay}
-                    onChange={(e) => setPricePerDay(e.target.value)}
-                    type="number"
-                    placeholder="Enter price per day"
-                    className="w-full border rounded-lg p-2"
-                  />
-                </div>
-
-                <div>
-                  <label className="block mb-1">Seating Capacity</label>
-                  <input
-                    value={seatingCapacity}
-                    onChange={(e) => setSeatingCapacity(e.target.value)}
-                    type="number"
-                    placeholder="Enter seating capacity"
-                    className="w-full border rounded-lg p-2"
-                  />
-                </div>
-
-                <div className="flex justify-between mt-4">
-                  <button
-                    type="button"
-                    onClick={() => setShowModal(false)}
-                    className="px-4 py-2 rounded-lg bg-gray-200"
-                  >
-                    Cancel
-                  </button>
-                  <button type="submit" className="px-4 py-2 rounded-lg bg-primary text-white">
-                    Apply Filters
-                  </button>
-                </div>
-              </form>
-            </motion.div>
+      {/* Popup Modal */}
+      {showModal && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="fixed inset-0 bg-black/10 flex p-2 items-center justify-center z-50"
+          onClick={() => setShowModal(false)}
+        >
+          <motion.div
+            initial={{ y: 100, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.3 }}
+            className="bg-white rounded-2xl p-6 w-full border border-light max-w-md shadow-xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h2 className="text-lg font-semibold mb-4">Filter Cars</h2>
+            <form onSubmit={handleSearch} className="flex flex-col gap-4">
+              <div>
+                <label className="block mb-1">Pickup Location</label>
+                <select value={pickupLocation} onChange={(e) => setPickupLocation(e.target.value)} className="w-full border rounded-lg p-2">
+                  <option value="">Select Location</option>
+                  {cityList.map((city) => (
+                    <option key={city} value={city}>{city}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block mb-1">Price Per Day</label>
+                <input
+                  value={pricePerDay}
+                  onChange={(e) => setPricePerDay(e.target.value)}
+                  type="number"
+                  placeholder="Enter price per day"
+                  className="w-full border rounded-lg p-2"
+                />
+              </div>
+              <div>
+                <label className="block mb-1">Seating Capacity</label>
+                <input
+                  value={seatingCapacity}
+                  onChange={(e) => setSeatingCapacity(e.target.value)}
+                  type="number"
+                  placeholder="Enter seating capacity"
+                  className="w-full border rounded-lg p-2"
+                />
+              </div>
+              <div className="flex justify-between mt-4">
+                <button
+                  type="button"
+                  onClick={() => setShowModal(false)}
+                  className="px-4 py-2 rounded-lg bg-gray-200"
+                >
+                  Cancel
+                </button>
+                <button type="submit" className="px-4 py-2 rounded-lg bg-primary text-white">
+                  Apply Filters
+                </button>
+              </div>
+            </form>
           </motion.div>
-        )}
-      </AnimatePresence>
+        </motion.div>
+      )}
     </div>
-  );
-};
+  )
+}
 
-export default Hero;
+export default Hero
