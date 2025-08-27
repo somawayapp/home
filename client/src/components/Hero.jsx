@@ -47,20 +47,40 @@ const Hero = () => {
     }
 
 
-    const threshold = 20
-    const wall = 10
-    let lastState = true
+  const threshold = 20;
+const wall = 20;
+let lastState = true; // true = Desktop shown
 
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY
-      if (currentScrollY > threshold + wall && lastState) {
-        setShowDesktop(false)
-        lastState = false
-      } else if (currentScrollY < threshold - wall && !lastState) {
-        setShowDesktop(true)
-        lastState = true
-      }
+const handleScroll = () => {
+  const currentScrollY = window.scrollY;
+
+  // Only hide if scrolled well past threshold + wall
+  if (currentScrollY > threshold + wall && lastState) {
+    setShowDesktop(false);
+    lastState = false;
+  } 
+  // Only show if scrolled well back above threshold - wall
+  else if (currentScrollY < threshold - wall && !lastState) {
+    setShowDesktop(true);
+    lastState = true;
+  }
+};
+
+// Add smooth throttle to prevent flicker
+window.addEventListener("scroll", throttle(handleScroll, 50));
+
+// Simple throttle function
+function throttle(fn, wait) {
+  let lastTime = 0;
+  return function (...args) {
+    const now = Date.now();
+    if (now - lastTime >= wait) {
+      fn.apply(this, args);
+      lastTime = now;
     }
+  };
+}
+
 
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
