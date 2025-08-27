@@ -191,7 +191,7 @@ const Navbar = () => {
 
       className="group relative w-full px-4  py-1 cursor-pointer"
     >
-      <span className="block py-2 text-left relative z-10">Login / Signup</span>
+      <span className="block py-2 text-left relative z-10">Login / Sigup</span>
       <span className="absolute inset-x-0 top-1 bottom-1 bg-gray-100 opacity-0 group-hover:opacity-100 transition"></span>
     </div>
   )}
