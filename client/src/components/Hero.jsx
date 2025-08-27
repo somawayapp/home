@@ -12,6 +12,15 @@ const Hero = () => {
   const { pricePerDay, setPricePerDay, seatingCapacity, setSeatingCapacity, navigate } = useAppContext()
   const location = useLocation()
 
+  // Track screen size
+  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 768)
+
+  useEffect(() => {
+    const handleResize = () => setIsSmallScreen(window.innerWidth < 768)
+    window.addEventListener("resize", handleResize)
+    return () => window.removeEventListener("resize", handleResize)
+  }, [])
+
   // Read query params on mount
   useEffect(() => {
     const params = new URLSearchParams(location.search)
@@ -30,12 +39,13 @@ const Hero = () => {
     return () => { document.body.style.overflow = 'auto' }
   }, [showModal])
 
-  // Compress bar on scroll (only home route)
+  // Handle scroll compress (only desktop + home route)
   useEffect(() => {
-    if (location.pathname !== "/") {
+    if (isSmallScreen || location.pathname !== "/") {
       setShowDesktop(false)
       return
     }
+
 
     const threshold = 50
     const wall = 10
@@ -68,7 +78,7 @@ const Hero = () => {
     <div className="flex items-center justify-center w-full">
 
       {/* === Desktop / MD+ form (expanded) */}
-      {showDesktop && location.pathname === "/" && (
+      {!isSmallScreen && showDesktop && location.pathname === "/" && (
         <motion.form
            initial={{ scale: 0.85, opacity: 0, y: -20 }} // Starts smaller, transparent, and higher up
             animate={{ scale: 1, opacity: 1, y: 0 }} // Expands to full size, becomes opaque, and moves to final position
@@ -106,7 +116,7 @@ const Hero = () => {
       )}
 
       {/* === Compressed / other screens & routes */}
-      {!showDesktop && (
+      {(isSmallScreen || !showDesktop) && (
         <motion.button
               initial={{ scale: 1, opacity: 1 }}
         animate={{
