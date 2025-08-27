@@ -58,7 +58,7 @@ useEffect(() => {
   }
 
   const topThreshold = 30    // First change after 20px
-  const wall = 50            // Dead zone between 20px and 40px
+  const wall = 80            // Dead zone between 20px and 40px
   const bottomThreshold = topThreshold + wall // 40px
   let lastState = 'top'      // can be 'top' or 'bottom'
 
