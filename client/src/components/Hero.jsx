@@ -75,7 +75,7 @@ const Hero = () => {
   }
 
   return (
-    <div className="flex items-center justify-center w-full">
+    <>
 
       {/* === Desktop / MD+ form (expanded) */}
       {!isSmallScreen && showDesktop && location.pathname === "/" && (
@@ -210,7 +210,7 @@ const Hero = () => {
           </motion.div>
         </motion.div>
       )}
-    </div>
+    </>
   )
 }
 
