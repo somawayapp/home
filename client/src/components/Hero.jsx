@@ -68,77 +68,99 @@ const Hero = () => {
     <div className="flex items-center justify-center w-full">
 
       {/* === Desktop / MD+ form (expanded) */}
-      {showDesktop && location.pathname === "/" && (
-        <motion.form
-          initial={{ scale: 0.95, opacity: 0, y: 50 }}
-          animate={{ scale: 1, opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          onSubmit={handleSearch}
-          className="hidden md:flex flex-row items-center justify-between rounded-full w-full max-w-200 bg-white shadow-[0px_8px_20px_rgba(0,0,0,0.1)] border border-light"
-        >
-          <div className="flex flex-row items-center gap-8 ml-4" onClick={() => setShowModal(true)}>
-            <div className="flex flex-col py-2 px-6 items-start gap-1 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
-              <p className="text-sm font-medium text-gray-700">Pickup Location</p>
-              <p className="px-1 text-sm text-gray-500">{pickupLocation || 'Please select location'}</p>
-            </div>
-            <span className="h-10 w-px bg-gray-300"></span>
-            <div className="flex flex-col py-2 px-6 items-start gap-1 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
-              <p className="text-sm font-medium text-gray-700">Price Per Day</p>
-              <p className="px-1 text-sm text-gray-500">{pricePerDay || 'Enter price per day'}</p>
-            </div>
-            <span className="h-10 w-px bg-gray-300"></span>
-            <div className="flex flex-col py-2 px-6 items-start gap-1 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
-              <p className="text-sm font-medium text-gray-700">Seating Capacity</p>
-              <p className="px-1 text-sm text-gray-500">{seatingCapacity || 'Enter seating capacity'}</p>
-            </div>
-          </div>
+   {showDesktop && location.pathname === "/" && (
+  <motion.form
+    initial={{ scale: 0.95, opacity: 0, y: 50 }}
+    animate={{ scale: 1, opacity: 1, y: 0 }}
+    exit={{ scale: 0.9, opacity: 0, y: -30 }}
+    transition={{ duration: 0.6, delay: 0.4 }}
+    onSubmit={handleSearch}
+    className="hidden md:flex flex-row items-center justify-between rounded-full w-full max-w-200 bg-white shadow-[0px_8px_20px_rgba(0,0,0,0.1)] border border-light"
+  >
+    <div
+      className="flex flex-row items-center gap-8 ml-4"
+      onClick={() => setShowModal(true)}
+    >
+      <div className="flex flex-col py-2 px-6 items-start gap-1 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+        <p className="text-sm font-medium text-gray-700">Pickup Location</p>
+        <p className="px-1 text-sm text-gray-500">
+          {pickupLocation || "Please select location"}
+        </p>
+      </div>
+      <span className="h-10 w-px bg-gray-300"></span>
+      <div className="flex flex-col py-2 px-6 items-start gap-1 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+        <p className="text-sm font-medium text-gray-700">Price Per Day</p>
+        <p className="px-1 text-sm text-gray-500">
+          {pricePerDay || "Enter price per day"}
+        </p>
+      </div>
+      <span className="h-10 w-px bg-gray-300"></span>
+      <div className="flex flex-col py-2 px-6 items-start gap-1 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+        <p className="text-sm font-medium text-gray-700">Seating Capacity</p>
+        <p className="px-1 text-sm text-gray-500">
+          {seatingCapacity || "Enter seating capacity"}
+        </p>
+      </div>
+    </div>
 
-          <div className="p-2">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="flex items-center justify-center gap-1 px-4 py-4 bg-primary hover:bg-primary-dull text-white rounded-full cursor-pointer"
-            >
-              <img src={assets.search_icon} alt="search" className="brightness-300 md:h-5 md:w-5" />
-            </motion.button>
-          </div>
-        </motion.form>
-      )}
+    <div className="p-2">
+      <motion.button
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        className="flex items-center justify-center gap-1 px-4 py-4 bg-primary hover:bg-primary-dull text-white rounded-full cursor-pointer"
+      >
+        <img
+          src={assets.search_icon}
+          alt="search"
+          className="brightness-300 md:h-5 md:w-5"
+        />
+      </motion.button>
+    </div>
+  </motion.form>
+)}
 
-      {/* === Compressed / other screens & routes */}
-      {!showDesktop && (
-        <motion.button
-          initial={{ scale: 0.95, opacity: 0, y: 50 }}
-          animate={{ scale: 1, opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          onClick={() => setShowModal(true)}
-          className="flex items-center justify-between w-full max-w-120 gap-2 bg-white rounded-full text-gray-600 text-sm shadow-[0px_8px_20px_rgba(0,0,0,0.1)] border border-light"
-        >
-          <div className="flex-1 flex justify-between items-center text-xs sm:text-sm">
-            <span className="px-4 py-2 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
-              {pickupLocation || "Any location"}
-            </span>
-            <span className="self-stretch w-px bg-gray-300"></span>
-            <span className="px-4 py-2 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
-              {pricePerDay || "Any price"}
-            </span>
-            <span className="self-stretch w-px bg-gray-300"></span>
-            <span className="px-4 py-2 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
-              {seatingCapacity || "Any size"}
-            </span>
-          </div>
+{/* === Compressed form (Always on small screens, all routes) === */}
+<motion.button
+  initial={{ scale: 1, opacity: 1, y: 0 }}
+  animate={{
+    scale: showDesktop ? 0.95 : 1,
+    opacity: showDesktop ? 0.8 : 1,
+    y: showDesktop ? -20 : 0,
+  }}
+  exit={{ scale: 0.9, opacity: 0, y: 30 }}
+  transition={{ duration: 0.4 }}
+  onClick={() => setShowModal(true)}
+  className="flex items-center justify-between w-full max-w-120 gap-2 bg-white rounded-full text-gray-600 text-sm shadow-[0px_8px_20px_rgba(0,0,0,0.1)] border border-light md:hidden"
+>
+  <div className="flex-1 flex justify-between items-center text-xs sm:text-sm">
+    <span className="px-4 py-2 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+      {pickupLocation || "Any location"}
+    </span>
+    <span className="self-stretch w-px bg-gray-300"></span>
+    <span className="px-4 py-2 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+      {pricePerDay || "Any price"}
+    </span>
+    <span className="self-stretch w-px bg-gray-300"></span>
+    <span className="px-4 py-2 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+      {seatingCapacity || "Any size"}
+    </span>
+  </div>
 
-          <div className="p-1 md:p-2">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="flex items-center justify-center ml-2 gap-1 px-3 py-3 bg-primary hover:bg-primary-dull text-white rounded-full cursor-pointer"
-            >
-              <img src={assets.search_icon} alt="search" className="brightness-300" />
-            </motion.button>
-          </div>
-        </motion.button>
-      )}
+  <div className="p-1 md:p-2">
+    <motion.button
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
+      className="flex items-center justify-center ml-2 gap-1 px-3 py-3 bg-primary hover:bg-primary-dull text-white rounded-full cursor-pointer"
+    >
+      <img
+        src={assets.search_icon}
+        alt="search"
+        className="brightness-300"
+      />
+    </motion.button>
+  </div>
+</motion.button>
+
 
       {/* === Popup Modal */}
       {showModal && (
