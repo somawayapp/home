@@ -59,7 +59,7 @@ const Home = () => {
   },[input, cars])
 
   return (
-    <div>
+<div className="overflow-x-hidden h-screen">
     
       <motion.div
         initial={{ opacity: 0 }}

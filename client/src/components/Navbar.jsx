@@ -203,6 +203,7 @@ const Navbar = () => {
     </div>
 
 
+        <Hero/>
 
     </motion.div>
 
