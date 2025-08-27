@@ -105,22 +105,21 @@ useEffect(() => {
 
              <div className=' flex flex-row'>
 
-            <div className="flex flex-row gap-8">
-      {links.map((link) => {
-        const isActive = currentPath === link.path
-        return (
-          <Link
-            key={link.path}
-            to={link.path}
-            className={`relative font-semibold text-gray-700 transition-colors 
-              hover:text-primary
-              ${isActive ? "text-primary" : ""}`}
-          >
-            {link.name}
-            {isActive && (
-              <span className="absolute left-0 -bottom-1 w-full h-[2px] bg-primary rounded-full"></span>
-            )}
-          </Link>
+           <div className="hidden md:flex flex-row mb-5 gap-15">
+        {links.map((link) => {
+              const isActive = currentPath === link.path
+              return (
+             <Link
+        key={link.path}
+        to={link.path}
+        className={`relative text-gray-700 transition-colors 
+          hover:text-black ${isActive ? "text-black" : ""}`}
+      >
+        <span className="inline-block px-1">{link.name}</span>
+        {isActive && (
+          <span className="absolute left-[-6px] -bottom-1 w-[calc(100%+15px)] h-[3px] bg-black rounded-full"></span>
+        )}
+      </Link>
         )
       })}
     </div>
