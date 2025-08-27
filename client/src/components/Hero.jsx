@@ -82,7 +82,12 @@ const Hero = () => {
            <motion.div
            initial={{ scale: 0.85, opacity: 0, y: -20 }} // Starts smaller, transparent, and higher up
             animate={{ scale: 1, opacity: 1, y: 0 }} // Expands to full size, becomes opaque, and moves to final position
-            transition={{ type: "spring", stiffness: 200, damping: 25, duration: 0.3 }}>
+            transition={{ type: "spring", stiffness: 200, damping: 25, duration: 0.3 }}
+            className='flex flex-row  '>
+                <div>
+                                 <p className="text-sm font-medium text-gray-700">Pickup Location</p>
+ 
+                </div>
           
         <div  onSubmit={handleSearch}
           className="hidden md:flex mt-5 flex-row items-center justify-between rounded-full w-full max-w-200 bg-white shadow-[0px_8px_20px_rgba(0,0,0,0.1)] border border-light"
