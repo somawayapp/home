@@ -70,14 +70,9 @@ const Hero = () => {
       {/* === Desktop / MD+ form (expanded) */}
       {showDesktop && location.pathname === "/" && (
         <motion.form
-            initial={{ scale: 1, opacity: 1 }}
-        animate={{
-          scale: showDesktop ? 1 : 0.85,
-          opacity: showDesktop ? 1 : 0.95,
-          y: showDesktop ? 0 : -10
-        }}
-        transition={{ type: "spring", stiffness: 200, damping: 25, duration: 0.3 }}
-
+           initial={{ scale: 0.85, opacity: 0, y: -20 }} // Starts smaller, transparent, and higher up
+            animate={{ scale: 1, opacity: 1, y: 0 }} // Expands to full size, becomes opaque, and moves to final position
+            transition={{ type: "spring", stiffness: 200, damping: 25, duration: 0.3 }}
           onSubmit={handleSearch}
           className="hidden md:flex flex-row items-center justify-between rounded-full w-full max-w-200 bg-white shadow-[0px_8px_20px_rgba(0,0,0,0.1)] border border-light"
         >
