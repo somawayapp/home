@@ -90,7 +90,7 @@ const Hero = () => {
                <div className="hidden md:flex flex-row mb-5 gap-15">
             
              <div
-        className='relative text-black transition-colors 
+        className=' text-black transition-colors 
           hover:text-black '
       >
         <span className="inline-block px-1">Homes</span>
