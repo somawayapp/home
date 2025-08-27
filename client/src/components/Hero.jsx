@@ -17,7 +17,7 @@ const Hero = () => {
 
   const links = [
     { name: "Homes", path: "/" },
-    { name: "Agents", path: "/agents" },
+    { name: "Estate-agents", path: "/agents" },
     { name: "Projects", path: "/projects" },
   ]
 
@@ -128,22 +128,31 @@ useEffect(() => {
 
 
         <div  onSubmit={handleSearch}
-          className="hidden md:flex mt-5 mb-5 flex-row items-center justify-between rounded-full w-full max-w-200 bg-white shadow-[0px_8px_20px_rgba(0,0,0,0.1)] border border-light"
+          className="hidden md:flex mt-5 mb-5 flex-row items-center justify-between rounded-full w-full max-w-240 bg-white shadow-[0px_8px_20px_rgba(0,0,0,0.1)] border border-light"
         >
           <div className="flex flex-row items-center gap-8 ml-4" onClick={() => setShowModal(true)}>
             <div className="flex flex-col py-2 px-6 items-start gap-1 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
-              <p className="text-sm font-medium text-gray-700">Pickup Location</p>
-              <p className=" text-sm text-gray-500">{pickupLocation || 'Please select location'}</p>
+              <p className="text-sm font-medium text-gray-700">Any where</p>
+              <p className=" text-sm text-gray-500">{pickupLocation || ' select location'}</p>
             </div>
+
             <span className="h-10 w-px bg-gray-300"></span>
             <div className="flex flex-col py-2 px-6 items-start gap-1 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
-              <p className="text-sm font-medium text-gray-700">Price Per Day</p>
-              <p className="text-sm text-gray-500">{pricePerDay || 'Enter price per day'}</p>
+              <p className="text-sm font-medium text-gray-700">Any price</p>
+              <p className="text-sm text-gray-500">{pricePerDay || 'Enter max price '}</p>
             </div>
+
+             <span className="h-10 w-px bg-gray-300"></span>
+             <div className="flex flex-col py-2 px-6 items-start gap-1 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+              <p className="text-sm font-medium text-gray-700">Any type</p>
+              <p className=" text-sm text-gray-500">{pickupLocation || ' select type'}</p>
+            </div>
+
+
             <span className="h-10 w-px bg-gray-300"></span>
             <div className="flex flex-col py-2 px-6 items-start gap-1 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
-              <p className="text-sm font-medium text-gray-700">Seating Capacity</p>
-              <p className="text-sm text-gray-500">{seatingCapacity || 'Enter seating capacity'}</p>
+              <p className="text-sm font-medium text-gray-700">Any size</p>
+              <p className="text-sm text-gray-500">{seatingCapacity || 'Enter size'}</p>
             </div>
           </div>
 
@@ -176,19 +185,20 @@ useEffect(() => {
         transition={{ type: "spring", stiffness: 200, damping: 25, duration: 0.3 }}
 
           onClick={() => setShowModal(true)}
-          className="flex items-center justify-between w-full max-w-120 gap-2 bg-white rounded-full text-gray-600
+          className="flex items-center justify-between w-full max-w-130 gap-2 bg-white rounded-full text-gray-600
             shadow-[0px_8px_20px_rgba(0,0,0,0.1)] border border-light mt-4  md:mt-3"
         >
           <div className="flex-1 flex justify-between items-center text-md md:text-lg">
-            <span className="px-4 py-2 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
-              {pickupLocation || "Any location"}
+            <span className="pr-2 pl-5 py-2 md:pr-4 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+              {pickupLocation || "Any where"}
             </span>
             <span className="self-stretch w-px bg-gray-300"></span>
-            <span className="px-4 py-2 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+            <span className="px-2 md:px-4 py-2 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
               {pricePerDay || "Any price"}
             </span>
+            
             <span className="self-stretch w-px bg-gray-300"></span>
-            <span className="px-4 py-2 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+            <span className="px-2 md:px-4 py-2 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
               {seatingCapacity || "Any size"}
             </span>
           </div>
