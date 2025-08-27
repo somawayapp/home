@@ -81,6 +81,7 @@ const Hero = () => {
       {!isSmallScreen && showDesktop && location.pathname === "/" && (
            <motion.div
              initial={false}
+                 key="hero-desktop"
             animate={{ scale: 1, opacity: 1, y: 0 }} // Expands to full size, becomes opaque, and moves to final position
             transition={{ type: "spring", stiffness: 200, damping: 25, duration: 0.3 }}
             className='flex flex-col items-center justify-center  '>
