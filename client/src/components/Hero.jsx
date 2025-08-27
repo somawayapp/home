@@ -12,7 +12,7 @@ const Hero = () => {
   const { pricePerDay, setPricePerDay, seatingCapacity, setSeatingCapacity, navigate } = useAppContext()
   const location = useLocation()
 
-  // On mount, read query params and update state
+  // Read query params on mount
   useEffect(() => {
     const params = new URLSearchParams(location.search)
     const pickupLocationParam = params.get('pickupLocation')
@@ -24,51 +24,37 @@ const Hero = () => {
     if (seatingCapacityParam) setSeatingCapacity(seatingCapacityParam)
   }, [location.search])
 
-  // Disable scrolling when modal is open
+  // Disable scroll when modal is open
   useEffect(() => {
-    if (showModal) {
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = 'auto'
-    }
-    return () => {
-      document.body.style.overflow = 'auto'
-    }
+    document.body.style.overflow = showModal ? 'hidden' : 'auto'
+    return () => { document.body.style.overflow = 'auto' }
   }, [showModal])
 
-  // Scroll listener for compressing desktop bar
-useEffect(() => {
-  if (location.pathname !== "/") {
-    setShowDesktop(false)
-    return
-  }
-
-  const wall = 10 // px buffer around the threshold
-  const threshold = 50
-  let lastState = true // initial state: expanded
-  let lastScrollY = window.scrollY
-
-  const handleScroll = () => {
-    const currentScrollY = window.scrollY
-
-    // scrolling down
-    if (currentScrollY > threshold + wall && lastState) {
+  // Compress bar on scroll (only home route)
+  useEffect(() => {
+    if (location.pathname !== "/") {
       setShowDesktop(false)
-      lastState = false
-    }
-    // scrolling up
-    else if (currentScrollY < threshold - wall && !lastState) {
-      setShowDesktop(true)
-      lastState = true
+      return
     }
 
-    lastScrollY = currentScrollY
-  }
+    const threshold = 50
+    const wall = 10
+    let lastState = true
 
-  window.addEventListener("scroll", handleScroll)
-  return () => window.removeEventListener("scroll", handleScroll)
-}, [location.pathname])
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY
+      if (currentScrollY > threshold + wall && lastState) {
+        setShowDesktop(false)
+        lastState = false
+      } else if (currentScrollY < threshold - wall && !lastState) {
+        setShowDesktop(true)
+        lastState = true
+      }
+    }
 
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [location.pathname])
 
   const handleSearch = (e) => {
     e.preventDefault()
@@ -79,80 +65,82 @@ useEffect(() => {
   }
 
   return (
-    <div className="flex items-center justify-center">
-      {/* Desktop Bar with compress effect */}
-    <motion.form
-  initial={{ scale: 1, opacity: 1 }}
-  animate={{
-    scale: showDesktop ? 1 : 0.85,
-    opacity: showDesktop ? 1 : 0.95,
-    y: showDesktop ? 0 : -10
-  }}
-  transition={{ type: "spring", stiffness: 200, damping: 25, duration: 0.3 }}
-  onSubmit={handleSearch}
-  className={`
-    flex flex-row items-center justify-between
-    rounded-full bg-white shadow-[0px_8px_20px_rgba(0,0,0,0.1)] border border-light
-    ${showDesktop ? "w-full max-w-200" : "w-full max-w-120 gap-2"}  // smaller max width on small screens / other routes
-    ${location.pathname !== "/" ? "gap-2" : "gap-8"}  // reduce gaps on other routes
-    p-2
-  `}
->
-  <div className="flex flex-row items-center ml-4">
-    {/* Pickup Location */}
-    <div className={`
-      flex flex-col items-start transition-all duration-300
-      ${showDesktop ? "py-2 px-6 text-sm gap-1" : "py-1 px-3 text-xs gap-0.5"}
-      ${location.pathname !== "/" ? "py-1 px-2 gap-0.5" : ""}
-    `}>
-      <p className="font-medium text-gray-700">Pickup Location</p>
-      {!(location.pathname !== "/" && window.innerWidth < 768) && (
-        <p className="text-gray-500">{pickupLocation || "Please select location"}</p>
+    <div className="flex items-center justify-center w-full">
+
+      {/* === Desktop / MD+ form (expanded) */}
+      {showDesktop && location.pathname === "/" && (
+        <motion.form
+          initial={{ scale: 0.95, opacity: 0, y: 50 }}
+          animate={{ scale: 1, opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          onSubmit={handleSearch}
+          className="hidden md:flex flex-row items-center justify-between rounded-full w-full max-w-200 bg-white shadow-[0px_8px_20px_rgba(0,0,0,0.1)] border border-light"
+        >
+          <div className="flex flex-row items-center gap-8 ml-4" onClick={() => setShowModal(true)}>
+            <div className="flex flex-col py-2 px-6 items-start gap-1 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+              <p className="text-sm font-medium text-gray-700">Pickup Location</p>
+              <p className="px-1 text-sm text-gray-500">{pickupLocation || 'Please select location'}</p>
+            </div>
+            <span className="h-10 w-px bg-gray-300"></span>
+            <div className="flex flex-col py-2 px-6 items-start gap-1 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+              <p className="text-sm font-medium text-gray-700">Price Per Day</p>
+              <p className="px-1 text-sm text-gray-500">{pricePerDay || 'Enter price per day'}</p>
+            </div>
+            <span className="h-10 w-px bg-gray-300"></span>
+            <div className="flex flex-col py-2 px-6 items-start gap-1 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+              <p className="text-sm font-medium text-gray-700">Seating Capacity</p>
+              <p className="px-1 text-sm text-gray-500">{seatingCapacity || 'Enter seating capacity'}</p>
+            </div>
+          </div>
+
+          <div className="p-2">
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="flex items-center justify-center gap-1 px-4 py-4 bg-primary hover:bg-primary-dull text-white rounded-full cursor-pointer"
+            >
+              <img src={assets.search_icon} alt="search" className="brightness-300 md:h-5 md:w-5" />
+            </motion.button>
+          </div>
+        </motion.form>
       )}
-    </div>
 
-    {!(location.pathname !== "/" && window.innerWidth < 768) && <span className="h-10 w-px bg-gray-300"></span>}
+      {/* === Compressed / other screens & routes */}
+      {!showDesktop && (
+        <motion.button
+          initial={{ scale: 0.95, opacity: 0, y: 50 }}
+          animate={{ scale: 1, opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          onClick={() => setShowModal(true)}
+          className="flex items-center justify-between w-full max-w-120 gap-2 bg-white rounded-full text-gray-600 text-sm shadow-[0px_8px_20px_rgba(0,0,0,0.1)] border border-light"
+        >
+          <div className="flex-1 flex justify-between items-center text-xs sm:text-sm">
+            <span className="px-4 py-2 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+              {pickupLocation || "Any location"}
+            </span>
+            <span className="self-stretch w-px bg-gray-300"></span>
+            <span className="px-4 py-2 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+              {pricePerDay || "Any price"}
+            </span>
+            <span className="self-stretch w-px bg-gray-300"></span>
+            <span className="px-4 py-2 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+              {seatingCapacity || "Any size"}
+            </span>
+          </div>
 
-    {/* Price Per Day */}
-    <div className={`
-      flex flex-col items-start transition-all duration-300
-      ${showDesktop ? "py-2 px-6 text-sm gap-1" : "py-1 px-3 text-xs gap-0.5"}
-      ${location.pathname !== "/" ? "py-1 px-2 gap-0.5" : ""}
-    `}>
-      <p className="font-medium text-gray-700">Price Per Day</p>
-      {!(location.pathname !== "/" && window.innerWidth < 768) && (
-        <p className="text-gray-500">{pricePerDay || "Enter price per day"}</p>
+          <div className="p-1 md:p-2">
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="flex items-center justify-center ml-2 gap-1 px-3 py-3 bg-primary hover:bg-primary-dull text-white rounded-full cursor-pointer"
+            >
+              <img src={assets.search_icon} alt="search" className="brightness-300" />
+            </motion.button>
+          </div>
+        </motion.button>
       )}
-    </div>
 
-    {!(location.pathname !== "/" && window.innerWidth < 768) && <span className="h-10 w-px bg-gray-300"></span>}
-
-    {/* Seating Capacity */}
-    <div className={`
-      flex flex-col items-start transition-all duration-300
-      ${showDesktop ? "py-2 px-6 text-sm gap-1" : "py-1 px-3 text-xs gap-0.5"}
-      ${location.pathname !== "/" ? "py-1 px-2 gap-0.5" : ""}
-    `}>
-      <p className="font-medium text-gray-700">Seating Capacity</p>
-      {!(location.pathname !== "/" && window.innerWidth < 768) && (
-        <p className="text-gray-500">{seatingCapacity || "Enter seating capacity"}</p>
-      )}
-    </div>
-  </div>
-
-  <div className={`transition-all duration-300 ${showDesktop ? "p-2" : "p-1"}`}>
-    <motion.button
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.95 }}
-      className="flex items-center justify-center gap-1 px-4 py-4 bg-primary hover:bg-primary-dull text-white rounded-full cursor-pointer"
-    >
-      <img src={assets.search_icon} alt="search" className="brightness-300 md:h-5 md:w-5" />
-    </motion.button>
-  </div>
-</motion.form>
- 
-
-      {/* Popup Modal */}
+      {/* === Popup Modal */}
       {showModal && (
         <motion.div
           initial={{ opacity: 0 }}
@@ -199,16 +187,8 @@ useEffect(() => {
                 />
               </div>
               <div className="flex justify-between mt-4">
-                <button
-                  type="button"
-                  onClick={() => setShowModal(false)}
-                  className="px-4 py-2 rounded-lg bg-gray-200"
-                >
-                  Cancel
-                </button>
-                <button type="submit" className="px-4 py-2 rounded-lg bg-primary text-white">
-                  Apply Filters
-                </button>
+                <button type="button" onClick={() => setShowModal(false)} className="px-4 py-2 rounded-lg bg-gray-200">Cancel</button>
+                <button type="submit" className="px-4 py-2 rounded-lg bg-primary text-white">Apply Filters</button>
               </div>
             </form>
           </motion.div>
