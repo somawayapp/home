@@ -37,27 +37,32 @@ const Hero = () => {
   }, [showModal])
 
   // Scroll listener for compressing desktop bar
-  useEffect(() => {
-    if (location.pathname !== "/") {
+useEffect(() => {
+  if (location.pathname !== "/") {
+    setShowDesktop(false)
+    return
+  }
+
+  let lastScrollY = window.scrollY
+
+  const handleScroll = () => {
+    const currentScrollY = window.scrollY
+
+    if (currentScrollY > lastScrollY && currentScrollY > 50) {
+      // Scrolling down
       setShowDesktop(false)
-      return
+    } else if (currentScrollY < lastScrollY) {
+      // Scrolling up
+      setShowDesktop(true)
     }
 
-    let timeout
-    const handleScroll = () => {
-      clearTimeout(timeout)
-      timeout = setTimeout(() => {
-        if (window.scrollY > 50) {
-          setShowDesktop(false)
-        } else {
-          setShowDesktop(true)
-        }
-      }, 50)
-    }
+    lastScrollY = currentScrollY
+  }
 
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [location.pathname])
+  window.addEventListener("scroll", handleScroll)
+  return () => window.removeEventListener("scroll", handleScroll)
+}, [location.pathname])
+
 
   const handleSearch = (e) => {
     e.preventDefault()
