@@ -85,7 +85,6 @@ const Hero = () => {
             transition={{ type: "spring", stiffness: 200, damping: 25, duration: 0.3 }}
            className="flex flex-col items-center justify-center w-full">
 
-    <h1>my name is </h1>
 
 
         <div onSubmit={handleSearch}
