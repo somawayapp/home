@@ -47,27 +47,37 @@ const Hero = () => {
     }
 
 
-  const threshold = 20; // starting point where changes happen
-const wall = 10;      // buffer zone for smooth toggle
-let lastState = true; // true = Desktop shown
+  const hideThreshold = 40; // scrollY at which Desktop hides
+const showThreshold = 20; // scrollY at which Desktop shows again
+let isDesktopVisible = true; // true = Desktop is currently visible
 
 const handleScroll = () => {
   const scrollY = window.scrollY;
 
-  if (scrollY > threshold + wall && lastState) {
-    // Scrolled down past threshold + buffer → hide
+  if (scrollY > hideThreshold && isDesktopVisible) {
+    // Scrolled far enough down → hide
     setShowDesktop(false);
-    lastState = false;
-  } else if (scrollY < threshold && !lastState) {
-    // Scrolled back above threshold → show
+    isDesktopVisible = false;
+  } else if (scrollY < showThreshold && !isDesktopVisible) {
+    // Scrolled far enough up → show
     setShowDesktop(true);
-    lastState = true;
+    isDesktopVisible = true;
   }
 };
 
+// Optional: throttle to reduce rapid calls
+function throttle(fn, wait = 50) {
+  let lastTime = 0;
+  return function (...args) {
+    const now = Date.now();
+    if (now - lastTime > wait) {
+      fn.apply(this, args);
+      lastTime = now;
+    }
+  };
+}
 
-
-    window.addEventListener("scroll", handleScroll)
+window.addEventListener("scroll", throttle(handleScroll));
     return () => window.removeEventListener("scroll", handleScroll)
   }, [location.pathname])
 
