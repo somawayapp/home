@@ -53,7 +53,7 @@ useEffect(() => {
       } else {
         setShowDesktop(true)
       }
-    }, 50) // debounce 50ms
+    }, 250) // debounce 50ms
   }
 
   window.addEventListener("scroll", handleScroll)
