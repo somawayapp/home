@@ -79,11 +79,12 @@ const Hero = () => {
 
       {/* === Desktop / MD+ form (expanded) */}
       {!isSmallScreen && showDesktop && location.pathname === "/" && (
-        <motion.form
+           <motion.div
            initial={{ scale: 0.85, opacity: 0, y: -20 }} // Starts smaller, transparent, and higher up
             animate={{ scale: 1, opacity: 1, y: 0 }} // Expands to full size, becomes opaque, and moves to final position
-            transition={{ type: "spring", stiffness: 200, damping: 25, duration: 0.3 }}
-          onSubmit={handleSearch}
+            transition={{ type: "spring", stiffness: 200, damping: 25, duration: 0.3 }}>
+          
+        <div  onSubmit={handleSearch}
           className="hidden md:flex mt-5 flex-row items-center justify-between rounded-full w-full max-w-200 bg-white shadow-[0px_8px_20px_rgba(0,0,0,0.1)] border border-light"
         >
           <div className="flex flex-row items-center gap-8 ml-4" onClick={() => setShowModal(true)}>
@@ -112,7 +113,12 @@ const Hero = () => {
               <img src={assets.search_icon} alt="search" className="brightness-300 md:h-5 md:w-5" />
             </motion.button>
           </div>
-        </motion.form>
+        </div>
+              
+              
+              
+                </motion.div>
+
       )}
 
       {/* === Compressed / other screens & routes */}
