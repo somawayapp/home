@@ -3,7 +3,6 @@ import { assets, cityList } from '../assets/assets'
 import { useAppContext } from '../context/AppContext'
 import { useLocation } from 'react-router-dom'
 import { motion } from "framer-motion"
-import { Link } from "react-router-dom"
 
 const Hero = () => {
   const [pickupLocation, setPickupLocation] = useState('')
@@ -90,14 +89,13 @@ const Hero = () => {
 
                <div className="hidden md:flex flex-row mb-5 gap-15">
             
-             <Link
-        to={'/'}
+             <div
         className='relative text-black transition-colors 
           hover:text-black '
       >
         <span className="inline-block px-1">Homes</span>
           <span className="absolute left-[-6px] -bottom-1 w-[calc(100%+15px)] h-[3px] bg-black rounded-full"></span>
-      </Link>
+      </div>
        
     </div>
           
