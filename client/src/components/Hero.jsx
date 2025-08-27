@@ -54,60 +54,71 @@ const Hero = () => {
   };
 
   return (
-    <div className="flex items-center justify-center">
-      {/* Unified Bar (expands/contracts) */}
+    <div className="flex items-center justify-center w-full">
+      {/* Desktop Form */}
       <motion.form
-        onSubmit={handleSearch}
-        initial={false}
-        animate={
-          isCompressed
-            ? { scale: 0.95, opacity: 0.95, y: -20, borderRadius: "9999px", width: "22rem" }
-            : { scale: 1, opacity: 1, y: 0, borderRadius: "9999px", width: "48rem" }
-        }
+        initial={{ scale: 0.95, opacity: 0, y: 50 }}
+        animate={{
+          scale: 1,
+          opacity: 1,
+          y: 0,
+          width: isCompressed ? "22rem" : "48rem",
+          padding: isCompressed ? "0.25rem 0.5rem" : "0.5rem 1rem",
+        }}
         transition={{ duration: 0.5, ease: "easeInOut" }}
-        className="flex items-center justify-between bg-white shadow-[0px_8px_20px_rgba(0,0,0,0.1)] border border-light"
+        onSubmit={handleSearch}
+        className="flex items-center justify-between bg-white shadow-[0px_8px_20px_rgba(0,0,0,0.1)] border border-light rounded-full w-full max-w-[48rem]"
       >
         <div
-          className="flex flex-row items-center flex-1 gap-6 px-4 py-2 cursor-pointer"
+          className={`flex items-center ${
+            isCompressed ? "justify-between w-full px-2" : "gap-8 ml-4"
+          }`}
           onClick={() => setShowModal(true)}
         >
-          {/* Pickup Location */}
-          <div className="flex flex-col items-start gap-1">
-            <p className="text-xs md:text-sm font-medium text-gray-700">Pickup</p>
-            <p className="text-xs text-gray-500">{pickupLocation || "Any location"}</p>
+          {/* Pickup */}
+          <div className={`flex flex-col items-start gap-1 rounded-full cursor-pointer hover:bg-gray-100 transition-colors py-2 px-6 ${isCompressed ? "px-4 py-2" : "py-2 px-6"}`}>
+            <p className={`text-sm font-medium text-gray-700 ${isCompressed ? "text-xs" : "text-sm"}`}>Pickup Location</p>
+            <p className={`text-gray-500 ${isCompressed ? "text-xs" : "text-sm"}`}>
+              {pickupLocation || (isCompressed ? "Any location" : "Please select location")}
+            </p>
           </div>
 
-          {!isCompressed && <span className="h-8 w-px bg-gray-300"></span>}
+          <span className={`self-stretch w-px bg-gray-300 ${isCompressed ? "hidden" : "block"}`}></span>
 
-          {/* Price Per Day */}
+          {/* Price */}
           {!isCompressed && (
-            <div className="flex flex-col items-start gap-1">
-              <p className="text-xs md:text-sm font-medium text-gray-700">Price</p>
-              <p className="text-xs text-gray-500">{pricePerDay || "Any price"}</p>
+            <div className="flex flex-col items-start gap-1 rounded-full cursor-pointer hover:bg-gray-100 transition-colors py-2 px-6">
+              <p className="text-sm font-medium text-gray-700">Price Per Day</p>
+              <p className="px-1 text-sm text-gray-500">{pricePerDay || "Enter price per day"}</p>
             </div>
           )}
 
-          {!isCompressed && <span className="h-8 w-px bg-gray-300"></span>}
+          <span className={`self-stretch w-px bg-gray-300 ${isCompressed ? "hidden" : "block"}`}></span>
 
-          {/* Seating Capacity */}
+          {/* Capacity */}
           {!isCompressed && (
-            <div className="flex flex-col items-start gap-1">
-              <p className="text-xs md:text-sm font-medium text-gray-700">Capacity</p>
-              <p className="text-xs text-gray-500">{seatingCapacity || "Any size"}</p>
+            <div className="flex flex-col items-start gap-1 rounded-full cursor-pointer hover:bg-gray-100 transition-colors py-2 px-6">
+              <p className="text-sm font-medium text-gray-700">Seating Capacity</p>
+              <p className="px-1 text-sm text-gray-500">{seatingCapacity || "Enter seating capacity"}</p>
             </div>
           )}
         </div>
 
+        {/* Search Button */}
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className="flex items-center justify-center gap-1 px-3 py-3 bg-primary hover:bg-primary-dull text-white rounded-full cursor-pointer m-2"
+          className={`flex items-center justify-center gap-1 bg-primary hover:bg-primary-dull text-white rounded-full cursor-pointer ${isCompressed ? "px-3 py-3 ml-2" : "px-4 py-4 p-2"}`}
         >
-          <img src={assets.search_icon} alt="search" className="h-4 w-4 md:h-5 md:w-5 brightness-300" />
+          <img
+            src={assets.search_icon}
+            alt="search"
+            className={`brightness-300 ${isCompressed ? "h-4 w-4" : "md:h-5 md:w-5"}`}
+          />
         </motion.button>
       </motion.form>
 
-      {/* Popup Modal */}
+      {/* Modal */}
       <AnimatePresence>
         {showModal && (
           <motion.div
@@ -127,7 +138,6 @@ const Hero = () => {
             >
               <h2 className="text-lg font-semibold mb-4">Filter Cars</h2>
               <form onSubmit={handleSearch} className="flex flex-col gap-4">
-                {/* Pickup Location */}
                 <div>
                   <label className="block mb-1">Pickup Location</label>
                   <select
@@ -144,7 +154,6 @@ const Hero = () => {
                   </select>
                 </div>
 
-                {/* Price Per Day */}
                 <div>
                   <label className="block mb-1">Price Per Day</label>
                   <input
@@ -156,7 +165,6 @@ const Hero = () => {
                   />
                 </div>
 
-                {/* Seating Capacity */}
                 <div>
                   <label className="block mb-1">Seating Capacity</label>
                   <input
@@ -168,7 +176,6 @@ const Hero = () => {
                   />
                 </div>
 
-                {/* Buttons */}
                 <div className="flex justify-between mt-4">
                   <button
                     type="button"
