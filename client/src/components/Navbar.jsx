@@ -77,7 +77,7 @@ const Navbar = () => {
 
 
 
-        <Hero/>
+        <NavbarLinks/>
 
 
 
@@ -207,6 +207,7 @@ const Navbar = () => {
     </div>
 
 
+        <Hero/>
 
     </motion.div>
 
