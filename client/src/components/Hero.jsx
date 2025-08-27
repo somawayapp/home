@@ -87,16 +87,11 @@ const Hero = () => {
                
 
 
-               <div className="hidden md:flex flex-row mb-5 gap-15">
+               <div className="flex flex-row mb-5 gap-15">
             
-             <div
-        className=' text-black transition-colors 
-          hover:text-black '
-      >
-        <span className="inline-block px-1">Homes</span>
-          <span className="absolute left-[-6px] -bottom-1 w-[calc(100%+15px)] h-[3px] bg-black rounded-full"></span>
-      </div>
-       
+         
+        <p className="inline-block px-1">Homes</p>
+         
     </div>
           
         <div  onSubmit={handleSearch}
