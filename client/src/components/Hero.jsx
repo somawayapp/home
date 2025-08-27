@@ -139,6 +139,8 @@ const Hero = () => {
 </AnimatePresence>
 
       {/* === Compressed / other screens & routes */}
+            <AnimatePresence>
+
       {(isSmallScreen || !showDesktop) && (
         <motion.button
               initial={{ scale: 1, opacity: 1 }}
@@ -178,6 +180,8 @@ const Hero = () => {
           </div>
         </motion.button>
       )}
+      </AnimatePresence>
+
 
       {/* === Popup Modal */}
       {showModal && (
