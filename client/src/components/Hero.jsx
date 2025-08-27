@@ -91,7 +91,7 @@ useEffect(() => {
   }
 
   return (
-    <div className="flex  mt-[-120px] items-center justify-center w-full">
+    <div className="flex  mt-[-50px] items-center justify-center w-full">
 
       {/* === Desktop / MD+ form (expanded) */}
       {!isSmallScreen && showDesktop && location.pathname === "/" && (
