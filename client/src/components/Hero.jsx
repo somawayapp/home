@@ -48,7 +48,7 @@ const Hero = () => {
 
 
     const threshold = 20
-    const wall = 50
+    const wall = 20
     let lastState = true
 
     const handleScroll = () => {
