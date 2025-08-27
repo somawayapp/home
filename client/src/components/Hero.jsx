@@ -89,12 +89,14 @@ const Hero = () => {
 
       {!isSmallScreen && showDesktop && location.pathname === "/" && (
 
-     
-              <motion.div
+  <motion.div
            initial={{ scale: 0.85, opacity: 0, y: -20 }} // Starts smaller, transparent, and higher up
             animate={{ scale: 1, opacity: 1, y: 0 }} // Expands to full size, becomes opaque, and moves to final position
             transition={{ type: "spring", stiffness: 200, damping: 25, duration: 0.3 }}
-             className="hidden md:flex flex-row mb-5 gap-15">
+          className="flex flex-col items-center justify-center w-full">
+     
+              <motion.div
+        className="hidden md:flex flex-row mb-5 gap-15">
 
         {links.map((link) => {
               const isActive = currentPath === link.path
@@ -112,19 +114,15 @@ const Hero = () => {
       </Link>
         )
       })}
-       </motion.div> )}
+       </motion.div>
 
 
 
 
 
       {/* === Desktop / MD+ form (expanded) */}
-      {!isSmallScreen && showDesktop && location.pathname === "/" && (
         <motion.form
-           initial={{ scale: 0.85, opacity: 0, y: -20 }} // Starts smaller, transparent, and higher up
-            animate={{ scale: 1, opacity: 1, y: 0 }} // Expands to full size, becomes opaque, and moves to final position
-            transition={{ type: "spring", stiffness: 200, damping: 25, duration: 0.3 }}
-          onSubmit={handleSearch}
+        onSubmit={handleSearch}
           className="hidden md:flex mt-5 mb-5 flex-row items-center justify-between rounded-full w-full max-w-200 bg-white shadow-[0px_8px_20px_rgba(0,0,0,0.1)] border border-light"
         >
           <div className="flex flex-row items-center gap-8 ml-4" onClick={() => setShowModal(true)}>
@@ -154,6 +152,8 @@ const Hero = () => {
             </motion.button>
           </div>
         </motion.form>
+
+        </motion.div>
       )}
 
       {/* === Compressed / other screens & routes */}
