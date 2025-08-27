@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { assets, cityList } from '../assets/assets'
 import { useAppContext } from '../context/AppContext'
+import { useLocation } from 'react-router-dom'
 import { motion } from "framer-motion"
- import { Link, useLocation } from "react-router-dom"
-
 
 const Hero = () => {
   const [pickupLocation, setPickupLocation] = useState('')
@@ -12,13 +11,6 @@ const Hero = () => {
 
   const { pricePerDay, setPricePerDay, seatingCapacity, setSeatingCapacity, navigate } = useAppContext()
   const location = useLocation()
-  
-  const currentPath = location.pathname
-   const links = [
-    { name: "Homes", path: "/" },
-    { name: "Agents", path: "/agents" },
-    { name: "Projects", path: "/projects" },
-  ]
 
   // Track screen size
   const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 768)
@@ -35,8 +27,6 @@ const Hero = () => {
     const pickupLocationParam = params.get('pickupLocation')
     const pricePerDayParam = params.get('pricePerDay')
     const seatingCapacityParam = params.get('seatingCapacity')
-   
-
 
     if (pickupLocationParam) setPickupLocation(pickupLocationParam)
     if (pricePerDayParam) setPricePerDay(pricePerDayParam)
@@ -85,44 +75,15 @@ const Hero = () => {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center w-full">
+    <div className="flex items-center justify-center w-full">
 
+      {/* === Desktop / MD+ form (expanded) */}
       {!isSmallScreen && showDesktop && location.pathname === "/" && (
-
-  <motion.div
+        <motion.form
            initial={{ scale: 0.85, opacity: 0, y: -20 }} // Starts smaller, transparent, and higher up
             animate={{ scale: 1, opacity: 1, y: 0 }} // Expands to full size, becomes opaque, and moves to final position
             transition={{ type: "spring", stiffness: 200, damping: 25, duration: 0.3 }}
-          className="flex flex-col items-center justify-center w-full">
-     
-              <motion.div
-        className="hidden md:flex flex-row mb-5 gap-15">
-
-        {links.map((link) => {
-              const isActive = currentPath === link.path
-              return (
-             <Link
-        key={link.path}
-        to={link.path}
-        className={`relative text-gray-700 transition-colors 
-          hover:text-black ${isActive ? "text-black" : ""}`}
-      >
-        <span className="inline-block px-1">{link.name}</span>
-        {isActive && (
-          <span className="absolute left-[-6px] -bottom-1 w-[calc(100%+15px)] h-[3px] bg-black rounded-full"></span>
-        )}
-      </Link>
-        )
-      })}
-       </motion.div>
-
-
-
-
-
-      {/* === Desktop / MD+ form (expanded) */}
-        <motion.form
-        onSubmit={handleSearch}
+          onSubmit={handleSearch}
           className="hidden md:flex mt-5 mb-5 flex-row items-center justify-between rounded-full w-full max-w-200 bg-white shadow-[0px_8px_20px_rgba(0,0,0,0.1)] border border-light"
         >
           <div className="flex flex-row items-center gap-8 ml-4" onClick={() => setShowModal(true)}>
@@ -152,8 +113,6 @@ const Hero = () => {
             </motion.button>
           </div>
         </motion.form>
-
-        </motion.div>
       )}
 
       {/* === Compressed / other screens & routes */}
