@@ -79,13 +79,13 @@ const Hero = () => {
 
       {/* === Desktop / MD+ form (expanded) */}
       {!isSmallScreen && showDesktop && location.pathname === "/" && (
-              
-<motion.div
-  initial={false}
-  animate={showDesktop ? { scale: 1, opacity: 1, y: 0 } : { scale: 0.85, opacity: 0, y: -20 }}
-  transition={{ type: "spring", stiffness: 200, damping: 25, duration: 0.3 }}
-  className='flex flex-col items-center justify-center'
->
+           <motion.div
+             initial={false}
+            animate={{ scale: 1, opacity: 1, y: 0 }} // Expands to full size, becomes opaque, and moves to final position
+            transition={{ type: "spring", stiffness: 200, damping: 25, duration: 0.3 }}
+            className='flex flex-col items-center justify-center  '>
+               
+
 
              <div className=' flex flex-row'>
 
