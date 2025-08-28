@@ -175,13 +175,15 @@ useEffect(() => {
 
       {/* === Compressed / other screens & routes */}
       {(isSmallScreen || !showDesktop) && (
-   <motion.button
+       <motion.button
   initial={{ scale: 1, opacity: 1 }}
   animate={{
-    scale: showDesktop ? 1 : 1,   // 👈 always 1 on small screens
-    opacity: showDesktop ? 1 : 0.95,
-    y: showDesktop ? -10 : -5,    // 👈 different y values kept
+    scale: showDesktop ? 1 : 1,        // 👈 keep static scale on small screens
+    opacity: showDesktop ? 1 : 0.95,   // 👈 small screens slightly dimmer
+    y: showDesktop ? -10 : -5,         // 👈 different y offsets
   }}
+  whileHover={showDesktop ? { scale: 1.05 } : {}}  // 👈 hover scale only on desktop
+  whileTap={showDesktop ? { scale: 0.95 } : {}}    // 👈 tap scale only on desktop
   transition={{ type: "spring", stiffness: 200, damping: 25, duration: 0.3 }}
   onClick={() => setShowModal(true)}
   className="
