@@ -177,11 +177,19 @@ useEffect(() => {
       {(isSmallScreen || !showDesktop) && (
        <motion.button
   initial={{ scale: 1, opacity: 1 }}
-  animate={{
-    scale: showDesktop ? 1 : 0,
-    opacity: showDesktop ? 1 : 0,
-    y: showDesktop ? -10 : -5, // 👈 different y values
-  }}
+  animate={
+    showDesktop
+      ? {
+          scale: 1,
+          opacity: 1,
+          y: -10, // Desktop animation
+        }
+      : {
+          scale: 1,
+          opacity: 1,
+          y: 0, // Small screens stay flat
+        }
+  }
   transition={{ type: "spring", stiffness: 200, damping: 25, duration: 0.3 }}
   onClick={() => setShowModal(true)}
   className="
