@@ -1,5 +1,7 @@
 import logo from "./logo.png";
 import gmail_logo from "./gmail_logo.svg";
+import smalllogo from "./smalllogo.webp";
+import houseicon from "./houseicon.avif";
 import facebook_logo from "./facebook_logo.svg";
 import instagram_logo from "./instagram_logo.svg";
 import twitter_logo from "./twitter_logo.svg";
@@ -59,6 +61,8 @@ export const assets = {
     fuel_icon,
     addIcon,
     carIcon,
+    smalllogo,
+    houseicon,
     carIconColored,
     dashboardIcon,
     dashboardIconColored,

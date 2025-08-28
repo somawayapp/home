@@ -213,14 +213,14 @@ useEffect(() => {
   onClick={() => setShowModal(true)}
   className="
     flex items-center justify-between w-full
-    gap-2 md:gap-4
+    gap-1 md:gap-4
     bg-white rounded-full text-gray-600
     shadow-[0px_8px_20px_rgba(0,0,0,0.1)] border border-light
     mt-4 md:mt-3 max-w-140 md:max-w-450
   "
 >
   <div className="flex-1 gap-1 md:gap-4 flex justify-between items-center">
-    <span className="pr-2 pl-5 py-2 font-medium text-xs md:text-lg md:pr-4 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+    <span className="pr-2 pl-3 md:pl-5 py-2 font-medium text-xs md:text-lg md:pr-4 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
       {pickupLocation || "Any where"}
     </span>
 
@@ -241,7 +241,7 @@ useEffect(() => {
     <motion.button
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
-      className="flex items-center justify-center ml-2 gap-1 px-3 py-3 bg-primary hover:bg-primary-dull text-white rounded-full cursor-pointer"
+      className="flex items-center justify-center md:ml-2 gap-1 px-3 py-3 bg-primary hover:bg-primary-dull text-white rounded-full cursor-pointer"
     >
       <img src={assets.search_icon} alt="search" className="brightness-300" />
     </motion.button>
