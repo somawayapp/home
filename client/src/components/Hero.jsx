@@ -180,14 +180,14 @@ useEffect(() => {
   animate={{
     scale: showDesktop ? 1 : 0.85,
     opacity: showDesktop ? 1 : 0.95,
-    y: showDesktop ? 0 : -5, // keep the smaller screen -5, bigger screens overridden via md: classes
+    y: showDesktop ? -10 : -5, // 👈 different y values
   }}
   transition={{ type: "spring", stiffness: 200, damping: 25, duration: 0.3 }}
   onClick={() => setShowModal(true)}
   className="
     flex items-center justify-between w-full
     max-w-100 md:max-w-150
-    gap-1 md:gap-4
+    md:gap-4
     bg-white rounded-full text-gray-600
     shadow-[0px_8px_20px_rgba(0,0,0,0.1)] border border-light
     mt-4 md:mt-3 ml-4 mr-7
