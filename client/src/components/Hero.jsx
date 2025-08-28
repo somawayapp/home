@@ -193,7 +193,7 @@ useEffect(() => {
     mt-4 md:mt-3 ml-4 mr-7
   "
 >
-  <div className="flex-1 flex justify-between items-center">
+  <div className="flex-1     gap-4  flex justify-between items-center">
     <span className="pr-2 pl-5 py-2 font-medium text-sm md:text-md md:pr-4 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
       {pickupLocation || "Any where"}
     </span>
