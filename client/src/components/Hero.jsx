@@ -230,7 +230,7 @@ useEffect(() => {
         transition={{ type: "spring", stiffness: 200, damping: 25, duration: 0.3 }}
 
           onClick={() => setShowModal(true)}
-          className="flex items-center justify-between w-full max-w-100 gap-1  bg-white rounded-full text-gray-600
+          className="flex md:hidden items-center justify-between w-full max-w-100 gap-1  bg-white rounded-full text-gray-600
             shadow-[0px_8px_20px_rgba(0,0,0,0.1)] border border-light mt-4 mr-7  ml-4  "
         >
           <div className="flex-1 flex justify-between items-center">
