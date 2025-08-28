@@ -182,11 +182,12 @@ useEffect(() => {
     opacity: showDesktop ? 1 : 0.95,
     y: showDesktop ? -10 : -5, // 👈 different y values
   }}
-  transition={
-    showDesktop
-      ? { type: "spring", stiffness: 200, damping: 25, duration: 0.3 } // Desktop → bouncier
-      : { type: "spring", stiffness: 100, damping: 10, duration: 0.1 } // Mobile → softer, smaller
-  }  onClick={() => setShowModal(true)}
+transition={
+  showDesktop
+    ? { type: "spring", stiffness: 200, damping: 25, duration: 0.3 } // Desktop → springy
+    : { duration: 0.15, ease: "easeInOut" } // Mobile → smooth, no spring
+}
+ onClick={() => setShowModal(true)}
   className="
     flex items-center justify-between w-full
     gap-2 md:gap-4
