@@ -25,7 +25,6 @@ const App = () => {
      <Toaster />
       {showLogin && <Login/>}
 
-      {!isOwnerPath && <Navbar/>}
 
     <Routes>
       <Route path='/' element={<Home/>}/>

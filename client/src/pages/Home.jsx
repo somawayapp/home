@@ -7,6 +7,7 @@ import { useAppContext } from '../context/AppContext'
 import toast from 'react-hot-toast'
 import { motion } from 'motion/react'
 import Hero from '../components/Hero'
+import Navbar from '../components/Navbar'
 
 const Home = () => {
 
@@ -59,8 +60,9 @@ const Home = () => {
   },[input, cars])
 
   return (
-<div className="overflow-x-hidden h-screen">
-    
+<div>
+    <Navbar/>
+
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
