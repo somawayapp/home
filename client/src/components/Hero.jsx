@@ -186,26 +186,26 @@ useEffect(() => {
   onClick={() => setShowModal(true)}
   className="
     flex items-center justify-between w-full
-    gap-4
+    gap-2 md:gap-4
     bg-white rounded-full text-gray-600
     shadow-[0px_8px_20px_rgba(0,0,0,0.1)] border border-light
-    mt-4 md:mt-3 ml-4 mr-7
+    mt-4 md:mt-3 ml-4 mr-7 max-w-140 md:max-w-450
   "
 >
   <div className="flex-1     gap-4  flex justify-between items-center">
-    <span className="pr-2 pl-5 py-2 font-medium text-sm md:text-xl md:pr-4 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+    <span className="pr-2 pl-5 py-2 font-medium text-sm md:text-lg md:pr-4 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
       {pickupLocation || "Any where"}
     </span>
 
     <span className="self-stretch w-px bg-gray-300"></span>
 
-    <span className="px-2 md:px-4 font-medium py-2 text-sm md:text-md rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+    <span className="px-2 md:px-4 font-medium py-2 text-sm md:text-lg rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
       {pricePerDay || "Any price"}
     </span>
 
     <span className="self-stretch w-px bg-gray-300"></span>
 
-    <span className="px-2 md:px-4 font-medium py-2 text-sm md:text-md rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+    <span className="px-2 md:px-4 font-medium py-2 text-sm md:text-lg rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
       {seatingCapacity || "Any size"}
     </span>
   </div>
