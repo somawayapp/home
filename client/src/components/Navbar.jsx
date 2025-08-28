@@ -1,94 +1,101 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { assets, menuLinks } from '../assets/assets';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { useAppContext } from '../context/AppContext';
-import toast from 'react-hot-toast';
-import Hero from './Hero';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect, useRef } from 'react'
+import { assets, menuLinks } from '../assets/assets'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useAppContext } from '../context/AppContext'
+import toast from 'react-hot-toast'
+import Hero from './Hero'
+import { motion } from 'framer-motion'
 
 const Navbar = () => {
-  const { setShowLogin, user, logout, isOwner, axios, setIsOwner } = useAppContext();
-  const location = useLocation();
-  const [open, setOpen] = useState(false);
-  const navigate = useNavigate();
-  const dropdownRef = useRef(null);
+  const { setShowLogin, user, logout, isOwner, axios, setIsOwner } = useAppContext()
+  const location = useLocation()
+  const [open, setOpen] = useState(false)
+  const navigate = useNavigate()
+  const dropdownRef = useRef(null)
 
   const changeRole = async () => {
     try {
-      const { data } = await axios.post('/api/owner/change-role');
+      const { data } = await axios.post('/api/owner/change-role')
       if (data.success) {
-        setIsOwner(true);
-        toast.success(data.message);
+        setIsOwner(true)
+        toast.success(data.message)
       } else {
-        toast.error(data.message);
+        toast.error(data.message)
       }
     } catch (error) {
-      toast.error(error.message);
+      toast.error(error.message)
     }
-  };
+  }
 
-  // 🔒 Prevent body scroll when menu is open
+  // Prevents body scroll when the mobile menu is open
   useEffect(() => {
     if (open) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = 'hidden'
     } else {
-      document.body.style.overflow = 'auto';
+      document.body.style.overflow = 'auto'
     }
     return () => {
-      document.body.style.overflow = 'auto';
-    };
-  }, [open]);
+      document.body.style.overflow = 'auto'
+    }
+  }, [open])
 
-  // ❌ Close dropdown when clicking outside
+  // Closes the dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-        setOpen(false);
+        setOpen(false)
       }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+    }
+    if (open) {
+      document.addEventListener('mousedown', handleClickOutside)
+    }
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [open])
 
   return (
-    <motion.div
-      initial={{ y: -20, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.5 }}
-      className={`fixed top-0 left-0 w-full z-50 bg-white px-6 md:px-16 lg:px-24 xl:px-32 text-gray-600 border-b border-light transition-all ${
-        location.pathname === '/' && 'bg-light'
-      }`}
-    >
-      <div className='flex items-center pt-3 md:pt-9 justify-between'>
+    <>
+      <motion.div
+        initial={{ y: -20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5 }}
+        className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between bg-white px-6 py-3 transition-colors duration-300 md:px-16 lg:px-24 xl:px-32 ${
+          location.pathname === '/' ? 'bg-light' : 'bg-white'
+        } shadow-md`}
+      >
         {/* Logo */}
-        <Link to='/'>
-          <motion.img whileHover={{ scale: 1.05 }} src={assets.logo} alt='logo' className='h-8' />
+        <Link to='/' className='z-50'>
+          <motion.img
+            whileHover={{ scale: 1.05 }}
+            src={assets.logo}
+            alt='logo'
+            className='h-8'
+          />
         </Link>
 
-        {/* Right side buttons */}
-        <div className='flex flex-row gap-4 items-center'>
+        {/* Right side buttons and menu */}
+        <div className='flex items-center gap-4'>
+          {/* Dashboard/Add Listing button (hidden on small screens) */}
           <div className='hidden sm:flex items-center gap-4'>
             <button
               onClick={() => {
                 if (isOwner) {
-                  navigate('/owner');
+                  navigate('/owner')
                 } else if (!user) {
-                  setShowLogin(true); // 🔑 open login popup
+                  setShowLogin(true)
                 } else {
-                  changeRole();
+                  changeRole()
                 }
               }}
-              className='cursor-pointer px-4 py-2 rounded-3xl hover:bg-gray-100 transition'
+              className='cursor-pointer rounded-3xl px-4 py-2 transition hover:bg-gray-100'
             >
               {isOwner ? 'Dashboard' : 'Add listing'}
             </button>
           </div>
 
-          {/* Toggle Menu Button + Dropdown */}
+          {/* Toggle Menu Button */}
           <div className='relative'>
-            {/* Toggle Button */}
             <button
-              className='cursor-pointer border border-light rounded-full px-3 py-3 md:py-1 md:px-2 shadow-md hover:shadow-md flex items-center gap-3'
+              className='flex cursor-pointer items-center gap-3 rounded-full border border-light px-3 py-3 shadow-md transition hover:shadow-lg md:px-2 md:py-1'
               aria-label='Menu'
               onClick={() => setOpen(!open)}
             >
@@ -96,85 +103,90 @@ const Navbar = () => {
               <img
                 src={user?.image || assets.user_profile}
                 alt='user'
-                className='hidden lg:block w-8 h-8 rounded-full object-cover'
+                className='hidden h-8 w-8 rounded-full object-cover lg:block'
               />
             </button>
 
-            {/* Dropdown Menu */}
+            {/* Backdrop for mobile menu */}
             {open && (
-              <>
-                <div
-                  className='fixed inset-0 bg-black/10 z-30'
-                  onClick={() => setOpen(false)} // clicking backdrop closes menu
-                ></div>
-                <div
-                  ref={dropdownRef}
-                  className='absolute top-14 right-0 w-55 md:w-60 border pb-2 pt-1 border-light bg-white rounded-lg md:rounded-xl shadow-xl flex flex-col items-stretch transition-all duration-300 z-40'
-                >
-                  {menuLinks.map((link, index) => (
-                    <Link
-                      key={index}
-                      to={link.path}
-                      onClick={() => setOpen(false)}
-                      className='group relative w-full border-b border-borderColor py-1 px-4'
-                    >
-                      <span className='block py-2 text-left relative z-10'>{link.name}</span>
-                      <span className='absolute inset-x-0 top-1 bottom-1 bg-gray-100 opacity-0 group-hover:opacity-100 transition'></span>
-                    </Link>
-                  ))}
-
-                  {/* List Cars / Dashboard */}
-                  <div
-                    onClick={() => {
-                      if (!user) {
-                        setShowLogin(true);
-                      } else if (isOwner) {
-                        navigate('/owner');
-                      } else {
-                        changeRole();
-                      }
-                      setOpen(false);
-                    }}
-                    className='group relative w-full border-b border-borderColor px-4 py-1 cursor-pointer'
-                  >
-                    <span className='block py-2 text-left relative z-10'>
-                      {isOwner ? 'Dashboard' : 'List cars'}
-                    </span>
-                    <span className='absolute inset-x-0 top-1 bottom-1 bg-gray-100 opacity-0 group-hover:opacity-100 transition'></span>
-                  </div>
-
-                  {/* Auth section */}
-                  {user ? (
-                    <div
-                      onClick={() => {
-                        logout();
-                        setOpen(false);
-                      }}
-                      className='group relative w-full px-4 py-1 cursor-pointer'
-                    >
-                      <span className='block py-2 text-left relative z-10'>Logout</span>
-                      <span className='absolute inset-x-0 top-1 bottom-1 bg-gray-100 opacity-0 group-hover:opacity-100 transition'></span>
-                    </div>
-                  ) : (
-                    <div
-                      onClick={() => {
-                        setShowLogin(true);
-                        setOpen(false);
-                      }}
-                      className='group relative w-full px-4 py-1 cursor-pointer'
-                    >
-                      <span className='block py-2 text-left relative z-10'>Login / Signup</span>
-                      <span className='absolute inset-x-0 top-1 bottom-1 bg-gray-100 opacity-0 group-hover:opacity-100 transition'></span>
-                    </div>
-                  )}
-                </div>
-              </>
+              <div
+                className='fixed inset-0 z-30 bg-black/10'
+                onClick={() => setOpen(false)}
+              ></div>
             )}
+
+            {/* Dropdown Menu */}
+            <div
+              ref={dropdownRef}
+              className={`absolute right-0 top-14 z-40 flex w-55 flex-col items-stretch rounded-lg border border-light bg-white pb-2 pt-1 shadow-xl transition-all duration-300 md:w-60 md:rounded-xl ${
+                open ? 'translate-x-0 opacity-100' : 'translate-x-10 opacity-0 pointer-events-none'
+              }`}
+            >
+              {menuLinks.map((link, index) => (
+                <Link
+                  key={index}
+                  to={link.path}
+                  onClick={() => setOpen(false)}
+                  className='group relative w-full border-b border-borderColor px-4 py-1'
+                >
+                  <span className='relative z-10 block py-2 text-left'>{link.name}</span>
+                  <span className='absolute inset-x-0 bottom-1 top-1 bg-gray-100 opacity-0 transition group-hover:opacity-100'></span>
+                </Link>
+              ))}
+
+              {/* List Cars / Dashboard */}
+              <div
+                onClick={() => {
+                  if (!user) {
+                    setShowLogin(true)
+                  } else if (isOwner) {
+                    navigate('/owner')
+                  } else {
+                    changeRole()
+                  }
+                  setOpen(false)
+                }}
+                className='group relative w-full cursor-pointer border-b border-borderColor px-4 py-1'
+              >
+                <span className='relative z-10 block py-2 text-left'>
+                  {isOwner ? 'Dashboard' : 'List cars'}
+                </span>
+                <span className='absolute inset-x-0 bottom-1 top-1 bg-gray-100 opacity-0 transition group-hover:opacity-100'></span>
+              </div>
+
+              {/* Auth section */}
+              {user ? (
+                <div
+                  onClick={() => {
+                    logout()
+                    setOpen(false)
+                  }}
+                  className='group relative w-full cursor-pointer px-4 py-1'
+                >
+                  <span className='relative z-10 block py-2 text-left'>Logout</span>
+                  <span className='absolute inset-x-0 bottom-1 top-1 bg-gray-100 opacity-0 transition group-hover:opacity-100'></span>
+                </div>
+              ) : (
+                <div
+                  onClick={() => {
+                    setShowLogin(true)
+                    setOpen(false)
+                  }}
+                  className='group relative w-full cursor-pointer px-4 py-1'
+                >
+                  <span className='relative z-10 block py-2 text-left'>Login / Signup</span>
+                  <span className='absolute inset-x-0 bottom-1 top-1 bg-gray-100 opacity-0 transition group-hover:opacity-100'></span>
+                </div>
+              )}
+            </div>
           </div>
         </div>
+      </motion.div>
+      <div className='relative z-0'>
+        <Hero />
       </div>
-    </motion.div>
-  );
-};
+    </>
+  )
+}
 
-export default Navbar;
+export default Navbar
