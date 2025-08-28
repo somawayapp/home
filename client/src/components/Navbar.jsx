@@ -122,7 +122,7 @@ const Navbar = () => {
             {/* Dropdown Menu */}
             <div
               ref={dropdownRef}
-              className={`fixed  right-6  right:mr-16 right:mr-24 right:mr-32  top-14 z-40 flex w-55 flex-col items-stretch rounded-lg border border-light bg-white pb-2 pt-1 shadow-xl transition-all duration-300 md:w-60 md:rounded-xl ${
+              className={`fixed  right-6  md:right-16 lg:right-24 xl:right-32  top-14 z-40 flex w-55 flex-col items-stretch rounded-lg border border-light bg-white pb-2 pt-1 shadow-xl transition-all duration-300 md:w-60 md:rounded-xl ${
                 open ? 'translate-x-0 opacity-100' : 'translate-x-10 opacity-0 pointer-events-none'
               }`}
             >
