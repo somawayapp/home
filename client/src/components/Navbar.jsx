@@ -58,8 +58,7 @@ const Navbar = () => {
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5 }}
-        className={`sticky top-0 left-0 right-0 z-50 flex items-center justify-between 
-            bg-white px-6 py-3 transition-colors duration-300 md:px-16 lg:px-24 xl:px-32 ${
+        className={`sticky top-0 left-0 right-0 z-50 flex items-center justify-between bg-white px-6 py-3 transition-colors duration-300 md:px-16 lg:px-24 xl:px-32 ${
           location.pathname === '/' ? 'bg-light' : 'bg-white'
         } shadow-md`}
       >
@@ -74,6 +73,7 @@ const Navbar = () => {
         </Link>
 
           <div className=' z-50'>
+        <Hero />
       </div>
 
         {/* Right side buttons and menu */}
@@ -120,7 +120,71 @@ const Navbar = () => {
             )}
 
             {/* Dropdown Menu */}
-       
+            <div
+              ref={dropdownRef}
+              className={`absolute right-0 z-40 flex w-55 flex-col items-stretch rounded-lg border 
+                border-light bg-white pb-2 pt-1 shadow-xl transition-all duration-300 md:w-60 
+                md:rounded-xl ${
+                open ? 'translate-x-0 opacity-100' : 'translate-x-10 opacity-0 pointer-events-none'
+              }`}
+            >
+              {menuLinks.map((link, index) => (
+                <Link
+                  key={index}
+                  to={link.path}
+                  onClick={() => setOpen(false)}
+                  className='group relative w-full border-b border-borderColor px-4 py-1'
+                >
+                  <span className='relative z-10 block py-2 text-left'>{link.name}</span>
+                  <span className='absolute inset-x-0 bottom-1 top-1 bg-gray-100 opacity-0 transition group-hover:opacity-100'></span>
+                </Link>
+              ))}
+
+              {/* List Cars / Dashboard */}
+              <div
+                onClick={() => {
+                  if (!user) {
+                    setShowLogin(true)
+                  } else if (isOwner) {
+                    navigate('/owner')
+                  } else {
+                    changeRole()
+                  }
+                  setOpen(false)
+                }}
+                className='group relative w-full cursor-pointer border-b border-borderColor px-4 py-1'
+              >
+                <span className='relative z-10 block py-2 text-left'>
+                  {isOwner ? 'Dashboard' : 'List cars'}
+                </span>
+                <span className='absolute inset-x-0 bottom-1 top-1 bg-gray-100 opacity-0 transition group-hover:opacity-100'></span>
+              </div>
+
+              {/* Auth section */}
+              {user ? (
+                <div
+                  onClick={() => {
+                    logout()
+                    setOpen(false)
+                  }}
+                  className='group relative w-full cursor-pointer px-4 py-1'
+                >
+                  <span className='relative z-10 block py-2 text-left'>Logout</span>
+                  <span className='absolute inset-x-0 bottom-1 top-1 bg-gray-100 opacity-0 transition group-hover:opacity-100'></span>
+                </div>
+              ) : (
+                <div
+                  onClick={() => {
+                    setShowLogin(true)
+                    setOpen(false)
+                  }}
+                  className='group relative w-full cursor-pointer px-4 py-1'
+                >
+                  <span className='relative z-10 block py-2 text-left'>Login / Signup</span>
+                  <span className='absolute inset-x-0 bottom-1 top-1 bg-gray-100 opacity-0 transition group-hover:opacity-100'></span>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </motion.div>
