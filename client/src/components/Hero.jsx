@@ -185,7 +185,7 @@ useEffect(() => {
   transition={
     showDesktop
       ? { type: "spring", stiffness: 200, damping: 25, duration: 0.3 } // Desktop → bouncier
-      : { type: "spring", stiffness: 150, damping: 30, duration: 0.2 } // Mobile → softer, smaller
+      : { type: "spring", stiffness: 100, damping: 10, duration: 0.1 } // Mobile → softer, smaller
   }  onClick={() => setShowModal(true)}
   className="
     flex items-center justify-between w-full
