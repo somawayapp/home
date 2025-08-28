@@ -176,17 +176,22 @@ useEffect(() => {
       {/* === Compressed / other screens & routes */}
       {(isSmallScreen || !showDesktop) && (
        <motion.button
-  initial={{ scale: 1, opacity: 1 }}
-  animate={{
-    scale: showDesktop ? 1 : 0.85,
-    opacity: showDesktop ? 1 : 0.95,
-    y: showDesktop ? -10 : -5, // 👈 different y values
-  }}
+initial={{
+  scale: showDesktop ? 1 : 0.85,
+  opacity: showDesktop ? 1 : 0.95,
+  y: showDesktop ? -10 : -5,
+}}
+animate={{
+  scale: showDesktop ? 1 : 0.85,
+  opacity: showDesktop ? 1 : 0.95,
+  y: showDesktop ? -10 : -5,
+}}
 transition={
   showDesktop
-    ? { type: "spring", stiffness: 200, damping: 25, duration: 0.3 } // Desktop → springy
-    : { duration: 0.15, ease: "easeInOut" } // Mobile → smooth, no spring
+    ? { type: "spring", stiffness: 200, damping: 25, duration: 0.3 } // Desktop
+    : { duration: 0.15, ease: "easeInOut" } // Mobile (no spring)
 }
+
  onClick={() => setShowModal(true)}
   className="
     flex items-center justify-between w-full
