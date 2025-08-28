@@ -73,7 +73,6 @@ const Navbar = () => {
         </Link>
 
           <div className=' z-50'>
-        <Hero />
       </div>
 
         {/* Right side buttons and menu */}

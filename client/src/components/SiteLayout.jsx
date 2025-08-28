@@ -10,10 +10,8 @@ const SiteLayout = () => {
 
   return (
     <div className="flex flex-col min-h-screen">
-        <div className="sticky top-0">
                <Navbar />
 
-        </div>
 
       <main className="flex-1">
         <Outlet /> {/* This renders the page content */}
