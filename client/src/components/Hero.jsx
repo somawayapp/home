@@ -178,8 +178,8 @@ useEffect(() => {
        <motion.button
   initial={{ scale: 1, opacity: 1 }}
   animate={{
-    scale: showDesktop ? 1 : 0.85,
-    opacity: showDesktop ? 1 : 0.95,
+    scale: showDesktop ? 1 : 0,
+    opacity: showDesktop ? 1 : 0,
     y: showDesktop ? -10 : -5, // 👈 different y values
   }}
   transition={{ type: "spring", stiffness: 200, damping: 25, duration: 0.3 }}
