@@ -72,6 +72,10 @@ const Navbar = () => {
           />
         </Link>
 
+          <div className='relativez-50'>
+        <Hero />
+      </div>
+
         {/* Right side buttons and menu */}
         <div className='flex items-center gap-4'>
           {/* Dashboard/Add Listing button (hidden on small screens) */}
@@ -182,9 +186,7 @@ const Navbar = () => {
           </div>
         </div>
       </motion.div>
-      <div className='relative z-0'>
-        <Hero />
-      </div>
+    
     </>
   )
 }
