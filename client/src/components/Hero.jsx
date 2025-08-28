@@ -187,7 +187,7 @@ useEffect(() => {
   className="
     flex items-center justify-between w-full
     max-w-100 md:max-w-150
-    md:gap-4
+    gap-4
     bg-white rounded-full text-gray-600
     shadow-[0px_8px_20px_rgba(0,0,0,0.1)] border border-light
     mt-4 md:mt-3 ml-4 mr-7
