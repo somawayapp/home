@@ -176,18 +176,18 @@ useEffect(() => {
       {/* === Compressed / other screens & routes */}
       {(isSmallScreen || !showDesktop) && (
        <motion.button
-  initial={{ scale: 1, opacity: 1 }}
+  initial={{ scale: 1, opacity: 1, y: 0 }}
   animate={
     showDesktop
       ? {
-          scale: 1,
-          opacity: 1,
-          y: -10, // Desktop animation
+          scale: 0.85,   // 🔥 contracted state
+          opacity: 0.95,
+          y: -10,
         }
       : {
-          scale: 1,
+          scale: 1,      // 🔥 stays flat on small screens
           opacity: 1,
-          y: 0, // Small screens stay flat
+          y: 0,
         }
   }
   transition={{ type: "spring", stiffness: 200, damping: 25, duration: 0.3 }}
