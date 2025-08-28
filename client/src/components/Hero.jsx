@@ -23,6 +23,31 @@ const Hero = () => {
 
   // Track screen size
   const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 768)
+    const [isMdScreen, setIsMdScreen] = useState(false);
+
+  useEffect(() => {
+    // Define the media query for 'md' screen size.
+    // Tailwind's 'md' is typically >= 768px.
+    const mediaQuery = window.matchMedia('(min-width: 768px)');
+
+    const handleResize = () => {
+      setIsMdScreen(mediaQuery.matches);
+    };
+
+    // Initial check
+    handleResize();
+
+    // Add listener for screen size changes
+    mediaQuery.addEventListener('change', handleResize);
+
+    // Cleanup function to remove the listener
+    return () => {
+      mediaQuery.removeEventListener('change', handleResize);
+    };
+  }, []); // Empty dependency array means this effect runs once on mount
+
+  // Determine if the button should be animated
+  const shouldAnimate = isMdScreen;
 
   useEffect(() => {
     const handleResize = () => setIsSmallScreen(window.innerWidth < 768)
@@ -176,21 +201,15 @@ useEffect(() => {
       {/* === Compressed / other screens & routes */}
       {(isSmallScreen || !showDesktop) && (
        <motion.button
-  initial={{ scale: 1, opacity: 1, y: 0 }}
-  animate={
-    showDesktop
-      ? {
-          scale: 0.85,   // 🔥 contracted state
-          opacity: 0.95,
-          y: -10,
-        }
-      : {
-          scale: 1,      // 🔥 stays flat on small screens
-          opacity: 1,
-          y: 0,
-        }
-  }
-  transition={{ type: "spring", stiffness: 200, damping: 25, duration: 0.3 }}
+    initial={{ scale: 1, opacity: 1 }}
+          animate={{
+            // Apply animation only if it's an 'md' screen
+            scale: shouldAnimate ? (showDesktop ? 1 : 0.85) : 1,
+            opacity: shouldAnimate ? (showDesktop ? 1 : 0.95) : 1,
+            y: shouldAnimate ? (showDesktop ? -10 : -5) : (showDesktop ? -10 : -5), // You might still want the 'y' animation
+          }}
+          transition={{ type: "spring", stiffness: 200, damping: 25, duration: 0.3 }}
+          
   onClick={() => setShowModal(true)}
   className="
     flex items-center justify-between w-full
