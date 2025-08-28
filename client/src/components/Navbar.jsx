@@ -72,7 +72,7 @@ const Navbar = () => {
           />
         </Link>
 
-          <div className='relativez-50'>
+          <div className=' z-50'>
         <Hero />
       </div>
 
