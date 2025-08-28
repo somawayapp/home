@@ -58,7 +58,7 @@ const Navbar = () => {
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5 }}
-        className={`sticky top-0 left-0 right-0 z-50 flex items-center justify-between bg-white px-6 py-3 
+        className={`sticky top-5 md:top-0 left-0 right-0 z-50 flex items-center justify-between bg-white px-6 py-3 
             transition-colors duration-300 md:px-16 lg:px-24 xl:px-32 ${
           location.pathname === '/' ? 'bg-light' : 'bg-white'
         } shadow-md`}
