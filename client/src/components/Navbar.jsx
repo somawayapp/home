@@ -63,7 +63,7 @@ const Navbar = () => {
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5 }}
       className={`flex  flex-col  bg-white sticky top-0 z-50 justify-between  px-6 md:px-16 lg:px-24 xl:px-32 text-gray-600
-       border-b border-light  transition-all ${location.pathname === '/' && 'bg-light'}`}
+       border-b border-light relative transition-all ${location.pathname === '/' && 'bg-light'}`}
     >
 
         <div className=' flex  items-center pt-3 md:pt-9 justify-between  '>
@@ -73,6 +73,9 @@ const Navbar = () => {
       <Link to='/'>
         <motion.img whileHover={{ scale: 1.05 }} src={assets.logo} alt='logo' className='h-8' />
       </Link>
+
+
+
 
 
 
@@ -122,22 +125,14 @@ const Navbar = () => {
 
 
 
- {open && (
-  <div
-    className="fixed inset-0 bg-black/10 z-20" // lower than navbar
-    onClick={() => setOpen(false)}
-  ></div>
-)}
-
-  {/* Dropdown Menu */}
-
+ 
 
 <div
-  ref={dropdownRef}
-  className={`absolute top-14 right-0 w-56 md:w-60 border pb-2 pt-1 border-light bg-white rounded-lg md:rounded-xl shadow-xl 
+  ref={dropdownRef}   // ✅ attach ref here
+  className={`absolute top-14 right-0 w-55 md:w-60 border pb-2 pt-1 border-light bg-white rounded-lg md:rounded-xl shadow-xl 
               flex flex-col items-stretch transition-all duration-300 z-40
-              ${open ? 'translate-x-0 opacity-100' : 'translate-x-10 opacity-0 pointer-events-none'}`}>
-
+              ${open ? 'translate-x-0 opacity-100' : 'translate-x-10 opacity-0 pointer-events-none'}`}
+>
 
   {menuLinks.map((link, index) => (
     <Link
