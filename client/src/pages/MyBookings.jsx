@@ -34,7 +34,7 @@ const MyBookings = () => {
     animate={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.6 }}
     
-    className='px-6 md:px-16 lg:px-24 xl:px-32 2xl:px-48 mt-16 text-sm max-w-7xl'>
+    className='px-4 md:px-16 lg:px-24 xl:px-32 2xl:px-48 mt-16 text-sm max-w-7xl'>
 
       <Title title='My Bookings'
        subTitle='View and manage your all car bookings'
