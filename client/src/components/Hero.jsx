@@ -155,7 +155,7 @@ useEffect(() => {
         <div  onSubmit={handleSearch}
           className="hidden md:flex mt-5 mb-5 flex-row items-center justify-between rounded-full w-full  bg-white shadow-[0px_8px_20px_rgba(0,0,0,0.1)] border border-light"
         >
-          <div className="flex flex-row items-center gap-[1%] ml-4" onClick={() => setShowModal(true)}>
+          <div className="flex flex-row items-center gap-9 ml-4" onClick={() => setShowModal(true)}>
             <div className="flex flex-col py-2 px-6 mr-9 items-start rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
               <p className="text-sm font-medium text-gray-700">Any where</p>
               <p className=" text-sm font-medium text-gray-500">{pickupLocation || ' search destinations'}</p>
