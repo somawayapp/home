@@ -110,7 +110,8 @@ const Navbar = () => {
           {/* Toggle Menu Button */}
           <div className='relative'>
             <button
-              className='flex cursor-pointer items-center gap-3 rounded-full border border-light px-3 py-3 shadow-md transition hover:shadow-lg md:px-2 md:py-1'
+              className='flex cursor-pointer items-center gap-3 rounded-full border border-light 
+              px-3 py-3  transition hover:shadow-lg md:px-2 md:py-1'
               aria-label='Menu'
               onClick={() => setOpen(!open)}
             >
