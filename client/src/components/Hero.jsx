@@ -192,10 +192,9 @@ useEffect(() => {
 
 
   {/* === Links Section === */}
-<div className="hidden md:flex flex-row gap-10 ml-4">
-  <div>
+        {!isSmallScreen && showDesktop && location.pathname === "/" && (
 
-  </div>
+<div className="hidden md:flex flex-row gap-10 ml-4">
   {links.map((link) => {
     const isActive = currentPath === link.path
     return (
@@ -233,14 +232,8 @@ useEffect(() => {
       </Link>
     )
   })}
-
-
-  
 </div>
-
-
-
-
+ )}
 
 
 
