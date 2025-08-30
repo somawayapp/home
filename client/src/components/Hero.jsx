@@ -192,8 +192,9 @@ useEffect(() => {
 
 
   {/* === Links Section === */}
-<div className="hidden md:flex flex-row gap-10 ml-4">
-  {links.map((link) => {
+<div className="hidden md:flex flex-col gap-10 ml-4">
+  <div className=' flex-row'>
+      {links.map((link) => {
     const isActive = currentPath === link.path
     return (
       <Link
@@ -230,10 +231,14 @@ useEffect(() => {
       </Link>
     )
   })}
-</div>
+
+  </div>
 
 
- {!isSmallScreen && showDesktop && location.pathname === "/" && (
+
+
+
+   {!isSmallScreen && showDesktop && location.pathname === "/" && (
           <motion.div
       initial={{ scale: 0.85, opacity: 0, y: -20 }}
       animate={{ scale: 1, opacity: 1, y: 0 }}
@@ -283,6 +288,10 @@ useEffect(() => {
      </motion.div>
 
       )}
+</div>
+
+
+
 
 
 
