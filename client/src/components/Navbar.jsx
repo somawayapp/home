@@ -58,13 +58,29 @@ const Navbar = () => {
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5 }}
-        className={` flex items-center justify-between bg-white px-4
-             py-3 transition-colors duration-300 md:px-12 ${
+        className={`sticky top-0 left-0 right-0 z-50 flex items-center justify-between bg-white px-4
+             py-3 transition-colors duration-300 md:px-16 lg:px-24 xl:px-32 ${
           location.pathname === '/' ? 'bg-light' : 'bg-white'
         } shadow-md`}
       >
         {/* Logo */}
-    
+      <Link to="/" className="z-50">
+  {/* Small screens → small icon */}
+  <motion.img
+    whileHover={{ scale: 1.05 }}
+    src={assets.smalllogo}
+    alt="logo"
+    className="h-8 block sm:hidden"
+  />
+
+  {/* Larger screens → full logo */}
+  <motion.img
+    whileHover={{ scale: 1.05 }}
+    src={assets.logo}
+    alt="logo"
+    className="h-8 hidden sm:block"
+  />
+</Link>
 
 
           <div className=' z-20'>
@@ -94,8 +110,7 @@ const Navbar = () => {
           {/* Toggle Menu Button */}
           <div className='relative'>
             <button
-              className='flex cursor-pointer items-center gap-3 rounded-full border border-light 
-              px-3 py-3  transition hover:shadow-md md:px-2 md:py-1'
+              className='flex cursor-pointer items-center gap-3 rounded-full border border-light px-3 py-3 shadow-md transition hover:shadow-lg md:px-2 md:py-1'
               aria-label='Menu'
               onClick={() => setOpen(!open)}
             >
