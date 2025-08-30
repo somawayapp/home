@@ -140,8 +140,8 @@ useEffect(() => {
       <Link
         key={link.path}
         to={link.path}
-        className={`relative flex items-center gap-2 text-gray-700 transition-colors hover:text-black ${
-          isActive ? "text-black" : ""
+        className={`relative flex items-center gap-2 transition-colors hover:text-black ${
+          isActive ? "text-black" : " text-gray-700"
         }`}
       >
         {/* === Icon/Video/Image Left of Text === */}
@@ -166,7 +166,7 @@ useEffect(() => {
 
         {/* === Active Underline === */}
         {isActive && (
-          <span className="absolute left-[-6px] -bottom-[1px] w-[calc(100%+9px)] h-[3px] bg-black rounded-full"></span>
+          <span className="absolute left-[-3px] -bottom-0    w-[calc(100%+9px)] h-[3px] bg-black rounded-full"></span>
         )}
       </Link>
     )
