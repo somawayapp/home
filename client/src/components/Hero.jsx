@@ -164,13 +164,7 @@ useEffect(() => {
     w-full sticky top-0 left-0 right-0 z-50">
 
       {/* === Desktop / MD+ form (expanded) */}
-      {!isSmallScreen && showDesktop && location.pathname === "/" && (
-          <motion.div
-      initial={{ scale: 0.85, opacity: 0, y: -20 }}
-      animate={{ scale: 1, opacity: 1, y: 0 }}
-      transition={{ type: "spring", stiffness: 200, damping: 25, duration: 0.3 }}
-      className="flex flex-col w-full items-center"
-     >
+  
 
                
 
@@ -356,7 +350,13 @@ useEffect(() => {
 
 
 
-
+    {!isSmallScreen && showDesktop && location.pathname === "/" && (
+          <motion.div
+      initial={{ scale: 0.85, opacity: 0, y: -20 }}
+      animate={{ scale: 1, opacity: 1, y: 0 }}
+      transition={{ type: "spring", stiffness: 200, damping: 25, duration: 0.3 }}
+      className="flex flex-col w-full items-center"
+     >
 
         <div  onSubmit={handleSearch}
           className="hidden md:flex mt-5 mb-5 flex-row max-w-150 items-center justify-between rounded-full  bg-white shadow-[0px_8px_20px_rgba(0,0,0,0.1)] border border-light"
@@ -397,6 +397,9 @@ useEffect(() => {
             </motion.button>
           </div>
         </div>
+     </motion.div>
+
+      )}
 
 
 
@@ -469,10 +472,7 @@ useEffect(() => {
               
               
               
-                </motion.div>
-
-      )}
-
+           
     
 
 
