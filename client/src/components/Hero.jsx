@@ -446,10 +446,10 @@ useEffect(() => {
      >
 
         <div  onSubmit={handleSearch}
-          className="hidden md:flex mt-2  w-full flex-row max-w-220 items-center justify-between rounded-full  bg-white shadow-[0px_8px_20px_rgba(0,0,0,0.1)] border border-light"
+          className="hidden md:flex mt-2  w-full flex-row max-w-210 items-center justify-between rounded-full  bg-white shadow-[0px_8px_20px_rgba(0,0,0,0.1)] border border-light"
         >
           <div className="flex flex-row items-center " onClick={() => setShowModal(true)}>
-            <div className="flex flex-col py-3 pr-26  pl-9 items-start rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+            <div className="flex flex-col py-3 pr-29  pl-9 items-start rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
               <p className="text-sm font-medium text-gray-700">Any where</p>
               <p className=" text-sm font-medium text-gray-500">{pickupLocation || ' search destinations'}</p>
             </div>
