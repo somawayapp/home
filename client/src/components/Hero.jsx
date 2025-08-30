@@ -169,11 +169,11 @@ useEffect(() => {
                
 
 
-<div className="flex flex-row w-full items-start py-4 md:py-7 justify-between">
+<div className="flex flex-row w-full items-start py-4 justify-between">
 
 <div>
 
-<Link to="/" className="z-50 mt-2 ">
+<Link to="/" className="z-50 mt-4 ">
               {/* Small screens → small icon */}
               <motion.img
                 whileHover={{ scale: 1.05 }}
@@ -251,7 +251,7 @@ useEffect(() => {
      >
 
         <div  onSubmit={handleSearch}
-          className="hidden md:flex mt-5 mb-5 flex-row max-w-350 items-center justify-between rounded-full  bg-white shadow-[0px_8px_20px_rgba(0,0,0,0.1)] border border-light"
+          className="hidden md:flex mt-5 mb-5 flex-row max-w-1350 items-center justify-between rounded-full  bg-white shadow-[0px_8px_20px_rgba(0,0,0,0.1)] border border-light"
         >
           <div className="flex flex-row items-center gap-4 ml-4" onClick={() => setShowModal(true)}>
             <div className="flex flex-col px-3 mr-9 items-start rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
@@ -369,7 +369,7 @@ useEffect(() => {
 
 
 
-   <div className='flex items-center  mt-2 gap-4'>
+   <div className='flex items-center  mt-4 gap-4'>
           {/* Dashboard/Add Listing button (hidden on small screens) */}
           <div className='hidden sm:flex items-center gap-4'>
             <button
