@@ -196,7 +196,7 @@ useEffect(() => {
     <div className='flex flex-col items-center justify-center'>
 
 
-<div className="hidden md:flex flex-row gap-10 ml-2">
+<div className="hidden md:flex flex-row gap-10 ml-4">
   
 
   {links.map((link) => {
