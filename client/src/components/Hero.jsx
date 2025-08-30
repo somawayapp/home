@@ -419,7 +419,7 @@ useEffect(() => {
           
   onClick={() => setShowModal(true)}
   className="
-    flex items-center absolute justify-between
+    flex items-center relative justify-between
     gap-1 md:gap-4 top-0
     bg-white rounded-full text-gray-600
     shadow-[0px_8px_20px_rgba(0,0,0,0.1)] border border-light
