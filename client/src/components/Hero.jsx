@@ -157,7 +157,7 @@ useEffect(() => {
           <img
             src={link.src}
             alt={link.name}
-            className="w-9 h-9 rounded-full object-cover"
+            className="w-8 h-8 rounded-full object-cover"
           />
         )}
 
@@ -166,7 +166,7 @@ useEffect(() => {
 
         {/* === Active Underline === */}
         {isActive && (
-          <span className="absolute left-[-3px] -bottom-0    w-[calc(100%+9px)] h-[3px] bg-black rounded-full"></span>
+          <span className="absolute left-[-1px] -bottom-0    w-[calc(100%+9px)] h-[3px] bg-black rounded-full"></span>
         )}
       </Link>
     )
@@ -179,28 +179,29 @@ useEffect(() => {
         <div  onSubmit={handleSearch}
           className="hidden md:flex mt-5 mb-5 flex-row items-center justify-between rounded-full w-full  bg-white shadow-[0px_8px_20px_rgba(0,0,0,0.1)] border border-light"
         >
-         <div 
-  className="flex flex-row items-center gap-8 xs zaa ml-4 cursor-pointer" 
+       <div 
+  className="flex flex-row items-center gap-3 ml-4 cursor-pointer" 
   onClick={() => setShowModal(true)}
 >
-  {/* === Small Video/Icon on Left === */}
-<div 
-  className="flex flex-row items-center xs zaa ml-4 cursor-pointer" 
+  {/* === House Video on Left === */}
+  <div 
+  className="flex flex-row items-center gap-3 ml-4 cursor-pointer" 
   onClick={() => setShowModal(true)}
 >
-    <video 
+  <video
     src={assets.housevid}
     autoPlay
     loop
     muted
     playsInline
-    className=" h-19 rounded-full object-cover"
+    className="w-6 h-6 rounded-full object-cover"
   />
 
-  <div className="flex flex-col py-2 px-6 items-start rounded-full hover:bg-gray-100 transition-colors">
+  {/* === Text Section === */}
+  <div className="flex flex-col py-2 px-6 mr-9 items-start rounded-full hover:bg-gray-100 transition-colors">
     <p className="text-sm font-medium text-gray-700">Any where</p>
     <p className="text-sm font-medium text-gray-500">
-      {pickupLocation || ' search destinations'}
+      {pickupLocation || " search destinations"}
     </p>
   </div>
 </div>
