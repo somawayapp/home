@@ -193,7 +193,7 @@ useEffect(() => {
 
   {/* === Links Section === */}
 <div className="hidden md:flex flex-col ">
-  <div className='  flex flex-row gap-10 ml-4'>
+  <div className='flex flex-row gap-10 ml-4'>
       {links.map((link) => {
     const isActive = currentPath === link.path
     return (
