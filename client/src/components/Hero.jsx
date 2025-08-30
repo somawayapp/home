@@ -149,7 +149,6 @@ useEffect(() => {
           <video
             src={link.src}
             autoPlay
-            loop
             muted
             playsInline
             className="w-15 h-15 rounded-full object-cover"
@@ -158,7 +157,7 @@ useEffect(() => {
           <img
             src={link.src}
             alt={link.name}
-            className="w-15 h-15 rounded-full object-cover"
+            className="w-9 h-9 rounded-full object-cover"
           />
         )}
 
@@ -167,7 +166,7 @@ useEffect(() => {
 
         {/* === Active Underline === */}
         {isActive && (
-          <span className="absolute left-[-6px] -bottom-1 w-[calc(100%+15px)] h-[3px] bg-black rounded-full"></span>
+          <span className="absolute left-[-6px] w-[calc(100%+9px)] h-[3px] bg-black rounded-full"></span>
         )}
       </Link>
     )
