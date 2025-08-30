@@ -454,20 +454,20 @@ useEffect(() => {
               <p className=" text-sm font-medium text-gray-500">{pickupLocation || ' search destinations'}</p>
             </div>
 
-            <span className="h-10 w-px bg-gray-300"></span>
+            <span className="h-9 w-px bg-gray-300"></span>
             <div className="flex flex-col py-2 px-5 items-start rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
               <p className="text-sm font-medium text-gray-700">Any price</p>
               <p className="text-sm font-medium text-gray-500">{pricePerDay || 'Enter max price '}</p>
             </div>
 
-             <span className="h-10 w-px bg-gray-300"></span>
+             <span className="h-9 w-px bg-gray-300"></span>
              <div className="flex flex-col py-2 px-5 items-start rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
               <p className="text-sm font-medium text-gray-700">Any type</p>
               <p className=" text-sm font-medium text-gray-500">{pickupLocation || ' select type'}</p>
             </div>
 
 
-            <span className="h-10 w-px bg-gray-300"></span>
+            <span className="h-9 w-px bg-gray-300"></span>
             <div className="flex flex-col py-2 px-5 items-start rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
               <p className="text-sm font-medium text-gray-700">Any size</p>
               <p className="text-sm text-gray-500">{seatingCapacity || 'Enter size'}</p>
