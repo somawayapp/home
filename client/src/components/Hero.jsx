@@ -321,7 +321,6 @@ useEffect(() => {
 
 
 
-   {!isSmallScreen && showDesktop && location.pathname === "/" && (
 
    <div className='flex items-center py-4 md:py-7 gap-4'>
           {/* Dashboard/Add Listing button (hidden on small screens) */}
@@ -432,11 +431,11 @@ useEffect(() => {
             </div>
           </div>
         </div>
-      )}
 
 </div>
 
 
+   {!isSmallScreen && showDesktop && location.pathname === "/" && (
 
 
    <motion.div
@@ -487,6 +486,7 @@ useEffect(() => {
         </div>
      </motion.div>
 
+      )}
 
      
               
