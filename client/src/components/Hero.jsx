@@ -193,6 +193,8 @@ useEffect(() => {
   {/* === Links Section === */}
 
    {!isSmallScreen && showDesktop && location.pathname === "/" && (
+    <div className='flex flex-col'>
+
 
 <div className="hidden md:flex flex-row gap-10 ml-4">
   
@@ -235,6 +237,7 @@ useEffect(() => {
     )
   })}  
 
+</div>
 
 
           <motion.div
