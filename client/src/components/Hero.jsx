@@ -169,11 +169,10 @@ useEffect(() => {
                
 
 
-<div className="flex flex-row w-full items-start py-2 justify-between">
+<div className="flex flex-row w-full items-start justify-between">
 
-<div className='mt-6 '>
 
-<Link to="/" className="z-50 ">
+<Link to="/" className="z-50 mt-8 ">
               {/* Small screens → small icon */}
               <motion.img
                 whileHover={{ scale: 1.05 }}
@@ -190,13 +189,15 @@ useEffect(() => {
                 className="h-8 hidden sm:block"
               />
             </Link>
+ <div className='mt-8 hidden md:flex'>
+
 </div>
               
 
   {/* === Links Section === */}
 
    {!isSmallScreen && showDesktop && location.pathname === "/" && (
-    <div className='flex flex-col items-center justify-center'>
+    <div className='flex flex-col mt-6 items-center justify-center'>
 
 
 <div className="hidden md:flex  flex-row gap-10 mb-2 ml-4">
@@ -369,7 +370,7 @@ useEffect(() => {
 
 
 
-   <div className='flex items-center  mt-6 gap-4'>
+   <div className='flex items-center  mt-8 gap-4'>
           {/* Dashboard/Add Listing button (hidden on small screens) */}
           <div className='hidden sm:flex items-center gap-4'>
             <button
