@@ -169,11 +169,11 @@ useEffect(() => {
                
 
 
-<div className="flex flex-row w-full items-start py-4 justify-between">
+<div className="flex flex-row w-full items-start py-2 justify-between">
 
-<div>
+<div className='mt-6 '>
 
-<Link to="/" className="z-50 mt-4 ">
+<Link to="/" className="z-50 ">
               {/* Small screens → small icon */}
               <motion.img
                 whileHover={{ scale: 1.05 }}
@@ -199,7 +199,7 @@ useEffect(() => {
     <div className='flex flex-col items-center justify-center'>
 
 
-<div className="hidden md:flex flex-row gap-10 ml-4">
+<div className="hidden md:flex  flex-row gap-10 mb-2 ml-4">
   
 
   {links.map((link) => {
@@ -369,7 +369,7 @@ useEffect(() => {
 
 
 
-   <div className='flex items-center  mt-4 gap-4'>
+   <div className='flex items-center  mt-6 gap-4'>
           {/* Dashboard/Add Listing button (hidden on small screens) */}
           <div className='hidden sm:flex items-center gap-4'>
             <button
