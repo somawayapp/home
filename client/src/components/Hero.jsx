@@ -198,7 +198,7 @@ useEffect(() => {
     <div className='flex flex-col mt-5 mb-8  items-center justify-center'>
 
 
-<div className="hidden md:flex  flex-row gap-10 mb-2 ml-4">
+<div className="hidden md:flex absolute flex-row gap-10 mb-2 ml-4">
   
 
   {links.map((link) => {
