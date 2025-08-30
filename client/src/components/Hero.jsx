@@ -294,6 +294,77 @@ useEffect(() => {
 
 
 
+
+
+
+         {(isSmallScreen || !showDesktop) && (
+       <motion.button
+    initial={{ scale: 1, opacity: 1 }}
+          animate={{
+            // Apply animation only if it's an 'md' screen
+            scale: shouldAnimate ? (showDesktop ? 1 : 0.85) : 1,
+            opacity: shouldAnimate ? (showDesktop ? 1 : 0.95) : 1,
+            y: shouldAnimate ? (showDesktop ? -10 : -5) : (showDesktop ? -10 : -5), // You might still want the 'y' animation
+          }}
+          transition={{ type: "spring", stiffness: 200, damping: 25, duration: 0.3 }}
+          
+  onClick={() => setShowModal(true)}
+  className="
+    flex items-center justify-between
+    gap-1 md:gap-4
+    bg-white rounded-full text-gray-600
+    shadow-[0px_8px_20px_rgba(0,0,0,0.1)] border border-light
+    mt-4 md:mt-3 max-w-150
+  "
+>
+  <div className="flex-1 gap-1 md:gap-4 flex justify-between items-center">
+   <div className="flex items-center gap-2">
+  {/* === House Video Icon === */}
+  <video
+    src={assets.housevid}
+    autoPlay
+    loop
+    muted
+    playsInline
+    className="w-11 h-11 rounded-full pl-3 md:pl-5  object-cover"
+  />
+
+  {/* === Text === */}
+  <span className="px-2 py-2 font-medium text-md md:text-lg md:pr-4 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+    {pickupLocation || "Any where"}
+  </span>
+</div>
+
+
+    <span className="self-stretch w-px bg-gray-300"></span>
+
+    <span className="px-2 md:px-4 font-medium py-2 text-md md:text-lg rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+      {pricePerDay || "Any price"}
+    </span>
+
+    <span className="self-stretch w-px bg-gray-300"></span>
+
+    <span className="px-2 md:px-4 font-medium py-2 text-md md:text-lg rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+      {seatingCapacity || "Any size"}
+    </span>
+  </div>
+
+  <div className="p-1 md:p-2">
+    <motion.button
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
+      className="flex items-center justify-center md:ml-2 gap-1 px-3 py-3 bg-primary hover:bg-primary-dull text-white rounded-full cursor-pointer"
+    >
+      <img src={assets.search_icon} alt="search" className="brightness-300" />
+    </motion.button>
+  </div>
+</motion.button>
+
+      )}
+
+
+
+
    <div className='flex items-center gap-4'>
           {/* Dashboard/Add Listing button (hidden on small screens) */}
           <div className='hidden sm:flex items-center gap-4'>
