@@ -15,11 +15,12 @@ const Hero = () => {
   const location = useLocation()
   const currentPath = location.pathname
 
-  const links = [
-    { name: "Homes", path: "/" },
-    { name: "Agents", path: "/agents" },
-    { name: "Projects", path: "/projects" },
-  ]
+ const links = [
+  { name: "Homes", path: "/", type: "video", src: assets.housevid },
+  { name: "Agents", path: "/agents", type: "video", src: assets.agenticon },
+  { name: "Projects", path: "/projects", type: "image", src: assets.upcomingvid },
+]
+
 
   // Track screen size
   const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 768)
@@ -157,24 +158,47 @@ useEffect(() => {
   />
 
   {/* === Links Section === */}
-  <div className="hidden md:flex flex-row gap-10 ml-4">
-    {links.map((link) => {
-      const isActive = currentPath === link.path
-      return (
-        <Link
-          key={link.path}
-          to={link.path}
-          className={`relative text-gray-700 transition-colors 
-            hover:text-black ${isActive ? "text-black" : ""}`}
-        >
-          <span className="inline-block px-1">{link.name}</span>
-          {isActive && (
-            <span className="absolute left-[-6px] -bottom-1 w-[calc(100%+15px)] h-[3px] bg-black rounded-full"></span>
-          )}
-        </Link>
-      )
-    })}
-  </div>
+<div className="hidden md:flex flex-row gap-10 ml-4">
+  {links.map((link) => {
+    const isActive = currentPath === link.path
+    return (
+      <Link
+        key={link.path}
+        to={link.path}
+        className={`relative flex items-center gap-2 text-gray-700 transition-colors hover:text-black ${
+          isActive ? "text-black" : ""
+        }`}
+      >
+        {/* === Icon/Video/Image Left of Text === */}
+        {link.type === "video" ? (
+          <video
+            src={link.src}
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="w-5 h-5 rounded-full object-cover"
+          />
+        ) : (
+          <img
+            src={link.src}
+            alt={link.name}
+            className="w-5 h-5 rounded-full object-cover"
+          />
+        )}
+
+        {/* === Link Text === */}
+        <span className="inline-block">{link.name}</span>
+
+        {/* === Active Underline === */}
+        {isActive && (
+          <span className="absolute left-[-6px] -bottom-1 w-[calc(100%+15px)] h-[3px] bg-black rounded-full"></span>
+        )}
+      </Link>
+    )
+  })}
+</div>
+
 </div>
 
 
