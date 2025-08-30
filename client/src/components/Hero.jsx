@@ -252,11 +252,11 @@ useEffect(() => {
     loop
     muted
     playsInline
-    className="w-11 h-11 rounded-full object-cover"
+    className="w-11 h-11 rounded-full pl-3 md:pl-5  object-cover"
   />
 
   {/* === Text === */}
-  <span className="pr-2 pl-3 md:pl-5 py-2 font-medium text-md md:text-lg md:pr-4 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+  <span className="px-2 py-2 font-medium text-md md:text-lg md:pr-4 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
     {pickupLocation || "Any where"}
   </span>
 </div>
