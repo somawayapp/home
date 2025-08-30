@@ -195,7 +195,7 @@ useEffect(() => {
   {/* === Links Section === */}
 
    {!isSmallScreen && showDesktop && location.pathname === "/" && (
-    <div className='flex flex-col absolute mt-5 mb-8  items-center justify-center'>
+    <div className='flex flex-col mt-5 z-51  mb-8  items-center justify-center'>
 
 
 <div className="hidden md:flex  flex-row gap-10 mb-2 ml-4">
@@ -504,7 +504,7 @@ useEffect(() => {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="fixed inset-0 bg-black/10 flex p-2 items-center justify-center z-50"
+          className="fixed inset-0 bg-black/10 flex p-2 items-center justify-center z-52"
           onClick={() => setShowModal(false)}
         >
           <motion.div
