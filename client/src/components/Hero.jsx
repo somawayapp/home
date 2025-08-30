@@ -17,7 +17,7 @@ const Hero = () => {
 
   const links = [
     { name: "Homes", path: "/" },
-    { name: "Experiences", path: "/agents" },
+    { name: "Agents", path: "/agents" },
     { name: "Projects", path: "/projects" },
   ]
 
@@ -128,28 +128,54 @@ useEffect(() => {
                
 
 
-             <div className=' flex flex-row'>
+          <div className="flex flex-row items-center gap-6 ml-4">
+  {/* === House Video === */}
+  <video
+    src={assets.housevid}
+    autoPlay
+    loop
+    muted
+    playsInline
+    className="w-8 h-8 rounded-full object-cover"
+  />
 
-           <div className="hidden md:flex flex-row mb-5 gap-15">
-        {links.map((link) => {
-              const isActive = currentPath === link.path
-              return (
-             <Link
-        key={link.path}
-        to={link.path}
-        className={`relative text-gray-700 transition-colors 
-          hover:text-black ${isActive ? "text-black" : ""}`}
-      >
-        <span className="inline-block px-1">{link.name}</span>
-        {isActive && (
-          <span className="absolute left-[-6px] -bottom-1 w-[calc(100%+15px)] h-[3px] bg-black rounded-full"></span>
-        )}
-      </Link>
-        )
-      })}
-    </div>
+  {/* === Upcoming Image === */}
+  <img
+    src={assets.upcomingvid} // image
+    alt="Upcoming"
+    className="w-8 h-8 rounded-full object-cover"
+  />
 
-             </div>
+  {/* === Agent Video === */}
+  <video
+    src={assets.agenticon}
+    autoPlay
+    loop
+    muted
+    playsInline
+    className="w-8 h-8 rounded-full object-cover"
+  />
+
+  {/* === Links Section === */}
+  <div className="hidden md:flex flex-row gap-10 ml-4">
+    {links.map((link) => {
+      const isActive = currentPath === link.path
+      return (
+        <Link
+          key={link.path}
+          to={link.path}
+          className={`relative text-gray-700 transition-colors 
+            hover:text-black ${isActive ? "text-black" : ""}`}
+        >
+          <span className="inline-block px-1">{link.name}</span>
+          {isActive && (
+            <span className="absolute left-[-6px] -bottom-1 w-[calc(100%+15px)] h-[3px] bg-black rounded-full"></span>
+          )}
+        </Link>
+      )
+    })}
+  </div>
+</div>
 
 
         <div  onSubmit={handleSearch}
@@ -161,18 +187,19 @@ useEffect(() => {
 >
   {/* === Small Video/Icon on Left === */}
 <div 
-  className="flex flex-row items-center gap-2 xs zaa ml-4 cursor-pointer" 
+  className="flex flex-row items-center xs zaa ml-4 cursor-pointer" 
   onClick={() => setShowModal(true)}
 >
     <video 
     src={assets.housevid}
     autoPlay
+    loop
     muted
     playsInline
     className=" h-19 rounded-full object-cover"
   />
 
-  <div className="flex flex-col py-2 px-6 mr-9 items-start rounded-full hover:bg-gray-100 transition-colors">
+  <div className="flex flex-col py-2 px-6 items-start rounded-full hover:bg-gray-100 transition-colors">
     <p className="text-sm font-medium text-gray-700">Any where</p>
     <p className="text-sm font-medium text-gray-500">
       {pickupLocation || ' search destinations'}
