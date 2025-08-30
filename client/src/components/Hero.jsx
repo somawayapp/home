@@ -195,7 +195,7 @@ useEffect(() => {
   {/* === Links Section === */}
 
    {!isSmallScreen && showDesktop && location.pathname === "/" && (
-    <div className='flex flex-col mt-5 mb-6 items-center justify-center'>
+    <div className='flex flex-col mt-5 mb-7 items-center justify-center'>
 
 
 <div className="hidden md:flex  flex-row gap-10 mb-2 ml-4">
@@ -317,7 +317,7 @@ useEffect(() => {
     gap-1 md:gap-4
     bg-white rounded-full text-gray-600
     shadow-[0px_8px_20px_rgba(0,0,0,0.1)] border border-light
-    mt-6 md:mt-7 max-w-150
+    mt-6 md:mt-[6.5px] max-w-150
   "
 >
   <div className="flex-1 gap-1 md:gap-4 flex justify-between items-center">
