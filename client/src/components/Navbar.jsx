@@ -64,23 +64,7 @@ const Navbar = () => {
         } shadow-md`}
       >
         {/* Logo */}
-      <Link to="/" className="z-50">
-  {/* Small screens → small icon */}
-  <motion.img
-    whileHover={{ scale: 1.05 }}
-    src={assets.smalllogo}
-    alt="logo"
-    className="h-8 block sm:hidden"
-  />
-
-  {/* Larger screens → full logo */}
-  <motion.img
-    whileHover={{ scale: 1.05 }}
-    src={assets.logo}
-    alt="logo"
-    className="h-8 hidden sm:block"
-  />
-</Link>
+    
 
 
           <div className=' z-20'>

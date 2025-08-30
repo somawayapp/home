@@ -172,7 +172,26 @@ useEffect(() => {
                
 
 
-          <div className="flex flex-row items-center gap-6 ml-4">
+          <div className="flex flex-row items-center justify-between ">
+
+
+              <Link to="/" className="z-50">
+              {/* Small screens → small icon */}
+              <motion.img
+                whileHover={{ scale: 1.05 }}
+                src={assets.smalllogo}
+                alt="logo"
+                className="h-8 block sm:hidden"
+              />
+            
+              {/* Larger screens → full logo */}
+              <motion.img
+                whileHover={{ scale: 1.05 }}
+                src={assets.logo}
+                alt="logo"
+                className="h-8 hidden sm:block"
+              />
+            </Link>
 
 
   {/* === Links Section === */}
@@ -215,6 +234,119 @@ useEffect(() => {
     )
   })}
 </div>
+
+
+
+
+   <div className='flex items-center gap-4'>
+          {/* Dashboard/Add Listing button (hidden on small screens) */}
+          <div className='hidden sm:flex items-center gap-4'>
+            <button
+              onClick={() => {
+                if (isOwner) {
+                  navigate('/owner')
+                } else if (!user) {
+                  setShowLogin(true)
+                } else {
+                  changeRole()
+                }
+              }}
+              className='cursor-pointer rounded-3xl px-4 py-2 transition hover:bg-gray-100'
+            >
+              {isOwner ? 'Dashboard' : 'Add listing'}
+            </button>
+          </div>
+
+          {/* Toggle Menu Button */}
+          <div className='relative'>
+            <button
+              className='flex cursor-pointer items-center gap-3 rounded-full border border-light 
+              px-3 py-3  transition hover:shadow-md md:px-2 md:py-1'
+              aria-label='Menu'
+              onClick={() => setOpen(!open)}
+            >
+              <img src={assets.menu_icon} alt='menu' className='h-4 w-4 md:h-4 md:w-6' />
+              <img
+                src={user?.image || assets.user_profile}
+                alt='user'
+                className='hidden h-8 w-8 rounded-full object-cover lg:block'
+              />
+            </button>
+
+            {/* Backdrop for mobile menu */}
+            {open && (
+              <div
+                className='fixed inset-0 z-30 bg-black/10'
+                onClick={() => setOpen(false)}
+              ></div>
+            )}
+
+            {/* Dropdown Menu */}
+            <div
+              ref={dropdownRef}
+              className={`fixed  right-6  md:right-16 lg:right-24 xl:right-32  top-14 z-40 flex w-55 flex-col items-stretch rounded-lg border border-light bg-white pb-2 pt-1 shadow-xl transition-all duration-300 md:w-60 md:rounded-xl ${
+                open ? 'translate-x-0 opacity-100' : 'translate-x-10 opacity-0 pointer-events-none'
+              }`}
+            >
+              {menuLinks.map((link, index) => (
+                <Link
+                  key={index}
+                  to={link.path}
+                  onClick={() => setOpen(false)}
+                  className='group relative w-full border-b border-borderColor px-4 py-1'
+                >
+                  <span className='relative z-10 block py-2 text-left'>{link.name}</span>
+                  <span className='absolute inset-x-0 bottom-1 top-1 bg-gray-100 opacity-0 transition group-hover:opacity-100'></span>
+                </Link>
+              ))}
+
+              {/* List Cars / Dashboard */}
+              <div
+                onClick={() => {
+                  if (!user) {
+                    setShowLogin(true)
+                  } else if (isOwner) {
+                    navigate('/owner')
+                  } else {
+                    changeRole()
+                  }
+                  setOpen(false)
+                }}
+                className='group relative w-full cursor-pointer border-b border-borderColor px-4 py-1'
+              >
+                <span className='relative z-10 block py-2 text-left'>
+                  {isOwner ? 'Dashboard' : 'List cars'}
+                </span>
+                <span className='absolute inset-x-0 bottom-1 top-1 bg-gray-100 opacity-0 transition group-hover:opacity-100'></span>
+              </div>
+
+              {/* Auth section */}
+              {user ? (
+                <div
+                  onClick={() => {
+                    logout()
+                    setOpen(false)
+                  }}
+                  className='group relative w-full cursor-pointer px-4 py-1'
+                >
+                  <span className='relative z-10 block py-2 text-left'>Logout</span>
+                  <span className='absolute inset-x-0 bottom-1 top-1 bg-gray-100 opacity-0 transition group-hover:opacity-100'></span>
+                </div>
+              ) : (
+                <div
+                  onClick={() => {
+                    setShowLogin(true)
+                    setOpen(false)
+                  }}
+                  className='group relative w-full cursor-pointer px-4 py-1'
+                >
+                  <span className='relative z-10 block py-2 text-left'>Login / Signup</span>
+                  <span className='absolute inset-x-0 bottom-1 top-1 bg-gray-100 opacity-0 transition group-hover:opacity-100'></span>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
 
 </div>
 
