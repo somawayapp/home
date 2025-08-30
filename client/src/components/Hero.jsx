@@ -160,7 +160,7 @@ useEffect(() => {
   }
 
   return (
-    <div className="flex items-center justify-between w-full">
+    <div className="flex  transition-colors duration-300 px-4 md:px-12 items-center justify-between w-full sticky top-0 left-0 right-0 z-50">
 
       {/* === Desktop / MD+ form (expanded) */}
       {!isSmallScreen && showDesktop && location.pathname === "/" && (
@@ -349,6 +349,22 @@ useEffect(() => {
         </div>
 
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         <div  onSubmit={handleSearch}
