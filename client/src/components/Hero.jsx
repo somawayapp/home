@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react'
-import { assets, cityList } from '../assets/assets'
+import React, { useState, useEffect, useRef } from 'react'
+import { assets, cityList, menuLinks } from '../assets/assets'
 import { useAppContext } from '../context/AppContext'
-import { useLocation } from 'react-router-dom'
 import { motion } from "framer-motion"
-import { Link } from "react-router-dom"
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import toast from 'react-hot-toast'
 
 
 const Hero = () => {
@@ -14,6 +14,49 @@ const Hero = () => {
   const { pricePerDay, setPricePerDay, seatingCapacity, setSeatingCapacity, navigate } = useAppContext()
   const location = useLocation()
   const currentPath = location.pathname
+    const { setShowLogin, user, logout, isOwner, axios, setIsOwner } = useAppContext()
+    const [open, setOpen] = useState(false)
+    const dropdownRef = useRef(null)
+  
+    const changeRole = async () => {
+      try {
+        const { data } = await axios.post('/api/owner/change-role')
+        if (data.success) {
+          setIsOwner(true)
+          toast.success(data.message)
+        } else {
+          toast.error(data.message)
+        }
+      } catch (error) {
+        toast.error(error.message)
+      }
+    }
+  
+    // Prevents body scroll when the mobile menu is open
+    useEffect(() => {
+      if (open) {
+        document.body.style.overflow = 'hidden'
+      } else {
+        document.body.style.overflow = 'auto'
+      }
+      return () => {
+        document.body.style.overflow = 'auto'
+      }
+    }, [open])
+  
+    // Closes the dropdown when clicking outside
+    useEffect(() => {
+      const handleClickOutside = (e) => {
+        if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+          setOpen(false)
+        }
+      }
+      if (open) {
+        document.addEventListener('mousedown', handleClickOutside)
+      }
+      return () => document.removeEventListener('mousedown', handleClickOutside)
+    }, [open])
+
 
  const links = [
   { name: "Homes", path: "/", type: "video", src: assets.housevid },
