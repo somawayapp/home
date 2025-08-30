@@ -166,16 +166,16 @@ useEffect(() => {
       {/* === Desktop / MD+ form (expanded) */}
       {!isSmallScreen && showDesktop && location.pathname === "/" && (
           <motion.div
-  initial={{ scale: 0.85, opacity: 0, y: -20 }}
-  animate={{ scale: 1, opacity: 1, y: 0 }}
-  transition={{ type: "spring", stiffness: 200, damping: 25, duration: 0.3 }}
-  className="flex flex-col w-full items-center"
->
+      initial={{ scale: 0.85, opacity: 0, y: -20 }}
+      animate={{ scale: 1, opacity: 1, y: 0 }}
+      transition={{ type: "spring", stiffness: 200, damping: 25, duration: 0.3 }}
+      className="flex flex-col w-full items-center"
+     >
 
                
 
 
-          <div className="flex flex-row items-center justify-between ">
+          <div className="flex flex-row w-full items-center justify-between ">
 
 
               <Link to="/" className="z-50">
