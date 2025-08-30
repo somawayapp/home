@@ -195,7 +195,7 @@ useEffect(() => {
   {/* === Links Section === */}
 
    {!isSmallScreen && showDesktop && location.pathname === "/" && (
-    <div className='flex flex-col mt-5 mb-8  items-center justify-center'>
+    <div className='flex flex-col mt-5  items-center justify-center'>
 
 
 <div className="hidden md:flex  flex-row gap-10 mb-2 ml-4">
@@ -442,11 +442,11 @@ useEffect(() => {
       initial={{ scale: 0.85, opacity: 0, y: -20 }}
       animate={{ scale: 1, opacity: 1, y: 0 }}
       transition={{ type: "spring", stiffness: 200, damping: 25, duration: 0.3 }}
-      className="flex   flex-col left-0 right-0 w-full items-center"
+      className="flex   flex-col mb-8  w-full items-center"
      >
 
         <div  onSubmit={handleSearch}
-          className="hidden md:flex mt-5 flex-row max-w-1350 items-center justify-between rounded-full  bg-white shadow-[0px_8px_20px_rgba(0,0,0,0.1)] border border-light"
+          className="hidden md:flex mt-5  w-full flex-row max-w-1350 items-center justify-between rounded-full  bg-white shadow-[0px_8px_20px_rgba(0,0,0,0.1)] border border-light"
         >
           <div className="flex flex-row items-center gap-4 ml-4" onClick={() => setShowModal(true)}>
             <div className="flex flex-col py-2 px-6 mr-9 items-start rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
