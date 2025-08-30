@@ -169,7 +169,7 @@ useEffect(() => {
                
 
 
-<div className="flex flex-row w-full items-start justify-between">
+<div className="flex flex-row w-full items-start py-2 md:py-4 justify-between">
 
 
               <Link to="/" className="z-50">
