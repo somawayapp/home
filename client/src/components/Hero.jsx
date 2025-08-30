@@ -233,6 +233,58 @@ useEffect(() => {
 </div>
 
 
+ {!isSmallScreen && showDesktop && location.pathname === "/" && (
+          <motion.div
+      initial={{ scale: 0.85, opacity: 0, y: -20 }}
+      animate={{ scale: 1, opacity: 1, y: 0 }}
+      transition={{ type: "spring", stiffness: 200, damping: 25, duration: 0.3 }}
+      className="flex flex-col w-full items-center"
+     >
+
+        <div  onSubmit={handleSearch}
+          className="hidden md:flex mt-5 mb-5 flex-row max-w-350 items-center justify-between rounded-full  bg-white shadow-[0px_8px_20px_rgba(0,0,0,0.1)] border border-light"
+        >
+          <div className="flex flex-row items-center gap-9 ml-4" onClick={() => setShowModal(true)}>
+            <div className="flex flex-col px-6 mr-9 items-start rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+              <p className="text-sm font-medium text-gray-700">Any where</p>
+              <p className=" text-sm font-medium text-gray-500">{pickupLocation || ' search destinations'}</p>
+            </div>
+
+            <span className="h-10 w-px bg-gray-300"></span>
+            <div className="flex flex-col py-2 px-6 items-start rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+              <p className="text-sm font-medium text-gray-700">Any price</p>
+              <p className="text-sm font-medium text-gray-500">{pricePerDay || 'Enter max price '}</p>
+            </div>
+
+             <span className="h-10 w-px bg-gray-300"></span>
+             <div className="flex flex-col py-2 px-6 items-start rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+              <p className="text-sm font-medium text-gray-700">Any type</p>
+              <p className=" text-sm font-medium text-gray-500">{pickupLocation || ' select type'}</p>
+            </div>
+
+
+            <span className="h-10 w-px bg-gray-300"></span>
+            <div className="flex flex-col py-2 px-6 items-start rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+              <p className="text-sm font-medium text-gray-700">Any size</p>
+              <p className="text-sm text-gray-500">{seatingCapacity || 'Enter size'}</p>
+            </div>
+          </div>
+
+          <div className="p-2  ml-5 ">
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="flex items-center justify-center gap-1 px-4 py-4 bg-primary hover:bg-primary-dull text-white rounded-full cursor-pointer"
+            >
+              <img src={assets.search_icon} alt="search" className="brightness-300 md:h-4 md:w-4" />
+            </motion.button>
+          </div>
+        </div>
+     </motion.div>
+
+      )}
+
+
 
 
    <div className='flex items-center gap-4'>
@@ -350,7 +402,7 @@ useEffect(() => {
 
 
 
-    {!isSmallScreen && showDesktop && location.pathname === "/" && (
+      {!isSmallScreen && showDesktop && location.pathname === "/" && (
           <motion.div
       initial={{ scale: 0.85, opacity: 0, y: -20 }}
       animate={{ scale: 1, opacity: 1, y: 0 }}
