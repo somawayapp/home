@@ -195,10 +195,10 @@ useEffect(() => {
   {/* === Links Section === */}
 
    {!isSmallScreen && showDesktop && location.pathname === "/" && (
-    <div className='flex flex-col mt-5 mb-8  items-center justify-center'>
+    <div className='flex flex-col absolute mt-5 mb-8  items-center justify-center'>
 
 
-<div className="hidden md:flex absolute flex-row gap-10 mb-2 ml-4">
+<div className="hidden md:flex  flex-row gap-10 mb-2 ml-4">
   
 
   {links.map((link) => {
@@ -246,7 +246,7 @@ useEffect(() => {
       initial={{ scale: 0.85, opacity: 0, y: -20 }}
       animate={{ scale: 1, opacity: 1, y: 0 }}
       transition={{ type: "spring", stiffness: 200, damping: 25, duration: 0.3 }}
-      className="flex  absolute flex-col left-0 right-0 w-full items-center"
+      className="flex   flex-col left-0 right-0 w-full items-center"
      >
 
         <div  onSubmit={handleSearch}
