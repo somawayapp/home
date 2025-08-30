@@ -160,7 +160,7 @@ useEffect(() => {
   }
 
   return (
-    <div className="flex items-center justify-center w-full">
+    <div className="flex items-center justify-between w-full">
 
       {/* === Desktop / MD+ form (expanded) */}
       {!isSmallScreen && showDesktop && location.pathname === "/" && (
@@ -168,7 +168,7 @@ useEffect(() => {
            initial={{ scale: 0.85, opacity: 0, y: -20 }} // Starts smaller, transparent, and higher up
             animate={{ scale: 1, opacity: 1, y: 0 }} // Expands to full size, becomes opaque, and moves to final position
             transition={{ type: "spring", stiffness: 200, damping: 25, duration: 0.3 }}
-            className='flex flex-col items-center justify-center  '>
+            className='flex flex-col items-center justify-between  '>
                
 
 
