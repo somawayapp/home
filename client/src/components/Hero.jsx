@@ -160,6 +160,7 @@ useEffect(() => {
   onClick={() => setShowModal(true)}
 >
   {/* === Small Video/Icon on Left === */}
+  <div>
   <video 
     src={assets.housevid}
     autoPlay
