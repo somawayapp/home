@@ -17,8 +17,8 @@ const Hero = () => {
 
  const links = [
   { name: "Homes", path: "/", type: "video", src: assets.housevid },
-  { name: "Agents", path: "/agents", type: "video", src: assets.agenticon },
-  { name: "Projects", path: "/projects", type: "image", src: assets.upcomingvid },
+  { name: "Agents", path: "/agents", type: "image", src: assets.agenticon },
+  { name: "Projects", path: "/projects", type: "video", src: assets.upcomingvid },
 ]
 
 
@@ -130,32 +130,7 @@ useEffect(() => {
 
 
           <div className="flex flex-row items-center gap-6 ml-4">
-  {/* === House Video === */}
-  <video
-    src={assets.housevid}
-    autoPlay
-    loop
-    muted
-    playsInline
-    className="w-8 h-8 rounded-full object-cover"
-  />
 
-  {/* === Upcoming Image === */}
-  <img
-    src={assets.upcomingvid} // image
-    alt="Upcoming"
-    className="w-8 h-8 rounded-full object-cover"
-  />
-
-  {/* === Agent Video === */}
-  <video
-    src={assets.agenticon}
-    autoPlay
-    loop
-    muted
-    playsInline
-    className="w-8 h-8 rounded-full object-cover"
-  />
 
   {/* === Links Section === */}
 <div className="hidden md:flex flex-row gap-10 ml-4">
@@ -177,13 +152,13 @@ useEffect(() => {
             loop
             muted
             playsInline
-            className="w-5 h-5 rounded-full object-cover"
+            className="w-15 h-15 rounded-full object-cover"
           />
         ) : (
           <img
             src={link.src}
             alt={link.name}
-            className="w-5 h-5 rounded-full object-cover"
+            className="w-15 h-15 rounded-full object-cover"
           />
         )}
 
