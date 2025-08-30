@@ -161,7 +161,7 @@ useEffect(() => {
 >
   {/* === Small Video/Icon on Left === */}
 <div 
-  className="flex flex-row items-center gap-8 xs zaa ml-4 cursor-pointer" 
+  className="flex flex-row items-center gap-2 xs zaa ml-4 cursor-pointer" 
   onClick={() => setShowModal(true)}
 >
     <video 
@@ -170,7 +170,7 @@ useEffect(() => {
     loop
     muted
     playsInline
-    className="w-6 h-6 rounded-full object-cover"
+    className=" h-29 rounded-full object-cover"
   />
 
   <div className="flex flex-col py-2 px-6 mr-9 items-start rounded-full hover:bg-gray-100 transition-colors">
