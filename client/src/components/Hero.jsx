@@ -160,8 +160,11 @@ useEffect(() => {
   onClick={() => setShowModal(true)}
 >
   {/* === Small Video/Icon on Left === */}
-  <div>
-  <video 
+<div 
+  className="flex flex-row items-center gap-8 xs zaa ml-4 cursor-pointer" 
+  onClick={() => setShowModal(true)}
+>
+    <video 
     src={assets.housevid}
     autoPlay
     loop
