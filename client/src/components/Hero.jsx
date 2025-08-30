@@ -256,7 +256,7 @@ useEffect(() => {
 <div className="
   flex flex-col 
   py-2 
-  px-[clamp(2px,2vw,16px)] 
+  px-[clamp(1vw)] 
   mr-9 
   items-start 
   rounded-full 
@@ -272,7 +272,7 @@ useEffect(() => {
 <div className="
   flex flex-col 
   py-2 
-  px-[clamp(2px,2vw,16px)] 
+  px-[clamp(1vw)] 
   mr-9 
   items-start 
   rounded-full 
@@ -287,7 +287,7 @@ useEffect(() => {
 <div className="
   flex flex-col 
   py-2 
-  px-[clamp(2px,2vw,16px)] 
+  px-[clamp(1vw)] 
   mr-9 
   items-start 
   rounded-full 
@@ -303,7 +303,7 @@ useEffect(() => {
 <div className="
   flex flex-col 
   py-2 
-  px-[clamp(2px,2vw,16px)] 
+  px-[clamp(1vw)] 
   mr-9 
   items-start 
   rounded-full 
