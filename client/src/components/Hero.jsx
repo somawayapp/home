@@ -166,7 +166,7 @@ useEffect(() => {
 
         {/* === Active Underline === */}
         {isActive && (
-          <span className="absolute left-[-6px] w-[calc(100%+9px)] h-[3px] bg-black rounded-full"></span>
+          <span className="absolute left-[-6px] -bottom-[1px] w-[calc(100%+9px)] h-[3px] bg-black rounded-full"></span>
         )}
       </Link>
     )
