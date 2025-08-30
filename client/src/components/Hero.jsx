@@ -449,26 +449,26 @@ useEffect(() => {
           className="hidden md:flex mt-2  w-full flex-row max-w-205 items-center justify-between rounded-full  bg-white shadow-[0px_8px_20px_rgba(0,0,0,0.1)] border border-light"
         >
           <div className="flex flex-row items-center " onClick={() => setShowModal(true)}>
-            <div className="flex flex-col py-3 pr-21  pl-9 items-start rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+            <div className="flex flex-col py-3 pr-32  pl-9 items-start rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
               <p className="text-sm font-medium text-gray-700">Any where</p>
               <p className=" text-sm font-medium text-gray-500">{pickupLocation || ' search destinations'}</p>
             </div>
 
             <span className="h-9 w-px bg-gray-300"></span>
-            <div className="flex flex-col py-3 px-8 items-start rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+            <div className="flex flex-col py-3 px-12 items-start rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
               <p className="text-sm font-medium text-gray-700">Any price</p>
               <p className="text-sm font-medium text-gray-500">{pricePerDay || 'Enter max price '}</p>
             </div>
 
              <span className="h-9 w-px bg-gray-300"></span>
-             <div className="flex flex-col py-3 px-8 items-start rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+             <div className="flex flex-col py-3 px-12 items-start rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
               <p className="text-sm font-medium text-gray-700">Any type</p>
               <p className=" text-sm font-medium text-gray-500">{pickupLocation || ' select type'}</p>
             </div>
 
 
             <span className="h-9 w-px bg-gray-300"></span>
-            <div className="flex flex-col py-3 px-8 items-start rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+            <div className="flex flex-col py-3 px-12 items-start rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
               <p className="text-sm font-medium text-gray-700">Any size</p>
               <p className="text-sm text-gray-500">{seatingCapacity || 'Enter size'}</p>
             </div>
