@@ -167,10 +167,9 @@ useEffect(() => {
     <video 
     src={assets.housevid}
     autoPlay
-    loop
     muted
     playsInline
-    className=" h-29 rounded-full object-cover"
+    className=" h-19 rounded-full object-cover"
   />
 
   <div className="flex flex-col py-2 px-6 mr-9 items-start rounded-full hover:bg-gray-100 transition-colors">
