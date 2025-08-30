@@ -192,9 +192,7 @@ useEffect(() => {
 
 
   {/* === Links Section === */}
-        {!isSmallScreen && showDesktop && location.pathname === "/" && (
-
-<div className="flex flex-row gap-10 ml-4">
+<div className="hidden md:flex flex-row gap-10 ml-4">
 
   {links.map((link) => {
     const isActive = currentPath === link.path
@@ -202,7 +200,7 @@ useEffect(() => {
       <Link
         key={link.path}
         to={link.path}
-        className={` flex items-center gap-2 transition-colors hover:text-black ${
+        className={`relative flex items-center gap-2 transition-colors hover:text-black ${
           isActive ? "text-black" : " text-gray-700"
         }`}
       >
