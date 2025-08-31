@@ -92,7 +92,7 @@ const CarCard = ({ car }) => {
 
     
        <div className="absolute top-3 right-3">
-        <LikeButton postId={car._id} />
+        <LikeButton carId={car._id} />
       </div>
 
       {/* Arrows */}
