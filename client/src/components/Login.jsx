@@ -14,21 +14,32 @@ const Login = () => {
   const [errors, setErrors] = React.useState({});
   const [loading, setLoading] = React.useState(false);
 
-  const validateForm = () => {
-    let newErrors = {};
-    if (state === "register" && name.trim().length < 3) {
-      newErrors.name = "Name must be at least 3 characters.";
-    }
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      newErrors.email = "Enter a valid email address.";
-    }
-    if (password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters.";
-    }
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
+// ✅ at least 8 chars, one uppercase, one lowercase, one number, one symbol
+const validateForm = () => {
+  let newErrors = {};
+
+  if (state === "register" && name.trim().length < 3) {
+    newErrors.name = "Name must be at least 3 characters.";
+  }
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    newErrors.email = "Enter a valid email address.";
+  }
+
+  // Strong password validation regex:
+  const passwordRegex =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_\-+=<>?{}[\]~|:;.,]).{8,}$/;
+
+  if (!passwordRegex.test(password)) {
+    newErrors.password =
+      "Password must be at least 8 characters, include uppercase, lowercase, number, and symbol.";
+  }
+
+  setErrors(newErrors);
+  return Object.keys(newErrors).length === 0;
+};
+
 
   const onSubmitHandler = async (event) => {
     event.preventDefault();
