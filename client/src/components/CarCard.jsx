@@ -3,7 +3,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useState, useRef } from "react";
 
 const CarCard = ({ car }) => {
-  const images = Array.isArray(car.image) ? car.image : [];
+  const images = Array.isArray(car.image) ? car.image : car.image ? [car.image] : [];
   const [currentIndex, setCurrentIndex] = useState(0);
   const scrollRef = useRef(null);
 
