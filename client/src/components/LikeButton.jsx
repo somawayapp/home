@@ -1,22 +1,22 @@
 // components/LikeButton.jsx
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import toast from "react-hot-toast"; // ✅ For notifications
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 
 const LikeButton = ({ carId }) => {
   const [liked, setLiked] = useState(false);
   const [loading, setLoading] = useState(false);
   const [animating, setAnimating] = useState(false);
-  const [message, setMessage] = useState(""); // ✅ Message state
 
-  // Check if liked when component mounts
+  // ✅ Check if liked when component mounts
   useEffect(() => {
     const fetchLikeStatus = async () => {
       try {
         const res = await axios.get(`/api/user/checkifliked?carId=${carId}`);
         if (res.data.success) setLiked(res.data.liked);
       } catch (error) {
-        console.log(error);
+        console.error("Failed to fetch like status:", error);
       }
     };
     fetchLikeStatus();
@@ -26,23 +26,27 @@ const LikeButton = ({ carId }) => {
     if (loading) return;
     setLoading(true);
 
-    const newLikedState = !liked;
-    setLiked(newLikedState);
-    setAnimating(true);
-
     try {
       const res = await axios.post("/api/user/togglelike", { carId });
 
-      if (res.data.success) {
-        setLiked(res.data.liked);
-        // ✅ Show message when liked/unliked
-        setMessage(res.data.liked ? "Added to favourites ❤️" : "Removed from favourites 💔");
+      if (res.data.error === "NOT_AUTHENTICATED") {
+        toast.error("You must be logged in to like a listing.");
+        return;
+      }
 
-        // Auto-hide message after 2 seconds
-        setTimeout(() => setMessage(""), 2000);
+      if (res.data.success) {
+        const newLikedState = res.data.liked;
+        setLiked(newLikedState);
+        setAnimating(true);
+
+        // ✅ Show nice toast message
+        toast.success(
+          newLikedState ? "Added to favourites ❤️" : "Removed from favourites 💔"
+        );
       }
     } catch (error) {
-      console.log(error);
+      console.error("Failed to toggle like:", error);
+      toast.error("Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -57,6 +61,7 @@ const LikeButton = ({ carId }) => {
           animating ? "animate-bounce-heart" : ""
         }`}
         aria-label="Like"
+        disabled={loading}
       >
         <AiOutlineHeart
           size={28}
@@ -67,15 +72,9 @@ const LikeButton = ({ carId }) => {
           className={liked ? "fill-red-500" : "fill-neutral-500/70"}
         />
       </button>
-
-      {/* ✅ Feedback Message */}
-      {message && (
-        <span className="mt-1 text-xs text-white bg-gray-900 px-2 py-1 rounded-md shadow-md animate-fade-in">
-          {message}
-        </span>
-      )}
     </div>
   );
 };
 
 export default LikeButton;
+

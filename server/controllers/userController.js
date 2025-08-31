@@ -96,30 +96,7 @@ export const getCars = async (req, res) => {
   }
 };
 
-// controllers/likeController.js
 
-export const toggleLike = async (req, res) => {
-  try {
-    const { carId } = req.body;
-    const userId = req.user._id;
-
-    // Check if like exists
-    const existingLike = await Like.findOne({ user: userId, car: carId });
-
-    if (existingLike) {
-      // Unlike (delete)
-      await Like.deleteOne({ _id: existingLike._id });
-      return res.json({ success: true, liked: false });
-    }
-
-    // Like (create)
-    await Like.create({ user: userId, car: carId });
-    return res.json({ success: true, liked: true });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ success: false, message: error.message });
-  }
-};
 
 export const getLikedCars = async (req, res) => {
   try {
@@ -132,6 +109,43 @@ export const getLikedCars = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+
+
+
+// controllers/likeController.js
+
+export const toggleLike = async (req, res) => {
+  try {
+    // ✅ Ensure user is logged in
+    if (!req.user) {
+      return res.json({ success: false, error: "NOT_AUTHENTICATED" });
+    }
+
+    const { carId } = req.body;
+    const userId = req.user._id;
+
+    // ✅ Check if like exists
+    const existingLike = await Like.findOne({ user: userId, car: carId });
+
+    if (existingLike) {
+      // ✅ Unlike (delete)
+      await Like.deleteOne({ _id: existingLike._id });
+      return res.json({ success: true, liked: false });
+    }
+
+    // ✅ Like (create new)
+    await Like.create({ user: userId, car: carId });
+    return res.json({ success: true, liked: true });
+
+  } catch (error) {
+    console.error("Toggle Like Error:", error);
+    return res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
+
+
+
 
 export const checkIfLiked = async (req, res) => {
   try {
