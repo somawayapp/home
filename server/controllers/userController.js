@@ -137,17 +137,27 @@ export const toggleLike = async (req, res) => {
     if (existingLike) {
       // Unlike (delete)
       await Like.deleteOne({ _id: existingLike._id });
-      return res.json({ success: true, liked: false });
+      return res.json({
+        success: true,
+        liked: false,
+        message: "Removed from favourites",
+      });
     }
 
     // Like (create)
     await Like.create({ user: userId, car: carId });
-    return res.json({ success: true, liked: true });
+    return res.json({
+      success: true,
+      liked: true,
+      message: "Added to favourites",
+    });
+
   } catch (error) {
     console.log(error);
     res.status(500).json({ success: false, message: error.message });
   }
 };
+
 
 export const getLikedCars = async (req, res) => {
   try {
