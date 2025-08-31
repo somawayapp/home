@@ -118,7 +118,7 @@ export const toggleLike = async (req, res) => {
   try {
     // ✅ Ensure user is logged in
     if (!req.user) {
-      return res.json({ success: false, error: "NOT_AUTHENTICATED" });
+      return res.status(401).json({ success: false, error: "NOT_AUTHENTICATED" });
     }
 
     const { carId } = req.body;
