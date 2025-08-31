@@ -15,7 +15,7 @@ const LikeButton = ({ carId }) => {
   useEffect(() => {
     const fetchLikeStatus = async () => {
       try {
-        const res = await axios.get(`/api/likes/checkiflisted?carId=${carId}`);
+        const res = await axios.get(`/api/user/checkiflisted?carId=${carId}`);
         if (res.data.success) setLiked(res.data.liked);
       } catch (error) {
         console.log(error);
@@ -33,7 +33,7 @@ const LikeButton = ({ carId }) => {
     setAnimating(true);
 
     try {
-      const res = await axios.post("/api/likes/togglelike", { carId });
+      const res = await axios.post("/api/user/togglelike", { carId });
       if (res.data.success) {
         setLiked(res.data.liked);
       }
@@ -67,7 +67,7 @@ aria-label="Like"
 />
 <AiFillHeart
   size={24}
-  className={(liked ? "fill-red-500" : "fill-gray-100/20")}
+  className={(liked ? "fill-red-500" : "fill-gray-100")}
 />
 </button>
    
