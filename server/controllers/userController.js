@@ -6,55 +6,107 @@ import Car from "../models/Car.js";
 
 
 // Generate JWT Token
-const generateToken = (userId)=>{
-    const payload = userId;
-    return jwt.sign(payload, process.env.JWT_SECRET)
-}
+const generateToken = (userId) => {
+  return jwt.sign({ id: userId }, process.env.JWT_SECRET, {
+    expiresIn: "7d", // ✅ Expiry for better security
+  });
+};
 
-// Register User
-export const registerUser = async (req, res)=>{
-    try {
-        const {name, email, password} = req.body
+// =============================
+// REGISTER USER
+// =============================
+export const registerUser = async (req, res) => {
+  try {
+    const { name, email, password } = req.body;
 
-        if(!name || !email || !password || password.length < 8){
-            return res.json({success: false, message: 'Fill all the fields'})
-        }
-
-        const userExists = await User.findOne({email})
-        if(userExists){
-            return res.json({success: false, message: 'User already exists'})
-        }
-
-        const hashedPassword = await bcrypt.hash(password, 10)
-        const user = await User.create({name, email, password: hashedPassword})
-        const token = generateToken(user._id.toString())
-        res.json({success: true, token})
-
-    } catch (error) {
-        console.log(error.message);
-        res.json({success: false, message: error.message})
+    // ✅ Field-level validation
+    if (!name || name.trim().length < 3) {
+      return res.json({
+        success: false,
+        field: "name",
+        message: "Name must be at least 3 characters long.",
+      });
     }
-}
 
-// Login User 
-export const loginUser = async (req, res)=>{
-    try {
-        const {email, password} = req.body
-        const user = await User.findOne({email})
-        if(!user){
-            return res.json({success: false, message: "User not found" })
-        }
-        const isMatch = await bcrypt.compare(password, user.password)
-        if(!isMatch){
-            return res.json({success: false, message: "Invalid Credentials" })
-        }
-        const token = generateToken(user._id.toString())
-        res.json({success: true, token})
-    } catch (error) {
-        console.log(error.message);
-        res.json({success: false, message: error.message})
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email || !emailRegex.test(email)) {
+      return res.json({
+        success: false,
+        field: "email",
+        message: "Enter a valid email address.",
+      });
     }
-}
+
+    if (!password || password.length < 8) {
+      return res.json({
+        success: false,
+        field: "password",
+        message: "Password must be at least 8 characters long.",
+      });
+    }
+
+    const userExists = await User.findOne({ email });
+    if (userExists) {
+      return res.json({
+        success: false,
+        field: "email",
+        message: "An account with this email already exists.",
+      });
+    }
+
+    // ✅ Hash password securely
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = await User.create({ name, email, password: hashedPassword });
+
+    const token = generateToken(user._id.toString());
+    res.json({ success: true, token });
+  } catch (error) {
+    console.error("Register Error:", error.message);
+    res.status(500).json({ success: false, message: "Server error. Try again later." });
+  }
+};
+
+// =============================
+// LOGIN USER
+// =============================
+export const loginUser = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    // ✅ Basic validation
+    if (!email || !password) {
+      return res.json({
+        success: false,
+        message: "Please fill in all fields.",
+      });
+    }
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.json({
+        success: false,
+        field: "email",
+        message: "No account found with this email.",
+      });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.json({
+        success: false,
+        field: "password",
+        message: "Incorrect password. Please try again.",
+      });
+    }
+
+    const token = generateToken(user._id.toString());
+    res.json({ success: true, token });
+  } catch (error) {
+    console.error("Login Error:", error.message);
+    res.status(500).json({ success: false, message: "Server error. Try again later." });
+  }
+};
+
 
 // Get User data using Token (JWT)
 export const getUserData = async (req, res) =>{
