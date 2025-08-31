@@ -441,7 +441,7 @@ useEffect(() => {
    {!isSmallScreen && showDesktop && location.pathname === "/" && (
 
 
-   <motion.div
+  <motion.div
   initial={{ scale: 0.85, opacity: 0, y: -20 }}
   animate={{ scale: 1, opacity: 1, y: 0 }}
   transition={{ type: "spring", stiffness: 200, damping: 25, duration: 0.3 }}
@@ -452,57 +452,63 @@ useEffect(() => {
     className="hidden md:flex mt-2 w-full flex-row max-w-215 items-center justify-between rounded-full bg-white shadow-[0px_8px_20px_rgba(0,0,0,0.1)] border border-borderColor"
   >
     <div className="flex flex-row items-center w-full">
-      {/* === Each section wrapped in group for hover control === */}
+      {/* === GROUP 1 === */}
       <div className="group flex flex-row items-center">
         <div className="flex flex-col py-3 pr-29 pl-9 items-start rounded-full group-hover:bg-gray-100 transition-colors cursor-pointer">
           <p className="text-sm font-sm text-dark">Any where</p>
-          <p className="mt-[-4px] text-textlight">{pickupLocation || ' Search destinations'}</p>
+          <p className="mt-[-4px] text-textlight">
+            {pickupLocation || " Search destinations"}
+          </p>
         </div>
-        <span className="h-9 w-px bg-borderColor group-hover:opacity-0 transition-opacity"></span>
+        {/* Bar disappears on group hover */}
+        <span className="h-9 w-px bg-borderColor opacity-100 group-hover:opacity-0 transition-opacity"></span>
       </div>
 
+      {/* === GROUP 2 === */}
       <div className="group flex flex-row items-center">
         <div className="flex flex-col py-3 px-8 items-start rounded-full group-hover:bg-gray-100 transition-colors cursor-pointer">
           <p className="text-sm font-sm text-dark">Any price</p>
-          <p className="mt-[-4px] text-textlight">{pricePerDay || 'Enter price '}</p>
+          <p className="mt-[-4px] text-textlight">{pricePerDay || "Enter price "}</p>
         </div>
-        <span className="h-9 w-px bg-borderColor group-hover:opacity-0 transition-opacity"></span>
+        <span className="h-9 w-px bg-borderColor opacity-100 group-hover:opacity-0 transition-opacity"></span>
       </div>
 
+      {/* === GROUP 3 === */}
       <div className="group flex flex-row items-center">
         <div className="flex flex-col py-3 px-8 items-start rounded-full group-hover:bg-gray-100 transition-colors cursor-pointer">
           <p className="text-sm font-sm text-dark">Any type</p>
-          <p className="mt-[-4px] text-textlight">{pickupLocation || ' Select type'}</p>
+          <p className="mt-[-4px] text-textlight">{pickupLocation || " Select type"}</p>
         </div>
-        <span className="h-9 w-px bg-borderColor group-hover:opacity-0 transition-opacity"></span>
+        <span className="h-9 w-px bg-borderColor opacity-100 group-hover:opacity-0 transition-opacity"></span>
       </div>
 
+      {/* === GROUP 4: FULL WIDTH & ICON AT THE END === */}
+      <div className="group flex flex-row items-center flex-grow">
+        <div className="flex flex-row items-center justify-between w-full rounded-full group-hover:bg-gray-100 transition-colors cursor-pointer">
+          {/* Text area */}
+          <div className="flex flex-col py-3 px-8 items-start">
+            <p className="text-sm font-sm text-textdark">Any size</p>
+            <p className="mt-[-4px] text-textlight">{seatingCapacity || "Enter size"}</p>
+          </div>
 
-
-      {/* === LAST ITEM: full bg hover all the way to icon === */}
-     <div className="group flex flex-row items-center">
-
-      <div className="flex flex-row justify-between  rounded-full group-hover:bg-gray-100 transition-colors cursor-pointer ">
-        <div className="flex flex-col py-3 px-8 items-start w-full">
-          <p className="text-sm font-sm text-textdark">Any size</p>
-          <p className="mt-[-4px] text-textlight">{seatingCapacity || 'Enter size'}</p>
+          {/* Search button aligned right with 2px padding */}
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="flex items-center justify-center gap-1 p-2 mr-[2px] bg-primary hover:bg-primary-dull text-white rounded-full cursor-pointer"
+          >
+            <img
+              src={assets.search_icon}
+              alt="search"
+              className="brightness-300 md:h-5 md:w-5"
+            />
+          </motion.button>
         </div>
-          {/* Search button */}
-    <motion.button
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.95 }}
-      className="flex items-center justify-center gap-1 px-4 py-4 bg-primary hover:bg-primary-dull text-white rounded-full cursor-pointer"
-    >
-      <img src={assets.search_icon} alt="search" className="brightness-300 md:h-5 md:w-5" />
-    </motion.button>
       </div>
-    </div>    
-     </div>
-
-
-  
+    </div>
   </div>
 </motion.div>
+
 
 
       )}
