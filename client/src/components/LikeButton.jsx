@@ -13,7 +13,7 @@ const LikeButton = ({ carId }) => {
   useEffect(() => {
     const fetchLikeStatus = async () => {
       try {
-        const res = await axios.get(`/api/likes/check?carId=${carId}`);
+        const res = await axios.get(`/api/likes/checkiflisted?carId=${carId}`);
         if (res.data.success) setLiked(res.data.liked);
       } catch (error) {
         console.log(error);
@@ -27,7 +27,7 @@ const LikeButton = ({ carId }) => {
     setLoading(true);
 
     try {
-      const res = await axios.post("/api/likes/toggle", { carId });
+      const res = await axios.post("/api/likes/togglelike", { carId });
       if (res.data.success) {
         setLiked(res.data.liked);
       }
