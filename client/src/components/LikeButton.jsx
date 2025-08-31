@@ -2,9 +2,6 @@
 // components/LikeButton.jsx
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useState, useEffect } from "react";
-import { useAuth } from "@clerk/clerk-react";
-import { useNavigate } from "react-router-dom";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 
 
@@ -30,7 +27,7 @@ const LikeButton = ({ carId }) => {
   const handleToggleLike = async () => {
     if (loading) return;
     setLoading(true);
-    
+
    const newLikedState = !liked;
     setLiked(newLikedState);
     setAnimating(true);
