@@ -45,13 +45,13 @@ const CarCard = ({ car }) => {
   };
 
   return (
-    <div className="relative gap-2 md:gap-4 group mb-3 md:mb-[15px] overflow-hidden rounded-xl">
+    <div className="relative gap-2 md:gap-4 group mb-2 md:mb-[8px] overflow-hidden rounded-xl">
       <Link to={`/car-details/${car._id}`} className="block">
         <div className="relative w-full h-full aspect-[3/3] rounded-xl overflow-hidden">
           <div
             ref={scrollRef}
             onScroll={handleScroll}
-            className="flex overflow-x-auto aspect-[3/3] snap-x snap-mandatory scroll-smooth scrollbar-hide transition-transform duration-200 group-hover:scale-105"
+            className="flex overflow-x-auto aspect-[3/3] snap-x snap-mandatory scroll-smooth scrollbar-none transition-transform duration-200 group-hover:scale-105"
           >
             {images.length > 0 ? (
               images.map((image, index) => (
@@ -89,7 +89,9 @@ const CarCard = ({ car }) => {
         </div>
       </Link>
 
-      <div className="absolute top-3 right-3">
+    
+       <div className="absolute top-3 right-3">
+        <LikeButton postId={car._id} />
       </div>
 
       {/* Arrows */}
@@ -97,13 +99,13 @@ const CarCard = ({ car }) => {
         <>
           <button
             onClick={handlePrev}
-            className="hidden md:block absolute left-3 top-[37%] -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition"
+            className="hidden md:block absolute left-3 top-[37%] -translate-y-1/2 bg-black/10 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition"
           >
             <ChevronLeft size={24} />
           </button>
           <button
             onClick={handleNext}
-            className="hidden md:block absolute right-3 top-[37%] -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition"
+            className="hidden md:block absolute right-3 top-[37%] -translate-y-1/2 bg-black/10 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition"
           >
             <ChevronRight size={24} />
           </button>

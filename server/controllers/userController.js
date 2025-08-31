@@ -94,3 +94,52 @@ export const getCars = async (req, res) => {
     res.json({ success: false, message: error.message });
   }
 };
+
+// controllers/likeController.js
+
+export const toggleLike = async (req, res) => {
+  try {
+    const { carId } = req.body;
+    const userId = req.user._id;
+
+    // Check if like exists
+    const existingLike = await Like.findOne({ user: userId, car: carId });
+
+    if (existingLike) {
+      // Unlike (delete)
+      await Like.deleteOne({ _id: existingLike._id });
+      return res.json({ success: true, liked: false });
+    }
+
+    // Like (create)
+    await Like.create({ user: userId, car: carId });
+    return res.json({ success: true, liked: true });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+export const getLikedCars = async (req, res) => {
+  try {
+    const userId = req.user._id;
+
+    const liked = await Like.find({ user: userId }).populate("car");
+    res.json({ success: true, likedCars: liked.map((l) => l.car) });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+export const checkIfLiked = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const { carId } = req.query;
+
+    const existingLike = await Like.findOne({ user: userId, car: carId });
+    res.json({ success: true, liked: !!existingLike });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
