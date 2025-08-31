@@ -31,7 +31,7 @@ const LikeButton = ({ carId }) => {
 
        if (res.data.error === "NOT_AUTHENTICATED") {
       toast.error("You must be logged in to like a listing.");
-      setLoading(false); // ✅ FIX: unlock button before returning
+      setLoading(false); // ✅ FIX: unlock button bfore returning
       return;
     }
 
