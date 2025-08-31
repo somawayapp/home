@@ -63,7 +63,7 @@ const Login = () => {
   return (
     <div
       onClick={() => setShowLogin(false)}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 animate-fadeIn"
+      className="fixed inset-0 z-60 flex items-center justify-center bg-black/50 animate-fadeIn"
     >
       <form
         onSubmit={onSubmitHandler}
