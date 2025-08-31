@@ -74,12 +74,12 @@ const validateForm = () => {
   return (
     <div
       onClick={() => setShowLogin(false)}
-      className="fixed inset-0 z-60 flex items-center justify-center bg-black/50 animate-fadeIn"
+      className="fixed inset-0 z-60 flex px-6 items-center justify-center bg-black/50 animate-fadeIn"
     >
       <form
         onSubmit={onSubmitHandler}
         onClick={(e) => e.stopPropagation()}
-        className="relative flex flex-col gap-4 p-8 w-80 sm:w-[360px] rounded-2xl shadow-2xl border border-gray-200 bg-white animate-scaleIn"
+        className="relative flex flex-col gap-4 p-8  max-w-[360px]  rounded-2xl shadow-2xl border border-gray-200 bg-white animate-scaleIn"
       >
         {/* Close Button */}
         <button
