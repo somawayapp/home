@@ -453,27 +453,27 @@ useEffect(() => {
         >
           <div className="flex flex-row items-center " onClick={() => setShowModal(true)}>
             <div className="flex flex-col py-3 pr-29  pl-9 items-start rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
-              <p className="text-sm font-medium text-dark">Any where</p>
-              <p className=" text-md text-textlight">{pickupLocation || ' search destinations'}</p>
+              <p className="text-sm font-sm text-dark">Any where</p>
+              <p className=" text-sm text-textlight">{pickupLocation || ' search destinations'}</p>
             </div>
 
             <span className="h-9 w-px bg-borderColor"></span>
             <div className="flex flex-col py-3 px-8 items-start rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
-              <p className="text-sm font-medium text-dark">Any price</p>
-              <p className="text-md text-textlight">{pricePerDay || 'Enter max price '}</p>
+              <p className="text-sm font-sm text-dark">Any price</p>
+              <p className="text-sm text-textlight">{pricePerDay || 'Enter max price '}</p>
             </div>
 
              <span className="h-9 w-px bg-borderColor"></span>
              <div className="flex flex-col py-3 px-8 items-start rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
-              <p className="text-sm font-medium text-dark">Any type</p>
-              <p className=" text-md text-textlight">{pickupLocation || ' select type'}</p>
+              <p className="text-sm font-sm text-dark">Any type</p>
+              <p className=" text-sm text-textlight">{pickupLocation || ' select type'}</p>
             </div>
 
 
             <span className="h-9 w-px bg-borderColor"></span>
             <div className="flex flex-col py-3 px-8 items-start rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
-              <p className="text-sm font-medium text-textdark">Any size</p>
-              <p className="text-md text-textlight">{seatingCapacity || 'Enter size'}</p>
+              <p className="text-sm font-sm text-textdark">Any size</p>
+              <p className="text-sm text-textlight">{seatingCapacity || 'Enter size'}</p>
             </div>
           </div>
 
@@ -481,7 +481,7 @@ useEffect(() => {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="flex items-center justify-center gap-1 px-3 py-3 bg-primary hover:bg-primary-dull text-white rounded-full cursor-pointer"
+              className="flex items-center justify-center gap-1 px-4 py-4 bg-primary hover:bg-primary-dull text-white rounded-full cursor-pointer"
             >
               <img src={assets.search_icon} alt="search" className="brightness-300 md:h-4 md:w-4" />
             </motion.button>
