@@ -1,7 +1,6 @@
 import React, { useState, useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import Star from "./Star"; // ✅ Same as PostListItem
 
 const CarCard = ({ car }) => {
   const currency = import.meta.env.VITE_CURRENCY;
@@ -127,7 +126,6 @@ const CarCard = ({ car }) => {
           <p className="text-[var(--softTextColor)] font-semibold capitalize text-[14px] md:text-[15px]">
             {car.location || "America"}
           </p>
-          <Star postId={car._id} />
         </div>
 
         <p className="text-[var(--softTextColor)] capitalize text-[14px] md:text-[15px]">
