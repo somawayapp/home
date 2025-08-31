@@ -483,7 +483,7 @@ useEffect(() => {
               whileTap={{ scale: 0.95 }}
               className="flex items-center justify-center gap-1 px-4 py-4 bg-primary hover:bg-primary-dull text-white rounded-full cursor-pointer"
             >
-              <img src={assets.search_icon} alt="search" className="brightness-300 md:h-4 md:w-4" />
+              <img src={assets.search_icon} alt="search" className="brightness-300 md:h-5 md:w-5" />
             </motion.button>
           </div>
         </div>
