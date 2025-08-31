@@ -2,12 +2,17 @@
 // components/LikeButton.jsx
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Heart } from "lucide-react";
+import { useState, useEffect } from "react";
+import { useAuth } from "@clerk/clerk-react";
+import { useNavigate } from "react-router-dom";
+import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
+
 
 
 const LikeButton = ({ carId }) => {
   const [liked, setLiked] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [animating, setAnimating] = useState(false);
 
   // Check if liked when component mounts
   useEffect(() => {
@@ -25,6 +30,10 @@ const LikeButton = ({ carId }) => {
   const handleToggleLike = async () => {
     if (loading) return;
     setLoading(true);
+    
+   const newLikedState = !liked;
+    setLiked(newLikedState);
+    setAnimating(true);
 
     try {
       const res = await axios.post("/api/likes/togglelike", { carId });
