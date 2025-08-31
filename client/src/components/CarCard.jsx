@@ -1,7 +1,6 @@
 import React, { useState, useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import LikeButton from "./LikeButton"; // ✅ Dummy like button (or real one if available)
 import Star from "./Star"; // ✅ Same as PostListItem
 
 const CarCard = ({ car }) => {
@@ -102,10 +101,7 @@ const CarCard = ({ car }) => {
         </div>
       </div>
 
-      {/* Like Button */}
-      <div className="absolute top-3 right-3">
-        <LikeButton postId={car._id} />
-      </div>
+     
 
       {/* Arrows */}
       {images.length > 1 && (
