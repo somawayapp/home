@@ -453,7 +453,7 @@ useEffect(() => {
     <div className="flex flex-row items-center w-full">
             <div class="group flex flex-row items-center">
         <div class="flex flex-col py-3 pr-29 pl-9 items-start rounded-full group-hover:bg-gray-100 transition-colors cursor-pointer">
-          <p class="text-sm font-sm text-dark">Any where</p>
+          <p class="text-sm font-sm text-dark">Any whre</p>
           <p class="mt-[-4px] text-textlight">
             {pickupLocation || " Search destinations"}
           </p>
