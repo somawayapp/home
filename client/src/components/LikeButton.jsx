@@ -67,7 +67,7 @@ aria-label="Like"
 />
 <AiFillHeart
   size={24}
-  className={(liked ? "fill-blue-500" : "fill-neutral-500/70")}
+  className={(liked ? "fill-red-500" : "fill-gray-100/20")}
 />
 </button>
    
