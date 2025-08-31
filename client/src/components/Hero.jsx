@@ -440,8 +440,7 @@ useEffect(() => {
 
    {!isSmallScreen && showDesktop && location.pathname === "/" && (
 
-
-  <motion.div
+<motion.div
   initial={{ scale: 0.85, opacity: 0, y: -20 }}
   animate={{ scale: 1, opacity: 1, y: 0 }}
   transition={{ type: "spring", stiffness: 200, damping: 25, duration: 0.3 }}
@@ -492,22 +491,19 @@ useEffect(() => {
           </div>
 
           {/* Search button aligned right with 2px padding */}
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="flex items-center justify-center gap-1 p-2 mr-[2px] bg-primary hover:bg-primary-dull text-white rounded-full cursor-pointer"
-          >
-            <img
-              src={assets.search_icon}
-              alt="search"
-              className="brightness-300 md:h-5 md:w-5"
-            />
-          </motion.button>
+            <motion.button
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
+      className="flex items-center justify-center gap-1 px-4 py-4 bg-primary hover:bg-primary-dull text-white rounded-full cursor-pointer"
+    >
+      <img src={assets.search_icon} alt="search" className="brightness-300 md:h-5 md:w-5" />
+    </motion.button>
         </div>
       </div>
     </div>
   </div>
 </motion.div>
+
 
 
 
