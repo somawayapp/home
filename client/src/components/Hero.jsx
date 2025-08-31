@@ -450,60 +450,42 @@ useEffect(() => {
     onSubmit={handleSearch}
     className="hidden md:flex mt-2 w-full flex-row max-w-215 items-center justify-between rounded-full bg-white shadow-[0px_8px_20px_rgba(0,0,0,0.1)] border border-borderColor"
   >
-    <div className="flex flex-row items-center w-full">
-      {/* === GROUP 1 === */}
-      <div className="group flex flex-row items-center">
-        <div className="flex flex-col py-3 pr-29 pl-9 items-start rounded-full group-hover:bg-gray-100 transition-colors cursor-pointer">
-          <p className="text-sm font-sm text-dark">Any where</p>
-          <p className="mt-[-4px] text-textlight">
-            {pickupLocation || " Search destinations"}
-          </p>
-        </div>
-        {/* Bar disappears on group hover */}
-      </div>
-        <span className="h-9 w-px bg-borderColor opacity-100 group-hover:opacity-0 transition-opacity"></span>
-
-      {/* === GROUP 2 === */}
-      <div className="group flex flex-row items-center">
-        <div className="flex flex-col py-3 px-8 items-start rounded-full group-hover:bg-gray-100 transition-colors cursor-pointer">
-          <p className="text-sm font-sm text-dark">Any price</p>
-          <p className="mt-[-4px] text-textlight">{pricePerDay || "Enter price "}</p>
-        </div>
-      </div>
-
-              <span className="h-9 w-px bg-borderColor opacity-100 group-hover:opacity-0 transition-opacity"></span>
-
-
-      {/* === GROUP 3 === */}
-      <div className="group flex flex-row items-center">
-        <div className="flex flex-col py-3 px-8 items-start rounded-full group-hover:bg-gray-100 transition-colors cursor-pointer">
-          <p className="text-sm font-sm text-dark">Any type</p>
-          <p className="mt-[-4px] text-textlight">{pickupLocation || " Select type"}</p>
-        </div>
-      </div>
-              <span className="h-9 w-px bg-borderColor opacity-100 group-hover:opacity-0 transition-opacity"></span>
-
-
-      {/* === GROUP 4: FULL WIDTH & ICON AT THE END === */}
-      <div className="group flex flex-row items-center flex-grow">
-        <div className="flex flex-row items-center justify-between w-full rounded-full group-hover:bg-gray-100 transition-colors cursor-pointer">
-          {/* Text area */}
-          <div className="flex flex-col py-3 px-8 items-start">
-            <p className="text-sm font-sm text-textdark">Any size</p>
-            <p className="mt-[-4px] text-textlight">{seatingCapacity || "Enter size"}</p>
-          </div>
-
-          {/* Search button aligned right with 2px padding */}
-            <motion.button
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.95 }}
-      className="flex items-center justify-center gap-1 px-4 mr-2 py-4 bg-primary hover:bg-primary-dull text-white rounded-full cursor-pointer"
-    >
-      <img src={assets.search_icon} alt="search" className="brightness-300 md:h-5 md:w-5" />
-    </motion.button>
-        </div>
-      </div>
+   <div className="flex flex-row items-center w-full">
+  {/* === GROUP 1 === */}
+  <div className="flex flex-row items-center">
+    <div className="peer flex flex-col py-3 pr-29 pl-9 items-start rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+      <p className="text-sm font-sm text-dark">Any where</p>
+      <p className="mt-[-4px] text-textlight">
+        {pickupLocation || " Search destinations"}
+      </p>
     </div>
+    {/* Left group's right bar */}
+    <span className="h-9 w-px bg-borderColor opacity-100 peer-hover:opacity-0 transition-opacity"></span>
+  </div>
+
+  {/* === GROUP 2 === */}
+  <div className="flex flex-row items-center">
+    {/* Left bar that disappears when this OR prev group is hovered */}
+    <span className="h-9 w-px bg-borderColor opacity-100 peer-hover:opacity-0 transition-opacity"></span>
+    <div className="peer flex flex-col py-3 px-8 items-start rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+      <p className="text-sm font-sm text-dark">Any price</p>
+      <p className="mt-[-4px] text-textlight">{pricePerDay || "Enter price "}</p>
+    </div>
+    {/* Right bar */}
+    <span className="h-9 w-px bg-borderColor opacity-100 peer-hover:opacity-0 transition-opacity"></span>
+  </div>
+
+  {/* === GROUP 3 === */}
+  <div className="flex flex-row items-center">
+    <span className="h-9 w-px bg-borderColor opacity-100 peer-hover:opacity-0 transition-opacity"></span>
+    <div className="peer flex flex-col py-3 px-8 items-start rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+      <p className="text-sm font-sm text-dark">Any type</p>
+      <p className="mt-[-4px] text-textlight">{pickupLocation || " Select type"}</p>
+    </div>
+    <span className="h-9 w-px bg-borderColor opacity-100 peer-hover:opacity-0 transition-opacity"></span>
+  </div>
+</div>
+
   </div>
 </motion.div>
 
