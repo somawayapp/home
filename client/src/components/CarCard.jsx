@@ -1,12 +1,11 @@
-import React, { useState, useRef } from "react";
+import { Link } from "react-router-dom";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import LikeButton from "./LikeButton";
+import Star from "./Star";
+import { useState, useRef } from "react";
 
 const CarCard = ({ car }) => {
-  const currency = import.meta.env.VITE_CURRENCY;
-  const navigate = useNavigate();
-
-  const images = Array.isArray(car.image) ? car.image : [car.image];
+  const images = Array.isArray(car.image) ? car.image : [];
   const [currentIndex, setCurrentIndex] = useState(0);
   const scrollRef = useRef(null);
 
@@ -49,14 +48,7 @@ const CarCard = ({ car }) => {
 
   return (
     <div className="relative gap-2 md:gap-4 group mb-3 md:mb-[15px] overflow-hidden rounded-xl">
-      <div
-        onClick={() => {
-          navigate(`/car-details/${car._id}`);
-          scrollTo(0, 0);
-        }}
-        className="block cursor-pointer"
-      >
-        {/* Image Carousel */}
+      <Link to={`/car-details/${car._id}`} className="block">
         <div className="relative w-full h-full aspect-[3/3] rounded-xl overflow-hidden">
           <div
             ref={scrollRef}
@@ -68,8 +60,8 @@ const CarCard = ({ car }) => {
                 <img
                   key={index}
                   src={image}
-                  alt={`car-${index}`}
                   className="w-full h-full object-cover rounded-xl flex-shrink-0 snap-center"
+                  alt={`image-${index}`}
                 />
               ))
             ) : (
@@ -79,7 +71,6 @@ const CarCard = ({ car }) => {
             )}
           </div>
 
-          {/* Availability Badge */}
           <div className="absolute rounded-full hover:bg-[#0556f7] bg-[#2F74FD] bottom-3 right-3 px-3 py-1 text-white text-sm font-medium">
             {car.isAvailable ? "Available" : "Unavailable"}
           </div>
@@ -98,9 +89,11 @@ const CarCard = ({ car }) => {
             </div>
           )}
         </div>
-      </div>
+      </Link>
 
-     
+      <div className="absolute top-3 right-3">
+        <LikeButton postId={car._id} />
+      </div>
 
       {/* Arrows */}
       {images.length > 1 && (
@@ -120,27 +113,30 @@ const CarCard = ({ car }) => {
         </>
       )}
 
-      {/* Info Section */}
+      {/* Info */}
       <div className="mt-3 gap-1">
-        <div className="flex justify-between mr-1">
-          <p className="text-[var(--softTextColor)] font-semibold capitalize text-[14px] md:text-[15px]">
-            {car.location || "America"}
+        <Link to={`/car-details/${car._id}`} className="block">
+          <div className="flex justify-between mr-1">
+            <p className="text-[var(--softTextColor)] font-semibold capitalize text-[14px] md:text-[15px]">
+              {car.location || "America"}
+            </p>
+            <Star postId={car._id} />
+          </div>
+
+          <p className="text-[var(--softTextColor)] capitalize text-[14px] md:text-[15px]">
+            {car.seating_capacity ? `${car.seating_capacity} Seats` : ""}{" "}
+            {car.model ? `${car.model}` : ""} for hire
           </p>
-        </div>
 
-        <p className="text-[var(--softTextColor)] capitalize text-[14px] md:text-[15px]">
-          {car.seating_capacity ? `${car.seating_capacity} Seats` : ""}{" "}
-          {car.model ? `${car.model}` : ""} for hire
-        </p>
+          <p className="text-[var(--softTextColor)] text-[13px] md:text-[14px]">
+            {car.year}
+          </p>
 
-        <p className="text-[var(--softTextColor)] text-[13px] md:text-[14px]">
-          {car.year || ""}
-        </p>
-
-        <p className="text-[var(--softTextColor)] font-semibold text-[14px] md:text-[15px]">
-          {currency} {car.pricePerDay || ""}
-          <span className="font-normal"> /day</span>
-        </p>
+          <p className="text-[var(--softTextColor)] font-semibold text-[14px] md:text-[15px]">
+            KSh {car.pricePerDay}
+            <span className="font-normal"> /day</span>
+          </p>
+        </Link>
       </div>
     </div>
   );
