@@ -70,6 +70,18 @@ const validateForm = () => {
       setLoading(false);
     }
   };
+  
+React.useEffect(() => {
+  const preventScroll = (e) => e.preventDefault();
+
+  document.body.style.overflow = "hidden";
+  document.addEventListener("touchmove", preventScroll, { passive: false });
+
+  return () => {
+    document.body.style.overflow = "auto";
+    document.removeEventListener("touchmove", preventScroll);
+  };
+}, []);
 
   return (
     <div
