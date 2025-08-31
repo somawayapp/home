@@ -1,6 +1,7 @@
 import React from "react";
 import { useAppContext } from "../context/AppContext";
 import toast from "react-hot-toast";
+import { Eye, EyeOff, X } from "lucide-react"; // ✅ nice icons
 
 const Login = () => {
   const { setShowLogin, axios, setToken, navigate } = useAppContext();
@@ -9,29 +10,28 @@ const Login = () => {
   const [name, setName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [showPassword, setShowPassword] = React.useState(false);
+  const [errors, setErrors] = React.useState({});
   const [loading, setLoading] = React.useState(false);
 
-  // ✅ Simple validation
   const validateForm = () => {
+    let newErrors = {};
     if (state === "register" && name.trim().length < 3) {
-      toast.error("Name must be at least 3 characters long.");
-      return false;
+      newErrors.name = "Name must be at least 3 characters.";
     }
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      toast.error("Please enter a valid email address.");
-      return false;
+      newErrors.email = "Enter a valid email address.";
     }
     if (password.length < 6) {
-      toast.error("Password must be at least 6 characters long.");
-      return false;
+      newErrors.password = "Password must be at least 6 characters.";
     }
-    return true;
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   const onSubmitHandler = async (event) => {
     event.preventDefault();
-
     if (!validateForm()) return;
 
     setLoading(true);
@@ -46,12 +46,12 @@ const Login = () => {
         setToken(data.token);
         localStorage.setItem("token", data.token);
         toast.success(
-          state === "login" ? "Logged in successfully!" : "Account created successfully!"
+          state === "login" ? "Welcome back! 🎉" : "Account created successfully! 🎉"
         );
         navigate("/");
         setShowLogin(false);
       } else {
-        toast.error(data.message || "Something went wrong. Please try again.");
+        toast.error(data.message || "Something went wrong.");
       }
     } catch (error) {
       toast.error(error.response?.data?.message || "Server error. Please try again.");
@@ -63,16 +63,24 @@ const Login = () => {
   return (
     <div
       onClick={() => setShowLogin(false)}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 animate-fadeIn"
     >
       <form
         onSubmit={onSubmitHandler}
         onClick={(e) => e.stopPropagation()}
-        className="flex flex-col gap-4 p-8 w-80 sm:w-[352px] rounded-xl shadow-xl border border-gray-200 bg-white"
+        className="relative flex flex-col gap-4 p-8 w-80 sm:w-[360px] rounded-2xl shadow-2xl border border-gray-200 bg-white animate-scaleIn"
       >
+        {/* Close Button */}
+        <button
+          type="button"
+          onClick={() => setShowLogin(false)}
+          className="absolute top-3 right-3 text-gray-400 hover:text-gray-600"
+        >
+          <X size={20} />
+        </button>
+
         <p className="text-2xl font-semibold text-center mb-2">
-          <span className="text-primary">User</span>{" "}
-          {state === "login" ? "Login" : "Sign Up"}
+          {state === "login" ? "Welcome Back 👋" : "Create Your Account"}
         </p>
 
         {state === "register" && (
@@ -81,11 +89,15 @@ const Login = () => {
             <input
               onChange={(e) => setName(e.target.value)}
               value={name}
-              placeholder="Your full name"
-              className="border border-gray-300 rounded w-full p-2 outline-primary"
+              placeholder="John Doe"
+              className={`border ${
+                errors.name ? "border-red-400" : "border-gray-300"
+              } rounded w-full p-2 outline-primary`}
               type="text"
-              required
             />
+            {errors.name && (
+              <p className="text-red-500 text-xs mt-1">{errors.name}</p>
+            )}
           </div>
         )}
 
@@ -95,22 +107,37 @@ const Login = () => {
             onChange={(e) => setEmail(e.target.value)}
             value={email}
             placeholder="you@example.com"
-            className="border border-gray-300 rounded w-full p-2 outline-primary"
+            className={`border ${
+              errors.email ? "border-red-400" : "border-gray-300"
+            } rounded w-full p-2 outline-primary`}
             type="email"
-            required
           />
+          {errors.email && (
+            <p className="text-red-500 text-xs mt-1">{errors.email}</p>
+          )}
         </div>
 
-        <div className="w-full">
+        <div className="w-full relative">
           <label className="block text-sm mb-1">Password</label>
           <input
             onChange={(e) => setPassword(e.target.value)}
             value={password}
             placeholder="••••••"
-            className="border border-gray-300 rounded w-full p-2 outline-primary"
-            type="password"
-            required
+            className={`border ${
+              errors.password ? "border-red-400" : "border-gray-300"
+            } rounded w-full p-2 pr-10 outline-primary`}
+            type={showPassword ? "text" : "password"}
           />
+          <button
+            type="button"
+            onClick={() => setShowPassword((prev) => !prev)}
+            className="absolute right-3 top-8 text-gray-400 hover:text-gray-600"
+          >
+            {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+          </button>
+          {errors.password && (
+            <p className="text-red-500 text-xs mt-1">{errors.password}</p>
+          )}
         </div>
 
         <p className="text-sm text-gray-600">
@@ -121,17 +148,17 @@ const Login = () => {
                 onClick={() => setState("login")}
                 className="text-primary font-medium cursor-pointer hover:underline"
               >
-                Login here
+                Login
               </span>
             </>
           ) : (
             <>
-              Don't have an account?{" "}
+              Don’t have an account?{" "}
               <span
                 onClick={() => setState("register")}
                 className="text-primary font-medium cursor-pointer hover:underline"
               >
-                Sign up
+                Sign Up
               </span>
             </>
           )}
