@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useState, useRef } from "react";
+import LikeButton from "./LikeButton";
 
 const CarCard = ({ car }) => {
   const images = Array.isArray(car.image) ? car.image : car.image ? [car.image] : [];
