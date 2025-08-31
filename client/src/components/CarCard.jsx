@@ -1,7 +1,5 @@
 import { Link } from "react-router-dom";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import LikeButton from "./LikeButton";
-import Star from "./Star";
 import { useState, useRef } from "react";
 
 const CarCard = ({ car }) => {
@@ -92,7 +90,6 @@ const CarCard = ({ car }) => {
       </Link>
 
       <div className="absolute top-3 right-3">
-        <LikeButton postId={car._id} />
       </div>
 
       {/* Arrows */}
@@ -120,7 +117,6 @@ const CarCard = ({ car }) => {
             <p className="text-[var(--softTextColor)] font-semibold capitalize text-[14px] md:text-[15px]">
               {car.location || "America"}
             </p>
-            <Star postId={car._id} />
           </div>
 
           <p className="text-[var(--softTextColor)] capitalize text-[14px] md:text-[15px]">
