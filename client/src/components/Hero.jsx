@@ -477,16 +477,16 @@ useEffect(() => {
         <span className="h-9 w-px bg-borderColor group-hover:opacity-0 transition-opacity"></span>
       </div>
 
-            <div className="group flex flex-row items-center">
 
 
       {/* === LAST ITEM: full bg hover all the way to icon === */}
-      <div className="flex flex-row justify-between items-center rounded-full group-hover:bg-gray-100 transition-colors cursor-pointer ">
+     <div className="group flex flex-row items-center">
+
+      <div className="flex flex-row justify-between  rounded-full group-hover:bg-gray-100 transition-colors cursor-pointer ">
         <div className="flex flex-col py-3 px-8 items-start w-full">
           <p className="text-sm font-sm text-textdark">Any size</p>
           <p className="mt-[-4px] text-textlight">{seatingCapacity || 'Enter size'}</p>
         </div>
-        {/* remove right border here */}
           {/* Search button */}
     <motion.button
       whileHover={{ scale: 1.05 }}
