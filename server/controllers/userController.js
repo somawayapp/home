@@ -112,7 +112,7 @@ export const getLikedCars = async (req, res) => {
 
 
 
-// controllers/likeControlle.js
+// controllers/likeController.js
 
 export const toggleLike = async (req, res) => {
   try {
