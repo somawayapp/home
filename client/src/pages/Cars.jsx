@@ -66,10 +66,9 @@ const Cars = () => {
         animate={{ opacity: 1 }}
         transition={{ delay: 0.6, duration: 0.5 }}
 
-      className='px-4 md:px-16 lg:px-24 xl:px-32 mt-10'>
-        <p className='text-gray-500 xl:px-20 max-w-7xl mx-auto'>Showing {filteredCars.length} Cars</p>
+      className='px-4 md:px-12 lg:px-20 xl:px-28 mt-6'>
 
-        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mt-4  mx-auto'>
+        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8  mx-auto'>
           {filteredCars.map((car, index)=> (
             <motion.div key={index}
             initial={{ opacity: 0, y: 20 }}
