@@ -149,12 +149,18 @@ export const toggleLike = async (req, res) => {
 
 export const checkIfLiked = async (req, res) => {
   try {
+    if (!req.user) {
+      return res.status(401).json({ success: false, liked: false, error: "NOT_AUTHENTICATED" });
+    }
+
     const userId = req.user._id;
     const { carId } = req.query;
 
     const existingLike = await Like.findOne({ user: userId, car: carId });
-    res.json({ success: true, liked: !!existingLike });
+    return res.json({ success: true, liked: !!existingLike });
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    console.error("CheckIfLiked Error:", error);
+    return res.status(500).json({ success: false, message: "Internal server error" });
   }
 };
+
