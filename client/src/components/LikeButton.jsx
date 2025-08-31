@@ -29,10 +29,11 @@ const LikeButton = ({ carId }) => {
     try {
       const res = await axios.post("/api/user/togglelike", { carId });
 
-      if (res.data.error === "NOT_AUTHENTICATED") {
-        toast.error("You must be logged in to like a listing.");
-        return;
-      }
+       if (res.data.error === "NOT_AUTHENTICATED") {
+      toast.error("You must be logged in to like a listing.");
+      setLoading(false); // ✅ FIX: unlock button before returning
+      return;
+    }
 
       if (res.data.success) {
         const newLikedState = res.data.liked;
