@@ -9,8 +9,8 @@ userRouter.post('/login', loginUser)
 userRouter.get('/data', protect, getUserData)
 userRouter.get('/cars', getCars)
 
-router.post("/togglelike", protect, toggleLike);
-router.get("/alllikes", protect, getLikedCars);
-router.get("/checkifliked", protect, checkIfLiked);
+userRouter.post("/togglelike", protect, toggleLike);
+userRouter.get("/alllikes", protect, getLikedCars);
+userRouter.get("/checkifliked", protect, checkIfLiked);
 
 export default userRouter;
