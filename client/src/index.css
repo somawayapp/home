@@ -7,8 +7,16 @@
 }
 
 @theme {
-  --color-primary: #FF5A5F;
-  --color-primary-dull: #db4449;
-  --color-light: #d8dbdc;
-  --color-borderColor: #d8dbdc;
+  --color-primary: #ff385c;
+  --color-primary-dull: #92174D;
+  --color-light: #dddddd;
+  --color-borderColor: #dddddd;
+    --color-bgColor: #B0B0B0;
+    --color-bgColorhover: #6A6A6A;
+
+  
+   --color-textlight: #6a6a6a;
+   --color-textdark: #222222;
+
+  
 }

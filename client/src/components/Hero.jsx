@@ -160,8 +160,11 @@ useEffect(() => {
   }
 
   return (
-    <div className="flex border border-bottom border-light flex-col bg-white transition-colors duration-300 px-4 md:px-12 items-center justify-between 
-    w-full sticky top-0 left-0 right-0 z-50">
+    <div className="flex border border-bottom border-borderColor flex-col bg-white transition-colors duration-300 px-4 md:px-12 items-center justify-between 
+    w-full sticky top-0 left-0 right-0 z-50  "
+     style={{
+    background: "linear-gradient(180deg, #ffffff 39.9%, #f8f8f8 100%)",
+  }}>
 
       {/* === Desktop / MD+ form (expanded) */}
   
@@ -208,7 +211,7 @@ useEffect(() => {
         key={link.path}
         to={link.path}
         className={`relative flex items-center gap-2 transition-colors hover:text-black ${
-          isActive ? "text-black" : " text-gray-700"
+          isActive ? " text-textdark" : " text-textlight"
         }`}
       >
         {/* === Icon/Video/Image Left of Text === */}
@@ -287,21 +290,21 @@ useEffect(() => {
   />
 
   {/* === Text === */}
-  <span className="px-2 py-2 font-medium text-md md:text-lg md:pr-4 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+  <span className="px-2 py-2 font-medium text-textdark text-md md:text-lg md:pr-4 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
     {pickupLocation || "Any where"}
   </span>
 </div>
 
 
-    <span className="self-stretch w-px bg-gray-300"></span>
+    <span className="self-stretch  w-px bg-borderColor"></span>
 
-    <span className="px-2 md:px-4 font-medium py-2 text-md md:text-lg rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+    <span className="px-2 md:px-4 font-medium  text-textdark py-2 text-md md:text-lg rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
       {pricePerDay || "Any price"}
     </span>
 
-    <span className="self-stretch w-px bg-gray-300"></span>
+    <span className="self-stretch w-px bg-borderColor"></span>
 
-    <span className="px-2 md:px-4 font-medium py-2 text-md md:text-lg rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+    <span className="px-2 md:px-4 font-medium  text-textdark  py-2 text-md md:text-lg rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
       {seatingCapacity || "Any size"}
     </span>
   </div>
@@ -335,16 +338,16 @@ useEffect(() => {
                   changeRole()
                 }
               }}
-              className='cursor-pointer rounded-3xl px-4 py-2 transition hover:bg-gray-100'
+              className='cursor-pointer rounded-3xl px-4 py-2 transition hover:bg-bgColor'
             >
               {isOwner ? 'Dashboard' : 'Add listing'}
             </button>
           </div>
 
           {/* Toggle Menu Button */}
-          <div className='relative'>
+          <div className='relative text-textlight'>
             <button
-              className='flex cursor-pointer items-center gap-3 rounded-full border border-light 
+              className='flex cursor-pointer items-center gap-3 rounded-full border border-borderColor 
               px-3 py-3  transition hover:shadow-md md:px-2 md:py-1'
               aria-label='Menu'
               onClick={() => setOpen(!open)}
@@ -446,31 +449,31 @@ useEffect(() => {
      >
 
         <div  onSubmit={handleSearch}
-          className="hidden md:flex mt-2  w-full flex-row max-w-215 items-center justify-between rounded-full  bg-white shadow-[0px_8px_20px_rgba(0,0,0,0.1)] border border-light"
+          className="hidden md:flex mt-2  w-full flex-row max-w-215 items-center justify-between rounded-full  bg-white shadow-[0px_8px_20px_rgba(0,0,0,0.1)] border border-borderColor"
         >
           <div className="flex flex-row items-center " onClick={() => setShowModal(true)}>
             <div className="flex flex-col py-3 pr-29  pl-9 items-start rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
-              <p className="text-sm font-medium text-gray-700">Any where</p>
-              <p className=" text-sm font-medium text-gray-500">{pickupLocation || ' search destinations'}</p>
+              <p className="text-sm font-medium text-dark">Any where</p>
+              <p className=" text-md text-textlight">{pickupLocation || ' search destinations'}</p>
             </div>
 
-            <span className="h-9 w-px bg-gray-300"></span>
+            <span className="h-9 w-px bg-borderColor"></span>
             <div className="flex flex-col py-3 px-8 items-start rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
-              <p className="text-sm font-medium text-gray-700">Any price</p>
-              <p className="text-sm font-medium text-gray-500">{pricePerDay || 'Enter max price '}</p>
+              <p className="text-sm font-medium text-dark">Any price</p>
+              <p className="text-md text-textlight">{pricePerDay || 'Enter max price '}</p>
             </div>
 
-             <span className="h-9 w-px bg-gray-300"></span>
+             <span className="h-9 w-px bg-borderColor"></span>
              <div className="flex flex-col py-3 px-8 items-start rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
-              <p className="text-sm font-medium text-gray-700">Any type</p>
-              <p className=" text-sm font-medium text-gray-500">{pickupLocation || ' select type'}</p>
+              <p className="text-sm font-medium text-dark">Any type</p>
+              <p className=" text-md text-textlight">{pickupLocation || ' select type'}</p>
             </div>
 
 
-            <span className="h-9 w-px bg-gray-300"></span>
+            <span className="h-9 w-px bg-borderColor"></span>
             <div className="flex flex-col py-3 px-8 items-start rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
-              <p className="text-sm font-medium text-gray-700">Any size</p>
-              <p className="text-sm text-gray-500">{seatingCapacity || 'Enter size'}</p>
+              <p className="text-sm font-medium text-textdark">Any size</p>
+              <p className="text-md text-textlight">{seatingCapacity || 'Enter size'}</p>
             </div>
           </div>
 
