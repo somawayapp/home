@@ -15,7 +15,7 @@ const LikeButton = ({ carId }) => {
   useEffect(() => {
     const fetchLikeStatus = async () => {
       try {
-        const res = await axios.get(`/api/user/checkiflisted?carId=${carId}`);
+        const res = await axios.get(`/api/user/checkifliked?carId=${carId}`);
         if (res.data.success) setLiked(res.data.liked);
       } catch (error) {
         console.log(error);
@@ -67,7 +67,7 @@ aria-label="Like"
 />
 <AiFillHeart
   size={24}
-  className={(liked ? "fill-red-500" : "fill-gray-100")}
+  className={(liked ? "fill-red-500" : "fill-neutral-500/70")}
 />
 </button>
    
