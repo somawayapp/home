@@ -454,26 +454,26 @@ useEffect(() => {
           <div className="flex flex-row items-center " onClick={() => setShowModal(true)}>
             <div className="flex flex-col py-3 pr-29  pl-9 items-start rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
               <p className="text-sm font-sm text-dark">Where</p>
-              <p className=" text-14 mt-[-1] text-textlight">{pickupLocation || ' Search destinations'}</p>
+              <p className=" text-13 mt-[-2px] text-textlight">{pickupLocation || ' Search destinations'}</p>
             </div>
 
             <span className="h-9 w-px bg-borderColor"></span>
             <div className="flex flex-col py-3 px-8 items-start rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
               <p className="text-sm font-sm text-dark"> Price</p>
-              <p className="text-14 mt-[-1] text-textlight">{pricePerDay || 'Enter max price '}</p>
+              <p className="text-13 mt-[-2px] text-textlight">{pricePerDay || 'Enter max price '}</p>
             </div>
 
              <span className="h-9 w-px bg-borderColor"></span>
              <div className="flex flex-col py-3 px-8 items-start rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
               <p className="text-sm font-sm text-dark">Type</p>
-              <p className=" text-14 mt-[-1] text-textlight">{pickupLocation || ' Select type'}</p>
+              <p className=" text-13 mt-[-2px] text-textlight">{pickupLocation || ' Select type'}</p>
             </div>
 
 
             <span className="h-9 w-px bg-borderColor"></span>
             <div className="flex flex-col py-3 px-8 items-start rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
               <p className="text-sm font-sm text-textdark">Size</p>
-              <p className="text-14 mt-[-1] text-textlight">{seatingCapacity || 'Enter size'}</p>
+              <p className="text-13 mt-[-2px] text-textlight">{seatingCapacity || 'Enter size'}</p>
             </div>
           </div>
 
