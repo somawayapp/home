@@ -27,13 +27,13 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
   };
 
   return (
-    <div className={`relative min-h-screen pt-8 border-r border-borderColor text-sm transition-all duration-300 ${isSidebarOpen ? 'md:w-80 w-60' : 'w-16 md:w-20'}`}>
+    <div className={`relative min-h-screen pt-8 border-r border-borderColor text-sm transition-all duration-300 ${isSidebarOpen ? 'md:w-60 w-60' : 'w-16 md:w-20'}`}>
       <div className={`flex flex-col items-center overflow-hidden h-full ${isSidebarOpen ? 'p-4' : 'px-2'}`}>
         
         {/* Toggle button */}
         <button 
           onClick={toggleSidebar} 
-          className="absolute top-4 right-4 p-1 rounded-full bg-gray-200 hover:bg-gray-300 hidden md:block"
+          className="absolute top-4 right-4 p-1 pb-3 rounded-full bg-gray-200 hover:bg-gray-300 block"
         >
           <svg 
             xmlns="http://www.w3.org/2000/svg" 
