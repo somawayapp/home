@@ -447,7 +447,7 @@ useEffect(() => {
   className="flex flex-col mb-8 w-full items-center"
 >
   <div
-    onSubmit={handleSearch}
+  onClick={() => setShowModal(true)}
     className="hidden md:flex mt-2 w-full flex-row max-w-215 items-center justify-between rounded-full bg-white shadow-[0px_8px_20px_rgba(0,0,0,0.1)] border border-borderColor"
   >
     <div className="flex flex-row items-center w-full">
