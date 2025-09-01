@@ -110,6 +110,9 @@ const nearbyAmenities = [
   'Gym',
   'Shopping Mall',
   'Public transportation access',
+   'Airport',
+  'Train',
+  'Beach',
   'Parks',
   'Restaurants',
   'Coffee shops',
@@ -120,6 +123,17 @@ const nearbyAmenities = [
   'Movie theaters',
   'Libraries',
 ];
+
+
+  const handleImageUpload = (e) => {
+    const files = Array.from(e.target.files);
+    setImages((prevImages) => [...prevImages, ...files]);
+  };
+
+  const handleImageRemove = (index) => {
+    setImages((prevImages) => prevImages.filter((_, i) => i !== index));
+  };
+
 
   const onSubmitHandler = async (e) => {
     e.preventDefault()
@@ -193,11 +207,14 @@ const nearbyAmenities = [
       >
         {/* listing Images */}
         <div className="flex flex-col gap-3 w-full">
-          <label htmlFor="listing-images" className="flex items-center gap-2">
+          <label
+            htmlFor="listing-images"
+            className="flex items-center gap-2 border-2 border-blue-500 p-2 rounded-md cursor-pointer"
+          >
             <img
               src={assets.upload_icon}
               alt="Upload"
-              className="h-14 rounded cursor-pointer"
+              className="h-14 rounded"
             />
             <input
               type="file"
@@ -205,7 +222,7 @@ const nearbyAmenities = [
               accept="image/*"
               multiple
               hidden
-              onChange={(e) => setImages(Array.from(e.target.files))}
+              onChange={handleImageUpload}
             />
             <p className="text-sm text-gray-500">
               Upload one or more pictures of your listing
@@ -215,16 +232,24 @@ const nearbyAmenities = [
           {images.length > 0 && (
             <div className="grid grid-cols-3 gap-2">
               {images.map((img, index) => (
-                <img
-                  key={index}
-                  src={URL.createObjectURL(img)}
-                  alt={`preview-${index}`}
-                  className="h-20 w-full object-cover rounded-md"
-                />
+                <div key={index} className="relative border-2 border-blue-500 rounded-md">
+                  <img
+                    src={URL.createObjectURL(img)}
+                    alt={`preview-${index}`}
+                    className="h-20 w-full object-cover rounded-md"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => handleImageRemove(index)}
+                    className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 text-xs"
+                  >
+                    X
+                  </button>
+                </div>
               ))}
             </div>
           )}
-        </div>
+        </div> 
 
         {/* Agent Details */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
@@ -411,7 +436,6 @@ const nearbyAmenities = [
           </div>
         </div>
 
-        {/* listing Amenities */}
 
         {/* listing Amenities */}
         <div className="flex flex-col w-full gap-3">
