@@ -6,7 +6,7 @@ import Cars from './pages/Cars'
 import MyBookings from './pages/MyBookings'
 import Layout from './pages/owner/Layout'
 import Dashboard from './pages/owner/Dashboard'
-import AddCar from './pages/owner/AddCar'
+import AddListing from './pages/owner/AddListing'
 import ManageCars from './pages/owner/ManageCars'
 import ManageBookings from './pages/owner/ManageBookings'
 import Login from './components/Login'
@@ -34,7 +34,7 @@ const App = () => {
         {/* Owner dashboard layout */}
         <Route path="/owner" element={<Layout />}>
           <Route index element={<Dashboard />} />
-          <Route path="add-car" element={<AddCar />} />
+          <Route path="add-listing" element={<AddListing />} />
           <Route path="manage-cars" element={<ManageCars />} />
           <Route path="manage-bookings" element={<ManageBookings />} />
         </Route>
