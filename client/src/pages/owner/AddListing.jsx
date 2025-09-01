@@ -87,7 +87,7 @@ const AddListing = () => {
 
       formData.append('listingData', JSON.stringify(listing))
 
-      const { data } = await axios.post('/api/owner/add-property', formData)
+      const { data } = await axios.post('/api/owner/add-listing', formData)
 
       if (data.success) {
         toast.success(data.message)
