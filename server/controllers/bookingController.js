@@ -1,35 +1,35 @@
 import Booking from "../models/Booking.js"
-import Car from "../models/Car.js";
+import Listing from "../models/Listing.js";
 
 
-// Function to Check Availability of Car for a given Date
-const checkAvailability = async (car, pickupDate, returnDate)=>{
+// Function to Check Availability of listing for a given Date
+const checkAvailability = async (listing, pickupDate, returnDate)=>{
     const bookings = await Booking.find({
-        car,
+        listing,
         pickupDate: {$lte: returnDate},
         returnDate: {$gte: pickupDate},
     })
     return bookings.length === 0;
 }
 
-// API to Check Availability of Cars for the given Date and location
-export const checkAvailabilityOfCar = async (req, res)=>{
+// API to Check Availability of listings for the given Date and location
+export const checkAvailabilityOfListing = async (req, res)=>{
     try {
         const {location, pickupDate, returnDate} = req.body
 
-        // fetch all available cars for the given location
-        const cars = await Car.find({location, isAvaliable: true})
+        // fetch all available listing for the given location
+        const listing = await Listing.find({location, isAvaliable: true})
 
-        // check car availability for the given date range using promise
-        const availableCarsPromises = cars.map(async (car)=>{
-           const isAvailable = await checkAvailability(car._id, pickupDate, returnDate)
-           return {...car._doc, isAvailable: isAvailable}
+        // check listing availability for the given date range using promise
+        const availableListingsPromises = listings.map(async (listing)=>{
+           const isAvailable = await checkAvailability(listing._id, pickupDate, returnDate)
+           return {...listing._doc, isAvailable: isAvailable}
         })
 
-        let availableCars = await Promise.all(availableCarsPromises);
-        availableCars = availableCars.filter(car => car.isAvailable === true)
+        let availableListings = await Promise.all(availableListingsPromises);
+        availableListings = availableListings.filter(listing => listing.isAvailable === true)
 
-        res.json({success: true, availableCars})
+        res.json({success: true, availableListings})
 
     } catch (error) {
         console.log(error.message);
@@ -41,22 +41,22 @@ export const checkAvailabilityOfCar = async (req, res)=>{
 export const createBooking = async (req, res)=>{
     try {
         const {_id} = req.user;
-        const {car, pickupDate, returnDate} = req.body;
+        const {listing, pickupDate, returnDate} = req.body;
 
-        const isAvailable = await checkAvailability(car, pickupDate, returnDate)
+        const isAvailable = await checkAvailability(listing, pickupDate, returnDate)
         if(!isAvailable){
-            return res.json({success: false, message: "Car is not available"})
+            return res.json({success: false, message: "Listing is not available"})
         }
 
-        const carData = await Car.findById(car)
+        const listingData = await Listing.findById(listing)
 
         // Calculate price based on pickupDate and returnDate
         const picked = new Date(pickupDate);
         const returned = new Date(returnDate);
         const noOfDays = Math.ceil((returned - picked) / (1000 * 60 * 60 * 24))
-        const price = carData.pricePerDay * noOfDays;
+        const price = listingData.pricePerDay * noOfDays;
 
-        await Booking.create({car, owner: carData.owner, user: _id, pickupDate, returnDate, price})
+        await Booking.create({listing, owner: listingData.owner, user: _id, pickupDate, returnDate, price})
 
         res.json({success: true, message: "Booking Created"})
 
@@ -70,7 +70,7 @@ export const createBooking = async (req, res)=>{
 export const getUserBookings = async (req, res)=>{
     try {
         const {_id} = req.user;
-        const bookings = await Booking.find({ user: _id }).populate("car").sort({createdAt: -1})
+        const bookings = await Booking.find({ user: _id }).populate("listing").sort({createdAt: -1})
         res.json({success: true, bookings})
 
     } catch (error) {
@@ -86,7 +86,7 @@ export const getOwnerBookings = async (req, res)=>{
         if(req.user.role !== 'owner'){
             return res.json({ success: false, message: "Unauthorized" })
         }
-        const bookings = await Booking.find({owner: req.user._id}).populate('car user').select("-user.password").sort({createdAt: -1 })
+        const bookings = await Booking.find({owner: req.user._id}).populate('listing user').select("-user.password").sort({createdAt: -1 })
         res.json({success: true, bookings})
     } catch (error) {
         console.log(error.message);
