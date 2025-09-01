@@ -2,7 +2,7 @@ import User from "../models/User.js"
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import Like from "../models/like.js";
-import Car from "../models/Car.js";
+import Listing from "../models/Listing.js";
 
 
 // Generate JWT Token
@@ -66,9 +66,9 @@ export const getUserData = async (req, res) =>{
         res.json({success: false, message: error.message})
     }
 }
-// Get All Cars for the Frontend with Filters
-// Get All Cars for the Frontend with Filters
-export const getCars = async (req, res) => {
+// Get All Listings for the Frontend with Filters
+// Get All Listings for the Frontend with Filters
+export const getListings = async (req, res) => {
   try {
     const { pickupLocation, pricePerDay, seatingCapacity } = req.query;
 
@@ -88,8 +88,8 @@ export const getCars = async (req, res) => {
       filter.seating_capacity = Number(seatingCapacity); // ✅ matches schema
     }
 
-    const cars = await Car.find(filter);
-    res.json({ success: true, cars });
+    const listings = await Listing.find(filter);
+    res.json({ success: true, listings });
   } catch (error) {
     console.log(error.message);
     res.json({ success: false, message: error.message });
@@ -98,12 +98,12 @@ export const getCars = async (req, res) => {
 
 
 
-export const getLikedCars = async (req, res) => {
+export const getLikedListings = async (req, res) => {
   try {
     const userId = req.user._id;
 
-    const liked = await Like.find({ user: userId }).populate("car");
-    res.json({ success: true, likedCars: liked.map((l) => l.car) });
+    const liked = await Like.find({ user: userId }).populate("listing");
+    res.json({ success: true, likedListings: liked.map((l) => l.listing) });
   } catch (error) {
     console.log(error);
     res.status(500).json({ success: false, message: error.message });
@@ -121,11 +121,11 @@ export const toggleLike = async (req, res) => {
       return res.status(401).json({ success: false, error: "NOT_AUTHENTICATED" });
     }
 
-    const { carId } = req.body;
+    const { listingId } = req.body;
     const userId = req.user._id;
 
     // ✅ Check if like exists
-    const existingLike = await Like.findOne({ user: userId, car: carId });
+    const existingLike = await Like.findOne({ user: userId, listing: listingId });
 
     if (existingLike) {
       // ✅ Unlike (delete)
@@ -134,7 +134,7 @@ export const toggleLike = async (req, res) => {
     }
 
     // ✅ Like (create new)
-    await Like.create({ user: userId, car: carId });
+    await Like.create({ user: userId, listing: listingId });
     return res.json({ success: true, liked: true });
 
   } catch (error) {
@@ -154,9 +154,9 @@ export const checkIfLiked = async (req, res) => {
     }
 
     const userId = req.user._id;
-    const { carId } = req.query;
+    const { listingId } = req.query;
 
-    const existingLike = await Like.findOne({ user: userId, car: carId });
+    const existingLike = await Like.findOne({ user: userId, listing: listingId });
     return res.json({ success: true, liked: !!existingLike });
   } catch (error) {
     console.error("CheckIfLiked Error:", error);
