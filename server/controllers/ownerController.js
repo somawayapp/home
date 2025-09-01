@@ -6,7 +6,7 @@ import fs from "fs";
 import path from "path";
 
 // API to Change Role of User
-export const changeRoleToAgent = async (req, res)=>{
+export const changeRoleToOwner = async (req, res)=>{
     try {
         const {_id} = req.user;
         await User.findByIdAndUpdate(_id, {role: "agent"})
