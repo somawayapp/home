@@ -203,7 +203,7 @@ const nearbyAmenities = [
 
       <form
         onSubmit={onSubmitHandler}
-        className="flex flex-col gap-5 text-gray-500 text-sm mt-6 max-w-xl"
+        className="flex flex-col gap-5 text-gray-800 text-sm mt-6 max-w-xl"
       >
         {/* listing Images */}
         <div className="flex flex-col gap-3 w-full">
@@ -224,7 +224,7 @@ const nearbyAmenities = [
               hidden
               onChange={handleImageUpload}
             />
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-gray-800">
               Upload one or more pictures of your listing
             </p>
           </label>

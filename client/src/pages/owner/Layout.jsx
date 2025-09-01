@@ -30,7 +30,7 @@ const Layout = () => {
       <NavbarOwner />
       <div className='flex flex-grow'>
         <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
-        <div className={`flex-grow transition-all duration-300 px-4 md:px-12 lg:px-16 xl:px-24 flex justify-center items-center pt-8`}>
+        <div className={`flex-grow transition-all duration-300 px-4 md:px-12 lg:px-16 xl:px-24 flex justify-center items-start pt-8`}>
           <div className="w-full max-w-screen-xl">
             <Outlet />
           </div>
