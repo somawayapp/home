@@ -209,7 +209,7 @@ const nearbyAmenities = [
         <div className="flex flex-col gap-3 w-full">
           <label
             htmlFor="listing-images"
-            className="flex items-center gap-2 border-2 border-blue-500 p-2 rounded-md cursor-pointer"
+            className="flex items-center gap-2 border-2 border-blue-200 p-2 rounded-md cursor-pointer"
           >
             <img
               src={assets.upload_icon}
@@ -232,7 +232,7 @@ const nearbyAmenities = [
           {images.length > 0 && (
             <div className="grid grid-cols-3 gap-2">
               {images.map((img, index) => (
-                <div key={index} className="relative border-2 border-blue-500 rounded-md">
+                <div key={index} className="relative border-2 border-blue-200 rounded-md">
                   <img
                     src={URL.createObjectURL(img)}
                     alt={`preview-${index}`}
@@ -241,7 +241,7 @@ const nearbyAmenities = [
                   <button
                     type="button"
                     onClick={() => handleImageRemove(index)}
-                    className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 text-xs"
+                    className="absolute top-1 right-1 cursor-pointer bg-red-500 text-white rounded-full px-2 py-1 text-xs"
                   >
                     X
                   </button>
@@ -426,9 +426,9 @@ const nearbyAmenities = [
           <div className="flex flex-col w-full">
             <label>Size</label>
             <input
-              type="text"
+              type="number"
               name="size"
-              placeholder="e.g. 120 sqm"
+              placeholder="e.g. 120 sft"
               className="px-3 py-2 mt-1 border border-borderColor rounded-md outline-none"
               value={listing.features.size}
               onChange={handleFeaturesChange}
