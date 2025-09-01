@@ -1,6 +1,6 @@
 import logo from "./logo.png";
 import gmail_logo from "./gmail_logo.svg";
-import smalllogo from "./smalllogo.webp";
+import smalllogo from "./smalllogo.png";
 import houseicon from "./houseicon.avif";
 import facebook_logo from "./facebook_logo.svg";
 import instagram_logo from "./instagram_logo.svg";
