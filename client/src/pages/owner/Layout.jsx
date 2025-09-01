@@ -12,12 +12,15 @@ const Layout = () => {
       navigate('/')
     }
   },[isOwner])
+  
   return (
-    <div className='flex flex-col'>
+    <div className='flex flex-col min-h-screen'>
       <NavbarOwner />
-      <div className='flex'>
+      <div className='flex flex-grow'>
         <Sidebar />
-        <Outlet />
+        <div className='flex-grow pl-20 md:pl-60 lg:pl-80 p-8 flex justify-center items-center'>
+          <Outlet />
+        </div>
       </div>
     </div>
   )
