@@ -1,78 +1,91 @@
 import imagekit from "../configs/imageKit.js";
 import Booking from "../models/Booking.js";
-import Car from "../models/Listing.js";
+import Listing from "../models/Listing.js";
 import User from "../models/User.js";
 import fs from "fs";
-
+import path from "path";
 
 // API to Change Role of User
-export const changeRoleToOwner = async (req, res)=>{
+export const changeRoleToAgent = async (req, res)=>{
     try {
         const {_id} = req.user;
-        await User.findByIdAndUpdate(_id, {role: "owner"})
-        res.json({success: true, message: "Now you can list cars"})
+        await User.findByIdAndUpdate(_id, {role: "agent"})
+        res.json({success: true, message: "Now you can list properties"})
     } catch (error) {
         console.log(error.message);
         res.json({success: false, message: error.message})
     }
 }
 
-// API to List Car
+// API to List Property
+export const addListing = async (req, res) => {
+    try {
+        const { _id } = req.user;
+        let listingData = JSON.parse(req.body.listingData);
+        const imageFiles = req.files; // <-- multiple files now
+        let uploadedImages = [];
 
-export const addCar = async (req, res) => {
-  try {
-    const { _id } = req.user;
-    let car = JSON.parse(req.body.carData);
-    const imageFiles = req.files; // <-- multiple files now
-    let uploadedImages = [];
+        if (!imageFiles || imageFiles.length === 0) {
+            return res.json({ success: false, message: "At least one image is required" });
+        }
 
-    if (!imageFiles || imageFiles.length === 0) {
-      return res.json({ success: false, message: "At least one image is required" });
+        for (const file of imageFiles) {
+            const fileBuffer = fs.readFileSync(file.path);
+
+            const response = await imagekit.upload({
+                file: fileBuffer,
+                fileName: file.originalname,
+                folder: "/properties" // Changed folder name
+            });
+
+            // Create optimized URL
+            const optimizedImageUrl = imagekit.url({
+                path: response.filePath,
+                transformation: [
+                    { width: "1280" },
+                    { quality: "auto" },
+                    { format: "webp" }
+                ]
+            });
+            uploadedImages.push(optimizedImageUrl);
+
+            // Clean up the temporary file
+            fs.unlinkSync(file.path);
+        }
+
+        // Get agent details from the user model or the request body
+        // Assuming agent details are provided in the request body for simplicity.
+        const { agentname, agentphone, agentwhatsapp } = listingData;
+        const newListing = {
+            ...listingData,
+            agency: _id, // The owner/uploader of the listing
+            images: uploadedImages,
+            agentname: agentname,
+            agentphone: agentphone,
+            agentwhatsapp: agentwhatsapp,
+        };
+
+        // Save to DB
+        await Listing.create(newListing);
+
+        res.json({ success: true, message: "Property Listing Added Successfully" });
+
+    } catch (error) {
+        console.log(error.message);
+        res.json({ success: false, message: error.message });
     }
-
-    for (const file of imageFiles) {
-      const fileBuffer = fs.readFileSync(file.path);
-
-      const response = await imagekit.upload({
-        file: fileBuffer,
-        fileName: file.originalname,
-        folder: "/cars"
-      });
-
-      // Create optimized URL
-      const optimizedImageUrl = imagekit.url({
-        path: response.filePath,
-        transformation: [
-          { width: "1280" },
-          { quality: "auto" },
-          { format: "webp" }
-        ]
-      });
-
-      uploadedImages.push(optimizedImageUrl);
-    }
-
-    // Save to DB
-    await Car.create({ ...car, owner: _id, image: uploadedImages });
-
-    res.json({ success: true, message: "Car Added" });
-
-  } catch (error) {
-    console.log(error.message);
-    res.json({ success: false, message: error.message });
-  }
 };
 
 
-// API to List Owner Cars
-export const getOwnerCars = async (req, res)=>{
+// API to Get Agent Listings
+export const getAgentListings = async (req, res)=>{
     try {
         const {_id} = req.user;
-        const cars = await Car.find({owner: _id })
-        res.json({success: true, cars})
+        const listings = await Listing.find({agency: _id });
+        res.json({success: true, listings});
     } catch (error) {
         console.log(error.message);
-        res.json({success: false, message: error.message})
+        res.json({success: false, message: error.message});
     }
 }
 
