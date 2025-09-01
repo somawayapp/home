@@ -68,22 +68,6 @@ const AddListing = () => {
     })
   }
 
-
-    const amenityGroups = {
-    'Interior Features': [
-      'Dishwasher', 'Refrigerator', 'Microwave', 'Garbage Disposal', 'Stove', 'Oven',
-      'Central A/C', 'Central Heating', 'Fireplace', 'In-unit Laundry',
-      'Hardwood Floors', 'Walk-in Closet', 'Home Office', 'Basement',
-      'Smart Thermostat', 'Smart Lighting', 'Wine Cooler', 'Farmhouse Sink'
-    ],
-    'Exterior & Property Features': [
-      'Private Patio/Deck', 'Fenced Yard', 'Community Pool', 'Gym/Fitness Center',
-      'Gated Community', 'Security Access', 'Elevator', 'On-site Maintenance',
-      'Assigned Parking', 'Garage', 'Carport', 'Playground'
-    ],
-  
-  };
-
   const onSubmitHandler = async (e) => {
     e.preventDefault()
     if (isLoading) return null
@@ -375,44 +359,71 @@ const AddListing = () => {
         </div>
 
         {/* listing Amenities */}
-    <div className="flex flex-col w-full gap-6 p-4 bg-white rounded-lg shadow-md md:p-8">
-      <h2 className="text-xl font-semibold text-gray-800 border-b pb-2">Property Amenities & Features</h2>
-
-      {Object.entries(amenityGroups).map(([groupTitle, amenities]) => (
-        <div key={groupTitle}>
-          <h3 className="text-lg font-medium text-gray-700 mt-4 mb-2">{groupTitle}</h3>
+        <div className="flex flex-col w-full gap-3">
+          <label className="text-sm font-medium text-gray-700">Amenities</label>
           <div className="flex flex-wrap gap-4">
-            {amenities.map(amenity => (
-              <label key={amenity} className="flex items-center text-gray-600 cursor-pointer">
-                <input
-                  type="checkbox"
-                  value={amenity}
-                  checked={selectedAmenities.includes(amenity)}
-                  onChange={handleAmenitiesChange}
-                  className="mr-2 h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
-                />
-                {amenity}
-              </label>
-            ))}
+            <label className="flex items-center">
+              <input
+                type="checkbox"
+                name="amenities-internal"
+                value="AC"
+                onChange={(e) => handleAmenitiesChange(e, 'internal')}
+                className="mr-2"
+              />
+              AC
+            </label>
+            <label className="flex items-center">
+              <input
+                type="checkbox"
+                name="amenities-internal"
+                value="Heating"
+                onChange={(e) => handleAmenitiesChange(e, 'internal')}
+                className="mr-2"
+              />
+              Heating
+            </label>
+            <label className="flex items-center">
+              <input
+                type="checkbox"
+                name="amenities-external"
+                value="Parking"
+                onChange={(e) => handleAmenitiesChange(e, 'external')}
+                className="mr-2"
+              />
+              Parking
+            </label>
+            <label className="flex items-center">
+              <input
+                type="checkbox"
+                name="amenities-external"
+                value="Pool"
+                onChange={(e) => handleAmenitiesChange(e, 'external')}
+                className="mr-2"
+              />
+              Pool
+            </label>
+            <label className="flex items-center">
+              <input
+                type="checkbox"
+                name="amenities-nearby"
+                value="Gym"
+                onChange={(e) => handleAmenitiesChange(e, 'nearby')}
+                className="mr-2"
+              />
+              Gym
+            </label>
+            <label className="flex items-center">
+              <input
+                type="checkbox"
+                name="amenities-nearby"
+                value="Shopping Mall"
+                onChange={(e) => handleAmenitiesChange(e, 'nearby')}
+                className="mr-2"
+              />
+              Shopping Mall
+            </label>
           </div>
         </div>
-      ))}
-
-      <div className="mt-6 p-4 bg-gray-50 rounded-lg">
-        <h4 className="text-sm font-semibold text-gray-800">Selected Amenities:</h4>
-        <div className="flex flex-wrap gap-2 mt-2">
-          {selectedAmenities.length > 0 ? (
-            selectedAmenities.map(amenity => (
-              <span key={amenity} className="px-3 py-1 text-sm font-medium text-indigo-800 bg-indigo-100 rounded-full">
-                {amenity}
-              </span>
-            ))
-          ) : (
-            <p className="text-sm text-gray-500">No amenities selected.</p>
-          )}
-        </div>
-      </div>
-    </div>
 
         {/* Featured Listing Checkbox */}
         <div className="flex items-center gap-2 mt-2">
