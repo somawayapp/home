@@ -5,7 +5,7 @@ import connectDB from "./configs/db.js";
 import userRouter from "./routes/userRoutes.js";
 import ownerRouter from "./routes/ownerRoutes.js";
 import bookingRouter from "./routes/bookingRoutes.js";
-import multer from "multer"; // Import multer
+import multer from "multer";
 
 // Initialize Express App
 const app = express()
@@ -13,32 +13,28 @@ const app = express()
 // Connect Database
 await connectDB()
 
-// Middleware
-app.use(cors());
+// --- CORS Configuration ---
+// Configure CORS to allow a specific origin.
+// Change 'https://houseclient.vercel.app' to your client's actual domain.
+const corsOptions = {
+  origin: 'https://houseclient.vercel.app',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true, // This is important if your client sends cookies or auth headers
+};
+app.use(cors(corsOptions));
+// -------------------------
 
-// IMPORTANT: Do NOT use express.json() or express.urlencoded() for file upload routes.
-// The file upload middleware (multer) handles the parsing for 'multipart/form-data'.
-// The `listingData` JSON part of your payload will be in `req.body` after multer processes the request.
-// However, it's good practice to have `express.json()` for other non-file-upload routes.
-app.use(express.json()); // Keep this for other routes that use JSON
+// Middleware
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 
-// Configure Multer for file uploads
+// Configure Multer for file uploads with memory storage
 const upload = multer({
-    storage: multer.diskStorage({
-        // You can customize the destination folder for uploaded files
-        destination: (req, file, cb) => {
-            cb(null, 'uploads/');
-        },
-        // And the file name
-        filename: (req, file, cb) => {
-            cb(null, Date.now() + '-' + file.originalname);
-        },
-    }),
-    // Here you set the file size limit
+    storage: multer.memoryStorage(), // Correct for Vercel: stores files in memory
     limits: {
-        fileSize: 20 * 1024 * 1024, // Set the limit to 20MB (20 * 1024 * 1024 bytes)
+        fileSize: 20 * 1024 * 1024, // 20MB limit, adjust as needed
     },
 });
 
@@ -46,7 +42,11 @@ const upload = multer({
 app.get('/', (req, res)=> res.send("Server is running"))
 
 // Route Handlers
-// Pass the multer middleware to the owner route for add-listing
+// The multer middleware should be applied directly in your route file (e.g., ownerRoutes.js)
+// using the 'upload' instance exported from a dedicated middleware file.
+// app.use('/api/owner', upload.array('images'), ownerRouter)
+// It is recommended to apply multer on a per-route basis for clarity.
+
 app.use('/api/user', userRouter)
 app.use('/api/owner', ownerRouter)
 app.use('/api/bookings', bookingRouter)
