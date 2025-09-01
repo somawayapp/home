@@ -209,7 +209,7 @@ const nearbyAmenities = [
         <div className="flex flex-col gap-3 w-full">
           <label
             htmlFor="listing-images"
-            className="flex items-center gap-2 border-2 border-blue-200 p-2 rounded-md cursor-pointer"
+            className="flex items-center gap-2 border-2 border-blue-400 p-2 rounded-md cursor-pointer"
           >
             <img
               src={assets.upload_icon}
@@ -232,7 +232,7 @@ const nearbyAmenities = [
           {images.length > 0 && (
             <div className="grid grid-cols-3 gap-2">
               {images.map((img, index) => (
-                <div key={index} className="relative border-2 border-blue-200 rounded-md">
+                <div key={index} className="relative border-2 border-blue-400 rounded-md">
                   <img
                     src={URL.createObjectURL(img)}
                     alt={`preview-${index}`}
@@ -260,7 +260,7 @@ const nearbyAmenities = [
               name="agentname"
               placeholder="John Doe"
               required
-              className="px-3 py-2 mt-1 border border-borderColor rounded-md outline-none"
+              className="px-3 py-2 mt-1 border border-borderColor2  rounded-md outline-none"
               value={listing.agentname}
               onChange={handleInputChange}
             />
@@ -272,7 +272,7 @@ const nearbyAmenities = [
               name="agentphone"
               placeholder="+1-555-1234"
               required
-              className="px-3 py-2 mt-1 border border-borderColor rounded-md outline-none"
+              className="px-3 py-2 mt-1 border border-borderColor2  rounded-md outline-none"
               value={listing.agentphone}
               onChange={handleInputChange}
             />
@@ -284,7 +284,7 @@ const nearbyAmenities = [
               name="agentwhatsapp"
               placeholder="+1-555-5678"
               required
-              className="px-3 py-2 mt-1 border border-borderColor rounded-md outline-none"
+              className="px-3 py-2 mt-1 border border-borderColor2  rounded-md outline-none"
               value={listing.agentwhatsapp}
               onChange={handleInputChange}
             />
@@ -299,7 +299,7 @@ const nearbyAmenities = [
             name="title"
             placeholder="e.g. Beautiful 3-bedroom apartment"
             required
-            className="px-3 py-2 mt-1 border border-borderColor rounded-md outline-none"
+            className="px-3 py-2 mt-1 border border-borderColor2  rounded-md outline-none"
             value={listing.title}
             onChange={handleInputChange}
           />
@@ -311,7 +311,7 @@ const nearbyAmenities = [
             name="description"
             placeholder="e.g. A luxurious apartment with a spacious interior and a great view."
             required
-            className="px-3 py-2 mt-1 border border-borderColor rounded-md outline-none"
+            className="px-3 py-2 mt-1 border border-borderColor2  rounded-md outline-none"
             value={listing.description}
             onChange={handleInputChange}
           ></textarea>
@@ -325,7 +325,7 @@ const nearbyAmenities = [
               name="propertytype"
               value={listing.propertytype}
               onChange={handleInputChange}
-              className="px-3 py-2 mt-1 border border-borderColor rounded-md outline-none"
+              className="px-3 py-2 mt-1 border border-borderColor2  rounded-md outline-none"
             >
               <option value="">Select a property type</option>
               <option value="Apartment">Apartment</option>
@@ -340,7 +340,7 @@ const nearbyAmenities = [
               name="offertype"
               value={listing.offertype}
               onChange={handleInputChange}
-              className="px-3 py-2 mt-1 border border-borderColor rounded-md outline-none"
+              className="px-3 py-2 mt-1 border border-borderColor2  rounded-md outline-none"
             >
               <option value="">Select an offer type</option>
               <option value="sale">Sale</option>
@@ -354,7 +354,7 @@ const nearbyAmenities = [
               name="price"
               placeholder="500000"
               required
-              className="px-3 py-2 mt-1 border border-borderColor rounded-md outline-none"
+              className="px-3 py-2 mt-1 border border-borderColor2  rounded-md outline-none"
               value={listing.price}
               onChange={handleInputChange}
             />
@@ -369,7 +369,7 @@ const nearbyAmenities = [
             name="location"
             placeholder="e.g. New York, Houston..."
             required
-            className="px-3 py-2 mt-1 border border-borderColor rounded-md outline-none"
+            className="px-3 py-2 mt-1 border border-borderColor2  rounded-md outline-none"
             value={listing.location}
             onChange={handleInputChange}
           />
@@ -382,7 +382,7 @@ const nearbyAmenities = [
             type="url"
             name="scrappingurl"
             placeholder="https://example-listing.com"
-            className="px-3 py-2 mt-1 border border-borderColor rounded-md outline-none"
+            className="px-3 py-2 mt-1 border border-borderColor2  rounded-md outline-none"
             value={listing.scrappingurl}
             onChange={handleInputChange}
           />
@@ -396,7 +396,7 @@ const nearbyAmenities = [
               type="number"
               name="bedrooms"
               placeholder="3"
-              className="px-3 py-2 mt-1 border border-borderColor rounded-md outline-none"
+              className="px-3 py-2 mt-1 border border-borderColor2  rounded-md outline-none"
               value={listing.features.bedrooms}
               onChange={handleFeaturesChange}
             />
@@ -407,7 +407,7 @@ const nearbyAmenities = [
               type="number"
               name="bathrooms"
               placeholder="2"
-              className="px-3 py-2 mt-1 border border-borderColor rounded-md outline-none"
+              className="px-3 py-2 mt-1 border border-borderColor2  rounded-md outline-none"
               value={listing.features.bathrooms}
               onChange={handleFeaturesChange}
             />
@@ -418,7 +418,7 @@ const nearbyAmenities = [
               type="number"
               name="rooms"
               placeholder="5"
-              className="px-3 py-2 mt-1 border border-borderColor rounded-md outline-none"
+              className="px-3 py-2 mt-1 border border-borderColor2  rounded-md outline-none"
               value={listing.features.rooms}
               onChange={handleFeaturesChange}
             />
@@ -429,7 +429,7 @@ const nearbyAmenities = [
               type="number"
               name="size"
               placeholder="e.g. 120 sft"
-              className="px-3 py-2 mt-1 border border-borderColor rounded-md outline-none"
+              className="px-3 py-2 mt-1 border border-borderColor2  rounded-md outline-none"
               value={listing.features.size}
               onChange={handleFeaturesChange}
             />
