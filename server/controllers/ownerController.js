@@ -6,6 +6,8 @@ import User from "../models/User.js";
 import fs from "fs";
 import path from "path";
 
+
+
 // API to Change Role of User
 export const changeRoleToOwner = async (req, res)=>{
     try {
@@ -17,8 +19,15 @@ export const changeRoleToOwner = async (req, res)=>{
         res.json({success: false, message: error.message})
     }
 }
+// server/controllers/ownerController.js
 
-// API for Listing - OPTIMIZED
+// No need for 'fs' or 'path' since we are not using the disk
+// import fs from "fs"; 
+// import path from "path";
+
+// ... (other exports)
+
+// API for Listing - OPTIMIZED for Vercel Serverless
 export const addListing = async (req, res) => {
     try {
         const { _id } = req.user;
@@ -32,40 +41,31 @@ export const addListing = async (req, res) => {
         // Map each file upload to a promise
         const uploadPromises = imageFiles.map(file => {
             return new Promise((resolve, reject) => {
-                try {
-                    const fileBuffer = fs.readFileSync(file.path);
+                // Multer memoryStorage provides a 'buffer' property
+                // instead of a 'path' property
+                imagekit.upload({
+                    file: file.buffer, // Use file.buffer here!
+                    fileName: file.originalname,
+                    folder: "/listings"
+                }, (err, result) => {
+                    if (err) {
+                        return reject(err);
+                    }
                     
-                    // Upload to ImageKit
-                    imagekit.upload({
-                        file: fileBuffer,
-                        fileName: file.originalname,
-                        folder: "/listings"
-                    }, (err, result) => {
-                        // Clean up the temporary file regardless of upload success
-                        fs.unlinkSync(file.path);
-                        
-                        if (err) {
-                            return reject(err);
-                        }
-                        
-                        // Resolve the promise with the optimized URL
-                        const optimizedImageUrl = imagekit.url({
-                            path: result.filePath,
-                            transformation: [
-                                { width: "1280" },
-                                { quality: "auto" },
-                                { format: "webp" }
-                            ]
-                        });
-                        resolve(optimizedImageUrl);
+                    // Resolve the promise with the optimized URL
+                    const optimizedImageUrl = imagekit.url({
+                        path: result.filePath,
+                        transformation: [
+                            { width: "1280" },
+                            { quality: "auto" },
+                            { format: "webp" }
+                        ]
                     });
-                } catch (error) {
-                    reject(error);
-                }
+                    resolve(optimizedImageUrl);
+                });
             });
         });
 
-        // Wait for all promises to resolve concurrently
         const uploadedImages = await Promise.all(uploadPromises);
 
         const { agentname, agentphone, agentwhatsapp } = listingData;
@@ -80,18 +80,9 @@ export const addListing = async (req, res) => {
 
         await Listing.create(newListing);
 
-        // It's crucial to send a 200 OK with a body for the client-side to handle correctly.
         res.status(200).json({ success: true, message: "Listing Created Successfully" });
 
     } catch (error) {
-        // Clean up any files that may have been created
-        req.files.forEach(file => {
-            try {
-                fs.unlinkSync(file.path);
-            } catch (unlinkError) {
-                console.error(`Failed to unlink file at ${file.path}: ${unlinkError.message}`);
-            }
-        });
         console.error("Error in addListing:", error.message);
         res.status(500).json({ success: false, message: error.message });
     }
