@@ -412,70 +412,73 @@ const nearbyAmenities = [
         </div>
 
         {/* listing Amenities */}
-       <div className="flex flex-col w-full gap-3">
-  <label className="text-sm font-medium text-gray-700">Amenities</label>
-  <div className="flex flex-col gap-4">
-    {/* Internal Amenities */}
-    <div>
-      <h4 className="text-md font-semibold text-gray-800">Internal Amenities</h4>
-      <div className="flex flex-wrap gap-4 mt-2">
-        {internalAmenities.map((amenity) => (
-          <label key={amenity} className="flex items-center">
-            <input
-              type="checkbox"
-              name="amenities-internal"
-              value={amenity}
-              onChange={(e) => handleAmenitiesChange(e, 'internal')}
-              className="mr-2"
-              checked={selectedAmenities.internal.includes(amenity)}
-            />
-            {amenity}
-          </label>
-        ))}
-      </div>
-    </div>
 
-    {/* External Amenities */}
-    <div>
-      <h4 className="text-md font-semibold text-gray-800">External Amenities</h4>
-      <div className="flex flex-wrap gap-4 mt-2">
-        {externalAmenities.map((amenity) => (
-          <label key={amenity} className="flex items-center">
-            <input
-              type="checkbox"
-              name="amenities-external"
-              value={amenity}
-              onChange={(e) => handleAmenitiesChange(e, 'external')}
-              className="mr-2"
-              checked={selectedAmenities.external.includes(amenity)}
-            />
-            {amenity}
-          </label>
-        ))}
-      </div>
-    </div>
+        {/* listing Amenities */}
+        <div className="flex flex-col w-full gap-3">
+          <label className="text-sm font-medium text-gray-700">Amenities</label>
+          <div className="flex flex-col gap-4">
+            {/* Internal Amenities */}
+            <div>
+              <h4 className="text-md font-semibold text-gray-800">Internal Amenities</h4>
+              <div className="flex flex-wrap gap-4 mt-2">
+                {internalAmenities.map((amenity) => (
+                  <label key={amenity} className="flex items-center">
+                    <input
+                      type="checkbox"
+                      name="amenities-internal"
+                      value={amenity}
+                      onChange={(e) => handleAmenitiesChange(e, 'internal')}
+                      className="mr-2"
+                      checked={listing.amenities.internal.includes(amenity)}
+                    />
+                    {amenity}
+                  </label>
+                ))}
+              </div>
+            </div>
 
-    {/* Nearby Amenities */}
-    <div>
-      <h4 className="text-md font-semibold text-gray-800">Nearby Amenities</h4>
-      <div className="flex flex-wrap gap-4 mt-2">
-        {nearbyAmenities.map((amenity) => (
-          <label key={amenity} className="flex items-center">
-            <input
-              type="checkbox"
-              name="amenities-nearby"
-              value={amenity}
-              onChange={(e) => handleAmenitiesChange(e, 'nearby')}
-              className="mr-2"
-              checked={selectedAmenities.nearby.includes(amenity)}
-            />
-            {amenity}
-          </label>
-        ))}
-      </div>
-    </div>
-  </div>
-</div>
+            {/* External Amenities */}
+            <div>
+              <h4 className="text-md font-semibold text-gray-800">External Amenities</h4>
+              <div className="flex flex-wrap gap-4 mt-2">
+                {externalAmenities.map((amenity) => (
+                  <label key={amenity} className="flex items-center">
+                    <input
+                      type="checkbox"
+                      name="amenities-external"
+                      value={amenity}
+                      onChange={(e) => handleAmenitiesChange(e, 'external')}
+                      className="mr-2"
+                      checked={listing.amenities.external.includes(amenity)}
+                    />
+                    {amenity}
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            {/* Nearby Amenities */}
+            <div>
+              <h4 className="text-md font-semibold text-gray-800">Nearby Amenities</h4>
+              <div className="flex flex-wrap gap-4 mt-2">
+                {nearbyAmenities.map((amenity) => (
+                  <label key={amenity} className="flex items-center">
+                    <input
+                      type="checkbox"
+                      name="amenities-nearby"
+                      value={amenity}
+                      onChange={(e) => handleAmenitiesChange(e, 'nearby')}
+                      className="mr-2"
+                      checked={listing.amenities.nearby.includes(amenity)}
+                    />
+                    {amenity}
+                  </label>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
 
         {/* Featured Listing Checkbox */}
         <div className="flex items-center gap-2 mt-2">
