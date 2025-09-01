@@ -1,3 +1,4 @@
+
 import imagekit from "../configs/imageKit.js";
 import Booking from "../models/Booking.js";
 import Listing from "../models/Listing.js";
@@ -7,75 +8,94 @@ import path from "path";
 
 // API to Change Role of User
 export const changeRoleToOwner = async (req, res)=>{
-    try {
-        const {_id} = req.user;
-        await User.findByIdAndUpdate(_id, {role: "agent"})
-        res.json({success: true, message: "Now you can create a listing"})
-    } catch (error) {
-        console.log(error.message);
-        res.json({success: false, message: error.message})
-    }
+    try {
+        const {_id} = req.user;
+        await User.findByIdAndUpdate(_id, {role: "agent"})
+        res.json({success: true, message: "Now you can create a listing"})
+    } catch (error) {
+        console.log(error.message);
+        res.json({success: false, message: error.message})
+    }
 }
 
-// API for Listing
+// API for Listing - OPTIMIZED
 export const addListing = async (req, res) => {
-    try {
-        const { _id } = req.user;
-        let listingData = JSON.parse(req.body.listingData);
-        const imageFiles = req.files; // <-- multiple files now
-        let uploadedImages = [];
+    try {
+        const { _id } = req.user;
+        let listingData = JSON.parse(req.body.listingData);
+        const imageFiles = req.files;
 
-        if (!imageFiles || imageFiles.length === 0) {
-            return res.json({ success: false, message: "At least one image is required" });
-        }
+        if (!imageFiles || imageFiles.length === 0) {
+            return res.json({ success: false, message: "At least one image is required" });
+        }
 
-        for (const file of imageFiles) {
-            const fileBuffer = fs.readFileSync(file.path);
+        // Map each file upload to a promise
+        const uploadPromises = imageFiles.map(file => {
+            return new Promise((resolve, reject) => {
+                try {
+                    const fileBuffer = fs.readFileSync(file.path);
+                    
+                    // Upload to ImageKit
+                    imagekit.upload({
+                        file: fileBuffer,
+                        fileName: file.originalname,
+                        folder: "/listings"
+                    }, (err, result) => {
+                        // Clean up the temporary file regardless of upload success
+                        fs.unlinkSync(file.path);
+                        
+                        if (err) {
+                            return reject(err);
+                        }
+                        
+                        // Resolve the promise with the optimized URL
+                        const optimizedImageUrl = imagekit.url({
+                            path: result.filePath,
+                            transformation: [
+                                { width: "1280" },
+                                { quality: "auto" },
+                                { format: "webp" }
+                            ]
+                        });
+                        resolve(optimizedImageUrl);
+                    });
+                } catch (error) {
+                    reject(error);
+                }
+            });
+        });
 
-            const response = await imagekit.upload({
-                file: fileBuffer,
-                fileName: file.originalname,
-                folder: "/listings" // Changed folder name
-            });
+        // Wait for all promises to resolve concurrently
+        const uploadedImages = await Promise.all(uploadPromises);
 
-            // Create optimized URL
-            const optimizedImageUrl = imagekit.url({
-                path: response.filePath,
-                transformation: [
-                    { width: "1280" },
-                    { quality: "auto" },
-                    { format: "webp" }
-                ]
-            });
-            uploadedImages.push(optimizedImageUrl);
+        const { agentname, agentphone, agentwhatsapp } = listingData;
+        const newListing = {
+            ...listingData,
+            agency: _id,
+            images: uploadedImages,
+            agentname: agentname,
+            agentphone: agentphone,
+            agentwhatsapp: agentwhatsapp,
+        };
 
-            // Clean up the temporary file
-            fs.unlinkSync(file.path);
-        }
+        await Listing.create(newListing);
 
-        // Get agent details from the user model or the request body
-        // Assuming agent details are provided in the request body for simplicity.
-        const { agentname, agentphone, agentwhatsapp } = listingData;
-        const newListing = {
-            ...listingData,
-            agency: _id, // The owner/uploader of the listing
-            images: uploadedImages,
-            agentname: agentname,
-            agentphone: agentphone,
-            agentwhatsapp: agentwhatsapp,
-        };
+        // It's crucial to send a 200 OK with a body for the client-side to handle correctly.
+        res.status(200).json({ success: true, message: "Listing Created Successfully" });
 
-        // Save to DB
-        await Listing.create(newListing);
-
-        res.json({ success: true, message: " Listing Created Successfully" });
-
-    } catch (error) {
-        console.log(error.message);
-        res.json({ success: false, message: error.message });
-    }
+    } catch (error) {
+        // Clean up any files that may have been created
+        req.files.forEach(file => {
+            try {
+                fs.unlinkSync(file.path);
+            } catch (unlinkError) {
+                console.error(`Failed to unlink file at ${file.path}: ${unlinkError.message}`);
+            }
+        });
+        console.error("Error in addListing:", error.message);
+        res.status(500).json({ success: false, message: error.message });
+    }
 };
-
 
 // API to Get Agent Listings
 export const getOwnerListings = async (req, res)=>{
