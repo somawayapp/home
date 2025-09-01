@@ -33,7 +33,7 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
         {/* Toggle button */}
         <button 
           onClick={toggleSidebar} 
-          className="absolute top-4 right-4 p-1 pb-3 rounded-full bg-gray-200 hover:bg-gray-300 block"
+          className="absolute top-4 right-4 p-1 mb-3 rounded-full bg-gray-200 hover:bg-gray-300 block"
         >
           <svg 
             xmlns="http://www.w3.org/2000/svg" 
