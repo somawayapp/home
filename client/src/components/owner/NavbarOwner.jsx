@@ -8,7 +8,7 @@ const NavbarOwner = () => {
     const {user} = useAppContext()
 
   return (
-    <div className='flex sticky top-0 items-center justify-between px-6 md:px-10 py-4 text-gray-500 border-b border-borderColor relative transition-all'>
+    <div className='flex sticky top-0 items-center z-50 bg-white justify-between px-6 md:px-10 py-4 text-gray-500 border-b border-borderColor relative transition-all'>
       <Link to='/'>
         <img src={assets.logo} alt="" className="h-7"/>
       </Link>
