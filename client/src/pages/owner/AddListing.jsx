@@ -130,17 +130,17 @@ const AddListing = () => {
   return (
     <div className="px-4 py-10 md:px-10 flex-1">
       <Title
-        title="Add New Property"
-        subTitle="Fill in the details to list a new property for sale or rent."
+        title="Add New Listing"
+        subTitle="Fill in the details to create a new listing for sale or rent."
       />
 
       <form
         onSubmit={onSubmitHandler}
         className="flex flex-col gap-5 text-gray-500 text-sm mt-6 max-w-xl"
       >
-        {/* Property Images */}
+        {/* listing Images */}
         <div className="flex flex-col gap-3 w-full">
-          <label htmlFor="property-images" className="flex items-center gap-2">
+          <label htmlFor="listing-images" className="flex items-center gap-2">
             <img
               src={assets.upload_icon}
               alt="Upload"
@@ -148,14 +148,14 @@ const AddListing = () => {
             />
             <input
               type="file"
-              id="property-images"
+              id="listing-images"
               accept="image/*"
               multiple
               hidden
               onChange={(e) => setImages(Array.from(e.target.files))}
             />
             <p className="text-sm text-gray-500">
-              Upload one or more pictures of your property
+              Upload one or more pictures of your listing
             </p>
           </label>
 
@@ -213,7 +213,7 @@ const AddListing = () => {
           </div>
         </div>
 
-        {/* Property Title & Description */}
+        {/* listing Title & Description */}
         <div className="flex flex-col w-full">
           <label>Title</label>
           <input
@@ -239,7 +239,7 @@ const AddListing = () => {
           ></textarea>
         </div>
 
-        {/* Property Type, Offer Type, Price */}
+        {/* listing Type, Offer Type, Price */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           <div className="flex flex-col w-full">
             <label>Property Type</label>
@@ -283,7 +283,7 @@ const AddListing = () => {
           </div>
         </div>
 
-        {/* Property Location */}
+        {/* listing Location */}
         <div className="flex flex-col w-full">
           <label>Location</label>
           <input
@@ -303,14 +303,14 @@ const AddListing = () => {
           <input
             type="url"
             name="scrappingurl"
-            placeholder="https://example-property.com"
+            placeholder="https://example-listing.com"
             className="px-3 py-2 mt-1 border border-borderColor rounded-md outline-none"
             value={listing.scrappingurl}
             onChange={handleInputChange}
           />
         </div>
 
-        {/* Property Features */}
+        {/* listing Features */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
           <div className="flex flex-col w-full">
             <label>Bedrooms</label>
@@ -358,7 +358,7 @@ const AddListing = () => {
           </div>
         </div>
 
-        {/* Property Amenities */}
+        {/* listing Amenities */}
         <div className="flex flex-col w-full gap-3">
           <label className="text-sm font-medium text-gray-700">Amenities</label>
           <div className="flex flex-wrap gap-4">
@@ -445,7 +445,7 @@ const AddListing = () => {
           className="flex items-center gap-2 px-4 py-2.5 mt-4 bg-primary text-white rounded-md font-medium w-max cursor-pointer"
         >
           <img src={assets.tick_icon} alt="" />
-          {isLoading ? 'Listing...' : 'List Your Property'}
+          {isLoading ? 'Listing...' : 'Create listing'}
         </button>
       </form>
     </div>

@@ -10,14 +10,14 @@ export const changeRoleToOwner = async (req, res)=>{
     try {
         const {_id} = req.user;
         await User.findByIdAndUpdate(_id, {role: "agent"})
-        res.json({success: true, message: "Now you can list properties"})
+        res.json({success: true, message: "Now you can create a listing"})
     } catch (error) {
         console.log(error.message);
         res.json({success: false, message: error.message})
     }
 }
 
-// API to List Property
+// API for Listing
 export const addListing = async (req, res) => {
     try {
         const { _id } = req.user;
@@ -35,7 +35,7 @@ export const addListing = async (req, res) => {
             const response = await imagekit.upload({
                 file: fileBuffer,
                 fileName: file.originalname,
-                folder: "/properties" // Changed folder name
+                folder: "/listings" // Changed folder name
             });
 
             // Create optimized URL
@@ -68,7 +68,7 @@ export const addListing = async (req, res) => {
         // Save to DB
         await Listing.create(newListing);
 
-        res.json({ success: true, message: "Property Listing Added Successfully" });
+        res.json({ success: true, message: " Listing Created Successfully" });
 
     } catch (error) {
         console.log(error.message);
