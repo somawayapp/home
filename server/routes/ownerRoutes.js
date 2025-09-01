@@ -1,13 +1,13 @@
 import express from "express";
 import { protect } from "../middleware/auth.js";
-import { addListing, changeRoleToOwner, deleteCar, getDashboardData, getOwnerCars, toggleCarAvailability, updateUserImage } from "../controllers/ownerController.js";
+import { addListing, changeRoleToOwner, deleteCar, getDashboardData, getOwnerListings, toggleCarAvailability, updateUserImage } from "../controllers/ownerController.js";
 import upload from "../middleware/multer.js";
 
 const ownerRouter = express.Router();
 
 ownerRouter.post("/change-role", protect, changeRoleToOwner)
 ownerRouter.post("/add-listing", upload.array("images", 20), protect, addListing)
-ownerRouter.get("/cars", protect, getOwnerCars)
+ownerRouter.get("/listings", protect, getOwnerListings)
 ownerRouter.post("/toggle-car", protect, toggleCarAvailability)
 ownerRouter.post("/delete-car", protect, deleteCar)
 

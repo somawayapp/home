@@ -78,7 +78,7 @@ export const addListing = async (req, res) => {
 
 
 // API to Get Agent Listings
-export const getAgentListings = async (req, res)=>{
+export const getOwnerListings = async (req, res)=>{
     try {
         const {_id} = req.user;
         const listings = await Listing.find({agency: _id });
