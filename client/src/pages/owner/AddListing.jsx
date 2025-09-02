@@ -289,7 +289,6 @@ const AddListing = () => {
               </label>
 
            <IKUpload
-  fileName={file.name}
   folder="/uploads"
   onError={onError}
   onSuccess={onUploadSuccess}
@@ -297,7 +296,7 @@ const AddListing = () => {
     const validTypes = ["image/jpeg", "image/png", "image/webp"];
     if (!validTypes.includes(file.type)) {
       alert("Invalid file type. Only JPG, PNG, WEBP allowed.");
-      return false; // must return false, not throw
+      return false;
     }
     return true;
   }}
