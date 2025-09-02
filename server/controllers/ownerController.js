@@ -5,6 +5,8 @@ import Listing from "../models/Listing.js";
 import User from "../models/User.js";
 import fs from "fs";
 import path from "path";
+import pLimit from "p-limit";
+
 
 
 
@@ -28,65 +30,66 @@ export const changeRoleToOwner = async (req, res)=>{
 // ... (other exports)
 
 // API for Listing - OPTIMIZED for Vercel Serverless
+
 export const addListing = async (req, res) => {
-    try {
-        const { _id } = req.user;
-        let listingData = JSON.parse(req.body.listingData);
-        const imageFiles = req.files;
+  try {
+    const { _id } = req.user;
+    let listingData = JSON.parse(req.body.listingData);
+    const imageFiles = req.files;
 
-        if (!imageFiles || imageFiles.length === 0) {
-            return res.json({ success: false, message: "At least one image is required" });
-        }
+    if (!imageFiles || imageFiles.length === 0) {
+      return res.json({ success: false, message: "At least one image is required" });
+    }
 
-        // Map each file upload to a promise
-        const uploadPromises = imageFiles.map(file => {
-            return new Promise((resolve, reject) => {
-                // Multer memoryStorage provides a 'buffer' property
-                // instead of a 'path' property
-                imagekit.upload({
-                    file: file.buffer, // Use file.buffer here!
-                    fileName: file.originalname,
-                    folder: "/listings"
-                }, (err, result) => {
-                    if (err) {
-                        return reject(err);
-                    }
-                    
-                    // Resolve the promise with the optimized URL
-                    const optimizedImageUrl = imagekit.url({
-                        path: result.filePath,
-                        transformation: [
-                            { width: "1280" },
-                            { quality: "auto" },
-                            { format: "webp" }
-                        ]
-                    });
-                    resolve(optimizedImageUrl);
-                });
-            });
-        });
+    const limit = pLimit(3); // upload 3 images at a time
+    const uploadPromises = imageFiles.map((file) =>
+      limit(() => {
+        return new Promise((resolve, reject) => {
+          imagekit.upload(
+            {
+              file: file.buffer,
+              fileName: file.originalname,
+              folder: "/listings",
+            },
+            (err, result) => {
+              if (err) return reject(err);
 
-        const uploadedImages = await Promise.all(uploadPromises);
+              const optimizedImageUrl = imagekit.url({
+                path: result.filePath,
+                transformation: [
+                  { width: "1280" },
+                  { quality: "auto" },
+                  { format: "webp" },
+                ],
+              });
+              resolve(optimizedImageUrl);
+            }
+          );
+        });
+      })
+    );
 
-        const { agentname, agentphone, agentwhatsapp } = listingData;
-        const newListing = {
-            ...listingData,
-            agency: _id,
-            images: uploadedImages,
-            agentname: agentname,
-            agentphone: agentphone,
-            agentwhatsapp: agentwhatsapp,
-        };
+    const uploadedImages = await Promise.all(uploadPromises);
 
-        await Listing.create(newListing);
+    const { agentname, agentphone, agentwhatsapp } = listingData;
+    const newListing = {
+      ...listingData,
+      agency: _id,
+      images: uploadedImages,
+      agentname,
+      agentphone,
+      agentwhatsapp,
+    };
 
-        res.status(200).json({ success: true, message: "Listing Created Successfully" });
+    await Listing.create(newListing);
 
-    } catch (error) {
-        console.error("Error in addListing:", error.message);
-        res.status(500).json({ success: false, message: error.message });
-    }
+    res.status(200).json({ success: true, message: "Listing Created Successfully" });
+  } catch (error) {
+    console.error("Error in addListing:", error.message);
+    res.status(500).json({ success: false, message: error.message });
+  }
 };
+
 
 // API to Get Agent Listings
 export const getOwnerListings = async (req, res)=>{
