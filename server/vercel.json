@@ -23,7 +23,7 @@
       "headers": [
         {
           "key": "Access-Control-Allow-Origin",
-          "value": "https://houseclient.vercel.app"
+          "value": "https://houseclient-eight.vercel.app/"
         },
         {
           "key": "Access-Control-Allow-Methods",
