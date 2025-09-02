@@ -133,73 +133,76 @@ const AddListing = () => {
     'Libraries',
   ];
 
- const handleImageUpload = (e) => {
-    const files = Array.from(e.target.files);
-    setImages((prevImages) => [...prevImages, ...files]);
-  };
 
-  const handleImageRemove = (index) => {
-    setImages((prevImages) => prevImages.filter((_, i) => i !== index));
-  };
+// ... (existing handlers like handleImageUpload, handleImageRemove, and moveImage)
 
-  // ✅ Keep reordering support
-  const moveImage = useCallback((dragIndex, hoverIndex) => {
-    setImages((prevImages) => {
-      const newImages = [...prevImages];
-      const [draggedImage] = newImages.splice(dragIndex, 1);
-      newImages.splice(hoverIndex, 0, draggedImage);
-      return newImages;
+const onSubmitHandler = async (e) => {
+  e.preventDefault();
+  if (isLoading) return null;
+
+  if (images.length === 0) {
+    toast.error('Please upload at least one image');
+    return;
+  }
+
+  setIsLoading(true);
+  try {
+    // Compress images in the order they appear in the state
+    const compressedFiles = await Promise.all(
+      images.map(file =>
+        imageCompression(file, {
+          maxSizeMB: 2,           // compress to ~2MB
+          maxWidthOrHeight: 1920  // prevent giant images
+        })
+      )
+    );
+
+    const formData = new FormData();
+    // Append the compressed images to the form data
+    compressedFiles.forEach(file => formData.append("images", file));
+    formData.append("listingData", JSON.stringify(listing));
+
+    const { data } = await axios.post('/api/owner/add-listing', formData, {
+      headers: { "Content-Type": "multipart/form-data" },
     });
-  }, []);
 
-  const onSubmitHandler = async (e) => {
-    e.preventDefault();
-    if (isLoading) return null;
-
-    if (images.length === 0) {
-      toast.error("Please upload at least one image");
-      return;
-    }
-
-    setIsLoading(true);
-    try {
-      // ✅ Compress each image before sending
-      const compressedFiles = await Promise.all(
-        images.map((file) =>
-          imageCompression(file, {
-            maxSizeMB: 2, // ~2MB
-            maxWidthOrHeight: 1920, // prevent giant images
-            useWebWorker: true, // offload work from main thread
-          })
-        )
-      );
-
-      const formData = new FormData();
-
-      // ✅ Append in correct order
-      compressedFiles.forEach((file) => formData.append("images", file));
-      formData.append("listingData", JSON.stringify(listing));
-
-      const { data } = await axios.post("/api/owner/add-listing", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-        maxBodyLength: Infinity, // avoid axios size limitation
+    if (data.success) {
+      toast.success(data.message);
+      setImages([]);
+      setListing({
+        title: '',
+        description: '',
+        price: 0,
+        propertytype: '',
+        offertype: '',
+        location: '',
+        amenities: {
+          internal: [],
+          external: [],
+          nearby: [],
+        },
+        features: {
+          bathrooms: 0,
+          bedrooms: 0,
+          rooms: 0,
+          size: '',
+        },
+        agentname: '',
+        agentphone: '',
+        agentwhatsapp: '',
+        scrappingurl: '',
+        featured: false,
+        featuredexpiry: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
       });
-
-      if (data.success) {
-        toast.success(data.message);
-        setImages([]);
-        setListing(initialListingState);
-      } else {
-        toast.error(data.message);
-      }
-    } catch (error) {
-      console.error(error);
-      toast.error(error.message || "Failed to upload listing");
-    } finally {
-      setIsLoading(false);
+    } else {
+      toast.error(data.message);
     }
-  };
-
+  } catch (error) {
+    toast.error(error.message);
+  } finally {
+    setIsLoading(false);
+  }
+};
 
   return (
     <DndProvider backend={HTML5Backend}>
