@@ -51,7 +51,8 @@ const AddListing = () => {
 
   // --- IMAGE UPLOAD HANDLERS ---
   const onUploadStart = (files) => {
-    if (files.length + images.length > 20) {
+    const totalFiles = files.length + images.length;
+    if (totalFiles > 20) {
       toast.error('You can only upload up to 20 images.');
       return false;
     }
@@ -64,7 +65,7 @@ const AddListing = () => {
     }
     return true;
   };
-
+  
   const onUploadSuccess = (result) => {
     setIsLoading(false);
     setUploadProgress((prev) => {
@@ -187,7 +188,6 @@ const AddListing = () => {
       if (data.success) {
         setListingProgress(100);
         toast.success(data.message);
-        // redirect to the new listing page
         window.location.href = `/listing/${data.listingId}`;
       } else {
         toast.error(data.message);
@@ -287,29 +287,26 @@ const AddListing = () => {
                   Upload one or more pictures of your listing (max 20, 10MB each)
                 </p>
               </label>
-                
 
-                <IKUpload
+              <IKUpload
                 className="hidden"
                 id="listing-images"
                 folder="/listings"
                 onSuccess={onUploadSuccess}
                 onError={onUploadError}
                 onUploadProgress={onUploadProgress}
-                
-validateFile={(file) => {
-    const validTypes = ["image/jpeg", "image/png", "image/webp"];
-    if (!validTypes.includes(file.type)) {
-      alert("Invalid file type. Only JPG, PNG, WEBP allowed.");
-      return false; // must return false, not throw
-    }
-    return true;
-  }}                useUniqueFileName={true}
+                onUploadStart={onUploadStart}
+                validateFile={(file) => {
+                  const validTypes = ["image/jpeg", "image/png", "image/webp"];
+                  if (!validTypes.includes(file.type)) {
+                    toast.error("Invalid file type. Only JPG, PNG, WEBP allowed.");
+                    return false;
+                  }
+                  return true;
+                }}
+                useUniqueFileName={true}
                 multiple
               />
-
-
-            
 
               {/* Progress Bars */}
               {Object.keys(uploadProgress).length > 0 && (
@@ -349,257 +346,251 @@ validateFile={(file) => {
             {/* Other form fields ... */}
             {/* Agent info, title, description, features, amenities, etc. */}
 
-     
-
-
-            {/* ... (rest of your form) */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-              <div className="flex flex-col w-full">
-                <label>Agent Name</label>
-                <input
-                  type="text"
-                  name="agentname"
-                  placeholder="John Doe"
-                  required
-                  className="px-3 py-2 mt-1 border border-borderColor2 hover:border-blue200 rounded-md outline-none focus:ring focus:ring-blue-400 hover:border-blue200 rounded-md outline-none focus:ring focus:ring-blue-400"
-                  value={listing.agentname}
-                  onChange={handleInputChange}
-                />
-              </div>
-              <div className="flex flex-col w-full">
-                <label>Agent Phone</label>
-                <input
-                  type="number"
-                  name="agentphone"
-                  placeholder="+1-555-1234"
-                  required
-                  className="px-3 py-2 mt-1 border border-borderColor2 hover:border-blue200 rounded-md outline-none focus:ring focus:ring-blue-400  rounded-md outline-none"
-                  value={listing.agentphone}
-                  onChange={handleInputChange}
-                />
-              </div>
-              <div className="flex flex-col w-full">
-                <label>Agent WhatsApp</label>
-                <input
-                  type="number"
-                  name="agentwhatsapp"
-                  placeholder="+1-555-5678"
-                  required
-                  className="px-3 py-2 mt-1 border border-borderColor2 hover:border-blue200 rounded-md outline-none focus:ring focus:ring-blue-400  rounded-md outline-none"
-                  value={listing.agentwhatsapp}
-                  onChange={handleInputChange}
-                />
-              </div>
-            </div>
-            <div className="flex flex-col w-full">
-              <label>Title</label>
-              <input
-                type="text"
-                name="title"
-                placeholder="e.g. Beautiful 3-bedroom apartment"
-                required
-                className="px-3 py-2 mt-1 border border-borderColor2 hover:border-blue200 rounded-md outline-none focus:ring focus:ring-blue-400  rounded-md outline-none"
-                value={listing.title}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div className="flex flex-col w-full">
-              <label>Description</label>
-              <textarea
-                rows={5}
-                name="description"
-                placeholder="e.g. A luxurious apartment with a spacious interior and a great view."
-                required
-                className="px-3 py-2 mt-1 border border-borderColor2 hover:border-blue200 rounded-md outline-none focus:ring focus:ring-blue-400  rounded-md outline-none"
-                value={listing.description}
-                onChange={handleInputChange}
-              ></textarea>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-              <div className="flex flex-col w-full">
-                <label>Property Type</label>
-                <select
-                  name="propertytype"
-                  value={listing.propertytype}
-                  onChange={handleInputChange}
-                  className="px-3 py-2 mt-1 border border-borderColor2 hover:border-blue200 rounded-md outline-none focus:ring focus:ring-blue-400  rounded-md outline-none"
-                >
-                  <option value="">Select a property type</option>
-                  <option value="Apartment">Apartment</option>
-                  <option value="House">House</option>
-                  <option value="Land">Land</option>
-                  <option value="Office">Office</option>
-                </select>
-              </div>
-              <div className="flex flex-col w-full">
-                <label>Offer Type</label>
-                <select
-                  name="offertype"
-                  value={listing.offertype}
-                  onChange={handleInputChange}
-                  className="px-3 py-2 mt-1 border border-borderColor2 hover:border-blue200 rounded-md outline-none focus:ring focus:ring-blue-400  rounded-md outline-none"
-                >
-                  <option value="">Select an offer type</option>
-                  <option value="sale">Sale</option>
-                  <option value="rent">Rent</option>
-                </select>
-              </div>
-              <div className="flex flex-col w-full">
-                <label>Price ({currency})</label>
-                <input
-                  type="number"
-                  name="price"
-                  placeholder="500000"
-                  required
-                  className="px-3 py-2 mt-1 border border-borderColor2 hover:border-blue200 rounded-md outline-none focus:ring focus:ring-blue-400  rounded-md outline-none"
-                  value={listing.price}
-                  onChange={handleInputChange}
-                />
-              </div>
-            </div>
-            <div className="flex flex-col w-full">
-              <label>Location</label>
-              <input
-                type="text"
-                name="location"
-                placeholder="e.g. New York, Houston..."
-                required
-                className="px-3 py-2 mt-1 border border-borderColor2 hover:border-blue200 rounded-md outline-none focus:ring focus:ring-blue-400  rounded-md outline-none"
-                value={listing.location}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div className="flex flex-col w-full">
-              <label>Scrapping URL (optional)</label>
-              <input
-                type="url"
-                name="scrappingurl"
-                placeholder="https://example-listing.com"
-                className="px-3 py-2 mt-1 border border-borderColor2 hover:border-blue200 rounded-md outline-none focus:ring focus:ring-blue-400  rounded-md outline-none"
-                value={listing.scrappingurl}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-              <div className="flex flex-col w-full">
-                <label>Bedrooms</label>
-                <input
-                  type="number"
-                  name="bedrooms"
-                  placeholder="3"
-                  className="px-3 py-2 mt-1 border border-borderColor2 hover:border-blue200 rounded-md outline-none focus:ring focus:ring-blue-400  rounded-md outline-none"
-                  value={listing.features.bedrooms}
-                  onChange={handleFeaturesChange}
-                />
-              </div>
-              <div className="flex flex-col w-full">
-                <label>Bathrooms</label>
-                <input
-                  type="number"
-                  name="bathrooms"
-                  placeholder="2"
-                  className="px-3 py-2 mt-1 border border-borderColor2 hover:border-blue200 rounded-md outline-none focus:ring focus:ring-blue-400  rounded-md outline-none"
-                  value={listing.features.bathrooms}
-                  onChange={handleFeaturesChange}
-                />
-              </div>
-              <div className="flex flex-col w-full">
-                <label>Rooms</label>
-                <input
-                  type="number"
-                  name="rooms"
-                  placeholder="5"
-                  className="px-3 py-2 mt-1 border border-borderColor2 hover:border-blue200 rounded-md outline-none focus:ring focus:ring-blue-400  rounded-md outline-none"
-                  value={listing.features.rooms}
-                  onChange={handleFeaturesChange}
-                />
-              </div>
-              <div className="flex flex-col w-full">
-                <label>Size</label>
-                <input
-                  type="number"
-                  name="size"
-                  placeholder="e.g. 120 sft"
-                  className="px-3 py-2 mt-1 border border-borderColor2 hover:border-blue200 rounded-md outline-none focus:ring focus:ring-blue-400  rounded-md outline-none"
-                  value={listing.features.size}
-                  onChange={handleFeaturesChange}
-                />
-              </div>
-            </div>
-            <div className="flex flex-col w-full gap-3">
-              <label className="text-sm font-medium text-gray-700">Amenities</label>
-              <div className="flex flex-col gap-4">
-                <div>
-                  <h4 className="text-md font-semibold text-gray-800">Internal Amenities</h4>
-                  <div className="flex flex-wrap gap-4 mt-2">
-                    {internalAmenities.map((amenity) => (
-                      <label key={amenity} className="flex items-center">
-                        <input
-                          type="checkbox"
-                          name="amenities-internal"
-                          value={amenity}
-                          onChange={(e) => handleAmenitiesChange(e, 'internal')}
-                          className="mr-2"
-                          checked={listing.amenities.internal.includes(amenity)}
-                        />
-                        {amenity}
-                      </label>
-                    ))}
-                  </div>
-                </div>
-                <div>
-                  <h4 className="text-md font-semibold text-gray-800">External Amenities</h4>
-                  <div className="flex flex-wrap gap-4 mt-2">
-                    {externalAmenities.map((amenity) => (
-                      <label key={amenity} className="flex items-center">
-                        <input
-                          type="checkbox"
-                          name="amenities-external"
-                          value={amenity}
-                          onChange={(e) => handleAmenitiesChange(e, 'external')}
-                          className="mr-2"
-                          checked={listing.amenities.external.includes(amenity)}
-                        />
-                        {amenity}
-                      </label>
-                    ))}
-                  </div>
-                </div>
-                <div>
-                  <h4 className="text-md font-semibold text-gray-800">Nearby Amenities</h4>
-                  <div className="flex flex-wrap gap-4 mt-2">
-                    {nearbyAmenities.map((amenity) => (
-                      <label key={amenity} className="flex items-center">
-                        <input
-                          type="checkbox"
-                          name="amenities-nearby"
-                          value={amenity}
-                          onChange={(e) => handleAmenitiesChange(e, 'nearby')}
-                          className="mr-2"
-                          checked={listing.amenities.nearby.includes(amenity)}
-                        />
-                        {amenity}
-                      </label>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="flex items-center gap-2 mt-2">
-              <input
-                type="checkbox"
-                name="featured"
-                id="featured"
-                checked={listing.featured}
-                onChange={handleInputChange}
-                className="w-4 h-4 text-primary"
-              />
-              <label htmlFor="featured" className="text-sm text-gray-700">
-                Mark as Featured
-              </label>
-            </div>
-            
-
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+              <div className="flex flex-col w-full">
+                <label>Agent Name</label>
+                <input
+                  type="text"
+                  name="agentname"
+                  placeholder="John Doe"
+                  required
+                  className="px-3 py-2 mt-1 border border-borderColor2 hover:border-blue200 rounded-md outline-none focus:ring focus:ring-blue-400 hover:border-blue200 rounded-md outline-none focus:ring focus:ring-blue-400"
+                  value={listing.agentname}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="flex flex-col w-full">
+                <label>Agent Phone</label>
+                <input
+                  type="number"
+                  name="agentphone"
+                  placeholder="+1-555-1234"
+                  required
+                  className="px-3 py-2 mt-1 border border-borderColor2 hover:border-blue200 rounded-md outline-none focus:ring focus:ring-blue-400  rounded-md outline-none"
+                  value={listing.agentphone}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="flex flex-col w-full">
+                <label>Agent WhatsApp</label>
+                <input
+                  type="number"
+                  name="agentwhatsapp"
+                  placeholder="+1-555-5678"
+                  required
+                  className="px-3 py-2 mt-1 border border-borderColor2 hover:border-blue200 rounded-md outline-none focus:ring focus:ring-blue-400  rounded-md outline-none"
+                  value={listing.agentwhatsapp}
+                  onChange={handleInputChange}
+                />
+              </div>
+            </div>
+            <div className="flex flex-col w-full">
+              <label>Title</label>
+              <input
+                type="text"
+                name="title"
+                placeholder="e.g. Beautiful 3-bedroom apartment"
+                required
+                className="px-3 py-2 mt-1 border border-borderColor2 hover:border-blue200 rounded-md outline-none focus:ring focus:ring-blue-400  rounded-md outline-none"
+                value={listing.title}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div className="flex flex-col w-full">
+              <label>Description</label>
+              <textarea
+                rows={5}
+                name="description"
+                placeholder="e.g. A luxurious apartment with a spacious interior and a great view."
+                required
+                className="px-3 py-2 mt-1 border border-borderColor2 hover:border-blue200 rounded-md outline-none focus:ring focus:ring-blue-400  rounded-md outline-none"
+                value={listing.description}
+                onChange={handleInputChange}
+              ></textarea>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+              <div className="flex flex-col w-full">
+                <label>Property Type</label>
+                <select
+                  name="propertytype"
+                  value={listing.propertytype}
+                  onChange={handleInputChange}
+                  className="px-3 py-2 mt-1 border border-borderColor2 hover:border-blue200 rounded-md outline-none focus:ring focus:ring-blue-400  rounded-md outline-none"
+                >
+                  <option value="">Select a property type</option>
+                  <option value="Apartment">Apartment</option>
+                  <option value="House">House</option>
+                  <option value="Land">Land</option>
+                  <option value="Office">Office</option>
+                </select>
+              </div>
+              <div className="flex flex-col w-full">
+                <label>Offer Type</label>
+                <select
+                  name="offertype"
+                  value={listing.offertype}
+                  onChange={handleInputChange}
+                  className="px-3 py-2 mt-1 border border-borderColor2 hover:border-blue200 rounded-md outline-none focus:ring focus:ring-blue-400  rounded-md outline-none"
+                >
+                  <option value="">Select an offer type</option>
+                  <option value="sale">Sale</option>
+                  <option value="rent">Rent</option>
+                </select>
+              </div>
+              <div className="flex flex-col w-full">
+                <label>Price ({currency})</label>
+                <input
+                  type="number"
+                  name="price"
+                  placeholder="500000"
+                  required
+                  className="px-3 py-2 mt-1 border border-borderColor2 hover:border-blue200 rounded-md outline-none focus:ring focus:ring-blue-400  rounded-md outline-none"
+                  value={listing.price}
+                  onChange={handleInputChange}
+                />
+              </div>
+            </div>
+            <div className="flex flex-col w-full">
+              <label>Location</label>
+              <input
+                type="text"
+                name="location"
+                placeholder="e.g. New York, Houston..."
+                required
+                className="px-3 py-2 mt-1 border border-borderColor2 hover:border-blue200 rounded-md outline-none focus:ring focus:ring-blue-400  rounded-md outline-none"
+                value={listing.location}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div className="flex flex-col w-full">
+              <label>Scrapping URL (optional)</label>
+              <input
+                type="url"
+                name="scrappingurl"
+                placeholder="https://example-listing.com"
+                className="px-3 py-2 mt-1 border border-borderColor2 hover:border-blue200 rounded-md outline-none focus:ring focus:ring-blue-400  rounded-md outline-none"
+                value={listing.scrappingurl}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+              <div className="flex flex-col w-full">
+                <label>Bedrooms</label>
+                <input
+                  type="number"
+                  name="bedrooms"
+                  placeholder="3"
+                  className="px-3 py-2 mt-1 border border-borderColor2 hover:border-blue200 rounded-md outline-none focus:ring focus:ring-blue-400  rounded-md outline-none"
+                  value={listing.features.bedrooms}
+                  onChange={handleFeaturesChange}
+                />
+              </div>
+              <div className="flex flex-col w-full">
+                <label>Bathrooms</label>
+                <input
+                  type="number"
+                  name="bathrooms"
+                  placeholder="2"
+                  className="px-3 py-2 mt-1 border border-borderColor2 hover:border-blue200 rounded-md outline-none focus:ring focus:ring-blue-400  rounded-md outline-none"
+                  value={listing.features.bathrooms}
+                  onChange={handleFeaturesChange}
+                />
+              </div>
+              <div className="flex flex-col w-full">
+                <label>Rooms</label>
+                <input
+                  type="number"
+                  name="rooms"
+                  placeholder="5"
+                  className="px-3 py-2 mt-1 border border-borderColor2 hover:border-blue200 rounded-md outline-none focus:ring focus:ring-blue-400  rounded-md outline-none"
+                  value={listing.features.rooms}
+                  onChange={handleFeaturesChange}
+                />
+              </div>
+              <div className="flex flex-col w-full">
+                <label>Size</label>
+                <input
+                  type="number"
+                  name="size"
+                  placeholder="e.g. 120 sft"
+                  className="px-3 py-2 mt-1 border border-borderColor2 hover:border-blue200 rounded-md outline-none focus:ring focus:ring-blue-400  rounded-md outline-none"
+                  value={listing.features.size}
+                  onChange={handleFeaturesChange}
+                />
+              </div>
+            </div>
+            <div className="flex flex-col w-full gap-3">
+              <label className="text-sm font-medium text-gray-700">Amenities</label>
+              <div className="flex flex-col gap-4">
+                <div>
+                  <h4 className="text-md font-semibold text-gray-800">Internal Amenities</h4>
+                  <div className="flex flex-wrap gap-4 mt-2">
+                    {internalAmenities.map((amenity) => (
+                      <label key={amenity} className="flex items-center">
+                        <input
+                          type="checkbox"
+                          name="amenities-internal"
+                          value={amenity}
+                          onChange={(e) => handleAmenitiesChange(e, 'internal')}
+                          className="mr-2"
+                          checked={listing.amenities.internal.includes(amenity)}
+                        />
+                        {amenity}
+                      </label>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <h4 className="text-md font-semibold text-gray-800">External Amenities</h4>
+                  <div className="flex flex-wrap gap-4 mt-2">
+                    {externalAmenities.map((amenity) => (
+                      <label key={amenity} className="flex items-center">
+                        <input
+                          type="checkbox"
+                          name="amenities-external"
+                          value={amenity}
+                          onChange={(e) => handleAmenitiesChange(e, 'external')}
+                          className="mr-2"
+                          checked={listing.amenities.external.includes(amenity)}
+                        />
+                        {amenity}
+                      </label>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <h4 className="text-md font-semibold text-gray-800">Nearby Amenities</h4>
+                  <div className="flex flex-wrap gap-4 mt-2">
+                    {nearbyAmenities.map((amenity) => (
+                      <label key={amenity} className="flex items-center">
+                        <input
+                          type="checkbox"
+                          name="amenities-nearby"
+                          value={amenity}
+                          onChange={(e) => handleAmenitiesChange(e, 'nearby')}
+                          className="mr-2"
+                          checked={listing.amenities.nearby.includes(amenity)}
+                        />
+                        {amenity}
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="flex items-center gap-2 mt-2">
+              <input
+                type="checkbox"
+                name="featured"
+                id="featured"
+                checked={listing.featured}
+                onChange={handleInputChange}
+                className="w-4 h-4 text-primary"
+              />
+              <label htmlFor="featured" className="text-sm text-gray-700">
+                Mark as Featured
+              </label>
+            </div>
 
             <button
               type="submit"
