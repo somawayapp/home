@@ -68,33 +68,36 @@ const AddListing = () => {
     return true;
   }, [images]); // Add images to the dependency array
 
-  const onUploadSuccess = useCallback((result) => {
-    setIsLoading(false);
-    setUploadProgress((prev) => {
-      const copy = { ...prev };
-      delete copy[result.name];
-      return copy;
-    });
+ const onUploadSuccess = useCallback((result) => {
+  setIsLoading(false);
+  setUploadProgress((prev) => {
+    const copy = { ...prev };
+    delete copy[result.name];
+    return copy;
+  });
 
-    const optimizedImageUrl = coreImageKit.url({
-      path: result.filePath,
-      transformation: [
-        { width: '1280' },
-        { quality: 'auto' },
-        { format: 'webp' },
-      ],
-    });
+  const optimizedImageUrl = coreImageKit.url({
+    path: result.filePath,
+    transformation: [
+      { width: '1280' },
+      { quality: 'auto' },
+      { format: 'webp' },
+    ],
+  });
 
-    setImages((prevImages) => [
-      ...prevImages,
-      {
-        id: result.fileId,
-        name: result.name,
-        url: optimizedImageUrl,
-        originalUrl: result.url,
-      },
-    ]);
-  }, []); // Empty dependency array, since the functional update `setImages((prev) => ...)` doesn't need `images` as a dependency.
+  setImages((prevImages) => [
+    ...prevImages,
+    {
+      id: result.fileId,
+      name: result.name,
+      url: optimizedImageUrl,
+      originalUrl: result.url,
+    },
+  ]);
+
+  // ✅ Reset file input so next selection appends instead of replaces
+  document.getElementById("listing-images").value = "";
+}, []);
 
   const onUploadError = useCallback((err) => {
     setIsLoading(false);
@@ -290,17 +293,34 @@ const AddListing = () => {
                   Upload one or more pictures of your listing (max 20, 10MB each)
                 </p>
               </label>
-              <IKUpload
-                className="hidden"
-                id="listing-images"
-                folder="/listings"
-                onSuccess={onUploadSuccess}
-                onError={onUploadError}
-                onUploadProgress={onUploadProgress}
-                onUploadStart={onUploadStart}
-                useUniqueFileName={true}
-                multiple
-              />
+           <IKUpload
+  className="hidden"
+  id="listing-images"
+  folder="/listings"
+  onSuccess={onUploadSuccess}
+  onError={onUploadError}
+  onUploadProgress={onUploadProgress}
+  onUploadStart={onUploadStart}
+  useUniqueFileName={true}
+  multiple
+  validateFile={(file) => {
+    // ✅ This ensures each file is validated separately
+    if (images.length >= 20) {
+      toast.error("You can only upload up to 20 images.");
+      return false;
+    }
+    if (file.size > 10 * 1024 * 1024) {
+      toast.error(`${file.name} exceeds 10MB limit.`);
+      return false;
+    }
+    const validTypes = ["image/jpeg", "image/png", "image/webp"];
+    if (!validTypes.includes(file.type)) {
+      toast.error("Invalid file type. Only JPG, PNG, WEBP allowed.");
+      return false;
+    }
+    return true;
+  }}
+/>
 
 
               {/* Progress Bars */}
