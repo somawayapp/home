@@ -5,7 +5,7 @@ import Title from '../../components/owner/Title';
 import { assets } from '../../assets/assets';
 import { useAppContext } from '../../context/AppContext';
 import toast from 'react-hot-toast';
-import ImageKit from "imagekitio-react";
+import { ImageKit } from "imagekitio-react";
 import DraggableImage from '../../components/DragableImage';
 
 const AddListing = () => {
