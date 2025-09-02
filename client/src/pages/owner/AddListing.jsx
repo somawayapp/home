@@ -197,11 +197,12 @@ const AddListing = () => {
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <IKContext
-        publicKey={process.env.VITE_IMAGEKIT_PUBLIC_KEY}
-        urlEndpoint={process.env.VITE_IMAGEKIT_URL_ENDPOINT}
-        authenticator={authenticator}
-      >
+    <IKContext
+  // Hard-coded values
+  publicKey='public_GflbYmvPwwTVTeTjdNMkcUAwsiU='
+  urlEndpoint='https://ik.imagekit.io/somaway'
+  authenticator={authenticator}
+>
         <div className="px-4 py-10 md:px-10 flex-1">
           <Title
             title="Add New Listing"
