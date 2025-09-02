@@ -51,30 +51,24 @@ const AddListing = () => {
 
   // --- IMAGE UPLOAD HANDLERS ---
 // --- IMAGE UPLOAD HANDLERS ---
-  const onUploadStart = (file) => {
-    // Check if the total number of files exceeds the limit of 20
+   const onUploadStart = useCallback((file) => {
     if (images.length >= 20) {
       toast.error('You can only upload up to 20 images.');
       return false;
     }
-
-    // Check the size of the single file being uploaded
     if (file.size > 10 * 1024 * 1024) {
       toast.error(`${file.name} exceeds 10 MB limit.`);
       return false;
     }
-    
-    // Check file type
     const validTypes = ["image/jpeg", "image/png", "image/webp"];
     if (!validTypes.includes(file.type)) {
       toast.error("Invalid file type. Only JPG, PNG, WEBP allowed.");
       return false;
     }
+    return true;
+  }, [images]); // Add images to the dependency array
 
-    return true; // Return true to proceed with the upload
-  };
-  
-  const onUploadSuccess = (result) => {
+  const onUploadSuccess = useCallback((result) => {
     setIsLoading(false);
     setUploadProgress((prev) => {
       const copy = { ...prev };
@@ -100,15 +94,15 @@ const AddListing = () => {
         originalUrl: result.url,
       },
     ]);
-  };
+  }, []); // Empty dependency array, since the functional update `setImages((prev) => ...)` doesn't need `images` as a dependency.
 
-  const onUploadError = (err) => {
+  const onUploadError = useCallback((err) => {
     setIsLoading(false);
     toast.error('Failed to upload image.');
     console.error('ImageKit upload error:', err);
-  };
+  }, []);
 
-  const onUploadProgress = (progressEvent) => {
+  const onUploadProgress = useCallback((progressEvent) => {
     const { loaded, total } = progressEvent;
     const percent = Math.round((loaded / total) * 100);
     const fileName = progressEvent?.config?.data?.file?.name || 'file';
@@ -116,11 +110,12 @@ const AddListing = () => {
       ...prev,
       [fileName]: percent,
     }));
-  };
+  }, []);
 
-  const handleImageRemove = (index) => {
+  const handleImageRemove = useCallback((index) => {
     setImages((prevImages) => prevImages.filter((_, i) => i !== index));
-  };
+  }, []);
+
 
   const moveImage = useCallback((dragIndex, hoverIndex) => {
     setImages((prevImages) => {
@@ -295,27 +290,18 @@ const AddListing = () => {
                   Upload one or more pictures of your listing (max 20, 10MB each)
                 </p>
               </label>
+              <IKUpload
+                className="hidden"
+                id="listing-images"
+                folder="/listings"
+                onSuccess={onUploadSuccess}
+                onError={onUploadError}
+                onUploadProgress={onUploadProgress}
+                onUploadStart={onUploadStart}
+                useUniqueFileName={true}
+                multiple
+              />
 
-           <IKUpload
-  className="hidden"
-  id="listing-images"
-  folder="/listings"
-  onSuccess={onUploadSuccess}
-  onError={onUploadError}
-  onUploadProgress={onUploadProgress}
-  onUploadStart={onUploadStart} // Use the updated function
-  validateFile={(file) => {
-    // You can keep a simplified validation here for good measure
-    const validTypes = ["image/jpeg", "image/png", "image/webp"];
-    if (!validTypes.includes(file.type)) {
-      toast.error("Invalid file type. Only JPG, PNG, WEBP allowed.");
-      return false;
-    }
-    return true;
-  }}
-  useUniqueFileName={true}
-  multiple
-/>
 
               {/* Progress Bars */}
               {Object.keys(uploadProgress).length > 0 && (
