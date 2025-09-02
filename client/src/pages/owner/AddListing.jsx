@@ -49,11 +49,6 @@ const AddListing = () => {
     }
   };
 
-  const onError = (err) => {
-  console.error("Upload Error:", err);
-  alert("Upload failed. Please try again.");
-};
-
   // --- IMAGE UPLOAD HANDLERS ---
   const onUploadStart = (files) => {
     if (files.length + images.length > 20) {
@@ -293,20 +288,16 @@ const AddListing = () => {
                 </p>
               </label>
 
-           <IKUpload
-  folder="/uploads"
-  onError={onError}
-  onSuccess={onUploadSuccess}
-  validateFile={(file) => {
-    const validTypes = ["image/jpeg", "image/png", "image/webp"];
-    if (!validTypes.includes(file.type)) {
-      alert("Invalid file type. Only JPG, PNG, WEBP allowed.");
-      return false;
-    }
-    return true;
-  }}
-/>
-
+              <IKUpload
+                className="hidden"
+                id="listing-images"
+                folder="/listings"
+                onSuccess={onUploadSuccess}
+                onUploadProgress={onUploadProgress}
+                validateFile={onUploadStart} // custom validation
+                useUniqueFileName={true}
+                multiple
+              />
 
               {/* Progress Bars */}
               {Object.keys(uploadProgress).length > 0 && (
