@@ -10,9 +10,7 @@ const upload = multer({
     // Use memoryStorage instead of diskStorage
     storage: multer.memoryStorage(),
     // Set limits for file uploads to prevent DoS attacks
-    limits: {
-        fileSize: 20 * 1024 * 1024, // 20 MB in bytes (Vercel Pro limit is 50MB)
-    },
+  
     // Optional: Filter file types
     fileFilter: (req, file, cb) => {
         const allowedFileTypes = /jpeg|jpg|png|gif|webp/;

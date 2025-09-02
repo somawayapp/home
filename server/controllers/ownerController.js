@@ -8,6 +8,12 @@ import path from "path";
 import pLimit from "p-limit";
 
 
+const imagekit = new ImageKit({
+  publicKey: process.env.IMAGEKIT_PUBLIC_KEY,
+  privateKey: process.env.IMAGEKIT_PRIVATE_KEY,
+  urlEndpoint: process.env.IMAGEKIT_URL_ENDPOINT,
+});
+
 
 
 // API to Change Role of User
@@ -21,61 +27,36 @@ export const changeRoleToOwner = async (req, res)=>{
         res.json({success: false, message: error.message})
     }
 }
-// server/controllers/ownerController.js
 
-// No need for 'fs' or 'path' since we are not using the disk
-// import fs from "fs"; 
-// import path from "path";
 
-// ... (other exports)
+
 
 // API for Listing - OPTIMIZED for Vercel Serverless
 
+// server/controllers/listingController.js (or wherever your controller is)
+
 export const addListing = async (req, res) => {
   try {
-    const { _id } = req.user;
-    let listingData = JSON.parse(req.body.listingData);
-    const imageFiles = req.files;
+    const { _id } = req.user; // Assuming user is authenticated and `_id` is available
+    const listingData = req.body;
+    const {
+      agentname,
+      agentphone,
+      agentwhatsapp,
+      images, // The URLs from ImageKit will now be in the request body
+      ...restOfListingData
+    } = listingData;
 
-    if (!imageFiles || imageFiles.length === 0) {
+    // The image upload is now handled on the client-side.
+    // The server just needs to receive the ImageKit URLs.
+    if (!images || images.length === 0) {
       return res.json({ success: false, message: "At least one image is required" });
     }
 
-    const limit = pLimit(3); // upload 3 images at a time
-    const uploadPromises = imageFiles.map((file) =>
-      limit(() => {
-        return new Promise((resolve, reject) => {
-          imagekit.upload(
-            {
-              file: file.buffer,
-              fileName: file.originalname,
-              folder: "/listings",
-            },
-            (err, result) => {
-              if (err) return reject(err);
-
-              const optimizedImageUrl = imagekit.url({
-                path: result.filePath,
-                transformation: [
-                  { width: "1280" },
-                  { quality: "auto" },
-                  { format: "webp" },
-                ],
-              });
-              resolve(optimizedImageUrl);
-            }
-          );
-        });
-      })
-    );
-
-    const uploadedImages = await Promise.all(uploadPromises);
-
-    const { agentname, agentphone, agentwhatsapp } = listingData;
     const newListing = {
-      ...listingData,
+      ...restOfListingData,
       agency: _id,
-      images: uploadedImages,
+      images, // Store the array of URLs from the client
       agentname,
       agentphone,
       agentwhatsapp,
@@ -87,6 +68,17 @@ export const addListing = async (req, res) => {
   } catch (error) {
     console.error("Error in addListing:", error.message);
     res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// New endpoint for generating the authentication parameters
+export const getAuthenticationParameters = (req, res) => {
+  try {
+    const authenticationParameters = imagekit.getAuthenticationParameters();
+    res.status(200).json(authenticationParameters);
+  } catch (error) {
+    console.error("Error generating ImageKit authentication parameters:", error.message);
+    res.status(500).json({ success: false, message: "Failed to get authentication parameters" });
   }
 };
 
