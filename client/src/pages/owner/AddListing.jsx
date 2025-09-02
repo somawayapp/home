@@ -50,20 +50,28 @@ const AddListing = () => {
   };
 
   // --- IMAGE UPLOAD HANDLERS ---
-  const onUploadStart = (files) => {
-    const totalFiles = files.length + images.length;
-    if (totalFiles > 20) {
+// --- IMAGE UPLOAD HANDLERS ---
+  const onUploadStart = (file) => {
+    // Check if the total number of files exceeds the limit of 20
+    if (images.length >= 20) {
       toast.error('You can only upload up to 20 images.');
       return false;
     }
 
-    for (let file of files) {
-      if (file.size > 10 * 1024 * 1024) {
-        toast.error(`${file.name} exceeds 10 MB limit.`);
-        return false;
-      }
+    // Check the size of the single file being uploaded
+    if (file.size > 10 * 1024 * 1024) {
+      toast.error(`${file.name} exceeds 10 MB limit.`);
+      return false;
     }
-    return true;
+    
+    // Check file type
+    const validTypes = ["image/jpeg", "image/png", "image/webp"];
+    if (!validTypes.includes(file.type)) {
+      toast.error("Invalid file type. Only JPG, PNG, WEBP allowed.");
+      return false;
+    }
+
+    return true; // Return true to proceed with the upload
   };
   
   const onUploadSuccess = (result) => {
@@ -288,25 +296,26 @@ const AddListing = () => {
                 </p>
               </label>
 
-              <IKUpload
-                className="hidden"
-                id="listing-images"
-                folder="/listings"
-                onSuccess={onUploadSuccess}
-                onError={onUploadError}
-                onUploadProgress={onUploadProgress}
-                onUploadStart={onUploadStart}
-                validateFile={(file) => {
-                  const validTypes = ["image/jpeg", "image/png", "image/webp"];
-                  if (!validTypes.includes(file.type)) {
-                    toast.error("Invalid file type. Only JPG, PNG, WEBP allowed.");
-                    return false;
-                  }
-                  return true;
-                }}
-                useUniqueFileName={true}
-                multiple
-              />
+           <IKUpload
+  className="hidden"
+  id="listing-images"
+  folder="/listings"
+  onSuccess={onUploadSuccess}
+  onError={onUploadError}
+  onUploadProgress={onUploadProgress}
+  onUploadStart={onUploadStart} // Use the updated function
+  validateFile={(file) => {
+    // You can keep a simplified validation here for good measure
+    const validTypes = ["image/jpeg", "image/png", "image/webp"];
+    if (!validTypes.includes(file.type)) {
+      toast.error("Invalid file type. Only JPG, PNG, WEBP allowed.");
+      return false;
+    }
+    return true;
+  }}
+  useUniqueFileName={true}
+  multiple
+/>
 
               {/* Progress Bars */}
               {Object.keys(uploadProgress).length > 0 && (
