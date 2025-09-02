@@ -95,7 +95,7 @@ const CarCard = ({ car }) => {
         <LikeButton carId={car._id} />
       </div>
 
-      {/* Arrows */}
+      {/* Arros */}
       {images.length > 1 && (
         <>
           <button
