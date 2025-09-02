@@ -5,19 +5,21 @@ import Title from '../../components/owner/Title';
 import { assets } from '../../assets/assets';
 import { useAppContext } from '../../context/AppContext';
 import toast from 'react-hot-toast';
-import { IKContext, IKUpload, IKCore } from 'imagekitio-react'; // Import necessary components
-
-import DraggableImage from '../../components/DragableImage';
+import { IKContext, IKUpload, IKCore } from 'imagekitio-react';
+import DraggableImage from '../../components/owner/DraggableImage';
 
 const AddListing = () => {
   const { axios, currency } = useAppContext();
-  const coreImageKit = new IKCore({
-  publicKey: 'public_GflbYmvPwwTVTeTjdNMkcUAwsiU=',
-  urlEndpoint: 'https://ik.imagekit.io/somaway'
-});
 
+  const coreImageKit = new IKCore({
+    publicKey: 'public_GflbYmvPwwTVTeTjdNMkcUAwsiU=',
+    urlEndpoint: 'https://ik.imagekit.io/somaway'
+  });
 
   const [images, setImages] = useState([]);
+  const [uploadProgress, setUploadProgress] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+
   const [listing, setListing] = useState({
     title: '',
     description: '',
@@ -44,11 +46,9 @@ const AddListing = () => {
     featuredexpiry: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
   });
 
-  const [isLoading, setIsLoading] = useState(false);
-
   const authenticator = async () => {
     try {
-const response = await axios.get('/api/owner/imagekit-auth');
+      const response = await axios.get('/api/owner/imagekit-auth');
       return response.data;
     } catch (error) {
       console.error('Failed to fetch authentication parameters:', error);
@@ -57,31 +57,33 @@ const response = await axios.get('/api/owner/imagekit-auth');
     }
   };
 
-  
- const onUploadSuccess = (result) => {
-  setIsLoading(false);
+  const onUploadSuccess = (result) => {
+    setIsLoading(false);
+    setUploadProgress((prev) => {
+      const copy = { ...prev };
+      delete copy[result.name];
+      return copy;
+    });
 
-  // generate optimized url for each uploaded file
-  const optimizedImageUrl = coreImageKit.url({
-    path: result.filePath,
-    transformation: [
-      { width: "1280" },
-      { quality: "auto" },
-      { format: "webp" },
-    ],
-  });
+    const optimizedImageUrl = coreImageKit.url({
+      path: result.filePath,
+      transformation: [
+        { width: "1280" },
+        { quality: "auto" },
+        { format: "webp" },
+      ],
+    });
 
-  // append new image to existing state
-  setImages((prevImages) => [
-    ...prevImages,
-    {
-      id: result.fileId,               // unique ID from ImageKit
-      name: result.name,               // file name
-      url: optimizedImageUrl,          // optimized URL
-      originalUrl: result.url,         // keep original too (optional)
-    },
-  ]);
-};
+    setImages((prevImages) => [
+      ...prevImages,
+      {
+        id: result.fileId,
+        name: result.name,
+        url: optimizedImageUrl,
+        originalUrl: result.url,
+      },
+    ]);
+  };
 
   const onUploadError = (err) => {
     setIsLoading(false);
@@ -89,10 +91,20 @@ const response = await axios.get('/api/owner/imagekit-auth');
     console.error("ImageKit upload error:", err);
   };
 
+  const onUploadProgress = (progressEvent) => {
+    const { loaded, total } = progressEvent;
+    const percent = Math.round((loaded / total) * 100);
+    const fileName = progressEvent?.config?.data?.file?.name || 'file';
+    setUploadProgress((prev) => ({
+      ...prev,
+      [fileName]: percent,
+    }));
+  };
+
   const handleImageRemove = (index) => {
     setImages((prevImages) => prevImages.filter((_, i) => i !== index));
   };
-  
+
   const moveImage = useCallback((dragIndex, hoverIndex) => {
     setImages((prevImages) => {
       const newImages = [...prevImages];
@@ -210,12 +222,11 @@ const response = await axios.get('/api/owner/imagekit-auth');
 
   return (
     <DndProvider backend={HTML5Backend}>
-    <IKContext
-  // Hard-coded values
-  publicKey='public_GflbYmvPwwTVTeTjdNMkcUAwsiU='
-  urlEndpoint='https://ik.imagekit.io/somaway'
-  authenticator={authenticator}
->
+      <IKContext
+        publicKey='public_GflbYmvPwwTVTeTjdNMkcUAwsiU='
+        urlEndpoint='https://ik.imagekit.io/somaway'
+        authenticator={authenticator}
+      >
         <div className="px-4 py-10 md:px-10 flex-1">
           <Title
             title="Add New Listing"
@@ -225,7 +236,7 @@ const response = await axios.get('/api/owner/imagekit-auth');
             onSubmit={onSubmitHandler}
             className="flex flex-col gap-5 text-gray-800 text-sm mt-6 max-w-xl"
           >
-            {/* listing Images */}
+            {/* Upload Section */}
             <div className="flex flex-col gap-3 w-full">
               <label
                 htmlFor="listing-images"
@@ -241,24 +252,41 @@ const response = await axios.get('/api/owner/imagekit-auth');
                 </p>
               </label>
 
-            <IKUpload
-  className="hidden"
-  id="listing-images"
-  folder="/listings"
-  onSuccess={onUploadSuccess}
-  onError={onUploadError}
-  useUniqueFileName={true}   // ensures no overwriting
-  multiple                   // <--- enables multi-file upload
-/>
+              <IKUpload
+                className="hidden"
+                id="listing-images"
+                folder="/listings"
+                onSuccess={onUploadSuccess}
+                onError={onUploadError}
+                onUploadProgress={onUploadProgress}
+                useUniqueFileName={true}
+                multiple
+              />
 
+              {/* Progress Bars */}
+              {Object.keys(uploadProgress).length > 0 && (
+                <div className="grid grid-cols-3 gap-2 mt-2">
+                  {Object.entries(uploadProgress).map(([fileName, percent]) => (
+                    <div key={fileName} className="w-full">
+                      <div className="w-full bg-gray-200 rounded-md overflow-hidden">
+                        <div
+                          className="bg-blue-500 h-2 transition-all"
+                          style={{ width: `${percent}%` }}
+                        />
+                      </div>
+                      <p className="text-xs text-gray-600 truncate">{fileName} ({percent}%)</p>
+                    </div>
+                  ))}
+                </div>
+              )}
 
+              {/* Uploaded Image Previews */}
               {images.length > 0 && (
                 <div className="grid grid-cols-3 gap-2">
                   {images.map((img, index) => (
                     <DraggableImage
-                      key={img.url}
-                      image={img.file}
-                      imageUrl={img.url}
+                      key={img.id}
+                      image={img}
                       index={index}
                       onMove={moveImage}
                       onRemove={handleImageRemove}
@@ -267,6 +295,7 @@ const response = await axios.get('/api/owner/imagekit-auth');
                 </div>
               )}
             </div>
+
             {/* ... (rest of your form) */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
               <div className="flex flex-col w-full">
@@ -513,7 +542,7 @@ const response = await axios.get('/api/owner/imagekit-auth');
                 Mark as Featured
               </label>
             </div>
-            <button
+             <button
               type="submit"
               className="flex items-center gap-2 px-4 py-2.5 mt-4 bg-primary text-white rounded-md font-medium w-max cursor-pointer"
             >
