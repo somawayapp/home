@@ -1,5 +1,4 @@
 
-import imagekit from "../configs/imageKit.js";
 import Booking from "../models/Booking.js";
 import Listing from "../models/Listing.js";
 import User from "../models/User.js";
@@ -8,7 +7,11 @@ import path from "path";
 import pLimit from "p-limit";
 
 
-
+const imagekit = new ImageKit({
+   publicKey : process.env.IMAGEKIT_PUBLIC_KEY,
+    privateKey : process.env.IMAGEKIT_PRIVATE_KEY,
+    urlEndpoint : process.env.IMAGEKIT_URL_ENDPOINT
+});
 
 
 
