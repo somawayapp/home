@@ -1,3 +1,4 @@
+import express from "express";
 import { protect } from "../middleware/auth.js";
 import { addListing, changeRoleToOwner, getAuthenticationParameters, deleteCar, getDashboardData, getOwnerListings, toggleCarAvailability, updateUserImage } from "../controllers/ownerController.js";
 import upload from "../middleware/multer.js";
