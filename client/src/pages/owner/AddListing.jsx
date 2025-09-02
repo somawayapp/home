@@ -6,6 +6,8 @@ import Title from '../../components/owner/Title';
 import { assets } from '../../assets/assets';
 import { useAppContext } from '../../context/AppContext';
 import toast from 'react-hot-toast';
+import imageCompression from "browser-image-compression";
+
 
 import DraggableImage from '../../components/DragableImage';
 
@@ -131,7 +133,7 @@ const AddListing = () => {
     'Libraries',
   ];
 
-  const handleImageUpload = (e) => {
+ const handleImageUpload = (e) => {
     const files = Array.from(e.target.files);
     setImages((prevImages) => [...prevImages, ...files]);
   };
@@ -139,8 +141,8 @@ const AddListing = () => {
   const handleImageRemove = (index) => {
     setImages((prevImages) => prevImages.filter((_, i) => i !== index));
   };
-  
-  // New handler to reorder images
+
+  // ✅ Keep reordering support
   const moveImage = useCallback((dragIndex, hoverIndex) => {
     setImages((prevImages) => {
       const newImages = [...prevImages];
@@ -155,60 +157,49 @@ const AddListing = () => {
     if (isLoading) return null;
 
     if (images.length === 0) {
-      toast.error('Please upload at least one image');
+      toast.error("Please upload at least one image");
       return;
     }
 
     setIsLoading(true);
     try {
+      // ✅ Compress each image before sending
+      const compressedFiles = await Promise.all(
+        images.map((file) =>
+          imageCompression(file, {
+            maxSizeMB: 2, // ~2MB
+            maxWidthOrHeight: 1920, // prevent giant images
+            useWebWorker: true, // offload work from main thread
+          })
+        )
+      );
+
       const formData = new FormData();
 
-      // The order of images in the formData will now match the user's reordered state
-      images.forEach((img) => {
-        formData.append('images', img);
+      // ✅ Append in correct order
+      compressedFiles.forEach((file) => formData.append("images", file));
+      formData.append("listingData", JSON.stringify(listing));
+
+      const { data } = await axios.post("/api/owner/add-listing", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+        maxBodyLength: Infinity, // avoid axios size limitation
       });
-
-      formData.append('listingData', JSON.stringify(listing));
-
-      const { data } = await axios.post('/api/owner/add-listing', formData);
 
       if (data.success) {
         toast.success(data.message);
         setImages([]);
-        setListing({
-          title: '',
-          description: '',
-          price: 0,
-          propertytype: '',
-          offertype: '',
-          location: '',
-          amenities: {
-            internal: [],
-            external: [],
-            nearby: [],
-          },
-          features: {
-            bathrooms: 0,
-            bedrooms: 0,
-            rooms: 0,
-            size: '',
-          },
-          agentname: '',
-          agentphone: '',
-          agentwhatsapp: '',
-          scrappingurl: '',
-          featured: false,
-          featuredexpiry: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
-        });
+        setListing(initialListingState);
       } else {
         toast.error(data.message);
       }
     } catch (error) {
-      toast.error(error.message);
+      console.error(error);
+      toast.error(error.message || "Failed to upload listing");
     } finally {
       setIsLoading(false);
     }
   };
+
 
   return (
     <DndProvider backend={HTML5Backend}>
