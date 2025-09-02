@@ -1,3 +1,11 @@
+// src/components/owner/DraggableImage.jsx
+import React, { useRef } from 'react';
+import { useDrag, useDrop } from 'react-dnd';
+
+const ItemTypes = {
+  IMAGE: 'image',
+};
+
 const DraggableImage = ({ image, index, onMove, onRemove }) => {
   const ref = useRef(null);
 
@@ -56,3 +64,6 @@ const DraggableImage = ({ image, index, onMove, onRemove }) => {
     </div>
   );
 };
+
+
+export default DraggableImage;
