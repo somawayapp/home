@@ -5,7 +5,7 @@ import Title from '../../components/owner/Title';
 import { assets } from '../../assets/assets';
 import { useAppContext } from '../../context/AppContext';
 import toast from 'react-hot-toast';
-import ImageKit from "imagekitio-javascript"; // Import ImageKit SDK
+import ImageKit from "imagekit-javascript";
 
 import DraggableImage from '../../components/DragableImage';
 
