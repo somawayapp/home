@@ -297,7 +297,14 @@ const AddListing = () => {
                 onError={onUploadError}
                 onUploadProgress={onUploadProgress}
                 
-                useUniqueFileName={true}
+validateFile={(file) => {
+    const validTypes = ["image/jpeg", "image/png", "image/webp"];
+    if (!validTypes.includes(file.type)) {
+      alert("Invalid file type. Only JPG, PNG, WEBP allowed.");
+      return false; // must return false, not throw
+    }
+    return true;
+  }}                useUniqueFileName={true}
                 multiple
               />
 
