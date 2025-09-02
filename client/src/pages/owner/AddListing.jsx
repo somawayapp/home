@@ -49,6 +49,11 @@ const AddListing = () => {
     }
   };
 
+  const onError = (err) => {
+  console.error("Upload Error:", err);
+  alert("Upload failed. Please try again.");
+};
+
   // --- IMAGE UPLOAD HANDLERS ---
   const onUploadStart = (files) => {
     if (files.length + images.length > 20) {
