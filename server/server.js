@@ -17,7 +17,7 @@ await connectDB()
 // Configure CORS to allow a specific origin.
 // Change 'https://houseclient.vercel.app' to your client's actual domain.
 const corsOptions = {
-  origin: 'https://homeclient.vercel.app', // <-- Remove the trailing slash
+  origin: 'https://houseclient.vercel.app', // <-- Remove the trailing slash
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
