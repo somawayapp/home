@@ -133,10 +133,28 @@ const AddListing = () => {
     'Libraries',
   ];
 
+  const handleImageUpload = (e) => {
+    const files = Array.from(e.target.files);
+    setImages((prevImages) => [...prevImages, ...files]);
+  };
 
-// ... (existing handlers like handleImageUpload, handleImageRemove, and moveImage)
+  const handleImageRemove = (index) => {
+    setImages((prevImages) => prevImages.filter((_, i) => i !== index));
+  };
+  
+  // New handler to reorder images
+  const moveImage = useCallback((dragIndex, hoverIndex) => {
+    setImages((prevImages) => {
+      const newImages = [...prevImages];
+      const [draggedImage] = newImages.splice(dragIndex, 1);
+      newImages.splice(hoverIndex, 0, draggedImage);
+      return newImages;
+    });
+  }, []);
 
-const onSubmitHandler = async (e) => {
+
+  
+ const onSubmitHandler = async (e) => {
   e.preventDefault();
   if (isLoading) return null;
 
@@ -147,24 +165,34 @@ const onSubmitHandler = async (e) => {
 
   setIsLoading(true);
   try {
-    // Compress images in the order they appear in the state
-    const compressedFiles = await Promise.all(
-      images.map(file =>
-        imageCompression(file, {
-          maxSizeMB: 2,           // compress to ~2MB
-          maxWidthOrHeight: 1920  // prevent giant images
-        })
-      )
-    );
-
     const formData = new FormData();
-    // Append the compressed images to the form data
-    compressedFiles.forEach(file => formData.append("images", file));
-    formData.append("listingData", JSON.stringify(listing));
+    const resizedImages = [];
 
-    const { data } = await axios.post('/api/owner/add-listing', formData, {
-      headers: { "Content-Type": "multipart/form-data" },
+    // Compress images before uploading
+    for (const img of images) {
+      try {
+        const compressedFile = await imageCompression(img, {
+          maxSizeMB: 1, // Maximum file size in MB
+          maxWidthOrHeight: 1920, // Maximum width or height
+          useWebWorker: true, // Use a web worker to avoid blocking the UI
+        });
+        resizedImages.push(compressedFile);
+      } catch (error) {
+        console.error('Image compression error:', error);
+        toast.error('Failed to compress one or more images.');
+        setIsLoading(false);
+        return;
+      }
+    }
+
+    // The order of images in the formData will now match the user's reordered state
+    resizedImages.forEach((img) => {
+      formData.append('images', img);
     });
+
+    formData.append('listingData', JSON.stringify(listing));
+
+    const { data } = await axios.post('/api/owner/add-listing', formData);
 
     if (data.success) {
       toast.success(data.message);
