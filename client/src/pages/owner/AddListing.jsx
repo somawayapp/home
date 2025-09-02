@@ -11,6 +11,11 @@ import DraggableImage from '../../components/DragableImage';
 
 const AddListing = () => {
   const { axios, currency } = useAppContext();
+  const coreImageKit = new IKCore({
+  publicKey: 'public_GflbYmvPwwTVTeTjdNMkcUAwsiU=',
+  urlEndpoint: 'https://ik.imagekit.io/somaway'
+});
+
 
   const [images, setImages] = useState([]);
   const [listing, setListing] = useState({
