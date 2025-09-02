@@ -5,7 +5,7 @@ import Like from "../models/like.js";
 import Listing from "../models/Listing.js";
 
 
-// Generate JWT Token
+// Generate JWT 
 const generateToken = (userId)=>{
     const payload = userId;
     return jwt.sign(payload, process.env.JWT_SECRET)
