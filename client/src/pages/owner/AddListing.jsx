@@ -45,7 +45,6 @@ const AddListing = () => {
   });
 
   const [isLoading, setIsLoading] = useState(false);
-  const coreImageKit = new IKCore(); // The Core SDK still exists and is used for URL transformations
 
   const authenticator = async () => {
     try {
