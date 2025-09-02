@@ -15,7 +15,7 @@ import pLimit from "p-limit";
 export const changeRoleToOwner = async (req, res)=>{
     try {
         const {_id} = req.user;
-        await User.findByIdAndUpdate(_id, {role: "agent"})
+        await User.findByIdAndUpdate(_id, {role: "owner"})
         res.json({success: true, message: "Now you can create a listing"})
     } catch (error) {
         console.log(error.message);
