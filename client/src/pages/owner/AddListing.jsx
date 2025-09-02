@@ -198,8 +198,8 @@ const AddListing = () => {
   return (
     <DndProvider backend={HTML5Backend}>
       <IKContext
-        publicKey={process.env.REACT_APP_IMAGEKIT_PUBLIC_KEY}
-        urlEndpoint={process.env.REACT_APP_IMAGEKIT_URL_ENDPOINT}
+        publicKey={process.env.IMAGEKIT_PUBLIC_KEY}
+        urlEndpoint={process.env.IMAGEKIT_URL_ENDPOINT}
         authenticator={authenticator}
       >
         <div className="px-4 py-10 md:px-10 flex-1">
