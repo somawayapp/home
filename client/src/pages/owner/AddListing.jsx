@@ -48,7 +48,7 @@ const AddListing = () => {
 
   const authenticator = async () => {
     try {
-      const response = await axios.get('/owner/imagekit-auth');
+const response = await axios.get('/api/owner/imagekit-auth');
       return response.data;
     } catch (error) {
       console.error('Failed to fetch authentication parameters:', error);
@@ -57,22 +57,31 @@ const AddListing = () => {
     }
   };
 
-  const onUploadSuccess = (result) => {
-    setIsLoading(false);
-    const optimizedImageUrl = coreImageKit.url({
-      path: result.filePath,
-      transformation: [
-        { width: "1280" },
-        { quality: "auto" },
-        { format: "webp" },
-      ],
-    });
+  
+ const onUploadSuccess = (result) => {
+  setIsLoading(false);
 
-    setImages((prevImages) => [
-      ...prevImages,
-      { file: { name: result.name }, url: optimizedImageUrl, id: result.fileId },
-    ]);
-  };
+  // generate optimized url for each uploaded file
+  const optimizedImageUrl = coreImageKit.url({
+    path: result.filePath,
+    transformation: [
+      { width: "1280" },
+      { quality: "auto" },
+      { format: "webp" },
+    ],
+  });
+
+  // append new image to existing state
+  setImages((prevImages) => [
+    ...prevImages,
+    {
+      id: result.fileId,               // unique ID from ImageKit
+      name: result.name,               // file name
+      url: optimizedImageUrl,          // optimized URL
+      originalUrl: result.url,         // keep original too (optional)
+    },
+  ]);
+};
 
   const onUploadError = (err) => {
     setIsLoading(false);
@@ -232,14 +241,16 @@ const AddListing = () => {
                 </p>
               </label>
 
-              <IKUpload
-                className="hidden"
-                id="listing-images"
-                folder="/listings"
-                onSuccess={onUploadSuccess}
-                onError={onUploadError}
-                use-ik-filename-as-upload-param={false}
-              />
+            <IKUpload
+  className="hidden"
+  id="listing-images"
+  folder="/listings"
+  onSuccess={onUploadSuccess}
+  onError={onUploadError}
+  useUniqueFileName={true}   // ensures no overwriting
+  multiple                   // <--- enables multi-file upload
+/>
+
 
               {images.length > 0 && (
                 <div className="grid grid-cols-3 gap-2">
