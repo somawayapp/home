@@ -288,17 +288,21 @@ const AddListing = () => {
                 </p>
               </label>
 
-              <IKUpload
-                className="hidden"
-                id="listing-images"
-                folder="/listings"
-                onSuccess={onUploadSuccess}
-                onError={onUploadError}
-                onUploadProgress={onUploadProgress}
-                validateFile={onUploadStart} // custom validation
-                useUniqueFileName={true}
-                multiple
-              />
+           <IKUpload
+  fileName={file.name}
+  folder="/uploads"
+  onError={onError}
+  onSuccess={onUploadSuccess}
+  validateFile={(file) => {
+    const validTypes = ["image/jpeg", "image/png", "image/webp"];
+    if (!validTypes.includes(file.type)) {
+      alert("Invalid file type. Only JPG, PNG, WEBP allowed.");
+      return false; // must return false, not throw
+    }
+    return true;
+  }}
+/>
+
 
               {/* Progress Bars */}
               {Object.keys(uploadProgress).length > 0 && (
