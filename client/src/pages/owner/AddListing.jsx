@@ -6,7 +6,7 @@ import { assets } from '../../assets/assets';
 import { useAppContext } from '../../context/AppContext';
 import toast from 'react-hot-toast';
 import { IKContext, IKUpload, IKCore } from 'imagekitio-react';
-import DraggableImage from '../../components/owner/DraggableImage';
+import DraggableImage from '../../components/DragableImage';
 
 const AddListing = () => {
   const { axios, currency } = useAppContext();
@@ -177,7 +177,7 @@ const AddListing = () => {
     try {
       const imageUrls = images.map(img => img.url);
 
-      const { data } = await axios.post('/owner/add-listing', {
+      const { data } = await axios.post('/api/owner/add-listing', {
         ...listing,
         images: imageUrls,
       });
