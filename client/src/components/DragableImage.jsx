@@ -7,40 +7,36 @@ const ItemTypes = {
 };
 
 const DraggableImage = ({ image, index, onMove, onRemove }) => {
+  if (!image) return null; // avoid breaking if image is missing
+
   const ref = useRef(null);
-
-  const [, drop] = useDrop({
-    accept: ItemTypes.IMAGE,
-    hover(item, monitor) {
-      if (!ref.current) return;
-
-      const dragIndex = item.index;
-      const hoverIndex = index;
-
-      if (dragIndex === hoverIndex) return;
-
-      const hoverBoundingRect = ref.current.getBoundingClientRect();
-      const hoverMiddleX = (hoverBoundingRect.right - hoverBoundingRect.left) / 2;
-      const clientOffset = monitor.getClientOffset();
-      const hoverClientX = clientOffset.x - hoverBoundingRect.left;
-
-      if (dragIndex < hoverIndex && hoverClientX < hoverMiddleX) return;
-      if (dragIndex > hoverIndex && hoverClientX > hoverMiddleX) return;
-
-      onMove(dragIndex, hoverIndex);
-      item.index = hoverIndex;
-    },
-  });
 
   const [{ isDragging }, drag] = useDrag({
     type: ItemTypes.IMAGE,
-    item: { id: image.id, index },
+    item: { id: image.id || image.name || `temp-${index}`, index }, 
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
   });
 
+  // drop hook needs to be defined before combining
+  const [, drop] = useDrop({
+    accept: ItemTypes.IMAGE,
+    hover: (draggedItem) => {
+      if (draggedItem.index !== index) {
+        onMove(draggedItem.index, index);
+        draggedItem.index = index; // update so it doesn’t keep re-firing
+      }
+    },
+  });
+
   drag(drop(ref));
+
+  const src = image.url
+    ? image.url
+    : image instanceof File
+      ? URL.createObjectURL(image)
+      : '';
 
   return (
     <div
@@ -49,11 +45,13 @@ const DraggableImage = ({ image, index, onMove, onRemove }) => {
         isDragging ? 'opacity-50' : ''
       }`}
     >
-      <img
-        src={image.url}   // use optimized URL directly
-        alt={image.name}
-        className="h-20 w-full object-cover rounded-md"
-      />
+      {src && (
+        <img
+          src={src}
+          alt={image.name || `preview-${index}`}
+          className="h-20 w-full object-cover rounded-md"
+        />
+      )}
       <button
         type="button"
         onClick={() => onRemove(index)}
@@ -64,6 +62,8 @@ const DraggableImage = ({ image, index, onMove, onRemove }) => {
     </div>
   );
 };
+
+
 
 
 export default DraggableImage;
