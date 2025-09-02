@@ -1,39 +1,23 @@
-// src/components/owner/DraggableImage.jsx
-import React, { useRef } from 'react';
-import { useDrag, useDrop } from 'react-dnd';
-
-const ItemTypes = {
-  IMAGE: 'image',
-};
-
 const DraggableImage = ({ image, index, onMove, onRemove }) => {
   const ref = useRef(null);
 
   const [, drop] = useDrop({
     accept: ItemTypes.IMAGE,
     hover(item, monitor) {
-      if (!ref.current) {
-        return;
-      }
+      if (!ref.current) return;
+
       const dragIndex = item.index;
       const hoverIndex = index;
 
-      if (dragIndex === hoverIndex) {
-        return;
-      }
+      if (dragIndex === hoverIndex) return;
 
       const hoverBoundingRect = ref.current.getBoundingClientRect();
       const hoverMiddleX = (hoverBoundingRect.right - hoverBoundingRect.left) / 2;
       const clientOffset = monitor.getClientOffset();
       const hoverClientX = clientOffset.x - hoverBoundingRect.left;
 
-      if (dragIndex < hoverIndex && hoverClientX < hoverMiddleX) {
-        return;
-      }
-
-      if (dragIndex > hoverIndex && hoverClientX > hoverMiddleX) {
-        return;
-      }
+      if (dragIndex < hoverIndex && hoverClientX < hoverMiddleX) return;
+      if (dragIndex > hoverIndex && hoverClientX > hoverMiddleX) return;
 
       onMove(dragIndex, hoverIndex);
       item.index = hoverIndex;
@@ -42,7 +26,7 @@ const DraggableImage = ({ image, index, onMove, onRemove }) => {
 
   const [{ isDragging }, drag] = useDrag({
     type: ItemTypes.IMAGE,
-    item: { id: image.name, index },
+    item: { id: image.id, index },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
@@ -53,11 +37,13 @@ const DraggableImage = ({ image, index, onMove, onRemove }) => {
   return (
     <div
       ref={ref}
-      className={`relative border-2 border-blue-400 rounded-md cursor-grab ${isDragging ? 'opacity-50' : ''}`}
+      className={`relative border-2 border-blue-400 rounded-md cursor-grab ${
+        isDragging ? 'opacity-50' : ''
+      }`}
     >
       <img
-        src={URL.createObjectURL(image)}
-        alt={`preview-${index}`}
+        src={image.url}   // use optimized URL directly
+        alt={image.name}
         className="h-20 w-full object-cover rounded-md"
       />
       <button
@@ -70,5 +56,3 @@ const DraggableImage = ({ image, index, onMove, onRemove }) => {
     </div>
   );
 };
-
-export default DraggableImage;
