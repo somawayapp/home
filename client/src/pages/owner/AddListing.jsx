@@ -287,17 +287,19 @@ const AddListing = () => {
                   Upload one or more pictures of your listing (max 20, 10MB each)
                 </p>
               </label>
-
               <IKUpload
-                className="hidden"
-                id="listing-images"
-                folder="/listings"
-                onSuccess={onUploadSuccess}
+  fileName={`image_${Date.now()}.jpg`}
+  folder="/uploads"
+  onSuccess={onUploadSuccess}
                 onUploadProgress={onUploadProgress}
                 validateFile={onUploadStart} // custom validation
                 useUniqueFileName={true}
                 multiple
-              />
+    
+/>
+
+
+            
 
               {/* Progress Bars */}
               {Object.keys(uploadProgress).length > 0 && (
