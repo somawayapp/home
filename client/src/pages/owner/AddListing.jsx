@@ -1,6 +1,4 @@
-
-
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useState, useCallback } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import Title from '../../components/owner/Title';
@@ -22,10 +20,6 @@ const AddListing = () => {
   const [uploadProgress, setUploadProgress] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [listingProgress, setListingProgress] = useState(0);
-
-  // Use a ref to hold the current images state
-  const imagesRef = useRef(images);
-  imagesRef.current = images;
 
   const [listing, setListing] = useState({
     title: '',
@@ -55,55 +49,76 @@ const AddListing = () => {
     }
   };
 
+  // --- IMAGE UPLOAD HANDLERS ---
   const onUploadStart = useCallback((files) => {
+    // Correctly convert FileList to an array
     const filesArray = Array.from(files);
 
-    if (imagesRef.current.length + filesArray.length > 20) {
-      toast.error('You can only upload up to 20 images.');
-      return false;
+    let validFiles = [];
+    filesArray.forEach(file => {
+      // Use the latest 'images' state directly within this functional scope
+      if (images.length + validFiles.length >= 20) {
+        toast.error('You can only upload up to 20 images.');
+        return;
+      }
+      if (file.size > 10 * 1024 * 1024) {
+        toast.error(`${file.name} exceeds 10 MB limit.`);
+        return;
+      }
+      const validTypes = ["image/jpeg", "image/png", "image/webp"];
+      if (!validTypes.includes(file.type)) {
+        toast.error("Invalid file type. Only JPG, PNG, WEBP allowed.");
+        return;
+      }
+      validFiles.push(file);
+    });
+
+    if (validFiles.length > 0) {
+      setIsLoading(true);
+      setUploadProgress(prev => {
+        const newProgress = {};
+        validFiles.forEach(file => {
+          newProgress[file.name] = 0;
+        });
+        return { ...prev, ...newProgress };
+      });
     }
 
-    setIsLoading(true);
-    setUploadProgress(prev => {
-      const newProgress = {};
-      filesArray.forEach(file => {
-        newProgress[file.name] = 0;
-      });
-      return { ...prev, ...newProgress };
-    });
-
-    return true; // Allow upload to proceed
-  }, []);
+    return validFiles.length > 0;
+  }, [images]); // Dependency on 'images' state is crucial
 
   const onUploadSuccess = useCallback((result) => {
-    // This is the functional update that will always use the latest state
-    setImages((prevImages) => {
-      const newImages = [...prevImages, {
-        id: result.fileId,
-        name: result.name,
-        url: coreImageKit.url({
-          path: result.filePath,
-          transformation: [{ width: '1280' }, { quality: 'auto' }, { format: 'webp' }],
-        }),
-        originalUrl: result.url,
-      }];
-      
-      // Reset file input only after all uploads are processed
-      if (newImages.length === imagesRef.current.length + Object.keys(uploadProgress).length - 1) {
-          document.getElementById("listing-images").value = "";
-      }
-      return newImages;
-    });
-
+    setIsLoading(false);
+    // Use functional update to ensure we're working with the latest state
     setUploadProgress(prev => {
       const copy = { ...prev };
       delete copy[result.name];
-      if (Object.keys(copy).length === 0) {
-        setIsLoading(false);
-      }
       return copy;
     });
-  }, [coreImageKit, setImages, setIsLoading, setUploadProgress]);
+
+    const optimizedImageUrl = coreImageKit.url({
+      path: result.filePath,
+      transformation: [
+        { width: '1280' },
+        { quality: 'auto' },
+        { format: 'webp' },
+      ],
+    });
+
+    // Use a functional update to correctly append to the latest state
+    setImages((prevImages) => [
+      ...prevImages,
+      {
+        id: result.fileId,
+        name: result.name,
+        url: optimizedImageUrl,
+        originalUrl: result.url,
+      },
+    ]);
+
+    // Reset file input to allow new selections
+    document.getElementById("listing-images").value = "";
+  }, [coreImageKit, setImages, setUploadProgress, setIsLoading]);
 
   const onUploadError = useCallback((err) => {
     setIsLoading(false);
@@ -116,6 +131,7 @@ const AddListing = () => {
     const percent = Math.round((loaded / total) * 100);
     const fileName = progressEvent?.config?.data?.file?.name || 'file';
 
+    // Use functional update to avoid stale state
     setUploadProgress(prev => ({
       ...prev,
       [fileName]: percent,
@@ -233,11 +249,7 @@ const AddListing = () => {
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <IKContext
-        publicKey="public_GflbYmvPwwTVTeTjdNMkcUAwsiU="
-        urlEndpoint="https://ik.imagekit.io/somaway"
-        authenticator={authenticator}
-      >
+    
         <div className="px-4 py-10 md:px-10 flex-1">
           <Title
             title="Add New Listing"
@@ -262,30 +274,67 @@ const AddListing = () => {
                   Upload one or more pictures of your listing (max 20, 10MB each)
                 </p>
               </label>
-     
-          <IKUpload
-                className="hidden"
-                id="listing-images"
-                folder="/listings"
-                onSuccess={onUploadSuccess}
-                onError={onUploadError}
-                onUploadProgress={onUploadProgress}
-                onUploadStart={onUploadStart}
-                useUniqueFileName={true}
-                multiple
-                validateFile={(file) => {
-                  if (file.size > 10 * 1024 * 1024) {
-                    toast.error(`${file.name} exceeds 10MB limit.`);
-                    return false;
-                  }
-                  const validTypes = ["image/jpeg", "image/png", "image/webp"];
-                  if (!validTypes.includes(file.type)) {
-                    toast.error("Invalid file type. Only JPG, PNG, WEBP allowed.");
-                    return false;
-                  }
-                  return true;
-                }}
-              />
+           <IKContext
+  publicKey={process.env.REACT_APP_IMAGEKIT_PUBLIC_KEY}
+  urlEndpoint={process.env.REACT_APP_IMAGEKIT_URL_ENDPOINT}
+  authenticator={authenticator}
+>
+  <input
+    type="file"
+    multiple
+    accept="image/*"
+    onChange={async (e) => {
+      const files = Array.from(e.target.files);
+      if (files.length === 0) return;
+
+      // enforce limits
+      if (files.length > 20) {
+        toast.error("You can only upload up to 20 images");
+        return;
+      }
+
+      for (const file of files) {
+        if (file.size > 10 * 1024 * 1024) {
+          toast.error(`${file.name} is too big (max 10MB)`);
+          continue;
+        }
+
+        // upload manually with IKCore
+        try {
+          const result = await IKCore.upload({
+            file,
+            fileName: file.name,
+            folder: "/uploads",
+            publicKey: process.env.REACT_APP_IMAGEKIT_PUBLIC_KEY,
+            authenticationEndpoint: process.env.REACT_APP_IMAGEKIT_AUTH_ENDPOINT,
+          });
+
+          // add every uploaded image to preview
+          setImages((prev) => [
+            ...prev,
+            { id: Date.now() + Math.random(), url: result.url },
+          ]);
+        } catch (err) {
+          console.error("Upload failed", err);
+          toast.error(`Failed to upload ${file.name}`);
+        }
+      }
+    }}
+  />
+</IKContext>
+
+{/* ✅ Preview */}
+<div className="grid grid-cols-2 md:grid-cols-3 gap-2 mt-4">
+  {images.map((img) => (
+    <img
+      key={img.id}
+      src={img.url}
+      alt="preview"
+      className="w-full h-32 object-cover rounded-xl shadow"
+    />
+  ))}
+</div>
+
 
               {/* Progress Bars */}
               {Object.keys(uploadProgress).length > 0 && (
@@ -306,20 +355,7 @@ const AddListing = () => {
                 </div>
               )}
 
-              {/* Uploaded Image Previews */}
-              {images.length > 0 && (
-                <div className="grid grid-cols-3 gap-2">
-                  {images.map((img, index) => (
-                    <DraggableImage
-                      key={img.id}
-                      image={img}
-                      index={index}
-                      onMove={moveImage}
-                      onRemove={handleImageRemove}
-                    />
-                  ))}
-                </div>
-              )}
+             
             </div>
 
 
@@ -595,7 +631,7 @@ const AddListing = () => {
             )}
           </form>
         </div>
-      </IKContext>
+  
     </DndProvider>
   );
 };
