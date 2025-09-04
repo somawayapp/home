@@ -11,11 +11,14 @@ import DraggableImage from '../../components/DragableImage';
 const AddListing = () => {
   const { axios, currency } = useAppContext();
 
+  // Create an instance of IKCore to use for manual uploads
   const coreImageKit = new IKCore({
-    publicKey: 'public_GflbYmvPwwTVTeTjdNMkcUAwsiU=',
-    urlEndpoint: 'https://ik.imagekit.io/somaway',
+    publicKey: process.env.REACT_APP_IMAGEKIT_PUBLIC_KEY,
+    urlEndpoint: process.env.REACT_APP_IMAGEKIT_URL_ENDPOINT,
   });
 
+  const fileInputRef = useRef(null);
+  
   const [images, setImages] = useState([]);
   const [uploadProgress, setUploadProgress] = useState({});
   const [isLoading, setIsLoading] = useState(false);
@@ -49,63 +52,78 @@ const AddListing = () => {
     }
   };
 
-  // --- IMAGE UPLOAD HANDLERS ---
-// add this near the top of the component imports:
-// import React, { useState, useCallback, useRef } from 'react';
+  // --- REFINED IMAGE UPLOAD HANDLER ---
+  const handleFileInputChange = async (e) => {
+    const files = Array.from(e.target.files || []);
+    if (!files.length) return;
 
-const fileInputRef = useRef(null);
-
-const handleFileInputChange = async (e) => {
-  const files = Array.from(e.target.files || []);
-  if (!files.length) return;
-
-  // validation (same rules as before)
-  const validTypes = ["image/jpeg", "image/png", "image/webp"];
-  const validFiles = [];
-  for (const file of files) {
-    if (images.length + validFiles.length >= 20) {
-      toast.error('You can only upload up to 20 images.');
-      break;
+    // Validation (same rules as before)
+    const validTypes = ["image/jpeg", "image/png", "image/webp"];
+    const validFiles = [];
+    for (const file of files) {
+      if (images.length + validFiles.length >= 20) {
+        toast.error('You can only upload up to 20 images.');
+        break;
+      }
+      if (file.size > 10 * 1024 * 1024) {
+        toast.error(`${file.name} exceeds 10 MB limit.`);
+        continue;
+      }
+      if (!validTypes.includes(file.type)) {
+        toast.error(`${file.name} - invalid type (JPG/PNG/WEBP only).`);
+        continue;
+      }
+      validFiles.push(file);
     }
-    if (file.size > 10 * 1024 * 1024) {
-      toast.error(`${file.name} exceeds 10 MB limit.`);
-      continue;
-    }
-    if (!validTypes.includes(file.type)) {
-      toast.error(`${file.name} - invalid type (JPG/PNG/WEBP only).`);
-      continue;
-    }
-    validFiles.push(file);
-  }
-  if (!validFiles.length) return;
+    if (!validFiles.length) return;
 
-  // create immediate previews (FileReader)
-  const previewPromises = validFiles.map(
-    (file) =>
-      new Promise((resolve) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve({ file, previewUrl: reader.result });
-        reader.readAsDataURL(file);
-      })
-  );
-
-  const previews = await Promise.all(previewPromises);
-
-  // append previews immediately (they will show instantly)
-  setImages((prev) => [
-    ...prev,
-    ...previews.map((p) => ({
+    // Create immediate previews and start upload for each valid file
+    const newImages = validFiles.map(file => ({
       id: Date.now() + Math.random(),
-      name: p.file.name,
-      url: p.previewUrl,
-      uploading: true, // mark as uploading if you want
-      file: p.file, // keep original file for later upload
-    })),
-  ]);
+      name: file.name,
+      url: URL.createObjectURL(file), // Create a local URL for immediate preview
+      uploading: true, // Mark for upload
+      file: file, // Store the original file object
+    }));
 
-  // KEEP: upload logic here (I left this intentionally: we can implement the reliable upload next)
-  // For now, we only ensure the input is clickable and all selected files show instantly.
-};
+    // Add new previews to state immediately for instant feedback
+    setImages(prev => [...prev, ...newImages]);
+
+    // Asynchronously upload each new image to ImageKit
+    for (const image of newImages) {
+      try {
+        const result = await coreImageKit.upload({
+          file: image.file,
+          fileName: image.name,
+          folder: "/listings",
+          useUniqueFileName: true,
+          authenticationEndpoint: '/api/owner/imagekit-auth',
+          onUploadProgress: (progressEvent) => {
+            const percent = Math.round((progressEvent.loaded / progressEvent.total) * 100);
+            setUploadProgress(prev => ({
+              ...prev,
+              [image.name]: percent,
+            }));
+          },
+        });
+        
+        // Update the state with the permanent ImageKit URL
+        setImages(prev => prev.map(img => img.id === image.id ? { ...img, url: result.url, uploading: false } : img));
+        toast.success(`${image.name} uploaded successfully!`);
+
+      } catch (err) {
+        console.error("Upload failed", err);
+        toast.error(`Failed to upload ${image.name}`);
+        // Remove the failed image from the state
+        setImages(prev => prev.filter(img => img.id !== image.id));
+        setUploadProgress(prev => {
+          const newProgress = { ...prev };
+          delete newProgress[image.name];
+          return newProgress;
+        });
+      }
+    }
+  };
 
   // --- FORM INPUT HANDLERS ---
   const handleInputChange = (e) => {
@@ -140,7 +158,7 @@ const handleFileInputChange = async (e) => {
     });
   };
 
-  // --- FORM SUBMIT ---
+  // --- FORM SUBMIT (REFINED) ---
   const onSubmitHandler = async (e) => {
     e.preventDefault();
     if (isLoading) return null;
@@ -150,22 +168,26 @@ const handleFileInputChange = async (e) => {
       return;
     }
 
+    // Check if any uploads are still in progress
+    const pendingUploads = images.filter(img => img.uploading);
+    if (pendingUploads.length > 0) {
+        toast.error('Please wait for all images to finish uploading.');
+        return;
+    }
+
     setIsLoading(true);
-    setListingProgress(10);
+    setListingProgress(0); // This progress bar now tracks the final submission only
 
     try {
+      // Get the URLs of all successfully uploaded images
       const imageUrls = images.map((img) => img.url);
-      
 
       const { data } = await axios.post(
         '/api/owner/add-listing',
-        { ...listing,  images: images.map(img => img.url) }, // ✅ only send URLs
-
+        { ...listing, images: imageUrls },
         {
           onUploadProgress: (progressEvent) => {
-            const percent = Math.round(
-              (progressEvent.loaded / progressEvent.total) * 100
-            );
+            const percent = Math.round((progressEvent.loaded / progressEvent.total) * 100);
             setListingProgress(percent);
           },
         }
@@ -179,13 +201,13 @@ const handleFileInputChange = async (e) => {
         toast.error(data.message);
       }
     } catch (error) {
-      toast.error(error.message);
+      toast.error(error.message || "An error occurred during listing creation.");
     } finally {
       setIsLoading(false);
     }
   };
 
-  // --- AMENITIES OPTIONS ---
+  // --- AMENITIES OPTIONS (unchanged) ---
   const internalAmenities = [
     'AC', 'Heating', 'Wi-Fi', 'Bathtub', 'Dishwasher', 'Built-in washer', 'Built-in dryer',
     'Smart home', 'Balcony', 'Security systems', 'CCTV cameras', 'Intercoms',
@@ -207,123 +229,75 @@ const handleFileInputChange = async (e) => {
 
   return (
     <DndProvider backend={HTML5Backend}>
-    
-        <div className="px-4 py-10 md:px-10 flex-1">
-          <Title
-            title="Add New Listing"
-            subTitle="Fill in the details to create a new listing for sale or rent."
-          />
-          <form
-            onSubmit={onSubmitHandler}
-            className="flex flex-col gap-5 text-gray-800 text-sm mt-6 max-w-xl"
-          >
-            {/* Upload Section */}
-            <div className="flex flex-col gap-3 w-full">
-             {/* Replace your label + input block with this exact markup */}
-<label
-  htmlFor="listing-images"
-  className="flex items-center gap-2 border-2 border-blue-400 p-2 rounded-md cursor-pointer"
->
-  <img src={assets.upload_icon} alt="Upload" className="h-14 rounded" />
-  <p className="text-sm text-gray-800">
-    Upload one or more pictures of your listing (max 20, 10MB each)
-  </p>
+      <div className="px-4 py-10 md:px-10 flex-1">
+        <Title
+          title="Add New Listing"
+          subTitle="Fill in the details to create a new listing for sale or rent."
+        />
+        <form
+          onSubmit={onSubmitHandler}
+          className="flex flex-col gap-5 text-gray-800 text-sm mt-6 max-w-xl"
+        >
+          {/* Upload Section */}
+          <div className="flex flex-col gap-3 w-full">
+            <label
+              htmlFor="listing-images"
+              className="flex items-center gap-2 border-2 border-blue-400 p-2 rounded-md cursor-pointer"
+            >
+              <img src={assets.upload_icon} alt="Upload" className="h-14 rounded" />
+              <p className="text-sm text-gray-800">
+                Upload one or more pictures of your listing (max 20, 10MB each)
+              </p>
+              <input
+                id="listing-images"
+                ref={fileInputRef}
+                type="file"
+                multiple
+                accept="image/jpeg,image/png,image/webp"
+                className="hidden"
+                onChange={handleFileInputChange}
+              />
+            </label>
 
-  {/* Hidden real input — clicking the label opens the picker */}
-  <input
-    id="listing-images"                  // <-- THIS IS THE CRITICAL LINE
-    ref={fileInputRef}
-    type="file"
-    multiple
-    accept="image/jpeg,image/png,image/webp"
-    className="hidden"
-    onChange={handleFileInputChange}
-  />
-</label>
-
-           <IKContext
-  publicKey={process.env.REACT_APP_IMAGEKIT_PUBLIC_KEY}
-  urlEndpoint={process.env.REACT_APP_IMAGEKIT_URL_ENDPOINT}
-  authenticator={authenticator}
->
-  <input
-    type="file"
-    multiple
-    accept="image/*"
-    onChange={async (e) => {
-      const files = Array.from(e.target.files);
-      if (files.length === 0) return;
-
-      // enforce limits
-      if (files.length > 20) {
-        toast.error("You can only upload up to 20 images");
-        return;
-      }
-
-      for (const file of files) {
-        if (file.size > 10 * 1024 * 1024) {
-          toast.error(`${file.name} is too big (max 10MB)`);
-          continue;
-        }
-
-        // upload manually with IKCore
-        try {
-          const result = await IKCore.upload({
-            file,
-            fileName: file.name,
-            folder: "/uploads",
-            publicKey: process.env.REACT_APP_IMAGEKIT_PUBLIC_KEY,
-            authenticationEndpoint: process.env.REACT_APP_IMAGEKIT_AUTH_ENDPOINT,
-          });
-
-          // add every uploaded image to preview
-          setImages((prev) => [
-            ...prev,
-            { id: Date.now() + Math.random(), url: result.url },
-          ]);
-        } catch (err) {
-          console.error("Upload failed", err);
-          toast.error(`Failed to upload ${file.name}`);
-        }
-      }
-    }}
-  />
-</IKContext>
-
-{/* ✅ Preview */}
-<div className="grid grid-cols-2 md:grid-cols-3 gap-2 mt-4">
-  {images.map((img) => (
-    <img
-      key={img.id}
-      src={img.url}
-      alt="preview"
-      className="w-full h-32 object-cover rounded-xl shadow"
-    />
-  ))}
-</div>
-
-
-              {/* Progress Bars */}
-              {Object.keys(uploadProgress).length > 0 && (
-                <div className="grid grid-cols-3 gap-2 mt-2">
-                  {Object.entries(uploadProgress).map(([fileName, percent]) => (
-                    <div key={fileName} className="w-full">
-                      <div className="w-full bg-gray-200 rounded-md overflow-hidden">
-                        <div
-                          className="bg-blue-500 h-2 transition-all"
-                          style={{ width: `${percent}%` }}
+            {/* Remove the old, broken IKContext block */}
+            
+            {/* ✅ Preview */}
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mt-4">
+                {images.map((img) => (
+                    <div key={img.id} className="relative w-full h-32">
+                        <img
+                            src={img.url}
+                            alt="preview"
+                            className="w-full h-full object-cover rounded-xl shadow"
                         />
-                      </div>
-                      <p className="text-xs text-gray-600 truncate">
-                        {fileName} ({percent}%)
-                      </p>
+                        {img.uploading && (
+                            <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center rounded-xl">
+                                <p className="text-white text-sm">Uploading...</p>
+                            </div>
+                        )}
                     </div>
-                  ))}
-                </div>
-              )}
-
-             
+                ))}
             </div>
+
+            {/* Progress Bars */}
+            {Object.keys(uploadProgress).length > 0 && (
+              <div className="grid grid-cols-3 gap-2 mt-2">
+                {Object.entries(uploadProgress).map(([fileName, percent]) => (
+                  <div key={fileName} className="w-full">
+                    <div className="w-full bg-gray-200 rounded-md overflow-hidden">
+                      <div
+                        className="bg-blue-500 h-2 transition-all"
+                        style={{ width: `${percent}%` }}
+                      />
+                    </div>
+                    <p className="text-xs text-gray-600 truncate">
+                      {fileName} ({percent}%)
+                    </p>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
 
 
 
