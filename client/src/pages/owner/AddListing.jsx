@@ -4,20 +4,17 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import Title from '../../components/owner/Title';
 import { assets } from '../../assets/assets';
 import { useAppContext } from '../../context/AppContext';
-import toast from 'react-hot-toast';
-import { IKContext, IKUpload, IKCore } from 'imagekitio-react';
+import toast from 'react-hot-toast'; 
+import { IKCore } from 'imagekitio-react';
 import DraggableImage from '../../components/DragableImage';
 
 const AddListing = () => {
   const { axios, currency } = useAppContext();
 
-  // Create an instance of IKCore to use for manual uploads
   const coreImageKit = new IKCore({
-      publicKey: "public_GflbYmvPwwTVTeTjdNMkcUAwsiU=",
-  urlEndpoint: "https://ik.imagekit.io/somaway",
-    authenticationEndpoint: "/api/owner/imagekit-auth", // your server endpoint
-
-  
+    publicKey: "public_GflbYmvPwwTVTeTjdNMkcUAwsiU=",
+    urlEndpoint: "https://ik.imagekit.io/somaway",
+    authenticationEndpoint: "/api/owner/imagekit-auth",
   });
 
   const fileInputRef = useRef(null);
@@ -55,90 +52,115 @@ const AddListing = () => {
     }
   };
 
-  // --- REFINED IMAGE UPLOAD HANDLER ---
-const handleFileInputChange = async (e) => {
-  const files = Array.from(e.target.files || []);
-  if (!files.length) return;
+  const handleFileInputChange = async (e) => {
+    const files = Array.from(e.target.files || []);
+    if (!files.length) return;
 
-  // ✅ 1. Validate file count & size
-  const validTypes = ["image/jpeg", "image/png", "image/webp"];
-  const validFiles = [];
+    const validTypes = ["image/jpeg", "image/png", "image/webp"];
+    const validFiles = [];
 
-  for (const file of files) {
-    if (images.length + validFiles.length >= 20) {
-      toast.error("You can only upload up to 20 images.");
-      break;
+    for (const file of files) {
+      if (images.length + validFiles.length >= 20) {
+        toast.error("You can only upload up to 20 images.");
+        break;
+      }
+      if (file.size > 10 * 1024 * 1024) {
+        toast.error(`${file.name} exceeds 10 MB limit.`);
+        continue;
+      }
+      if (!validTypes.includes(file.type)) {
+        toast.error(`${file.name} - invalid type (JPG/PNG/WEBP only).`);
+        continue;
+      }
+      validFiles.push(file);
     }
-    if (file.size > 10 * 1024 * 1024) {
-      toast.error(`${file.name} exceeds 10 MB limit.`);
-      continue;
+
+    if (!validFiles.length) return;
+
+    const previews = validFiles.map(file => ({
+      id: Date.now() + Math.random(),
+      name: file.name,
+      url: URL.createObjectURL(file),
+      uploading: true,
+      file,
+    }));
+    setImages(prev => [...prev, ...previews]);
+
+    for (const image of previews) {
+      try {
+        const authParams = await authenticator();
+
+        const result = await coreImageKit.upload({
+          file: image.file,
+          fileName: image.name,
+          folder: "/listings",
+          useUniqueFileName: true,
+          token: authParams.token,
+          signature: authParams.signature,
+          expire: authParams.expire,
+          onUploadProgress: (progressEvent) => {
+            const percent = Math.round(
+              (progressEvent.loaded / progressEvent.total) * 100
+            );
+            setUploadProgress(prev => ({
+              ...prev,
+              [image.id]: percent,
+            }));
+          },
+        });
+
+        setImages(prev =>
+          prev.map(img =>
+            img.id === image.id
+              ? { ...img, url: result.url, uploading: false }
+              : img
+          )
+        );
+        toast.success(`${image.name} uploaded successfully!`);
+
+      } catch (err) {
+        console.error("Upload failed", err);
+        toast.error(`Failed to upload ${image.name}`);
+        setImages(prev => prev.filter(img => img.id !== image.id));
+      }
     }
-    if (!validTypes.includes(file.type)) {
-      toast.error(`${file.name} - invalid type (JPG/PNG/WEBP only).`);
-      continue;
-    }
-    validFiles.push(file);
-  }
+  };
 
-  if (!validFiles.length) return;
+  // --- NEW DRAG-AND-DROP LOGIC ---
+  const findImage = useCallback(
+    (id) => {
+      const image = images.filter((i) => i.id === id)[0];
+      return {
+        image,
+        index: images.indexOf(image),
+      };
+    },
+    [images],
+  );
 
-  // ✅ 2. Create previews & add them to state as "uploading"
-  const previews = validFiles.map(file => ({
-    id: Date.now() + Math.random(),
-    name: file.name,
-    url: URL.createObjectURL(file),
-    uploading: true,
-    file,
-  }));
-  setImages(prev => [...prev, ...previews]);
+  const moveImage = useCallback(
+    (id, toIndex) => {
+      const { image, index } = findImage(id);
+      const newImages = [...images];
+      newImages.splice(index, 1);
+      newImages.splice(toIndex, 0, image);
+      setImages(newImages);
+    },
+    [findImage, images],
+  );
 
-  // ✅ 3. Upload files one by one (each needs a fresh token)
-  for (const image of previews) {
-    try {
-      // 🔑 Get fresh auth parameters for *this* file
-      const authParams = await authenticator(); // calls /api/owner/imagekit-auth
-
-      const result = await coreImageKit.upload({
-        file: image.file,
-        fileName: image.name,
-        folder: "/listings",
-        useUniqueFileName: true,
-
-        // ✅ Pass token/signature/expire
-        token: authParams.token,
-        signature: authParams.signature,
-        expire: authParams.expire,
-
-        onUploadProgress: (progressEvent) => {
-          const percent = Math.round(
-            (progressEvent.loaded / progressEvent.total) * 100
-          );
-          setUploadProgress(prev => ({
-            ...prev,
-            [image.id]: percent, // track by id for multiple files
-          }));
-        },
-      });
-
-      // ✅ Replace preview with uploaded URL
-      setImages(prev =>
-        prev.map(img =>
-          img.id === image.id
-            ? { ...img, url: result.url, uploading: false }
-            : img
-        )
-      );
-      toast.success(`${image.name} uploaded successfully!`);
-
-    } catch (err) {
-      console.error("Upload failed", err);
-      toast.error(`Failed to upload ${image.name}`);
-      setImages(prev => prev.filter(img => img.id !== image.id));
-    }
-  }
-};
-
-
+  const handleRemoveImage = useCallback((id) => {
+    setImages(prev => prev.filter(image => image.id !== id));
+    setUploadProgress(prev => {
+      const newProgress = { ...prev };
+      const image = images.find(img => img.id === id);
+      if (image) {
+        delete newProgress[image.id];
+      }
+      return newProgress;
+    });
+    toast.success("Image removed.");
+  }, [images]);
 
   // --- FORM INPUT HANDLERS ---
   const handleInputChange = (e) => {
@@ -183,18 +205,16 @@ const handleFileInputChange = async (e) => {
       return;
     }
 
-    // Check if any uploads are still in progress
     const pendingUploads = images.filter(img => img.uploading);
     if (pendingUploads.length > 0) {
-        toast.error('Please wait for all images to finish uploading.');
-        return;
+      toast.error('Please wait for all images to finish uploading.');
+      return;
     }
 
     setIsLoading(true);
-    setListingProgress(0); // This progress bar now tracks the final submission only
+    setListingProgress(0);
 
     try {
-      // Get the URLs of all successfully uploaded images
       const imageUrls = images.map((img) => img.url);
 
       const { data } = await axios.post(
@@ -274,46 +294,23 @@ const handleFileInputChange = async (e) => {
               />
             </label>
 
-            {/* Remove the old, broken IKContext block */}
-            
-            {/* ✅ Preview */}
+            {/* ✅ Draggable Image Preview Grid */}
             <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mt-4">
-                {images.map((img) => (
-                    <div key={img.id} className="relative w-full h-32">
-                        <img
-                            src={img.url}
-                            alt="preview"
-                            className="w-full h-full object-cover rounded-xl shadow"
-                        />
-                        {img.uploading && (
-                            <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center rounded-xl">
-                                <p className="text-white text-sm">Uploading...</p>
-                            </div>
-                        )}
-                    </div>
-                ))}
+              {images.map((img, index) => (
+                <DraggableImage
+                  key={img.id}
+                  id={img.id}
+                  url={img.url}
+                  index={index}
+                  uploading={img.uploading}
+                  progress={uploadProgress[img.id] || 0}
+                  moveImage={moveImage}
+                  handleRemoveImage={handleRemoveImage}
+                />
+              ))}
             </div>
-
-            {/* Progress Bars */}
-            {Object.keys(uploadProgress).length > 0 && (
-              <div className="grid grid-cols-3 gap-2 mt-2">
-                {Object.entries(uploadProgress).map(([fileName, percent]) => (
-                  <div key={fileName} className="w-full">
-                    <div className="w-full bg-gray-200 rounded-md overflow-hidden">
-                      <div
-                        className="bg-blue-500 h-2 transition-all"
-                        style={{ width: `${percent}%` }}
-                      />
-                    </div>
-                    <p className="text-xs text-gray-600 truncate">
-                      {fileName} ({percent}%)
-                    </p>
-                  </div>
-                ))}
-              </div>
-            )}
           </div>
-
+          {/* ... Other form fields ... */}
 
 
             {/* Other form fields ... */}
