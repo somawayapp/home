@@ -56,77 +56,91 @@ const AddListing = () => {
   };
 
   // --- REFINED IMAGE UPLOAD HANDLER ---
-  const handleFileInputChange = async (e) => {
-    const files = Array.from(e.target.files || []);
-    if (!files.length) return;
+ const handleFileInputChange = async (e) => {
+  const files = Array.from(e.target.files || []);
+  if (!files.length) return;
 
-    // Validation (same rules as before)
-    const validTypes = ["image/jpeg", "image/png", "image/webp"];
-    const validFiles = [];
-    for (const file of files) {
-      if (images.length + validFiles.length >= 20) {
-        toast.error('You can only upload up to 20 images.');
-        break;
-      }
-      if (file.size > 10 * 1024 * 1024) {
-        toast.error(`${file.name} exceeds 10 MB limit.`);
-        continue;
-      }
-      if (!validTypes.includes(file.type)) {
-        toast.error(`${file.name} - invalid type (JPG/PNG/WEBP only).`);
-        continue;
-      }
-      validFiles.push(file);
+  const validTypes = ["image/jpeg", "image/png", "image/webp"];
+  const validFiles = [];
+
+  for (const file of files) {
+    if (images.length + validFiles.length >= 20) {
+      toast.error("You can only upload up to 20 images.");
+      break;
     }
-    if (!validFiles.length) return;
-
-    // Create immediate previews and start upload for each valid file
-    const newImages = validFiles.map(file => ({
-      id: Date.now() + Math.random(),
-      name: file.name,
-      url: URL.createObjectURL(file), // Create a local URL for immediate preview
-      uploading: true, // Mark for upload
-      file: file, // Store the original file object
-    }));
-
-    // Add new previews to state immediately for instant feedback
-    setImages(prev => [...prev, ...newImages]);
-
-    // Asynchronously upload each new image to ImageKit
-    for (const image of newImages) {
-      try {
-        const result = await coreImageKit.upload({
-          file: image.file,
-          fileName: image.name,
-          folder: "/listings",
-          useUniqueFileName: true,
-          authenticationEndpoint: '/api/owner/imagekit-auth',
-          onUploadProgress: (progressEvent) => {
-            const percent = Math.round((progressEvent.loaded / progressEvent.total) * 100);
-            setUploadProgress(prev => ({
-              ...prev,
-              [image.name]: percent,
-            }));
-          },
-        });
-        
-        // Update the state with the permanent ImageKit URL
-        setImages(prev => prev.map(img => img.id === image.id ? { ...img, url: result.url, uploading: false } : img));
-        toast.success(`${image.name} uploaded successfully!`);
-
-      } catch (err) {
-        console.error("Upload failed", err);
-        toast.error(`Failed to upload ${image.name}`);
-        // Remove the failed image from the state
-        setImages(prev => prev.filter(img => img.id !== image.id));
-        setUploadProgress(prev => {
-          const newProgress = { ...prev };
-          delete newProgress[image.name];
-          return newProgress;
-        });
-      }
+    if (file.size > 10 * 1024 * 1024) {
+      toast.error(`${file.name} exceeds 10 MB limit.`);
+      continue;
     }
-  };
+    if (!validTypes.includes(file.type)) {
+      toast.error(`${file.name} - invalid type (JPG/PNG/WEBP only).`);
+      continue;
+    }
+    validFiles.push(file);
+  }
+
+  if (!validFiles.length) return;
+
+  // Previews first
+  const newImages = validFiles.map((file) => ({
+    id: Date.now() + Math.random(),
+    name: file.name,
+    url: URL.createObjectURL(file),
+    uploading: true,
+    file,
+  }));
+  setImages((prev) => [...prev, ...newImages]);
+
+  // ✅ FIXED: Authenticate before upload
+  let authParams;
+  try {
+    authParams = await authenticator(); // <-- Get token, signature, expire from backend
+  } catch (err) {
+    toast.error("Could not authenticate with ImageKit.");
+    return;
+  }
+
+  for (const image of newImages) {
+    try {
+      const result = await coreImageKit.upload({
+        file: image.file,
+        fileName: image.name,
+        folder: "/listings",
+        useUniqueFileName: true,
+
+        // ✅ Pass the authentication details
+        token: authParams.token,
+        signature: authParams.signature,
+        expire: authParams.expire,
+
+        onUploadProgress: (progressEvent) => {
+          const percent = Math.round(
+            (progressEvent.loaded / progressEvent.total) * 100
+          );
+          setUploadProgress((prev) => ({
+            ...prev,
+            [image.name]: percent,
+          }));
+        },
+      });
+
+      // Replace preview URL with final ImageKit URL
+      setImages((prev) =>
+        prev.map((img) =>
+          img.id === image.id
+            ? { ...img, url: result.url, uploading: false }
+            : img
+        )
+      );
+      toast.success(`${image.name} uploaded successfully!`);
+    } catch (err) {
+      console.error("Upload failed", err);
+      toast.error(`Failed to upload ${image.name}`);
+      setImages((prev) => prev.filter((img) => img.id !== image.id));
+    }
+  }
+};
+
 
   // --- FORM INPUT HANDLERS ---
   const handleInputChange = (e) => {
