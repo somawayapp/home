@@ -155,10 +155,12 @@ const handleFileInputChange = async (e) => {
 
     try {
       const imageUrls = images.map((img) => img.url);
+      
 
       const { data } = await axios.post(
         '/api/owner/add-listing',
-        { ...listing, images: imageUrls },
+        { ...listing,  images: images.map(img => img.url) }, // ✅ only send URLs
+
         {
           onUploadProgress: (progressEvent) => {
             const percent = Math.round(
