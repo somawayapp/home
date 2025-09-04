@@ -57,39 +57,43 @@ const AddListing = () => {
     }
   };
 
-  const onUploadStart = useCallback((files) => {
-    let validFiles = [];
-    files.forEach(file => {
-      // Use the ref to check the length of the current images array
-      if (imagesRef.current.length + validFiles.length >= 20) {
-        toast.error('You can only upload up to 20 images.');
-        return;
-      }
-      if (file.size > 10 * 1024 * 1024) {
-        toast.error(`${file.name} exceeds 10 MB limit.`);
-        return;
-      }
-      const validTypes = ["image/jpeg", "image/png", "image/webp"];
-      if (!validTypes.includes(file.type)) {
-        toast.error("Invalid file type. Only JPG, PNG, WEBP allowed.");
-        return;
-      }
-      validFiles.push(file);
-    });
-  
-    if (validFiles.length > 0) {
-      setIsLoading(true);
-      setUploadProgress(prev => {
-        const newProgress = {};
-        validFiles.forEach(file => {
-          newProgress[file.name] = 0;
-        });
-        return { ...prev, ...newProgress };
-      });
+const onUploadStart = useCallback((files) => {
+  // CORRECT: Convert the `files` object to an array before using forEach
+  const filesArray = Array.from(files);
+
+  let validFiles = [];
+  filesArray.forEach(file => {
+    // Use the ref to check the length of the current images array
+    if (imagesRef.current.length + validFiles.length >= 20) {
+      toast.error('You can only upload up to 20 images.');
+      return;
     }
+    if (file.size > 10 * 1024 * 1024) {
+      toast.error(`${file.name} exceeds 10 MB limit.`);
+      return;
+    }
+    const validTypes = ["image/jpeg", "image/png", "image/webp"];
+    if (!validTypes.includes(file.type)) {
+      toast.error("Invalid file type. Only JPG, PNG, WEBP allowed.");
+      return;
+    }
+    validFiles.push(file);
+  });
   
-    return validFiles.length > 0;
-  }, []);
+  if (validFiles.length > 0) {
+    setIsLoading(true);
+    setUploadProgress(prev => {
+      const newProgress = {};
+      validFiles.forEach(file => {
+        newProgress[file.name] = 0;
+      });
+      return { ...prev, ...newProgress };
+    });
+  }
+  
+  // Return the array of files that passed validation
+  return validFiles;
+}, []);
 
   const onUploadSuccess = useCallback((result) => {
     setIsLoading(false);
