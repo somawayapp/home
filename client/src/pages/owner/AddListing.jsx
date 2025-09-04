@@ -13,8 +13,9 @@ const AddListing = () => {
 
   // Create an instance of IKCore to use for manual uploads
   const coreImageKit = new IKCore({
-    publicKey: process.env.REACT_APP_IMAGEKIT_PUBLIC_KEY,
-    urlEndpoint: process.env.REACT_APP_IMAGEKIT_URL_ENDPOINT,
+      publicKey: "public_GflbYmvPwwTVTeTjdNMkcUAwsiU=",
+  urlEndpoint: "https://ik.imagekit.io/somaway",
+  
   });
 
   const fileInputRef = useRef(null);
