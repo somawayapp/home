@@ -1,4 +1,6 @@
-import React, { useState, useCallback } from 'react';
+
+
+import React, { useState, useCallback, useRef } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import Title from '../../components/owner/Title';
@@ -20,6 +22,10 @@ const AddListing = () => {
   const [uploadProgress, setUploadProgress] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [listingProgress, setListingProgress] = useState(0);
+
+  // Use a ref to hold the current images state
+  const imagesRef = useRef(images);
+  imagesRef.current = images;
 
   const [listing, setListing] = useState({
     title: '',
@@ -49,76 +55,55 @@ const AddListing = () => {
     }
   };
 
-  // --- IMAGE UPLOAD HANDLERS ---
   const onUploadStart = useCallback((files) => {
-    // Correctly convert FileList to an array
     const filesArray = Array.from(files);
 
-    let validFiles = [];
-    filesArray.forEach(file => {
-      // Use the latest 'images' state directly within this functional scope
-      if (images.length + validFiles.length >= 20) {
-        toast.error('You can only upload up to 20 images.');
-        return;
-      }
-      if (file.size > 10 * 1024 * 1024) {
-        toast.error(`${file.name} exceeds 10 MB limit.`);
-        return;
-      }
-      const validTypes = ["image/jpeg", "image/png", "image/webp"];
-      if (!validTypes.includes(file.type)) {
-        toast.error("Invalid file type. Only JPG, PNG, WEBP allowed.");
-        return;
-      }
-      validFiles.push(file);
-    });
-
-    if (validFiles.length > 0) {
-      setIsLoading(true);
-      setUploadProgress(prev => {
-        const newProgress = {};
-        validFiles.forEach(file => {
-          newProgress[file.name] = 0;
-        });
-        return { ...prev, ...newProgress };
-      });
+    if (imagesRef.current.length + filesArray.length > 20) {
+      toast.error('You can only upload up to 20 images.');
+      return false;
     }
 
-    return validFiles.length > 0;
-  }, [images]); // Dependency on 'images' state is crucial
+    setIsLoading(true);
+    setUploadProgress(prev => {
+      const newProgress = {};
+      filesArray.forEach(file => {
+        newProgress[file.name] = 0;
+      });
+      return { ...prev, ...newProgress };
+    });
+
+    return true; // Allow upload to proceed
+  }, []);
 
   const onUploadSuccess = useCallback((result) => {
-    setIsLoading(false);
-    // Use functional update to ensure we're working with the latest state
+    // This is the functional update that will always use the latest state
+    setImages((prevImages) => {
+      const newImages = [...prevImages, {
+        id: result.fileId,
+        name: result.name,
+        url: coreImageKit.url({
+          path: result.filePath,
+          transformation: [{ width: '1280' }, { quality: 'auto' }, { format: 'webp' }],
+        }),
+        originalUrl: result.url,
+      }];
+      
+      // Reset file input only after all uploads are processed
+      if (newImages.length === imagesRef.current.length + Object.keys(uploadProgress).length - 1) {
+          document.getElementById("listing-images").value = "";
+      }
+      return newImages;
+    });
+
     setUploadProgress(prev => {
       const copy = { ...prev };
       delete copy[result.name];
+      if (Object.keys(copy).length === 0) {
+        setIsLoading(false);
+      }
       return copy;
     });
-
-    const optimizedImageUrl = coreImageKit.url({
-      path: result.filePath,
-      transformation: [
-        { width: '1280' },
-        { quality: 'auto' },
-        { format: 'webp' },
-      ],
-    });
-
-    // Use a functional update to correctly append to the latest state
-    setImages((prevImages) => [
-      ...prevImages,
-      {
-        id: result.fileId,
-        name: result.name,
-        url: optimizedImageUrl,
-        originalUrl: result.url,
-      },
-    ]);
-
-    // Reset file input to allow new selections
-    document.getElementById("listing-images").value = "";
-  }, [coreImageKit, setImages, setUploadProgress, setIsLoading]);
+  }, [coreImageKit, setImages, setIsLoading, setUploadProgress]);
 
   const onUploadError = useCallback((err) => {
     setIsLoading(false);
@@ -131,7 +116,6 @@ const AddListing = () => {
     const percent = Math.round((loaded / total) * 100);
     const fileName = progressEvent?.config?.data?.file?.name || 'file';
 
-    // Use functional update to avoid stale state
     setUploadProgress(prev => ({
       ...prev,
       [fileName]: percent,
@@ -278,7 +262,8 @@ const AddListing = () => {
                   Upload one or more pictures of your listing (max 20, 10MB each)
                 </p>
               </label>
-              <IKUpload
+     
+          <IKUpload
                 className="hidden"
                 id="listing-images"
                 folder="/listings"
@@ -289,11 +274,6 @@ const AddListing = () => {
                 useUniqueFileName={true}
                 multiple
                 validateFile={(file) => {
-                  // This is the correct, final check that works on each file
-                  if (images.length >= 20) {
-                    toast.error("You can only upload up to 20 images.");
-                    return false;
-                  }
                   if (file.size > 10 * 1024 * 1024) {
                     toast.error(`${file.name} exceeds 10MB limit.`);
                     return false;
