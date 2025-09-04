@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useState, useCallback } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import Title from '../../components/owner/Title';
@@ -20,14 +20,6 @@ const AddListing = () => {
   const [uploadProgress, setUploadProgress] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [listingProgress, setListingProgress] = useState(0);
-
-  // Use a ref to hold the current images state
-  const imagesRef = useRef(images);
-  imagesRef.current = images;
-
-  // Use a ref to hold the current upload progress state
-  const uploadProgressRef = useRef(uploadProgress);
-  uploadProgressRef.current = uploadProgress;
 
   const [listing, setListing] = useState({
     title: '',
@@ -57,50 +49,52 @@ const AddListing = () => {
     }
   };
 
-const onUploadStart = useCallback((files) => {
-  // CORRECT: Convert the `files` object to an array before using forEach
-  const filesArray = Array.from(files);
+  // --- IMAGE UPLOAD HANDLERS ---
+  const onUploadStart = useCallback((files) => {
+    // Correctly convert FileList to an array
+    const filesArray = Array.from(files);
 
-  let validFiles = [];
-  filesArray.forEach(file => {
-    // Use the ref to check the length of the current images array
-    if (imagesRef.current.length + validFiles.length >= 20) {
-      toast.error('You can only upload up to 20 images.');
-      return;
-    }
-    if (file.size > 10 * 1024 * 1024) {
-      toast.error(`${file.name} exceeds 10 MB limit.`);
-      return;
-    }
-    const validTypes = ["image/jpeg", "image/png", "image/webp"];
-    if (!validTypes.includes(file.type)) {
-      toast.error("Invalid file type. Only JPG, PNG, WEBP allowed.");
-      return;
-    }
-    validFiles.push(file);
-  });
-  
-  if (validFiles.length > 0) {
-    setIsLoading(true);
-    setUploadProgress(prev => {
-      const newProgress = {};
-      validFiles.forEach(file => {
-        newProgress[file.name] = 0;
-      });
-      return { ...prev, ...newProgress };
+    let validFiles = [];
+    filesArray.forEach(file => {
+      // Use the latest 'images' state directly within this functional scope
+      if (images.length + validFiles.length >= 20) {
+        toast.error('You can only upload up to 20 images.');
+        return;
+      }
+      if (file.size > 10 * 1024 * 1024) {
+        toast.error(`${file.name} exceeds 10 MB limit.`);
+        return;
+      }
+      const validTypes = ["image/jpeg", "image/png", "image/webp"];
+      if (!validTypes.includes(file.type)) {
+        toast.error("Invalid file type. Only JPG, PNG, WEBP allowed.");
+        return;
+      }
+      validFiles.push(file);
     });
-  }
-  
-  // Return the array of files that passed validation
-  return validFiles;
-}, []);
+
+    if (validFiles.length > 0) {
+      setIsLoading(true);
+      setUploadProgress(prev => {
+        const newProgress = {};
+        validFiles.forEach(file => {
+          newProgress[file.name] = 0;
+        });
+        return { ...prev, ...newProgress };
+      });
+    }
+
+    return validFiles.length > 0;
+  }, [images]); // Dependency on 'images' state is crucial
 
   const onUploadSuccess = useCallback((result) => {
     setIsLoading(false);
-    // Use the ref to access the most recent uploadProgress state
-    const currentProgress = { ...uploadProgressRef.current };
-    delete currentProgress[result.name];
-    setUploadProgress(currentProgress);
+    // Use functional update to ensure we're working with the latest state
+    setUploadProgress(prev => {
+      const copy = { ...prev };
+      delete copy[result.name];
+      return copy;
+    });
 
     const optimizedImageUrl = coreImageKit.url({
       path: result.filePath,
@@ -111,7 +105,7 @@ const onUploadStart = useCallback((files) => {
       ],
     });
 
-    // Use a functional update to ensure we use the latest state
+    // Use a functional update to correctly append to the latest state
     setImages((prevImages) => [
       ...prevImages,
       {
@@ -122,27 +116,27 @@ const onUploadStart = useCallback((files) => {
       },
     ]);
 
-    // Reset file input so next selection appends instead of replaces
+    // Reset file input to allow new selections
     document.getElementById("listing-images").value = "";
-  }, [coreImageKit]); // coreImageKit is a stable object, so this is safe
+  }, [coreImageKit, setImages, setUploadProgress, setIsLoading]);
 
   const onUploadError = useCallback((err) => {
     setIsLoading(false);
     toast.error('Failed to upload image.');
     console.error('ImageKit upload error:', err);
-  }, []);
+  }, [setIsLoading]);
 
   const onUploadProgress = useCallback((progressEvent) => {
     const { loaded, total } = progressEvent;
     const percent = Math.round((loaded / total) * 100);
     const fileName = progressEvent?.config?.data?.file?.name || 'file';
 
-    // Use the functional update form to avoid stale state
-    setUploadProgress((prev) => ({
+    // Use functional update to avoid stale state
+    setUploadProgress(prev => ({
       ...prev,
       [fileName]: percent,
     }));
-  }, []);
+  }, [setUploadProgress]);
 
   const handleImageRemove = useCallback((index) => {
     setImages((prevImages) => prevImages.filter((_, i) => i !== index));
@@ -235,59 +229,22 @@ const onUploadStart = useCallback((files) => {
 
   // --- AMENITIES OPTIONS ---
   const internalAmenities = [
-    'AC',
-    'Heating',
-    'Wi-Fi',
-    'Bathtub',
-    'Dishwasher',
-    'Built-in washer',
-    'Built-in dryer',
-    'Smart home',
-    'Balcony',
-    'Security systems',
-    'CCTV cameras',
-    'Intercoms',
+    'AC', 'Heating', 'Wi-Fi', 'Bathtub', 'Dishwasher', 'Built-in washer', 'Built-in dryer',
+    'Smart home', 'Balcony', 'Security systems', 'CCTV cameras', 'Intercoms',
   ];
 
   const externalAmenities = [
-    'Parking',
-    'Pool',
-    'Gym & Fitness center',
-    'Social areas',
-    'Rooftop gardens',
-    'Back garden',
-    'Bike parking',
-    'Covered parking',
-    'Package lockers',
-    'Party room',
-    'Billiards table',
-    'Clubhouse',
-    'Spa',
-    'Playgrounds',
-    'Walking paths',
-    'Friendly spaces',
-    'Valet trash',
-    'Surveillance cameras',
-    'Building Wi-Fi',
-    'Greenery around the space',
+    'Parking', 'Pool', 'Gym & Fitness center', 'Social areas', 'Rooftop gardens',
+    'Back garden', 'Bike parking', 'Covered parking', 'Package lockers',
+    'Party room', 'Billiards table', 'Clubhouse', 'Spa', 'Playgrounds',
+    'Walking paths', 'Friendly spaces', 'Valet trash', 'Surveillance cameras',
+    'Building Wi-Fi', 'Greenery around the space',
   ];
 
   const nearbyAmenities = [
-    'Gym',
-    'Shopping Mall',
-    'Public transportation access',
-    'Airport',
-    'Train',
-    'Beach',
-    'Parks',
-    'Restaurants',
-    'Coffee shops',
-    'Grocery stores',
-    'Schools',
-    'Hospitals/Clinics',
-    'Banks/ATMs',
-    'Movie theaters',
-    'Libraries',
+    'Gym', 'Shopping Mall', 'Public transportation access', 'Airport', 'Train',
+    'Beach', 'Parks', 'Restaurants', 'Coffee shops', 'Grocery stores',
+    'Schools', 'Hospitals/Clinics', 'Banks/ATMs', 'Movie theaters', 'Libraries',
   ];
 
   return (
@@ -332,7 +289,8 @@ const onUploadStart = useCallback((files) => {
                 useUniqueFileName={true}
                 multiple
                 validateFile={(file) => {
-                  if (imagesRef.current.length >= 20) {
+                  // This is the correct, final check that works on each file
+                  if (images.length >= 20) {
                     toast.error("You can only upload up to 20 images.");
                     return false;
                   }
@@ -383,6 +341,7 @@ const onUploadStart = useCallback((files) => {
                 </div>
               )}
             </div>
+
 
 
             {/* Other form fields ... */}
