@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import Title from '../../components/owner/Title';
@@ -20,6 +20,14 @@ const AddListing = () => {
   const [uploadProgress, setUploadProgress] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [listingProgress, setListingProgress] = useState(0);
+
+  // Use a ref to hold the current images state
+  const imagesRef = useRef(images);
+  imagesRef.current = images;
+
+  // Use a ref to hold the current upload progress state
+  const uploadProgressRef = useRef(uploadProgress);
+  uploadProgressRef.current = uploadProgress;
 
   const [listing, setListing] = useState({
     title: '',
@@ -49,31 +57,46 @@ const AddListing = () => {
     }
   };
 
-  // --- IMAGE UPLOAD HANDLERS ---
-  const onUploadStart = useCallback((file) => {
-    if (images.length >= 20) {
-      toast.error('You can only upload up to 20 images.');
-      return false;
+  const onUploadStart = useCallback((files) => {
+    let validFiles = [];
+    files.forEach(file => {
+      // Use the ref to check the length of the current images array
+      if (imagesRef.current.length + validFiles.length >= 20) {
+        toast.error('You can only upload up to 20 images.');
+        return;
+      }
+      if (file.size > 10 * 1024 * 1024) {
+        toast.error(`${file.name} exceeds 10 MB limit.`);
+        return;
+      }
+      const validTypes = ["image/jpeg", "image/png", "image/webp"];
+      if (!validTypes.includes(file.type)) {
+        toast.error("Invalid file type. Only JPG, PNG, WEBP allowed.");
+        return;
+      }
+      validFiles.push(file);
+    });
+  
+    if (validFiles.length > 0) {
+      setIsLoading(true);
+      setUploadProgress(prev => {
+        const newProgress = {};
+        validFiles.forEach(file => {
+          newProgress[file.name] = 0;
+        });
+        return { ...prev, ...newProgress };
+      });
     }
-    if (file.size > 10 * 1024 * 1024) {
-      toast.error(`${file.name} exceeds 10 MB limit.`);
-      return false;
-    }
-    const validTypes = ["image/jpeg", "image/png", "image/webp"];
-    if (!validTypes.includes(file.type)) {
-      toast.error("Invalid file type. Only JPG, PNG, WEBP allowed.");
-      return false;
-    }
-    return true;
-  }, [images]);
+  
+    return validFiles.length > 0;
+  }, []);
 
   const onUploadSuccess = useCallback((result) => {
     setIsLoading(false);
-    setUploadProgress((prev) => {
-      const copy = { ...prev };
-      delete copy[result.name];
-      return copy;
-    });
+    // Use the ref to access the most recent uploadProgress state
+    const currentProgress = { ...uploadProgressRef.current };
+    delete currentProgress[result.name];
+    setUploadProgress(currentProgress);
 
     const optimizedImageUrl = coreImageKit.url({
       path: result.filePath,
@@ -84,6 +107,7 @@ const AddListing = () => {
       ],
     });
 
+    // Use a functional update to ensure we use the latest state
     setImages((prevImages) => [
       ...prevImages,
       {
@@ -94,9 +118,9 @@ const AddListing = () => {
       },
     ]);
 
-    // ✅ REMOVE THIS LINE: document.getElementById("listing-images").value = "";
-    // Let the component and library manage the upload queue.
-  }, [images]); // images dependency is correct
+    // Reset file input so next selection appends instead of replaces
+    document.getElementById("listing-images").value = "";
+  }, [coreImageKit]); // coreImageKit is a stable object, so this is safe
 
   const onUploadError = useCallback((err) => {
     setIsLoading(false);
@@ -108,6 +132,8 @@ const AddListing = () => {
     const { loaded, total } = progressEvent;
     const percent = Math.round((loaded / total) * 100);
     const fileName = progressEvent?.config?.data?.file?.name || 'file';
+
+    // Use the functional update form to avoid stale state
     setUploadProgress((prev) => ({
       ...prev,
       [fileName]: percent,
@@ -203,7 +229,7 @@ const AddListing = () => {
     }
   };
 
-  // ... (amenities options and return JSX) ...
+  // --- AMENITIES OPTIONS ---
   const internalAmenities = [
     'AC',
     'Heating',
@@ -302,7 +328,7 @@ const AddListing = () => {
                 useUniqueFileName={true}
                 multiple
                 validateFile={(file) => {
-                  if (images.length >= 20) {
+                  if (imagesRef.current.length >= 20) {
                     toast.error("You can only upload up to 20 images.");
                     return false;
                   }
