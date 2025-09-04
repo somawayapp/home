@@ -6,7 +6,7 @@ import { assets } from '../../assets/assets';
 import { useAppContext } from '../../context/AppContext';
 import toast from 'react-hot-toast';
 import { IKContext, IKUpload, IKCore } from 'imagekitio-react';
-import DraggableImage from '../../components/DraggableImage'; // Make sure this path is correct
+import DraggableImage from "../../components/DragableImage";
 
 const AddListing = () => {
   const { axios, currency } = useAppContext();
