@@ -623,7 +623,7 @@ const AddListing = () => {
                   style={{ width: `${listingProgress}%` }}
                 />
                 <p className="text-xs text-gray-600 mt-1">
-                  Creating lsting... {listingProgress}%
+                  Creating listing... {listingProgress}%
                 </p>
               </div>
             )}
