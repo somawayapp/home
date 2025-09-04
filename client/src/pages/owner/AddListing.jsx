@@ -50,106 +50,62 @@ const AddListing = () => {
   };
 
   // --- IMAGE UPLOAD HANDLERS ---
-  const onUploadStart = useCallback((files) => {
-    // Correctly convert FileList to an array
-    const filesArray = Array.from(files);
+// add this near the top of the component imports:
+// import React, { useState, useCallback, useRef } from 'react';
 
-    let validFiles = [];
-    filesArray.forEach(file => {
-      // Use the latest 'images' state directly within this functional scope
-      if (images.length + validFiles.length >= 20) {
-        toast.error('You can only upload up to 20 images.');
-        return;
-      }
-      if (file.size > 10 * 1024 * 1024) {
-        toast.error(`${file.name} exceeds 10 MB limit.`);
-        return;
-      }
-      const validTypes = ["image/jpeg", "image/png", "image/webp"];
-      if (!validTypes.includes(file.type)) {
-        toast.error("Invalid file type. Only JPG, PNG, WEBP allowed.");
-        return;
-      }
-      validFiles.push(file);
-    });
+const fileInputRef = useRef(null);
 
-    if (validFiles.length > 0) {
-      setIsLoading(true);
-      setUploadProgress(prev => {
-        const newProgress = {};
-        validFiles.forEach(file => {
-          newProgress[file.name] = 0;
-        });
-        return { ...prev, ...newProgress };
-      });
+const handleFileInputChange = async (e) => {
+  const files = Array.from(e.target.files || []);
+  if (!files.length) return;
+
+  // validation (same rules as before)
+  const validTypes = ["image/jpeg", "image/png", "image/webp"];
+  const validFiles = [];
+  for (const file of files) {
+    if (images.length + validFiles.length >= 20) {
+      toast.error('You can only upload up to 20 images.');
+      break;
     }
+    if (file.size > 10 * 1024 * 1024) {
+      toast.error(`${file.name} exceeds 10 MB limit.`);
+      continue;
+    }
+    if (!validTypes.includes(file.type)) {
+      toast.error(`${file.name} - invalid type (JPG/PNG/WEBP only).`);
+      continue;
+    }
+    validFiles.push(file);
+  }
+  if (!validFiles.length) return;
 
-    return validFiles.length > 0;
-  }, [images]); // Dependency on 'images' state is crucial
+  // create immediate previews (FileReader)
+  const previewPromises = validFiles.map(
+    (file) =>
+      new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve({ file, previewUrl: reader.result });
+        reader.readAsDataURL(file);
+      })
+  );
 
-  const onUploadSuccess = useCallback((result) => {
-    setIsLoading(false);
-    // Use functional update to ensure we're working with the latest state
-    setUploadProgress(prev => {
-      const copy = { ...prev };
-      delete copy[result.name];
-      return copy;
-    });
+  const previews = await Promise.all(previewPromises);
 
-    const optimizedImageUrl = coreImageKit.url({
-      path: result.filePath,
-      transformation: [
-        { width: '1280' },
-        { quality: 'auto' },
-        { format: 'webp' },
-      ],
-    });
+  // append previews immediately (they will show instantly)
+  setImages((prev) => [
+    ...prev,
+    ...previews.map((p) => ({
+      id: Date.now() + Math.random(),
+      name: p.file.name,
+      url: p.previewUrl,
+      uploading: true, // mark as uploading if you want
+      file: p.file, // keep original file for later upload
+    })),
+  ]);
 
-    // Use a functional update to correctly append to the latest state
-    setImages((prevImages) => [
-      ...prevImages,
-      {
-        id: result.fileId,
-        name: result.name,
-        url: optimizedImageUrl,
-        originalUrl: result.url,
-      },
-    ]);
-
-    // Reset file input to allow new selections
-    document.getElementById("listing-images").value = "";
-  }, [coreImageKit, setImages, setUploadProgress, setIsLoading]);
-
-  const onUploadError = useCallback((err) => {
-    setIsLoading(false);
-    toast.error('Failed to upload image.');
-    console.error('ImageKit upload error:', err);
-  }, [setIsLoading]);
-
-  const onUploadProgress = useCallback((progressEvent) => {
-    const { loaded, total } = progressEvent;
-    const percent = Math.round((loaded / total) * 100);
-    const fileName = progressEvent?.config?.data?.file?.name || 'file';
-
-    // Use functional update to avoid stale state
-    setUploadProgress(prev => ({
-      ...prev,
-      [fileName]: percent,
-    }));
-  }, [setUploadProgress]);
-
-  const handleImageRemove = useCallback((index) => {
-    setImages((prevImages) => prevImages.filter((_, i) => i !== index));
-  }, []);
-
-  const moveImage = useCallback((dragIndex, hoverIndex) => {
-    setImages((prevImages) => {
-      const newImages = [...prevImages];
-      const [draggedImage] = newImages.splice(dragIndex, 1);
-      newImages.splice(hoverIndex, 0, draggedImage);
-      return newImages;
-    });
-  }, []);
+  // KEEP: upload logic here (I left this intentionally: we can implement the reliable upload next)
+  // For now, we only ensure the input is clickable and all selected files show instantly.
+};
 
   // --- FORM INPUT HANDLERS ---
   const handleInputChange = (e) => {
@@ -261,19 +217,28 @@ const AddListing = () => {
           >
             {/* Upload Section */}
             <div className="flex flex-col gap-3 w-full">
-              <label
-                htmlFor="listing-images"
-                className="flex items-center gap-2 border-2 border-blue-400 p-2 rounded-md cursor-pointer"
-              >
-                <img
-                  src={assets.upload_icon}
-                  alt="Upload"
-                  className="h-14 rounded"
-                />
-                <p className="text-sm text-gray-800">
-                  Upload one or more pictures of your listing (max 20, 10MB each)
-                </p>
-              </label>
+             {/* Replace your label + input block with this exact markup */}
+<label
+  htmlFor="listing-images"
+  className="flex items-center gap-2 border-2 border-blue-400 p-2 rounded-md cursor-pointer"
+>
+  <img src={assets.upload_icon} alt="Upload" className="h-14 rounded" />
+  <p className="text-sm text-gray-800">
+    Upload one or more pictures of your listing (max 20, 10MB each)
+  </p>
+
+  {/* Hidden real input — clicking the label opens the picker */}
+  <input
+    id="listing-images"                  // <-- THIS IS THE CRITICAL LINE
+    ref={fileInputRef}
+    type="file"
+    multiple
+    accept="image/jpeg,image/png,image/webp"
+    className="hidden"
+    onChange={handleFileInputChange}
+  />
+</label>
+
            <IKContext
   publicKey={process.env.REACT_APP_IMAGEKIT_PUBLIC_KEY}
   urlEndpoint={process.env.REACT_APP_IMAGEKIT_URL_ENDPOINT}
