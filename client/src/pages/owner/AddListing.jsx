@@ -56,10 +56,11 @@ const AddListing = () => {
   };
 
   // --- REFINED IMAGE UPLOAD HANDLER ---
- const handleFileInputChange = async (e) => {
+const handleFileInputChange = async (e) => {
   const files = Array.from(e.target.files || []);
   if (!files.length) return;
 
+  // ✅ 1. Validate file count & size
   const validTypes = ["image/jpeg", "image/png", "image/webp"];
   const validFiles = [];
 
@@ -81,34 +82,29 @@ const AddListing = () => {
 
   if (!validFiles.length) return;
 
-  // Previews first
-  const newImages = validFiles.map((file) => ({
+  // ✅ 2. Create previews & add them to state as "uploading"
+  const previews = validFiles.map(file => ({
     id: Date.now() + Math.random(),
     name: file.name,
     url: URL.createObjectURL(file),
     uploading: true,
     file,
   }));
-  setImages((prev) => [...prev, ...newImages]);
+  setImages(prev => [...prev, ...previews]);
 
-  // ✅ FIXED: Authenticate before upload
-  let authParams;
-  try {
-    authParams = await authenticator(); // <-- Get token, signature, expire from backend
-  } catch (err) {
-    toast.error("Could not authenticate with ImageKit.");
-    return;
-  }
-
-  for (const image of newImages) {
+  // ✅ 3. Upload files one by one (each needs a fresh token)
+  for (const image of previews) {
     try {
+      // 🔑 Get fresh auth parameters for *this* file
+      const authParams = await authenticator(); // calls /api/owner/imagekit-auth
+
       const result = await coreImageKit.upload({
         file: image.file,
         fileName: image.name,
         folder: "/listings",
         useUniqueFileName: true,
 
-        // ✅ Pass the authentication details
+        // ✅ Pass token/signature/expire
         token: authParams.token,
         signature: authParams.signature,
         expire: authParams.expire,
@@ -117,29 +113,31 @@ const AddListing = () => {
           const percent = Math.round(
             (progressEvent.loaded / progressEvent.total) * 100
           );
-          setUploadProgress((prev) => ({
+          setUploadProgress(prev => ({
             ...prev,
-            [image.name]: percent,
+            [image.id]: percent, // track by id for multiple files
           }));
         },
       });
 
-      // Replace preview URL with final ImageKit URL
-      setImages((prev) =>
-        prev.map((img) =>
+      // ✅ Replace preview with uploaded URL
+      setImages(prev =>
+        prev.map(img =>
           img.id === image.id
             ? { ...img, url: result.url, uploading: false }
             : img
         )
       );
       toast.success(`${image.name} uploaded successfully!`);
+
     } catch (err) {
       console.error("Upload failed", err);
       toast.error(`Failed to upload ${image.name}`);
-      setImages((prev) => prev.filter((img) => img.id !== image.id));
+      setImages(prev => prev.filter(img => img.id !== image.id));
     }
   }
 };
+
 
 
   // --- FORM INPUT HANDLERS ---
