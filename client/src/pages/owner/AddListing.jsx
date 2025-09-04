@@ -1,17 +1,92 @@
 import React, { useState, useCallback, useRef } from "react";
-import { DndProvider } from 'react-dnd';
+import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import Title from '../../components/owner/Title';
 import { assets } from '../../assets/assets';
 import { useAppContext } from '../../context/AppContext';
 import toast from 'react-hot-toast';
-import { IKContext, IKUpload, IKCore } from 'imagekitio-react';
-import DraggableImage from "../../components/DragableImage";
+import { IKCore } from 'imagekitio-react';
+import { FaTrash, FaTimesCircle } from 'react-icons/fa'; // Import an icon for deletion
+import { RxDragHandleDots2 } from 'react-icons/rx'; // Import a drag handle icon
+
+const ItemTypes = {
+  IMAGE: 'image',
+};
+
+// Draggable and Deletable Image Component
+const DraggableImage = ({ id, url, index, moveImage, onDelete }) => {
+  const ref = useRef(null);
+
+  const [, drop] = useDrop({
+    accept: ItemTypes.IMAGE,
+    hover(item, monitor) {
+      if (!ref.current) {
+        return;
+      }
+      const dragIndex = item.index;
+      const hoverIndex = index;
+      if (dragIndex === hoverIndex) {
+        return;
+      }
+      const hoverBoundingRect = ref.current?.getBoundingClientRect();
+      const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+      const clientOffset = monitor.getClientOffset();
+      const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+
+      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+        return;
+      }
+      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+        return;
+      }
+      moveImage(dragIndex, hoverIndex);
+      item.index = hoverIndex;
+    },
+  });
+
+  const [{ isDragging }, drag] = useDrag({
+    type: ItemTypes.IMAGE,
+    item: () => ({ id, index }),
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  });
+
+  drag(drop(ref));
+
+  return (
+    <div
+      ref={ref}
+      className="relative w-full h-32 rounded-xl overflow-hidden shadow group cursor-grab"
+      style={{ opacity: isDragging ? 0.5 : 1 }}
+    >
+      <img
+        src={url}
+        alt="preview"
+        className="w-full h-full object-cover transition-transform duration-200 group-hover:scale-105"
+      />
+      {/* Delete button */}
+      <button
+        type="button"
+        onClick={() => onDelete(id)}
+        className="absolute top-2 right-2 p-1 bg-red-600 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity z-10"
+        aria-label="Delete image"
+      >
+        <FaTimesCircle className="w-5 h-5" />
+      </button>
+
+      {/* Drag handle */}
+      <div className="absolute top-2 left-2 p-1 bg-black bg-opacity-50 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity cursor-grab">
+        <RxDragHandleDots2 className="w-5 h-5" />
+      </div>
+    </div>
+  );
+};
 
 const AddListing = () => {
   const { axios, currency } = useAppContext();
 
-  // Create an instance of IKCore to use for manual uploads
+  // Create an instance of IKCore for manual uploads
   const coreImageKit = new IKCore({
     publicKey: "public_GflbYmvPwwTVTeTjdNMkcUAwsiU=",
     urlEndpoint: "https://ik.imagekit.io/somaway",
@@ -53,11 +128,11 @@ const AddListing = () => {
     }
   };
 
+  // --- REFINED IMAGE UPLOAD HANDLER ---
   const handleFileInputChange = async (e) => {
     const files = Array.from(e.target.files || []);
     if (!files.length) return;
 
-    // ✅ 1. Validate file count & size
     const validTypes = ["image/jpeg", "image/png", "image/webp"];
     const validFiles = [];
 
@@ -79,7 +154,6 @@ const AddListing = () => {
 
     if (!validFiles.length) return;
 
-    // ✅ 2. Create previews & add them to state as "uploading"
     const previews = validFiles.map(file => ({
       id: Date.now() + Math.random(),
       name: file.name,
@@ -89,11 +163,9 @@ const AddListing = () => {
     }));
     setImages(prev => [...prev, ...previews]);
 
-    // ✅ 3. Upload files one by one (each needs a fresh token)
     for (const image of previews) {
       try {
-        // 🔑 Get fresh auth parameters for *this* file
-        const authParams = await authenticator(); // calls /api/owner/imagekit-auth
+        const authParams = await authenticator();
 
         const result = await coreImageKit.upload({
           file: image.file,
@@ -103,19 +175,16 @@ const AddListing = () => {
           token: authParams.token,
           signature: authParams.signature,
           expire: authParams.expire,
-
           onUploadProgress: (progressEvent) => {
-            const percent = Math.round(
-              (progressEvent.loaded / progressEvent.total) * 100
-            );
+            const percent = Math.round((progressEvent.loaded / progressEvent.total) * 100);
             setUploadProgress(prev => ({
               ...prev,
-              [image.id]: percent, // track by id for multiple files
+              [image.id]: percent,
             }));
           },
         });
 
-        // ✅ Replace preview with uploaded URL
+        // Update the image object with the final URL and mark as not uploading
         setImages(prev =>
           prev.map(img =>
             img.id === image.id
@@ -125,28 +194,41 @@ const AddListing = () => {
         );
         toast.success(`${image.name} uploaded successfully!`);
 
+        // Clean up the progress state for this image once it's done
+        setUploadProgress(prev => {
+          const newState = { ...prev };
+          delete newState[image.id];
+          return newState;
+        });
+
       } catch (err) {
         console.error("Upload failed", err);
         toast.error(`Failed to upload ${image.name}`);
+        // Remove the failed image from the state
         setImages(prev => prev.filter(img => img.id !== image.id));
+        setUploadProgress(prev => {
+          const newState = { ...prev };
+          delete newState[image.id];
+          return newState;
+        });
       }
     }
   };
 
-  // ✅ New functions for drag-and-drop and deletion
+  // --- DRAG-AND-DROP HANDLERS ---
   const moveImage = useCallback((dragIndex, hoverIndex) => {
     setImages((prevImages) => {
       const newImages = [...prevImages];
-      const [movedImage] = newImages.splice(dragIndex, 1);
-      newImages.splice(hoverIndex, 0, movedImage);
+      const [draggedImage] = newImages.splice(dragIndex, 1);
+      newImages.splice(hoverIndex, 0, draggedImage);
       return newImages;
     });
   }, []);
 
-  const deleteImage = (id) => {
-    setImages((prevImages) => prevImages.filter(img => img.id !== id));
-    toast.success('Image removed successfully.');
-  };
+  // --- DELETE IMAGE HANDLER ---
+  const handleDeleteImage = useCallback((idToDelete) => {
+    setImages(prev => prev.filter(img => img.id !== idToDelete));
+  }, []);
 
   // --- FORM INPUT HANDLERS ---
   const handleInputChange = (e) => {
@@ -184,25 +266,23 @@ const AddListing = () => {
   // --- FORM SUBMIT (REFINED) ---
   const onSubmitHandler = async (e) => {
     e.preventDefault();
-    if (isLoading) return null;
+    if (isLoading) return;
 
-    if (images.length === 0) {
-      toast.error('Please upload at least one image');
-      return;
-    }
-
-    // Check if any uploads are still in progress
     const pendingUploads = images.filter(img => img.uploading);
     if (pendingUploads.length > 0) {
       toast.error('Please wait for all images to finish uploading.');
       return;
     }
 
+    if (images.length === 0) {
+      toast.error('Please upload at least one image');
+      return;
+    }
+
     setIsLoading(true);
-    setListingProgress(0); // This progress bar now tracks the final submission only
+    setListingProgress(0);
 
     try {
-      // Get the URLs of all successfully uploaded images
       const imageUrls = images.map((img) => img.url);
 
       const { data } = await axios.post(
@@ -282,37 +362,41 @@ const AddListing = () => {
               />
             </label>
 
-            {/* ✅ Updated Preview with DraggableImage */}
+            {/* ✅ Preview & Drag-and-drop area */}
             <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mt-4">
-              {images.map((img, index) => (
-                <DraggableImage
-                  key={img.id}
-                  image={img}
-                  index={index}
-                  moveImage={moveImage}
-                  deleteImage={deleteImage}
-                />
-              ))}
-            </div>
-
-            {/* Progress Bars */}
-            {Object.keys(uploadProgress).length > 0 && (
-              <div className="grid grid-cols-3 gap-2 mt-2">
-                {Object.entries(uploadProgress).map(([fileName, percent]) => (
-                  <div key={fileName} className="w-full">
-                    <div className="w-full bg-gray-200 rounded-md overflow-hidden">
-                      <div
-                        className="bg-blue-500 h-2 transition-all"
-                        style={{ width: `${percent}%` }}
+              {images.map((img, index) => {
+                if (img.uploading) {
+                  return (
+                    <div key={img.id} className="relative w-full h-32 rounded-xl overflow-hidden shadow bg-gray-100 flex items-center justify-center">
+                      <img
+                        src={img.url}
+                        alt="preview"
+                        className="w-full h-full object-cover rounded-xl shadow opacity-50"
                       />
+                      <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col items-center justify-center rounded-xl">
+                        <p className="text-white text-sm">Uploading...</p>
+                        <div className="w-2/3 h-1 bg-gray-300 rounded-full mt-2">
+                          <div
+                            className="h-full bg-blue-500 rounded-full transition-all duration-300"
+                            style={{ width: `${uploadProgress[img.id] || 0}%` }}
+                          />
+                        </div>
+                      </div>
                     </div>
-                    <p className="text-xs text-gray-600 truncate">
-                      {fileName} ({percent}%)
-                    </p>
-                  </div>
-                ))}
-              </div>
-            )}
+                  );
+                }
+                return (
+                  <DraggableImage
+                    key={img.id}
+                    id={img.id}
+                    url={img.url}
+                    index={index}
+                    moveImage={moveImage}
+                    onDelete={handleDeleteImage}
+                  />
+                );
+              })}
+            </div>
           </div>
 
 
