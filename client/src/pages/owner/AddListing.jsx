@@ -15,6 +15,8 @@ const AddListing = () => {
   const coreImageKit = new IKCore({
       publicKey: "public_GflbYmvPwwTVTeTjdNMkcUAwsiU=",
   urlEndpoint: "https://ik.imagekit.io/somaway",
+    authenticationEndpoint: "/api/owner/imagekit-auth", // your server endpoint
+
   
   });
 
