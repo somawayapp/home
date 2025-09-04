@@ -4,21 +4,22 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import Title from '../../components/owner/Title';
 import { assets } from '../../assets/assets';
 import { useAppContext } from '../../context/AppContext';
-import toast from 'react-hot-toast'; 
-import { IKCore } from 'imagekitio-react';
-import DraggableImage from '../../components/DragableImage';
+import toast from 'react-hot-toast';
+import { IKContext, IKUpload, IKCore } from 'imagekitio-react';
+import DraggableImage from '../../components/DraggableImage'; // Make sure this path is correct
 
 const AddListing = () => {
   const { axios, currency } = useAppContext();
 
+  // Create an instance of IKCore to use for manual uploads
   const coreImageKit = new IKCore({
     publicKey: "public_GflbYmvPwwTVTeTjdNMkcUAwsiU=",
     urlEndpoint: "https://ik.imagekit.io/somaway",
-    authenticationEndpoint: "/api/owner/imagekit-auth",
+    authenticationEndpoint: "/api/owner/imagekit-auth", // your server endpoint
   });
 
   const fileInputRef = useRef(null);
-  
+
   const [images, setImages] = useState([]);
   const [uploadProgress, setUploadProgress] = useState({});
   const [isLoading, setIsLoading] = useState(false);
@@ -56,6 +57,7 @@ const AddListing = () => {
     const files = Array.from(e.target.files || []);
     if (!files.length) return;
 
+    // ✅ 1. Validate file count & size
     const validTypes = ["image/jpeg", "image/png", "image/webp"];
     const validFiles = [];
 
@@ -77,6 +79,7 @@ const AddListing = () => {
 
     if (!validFiles.length) return;
 
+    // ✅ 2. Create previews & add them to state as "uploading"
     const previews = validFiles.map(file => ({
       id: Date.now() + Math.random(),
       name: file.name,
@@ -86,9 +89,11 @@ const AddListing = () => {
     }));
     setImages(prev => [...prev, ...previews]);
 
+    // ✅ 3. Upload files one by one (each needs a fresh token)
     for (const image of previews) {
       try {
-        const authParams = await authenticator();
+        // 🔑 Get fresh auth parameters for *this* file
+        const authParams = await authenticator(); // calls /api/owner/imagekit-auth
 
         const result = await coreImageKit.upload({
           file: image.file,
@@ -98,17 +103,19 @@ const AddListing = () => {
           token: authParams.token,
           signature: authParams.signature,
           expire: authParams.expire,
+
           onUploadProgress: (progressEvent) => {
             const percent = Math.round(
               (progressEvent.loaded / progressEvent.total) * 100
             );
             setUploadProgress(prev => ({
               ...prev,
-              [image.id]: percent,
+              [image.id]: percent, // track by id for multiple files
             }));
           },
         });
 
+        // ✅ Replace preview with uploaded URL
         setImages(prev =>
           prev.map(img =>
             img.id === image.id
@@ -126,41 +133,20 @@ const AddListing = () => {
     }
   };
 
-  // --- NEW DRAG-AND-DROP LOGIC ---
-  const findImage = useCallback(
-    (id) => {
-      const image = images.filter((i) => i.id === id)[0];
-      return {
-        image,
-        index: images.indexOf(image),
-      };
-    },
-    [images],
-  );
-
-  const moveImage = useCallback(
-    (id, toIndex) => {
-      const { image, index } = findImage(id);
-      const newImages = [...images];
-      newImages.splice(index, 1);
-      newImages.splice(toIndex, 0, image);
-      setImages(newImages);
-    },
-    [findImage, images],
-  );
-
-  const handleRemoveImage = useCallback((id) => {
-    setImages(prev => prev.filter(image => image.id !== id));
-    setUploadProgress(prev => {
-      const newProgress = { ...prev };
-      const image = images.find(img => img.id === id);
-      if (image) {
-        delete newProgress[image.id];
-      }
-      return newProgress;
+  // ✅ New functions for drag-and-drop and deletion
+  const moveImage = useCallback((dragIndex, hoverIndex) => {
+    setImages((prevImages) => {
+      const newImages = [...prevImages];
+      const [movedImage] = newImages.splice(dragIndex, 1);
+      newImages.splice(hoverIndex, 0, movedImage);
+      return newImages;
     });
-    toast.success("Image removed.");
-  }, [images]);
+  }, []);
+
+  const deleteImage = (id) => {
+    setImages((prevImages) => prevImages.filter(img => img.id !== id));
+    toast.success('Image removed successfully.');
+  };
 
   // --- FORM INPUT HANDLERS ---
   const handleInputChange = (e) => {
@@ -205,6 +191,7 @@ const AddListing = () => {
       return;
     }
 
+    // Check if any uploads are still in progress
     const pendingUploads = images.filter(img => img.uploading);
     if (pendingUploads.length > 0) {
       toast.error('Please wait for all images to finish uploading.');
@@ -212,9 +199,10 @@ const AddListing = () => {
     }
 
     setIsLoading(true);
-    setListingProgress(0);
+    setListingProgress(0); // This progress bar now tracks the final submission only
 
     try {
+      // Get the URLs of all successfully uploaded images
       const imageUrls = images.map((img) => img.url);
 
       const { data } = await axios.post(
@@ -294,23 +282,38 @@ const AddListing = () => {
               />
             </label>
 
-            {/* ✅ Draggable Image Preview Grid */}
+            {/* ✅ Updated Preview with DraggableImage */}
             <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mt-4">
               {images.map((img, index) => (
                 <DraggableImage
                   key={img.id}
-                  id={img.id}
-                  url={img.url}
+                  image={img}
                   index={index}
-                  uploading={img.uploading}
-                  progress={uploadProgress[img.id] || 0}
                   moveImage={moveImage}
-                  handleRemoveImage={handleRemoveImage}
+                  deleteImage={deleteImage}
                 />
               ))}
             </div>
+
+            {/* Progress Bars */}
+            {Object.keys(uploadProgress).length > 0 && (
+              <div className="grid grid-cols-3 gap-2 mt-2">
+                {Object.entries(uploadProgress).map(([fileName, percent]) => (
+                  <div key={fileName} className="w-full">
+                    <div className="w-full bg-gray-200 rounded-md overflow-hidden">
+                      <div
+                        className="bg-blue-500 h-2 transition-all"
+                        style={{ width: `${percent}%` }}
+                      />
+                    </div>
+                    <p className="text-xs text-gray-600 truncate">
+                      {fileName} ({percent}%)
+                    </p>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
-          {/* ... Other form fields ... */}
 
 
             {/* Other form fields ... */}
