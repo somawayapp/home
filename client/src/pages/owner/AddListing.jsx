@@ -388,7 +388,7 @@ const AddListing = () => {
           <div className="flex flex-col gap-3 w-full">
             <label
               htmlFor="listing-images"
-              className="flex items-center gap-2 border-2 border-blue700 p-2 rounded-md cursor-pointer"
+              className="flex items-center gap-2 border-2 border-blue-800 p-2 rounded-md cursor-pointer"
             >
               <img src={assets.upload_icon} alt="Upload" className="h-14 rounded-xl" />
               <p className="text-sm text-gray-800">
@@ -414,9 +414,9 @@ const AddListing = () => {
                       <img
                         src={img.url}
                         alt="preview"
-                        className="w-full h-full object-cover rounded-xl border border-blue700 shadow opacity-50"
+                        className="w-full h-full object-cover rounded-xl border border-blue-800 shadow opacity-50"
                       />
-                      <div className="absolute inset-0 border border-blue700 bg-black/20 flex flex-col items-center justify-center rounded-xl">
+                      <div className="absolute inset-0 border border-blue-800 bg-black/20 flex flex-col items-center justify-center rounded-xl">
                         <p className="text-white text-sm">Uploading...</p>
                           </div>
                     </div>
@@ -453,7 +453,7 @@ const AddListing = () => {
                   name="agentname"
                   placeholder="John Doe"
                   required
-                  className="px-3 py-2 mt-1 border border-borderColor2 hover:border-blue200 rounded-md outline-none focus:ring focus:ring-blue700 hover:border-blue200 rounded-md outline-none focus:ring focus:ring-blue700"
+                  className="px-3 py-2 mt-1 border border-borderColor2 hover:border-blue200 rounded-md outline-none focus:ring focus:ring-blue-800 hover:border-blue200 rounded-md outline-none focus:ring focus:ring-blue-800"
                   value={listing.agentname}
                   onChange={handleInputChange}
                 />
@@ -465,7 +465,7 @@ const AddListing = () => {
                   name="agentphone"
                   placeholder="+1-555-1234"
                   required
-                  className="px-3 py-2 mt-1 border border-borderColor2 hover:border-blue200 rounded-md outline-none focus:ring focus:ring-blue700  rounded-md outline-none"
+                  className="px-3 py-2 mt-1 border border-borderColor2 hover:border-blue200 rounded-md outline-none focus:ring focus:ring-blue-800  rounded-md outline-none"
                   value={listing.agentphone}
                   onChange={handleInputChange}
                 />
@@ -477,7 +477,7 @@ const AddListing = () => {
                   name="agentwhatsapp"
                   placeholder="+1-555-5678"
                   required
-                  className="px-3 py-2 mt-1 border border-borderColor2 hover:border-blue200 rounded-md outline-none focus:ring focus:ring-blue700  rounded-md outline-none"
+                  className="px-3 py-2 mt-1 border border-borderColor2 hover:border-blue200 rounded-md outline-none focus:ring focus:ring-blue-800  rounded-md outline-none"
                   value={listing.agentwhatsapp}
                   onChange={handleInputChange}
                 />
@@ -490,7 +490,7 @@ const AddListing = () => {
                 name="title"
                 placeholder="e.g. Beautiful 3-bedroom apartment"
                 required
-                className="px-3 py-2 mt-1 border border-borderColor2 hover:border-blue200 rounded-md outline-none focus:ring focus:ring-blue700  rounded-md outline-none"
+                className="px-3 py-2 mt-1 border border-borderColor2 hover:border-blue200 rounded-md outline-none focus:ring focus:ring-blue-800  rounded-md outline-none"
                 value={listing.title}
                 onChange={handleInputChange}
               />
@@ -502,7 +502,7 @@ const AddListing = () => {
                 name="description"
                 placeholder="e.g. A luxurious apartment with a spacious interior and a great view."
                 required
-                className="px-3 py-2 mt-1 border border-borderColor2 hover:border-blue200 rounded-md outline-none focus:ring focus:ring-blue700  rounded-md outline-none"
+                className="px-3 py-2 mt-1 border border-borderColor2 hover:border-blue200 rounded-md outline-none focus:ring focus:ring-blue-800  rounded-md outline-none"
                 value={listing.description}
                 onChange={handleInputChange}
               ></textarea>
@@ -514,7 +514,7 @@ const AddListing = () => {
                   name="propertytype"
                   value={listing.propertytype}
                   onChange={handleInputChange}
-                  className="px-3 py-2 mt-1 border border-borderColor2 hover:border-blue200 rounded-md outline-none focus:ring focus:ring-blue700  rounded-md outline-none"
+                  className="px-3 py-2 mt-1 border border-borderColor2 hover:border-blue200 rounded-md outline-none focus:ring focus:ring-blue-800  rounded-md outline-none"
                 >
                   <option value="">Select a property type</option>
                   <option value="Apartment">Apartment</option>
@@ -529,7 +529,7 @@ const AddListing = () => {
                   name="offertype"
                   value={listing.offertype}
                   onChange={handleInputChange}
-                  className="px-3 py-2 mt-1 border border-borderColor2 hover:border-blue200 rounded-md outline-none focus:ring focus:ring-blue700  rounded-md outline-none"
+                  className="px-3 py-2 mt-1 border border-borderColor2 hover:border-blue200 rounded-md outline-none focus:ring focus:ring-blue-800  rounded-md outline-none"
                 >
                   <option value="">Select an offer type</option>
                   <option value="sale">Sale</option>
@@ -543,7 +543,7 @@ const AddListing = () => {
                   name="price"
                   placeholder="500000"
                   required
-                  className="px-3 py-2 mt-1 border border-borderColor2 hover:border-blue200 rounded-md outline-none focus:ring focus:ring-blue700  rounded-md outline-none"
+                  className="px-3 py-2 mt-1 border border-borderColor2 hover:border-blue200 rounded-md outline-none focus:ring focus:ring-blue-800  rounded-md outline-none"
                   value={listing.price}
                   onChange={handleInputChange}
                 />
@@ -557,7 +557,7 @@ const AddListing = () => {
                   type="number"
                   name="bedrooms"
                   placeholder="3"
-                  className="px-3 py-2 mt-1 border border-borderColor2 hover:border-blue200 rounded-md outline-none focus:ring focus:ring-blue700  rounded-md outline-none"
+                  className="px-3 py-2 mt-1 border border-borderColor2 hover:border-blue200 rounded-md outline-none focus:ring focus:ring-blue-800  rounded-md outline-none"
                   value={listing.features.bedrooms}
                   onChange={handleFeaturesChange}
                 />
@@ -568,7 +568,7 @@ const AddListing = () => {
                   type="number"
                   name="bathrooms"
                   placeholder="2"
-                  className="px-3 py-2 mt-1 border border-borderColor2 hover:border-blue200 rounded-md outline-none focus:ring focus:ring-blue700  rounded-md outline-none"
+                  className="px-3 py-2 mt-1 border border-borderColor2 hover:border-blue200 rounded-md outline-none focus:ring focus:ring-blue-800  rounded-md outline-none"
                   value={listing.features.bathrooms}
                   onChange={handleFeaturesChange}
                 />
@@ -579,7 +579,7 @@ const AddListing = () => {
                   type="number"
                   name="rooms"
                   placeholder="5"
-                  className="px-3 py-2 mt-1 border border-borderColor2 hover:border-blue200 rounded-md outline-none focus:ring focus:ring-blue700  rounded-md outline-none"
+                  className="px-3 py-2 mt-1 border border-borderColor2 hover:border-blue200 rounded-md outline-none focus:ring focus:ring-blue-800  rounded-md outline-none"
                   value={listing.features.rooms}
                   onChange={handleFeaturesChange}
                 />
@@ -590,7 +590,7 @@ const AddListing = () => {
                   type="number"
                   name="size"
                   placeholder="e.g. 120 sft"
-                  className="px-3 py-2 mt-1 border border-borderColor2 hover:border-blue200 rounded-md outline-none focus:ring focus:ring-blue700  rounded-md outline-none"
+                  className="px-3 py-2 mt-1 border border-borderColor2 hover:border-blue200 rounded-md outline-none focus:ring focus:ring-blue-800  rounded-md outline-none"
                   value={listing.features.size}
                   onChange={handleFeaturesChange}
                 />
@@ -671,7 +671,7 @@ const AddListing = () => {
 
             <button
               type="submit"
-              className="flex items-center gap-2 px-4 py-2.5 mt-4 bg-primary text-white rounded-md font-medium w-max cursor-pointer"
+              className="flex items-center gap-2 px-4 py-2.5 mt-4 bg-blue-800 hover:bg-blue-900  text-white rounded-md font-medium w-max cursor-pointer"
             >
               <img src={assets.tick_icon} alt="" />
               {isLoading ? 'Listing...' : 'Create listing'}
