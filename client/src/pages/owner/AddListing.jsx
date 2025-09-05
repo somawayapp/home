@@ -375,6 +375,7 @@ const AddListing = () => {
 
   return (
     <DndProvider backend={HTML5Backend}>
+      <div className="flex justify-center items-center "> 
       <div className="px-4 py-10 md:px-10 flex-1">
         <Title
           title="Add New Listing"
@@ -453,7 +454,7 @@ const AddListing = () => {
                   name="agentname"
                   placeholder="John Doe"
                   required
-                  className="px-3 py-2 mt-1 border border-borderColor2 hover:border-blue-800 rounded-md outline-none focus:ring focus:ring-blue-800 hover:border-blue-800 rounded-md outline-none focus:ring focus:ring-blue-800"
+                  className="px-3 py-2 mt-1 border border-gray-500  hover:border-blue-800 rounded-md outline-none focus:ring focus:ring-blue-800 hover:border-blue-800 rounded-md outline-none focus:ring focus:ring-blue-800"
                   value={listing.agentname}
                   onChange={handleInputChange}
                 />
@@ -465,7 +466,7 @@ const AddListing = () => {
                   name="agentphone"
                   placeholder="+1-555-1234"
                   required
-                  className="px-3 py-2 mt-1 border border-borderColor2 hover:border-blue-800 rounded-md outline-none focus:ring focus:ring-blue-800  rounded-md outline-none"
+                  className="px-3 py-2 mt-1 border border-gray-500  hover:border-blue-800 rounded-md outline-none focus:ring focus:ring-blue-800  rounded-md outline-none"
                   value={listing.agentphone}
                   onChange={handleInputChange}
                 />
@@ -477,7 +478,7 @@ const AddListing = () => {
                   name="agentwhatsapp"
                   placeholder="+1-555-5678"
                   required
-                  className="px-3 py-2 mt-1 border border-borderColor2 hover:border-blue-800 rounded-md outline-none focus:ring focus:ring-blue-800  rounded-md outline-none"
+                  className="px-3 py-2 mt-1 border border-gray-500  hover:border-blue-800 rounded-md outline-none focus:ring focus:ring-blue-800  rounded-md outline-none"
                   value={listing.agentwhatsapp}
                   onChange={handleInputChange}
                 />
@@ -490,7 +491,7 @@ const AddListing = () => {
                 name="title"
                 placeholder="e.g. Beautiful 3-bedroom apartment"
                 required
-                className="px-3 py-2 mt-1 border border-borderColor2 hover:border-blue-800 rounded-md outline-none focus:ring focus:ring-blue-800  rounded-md outline-none"
+                className="px-3 py-2 mt-1 border border-gray-500  hover:border-blue-800 rounded-md outline-none focus:ring focus:ring-blue-800  rounded-md outline-none"
                 value={listing.title}
                 onChange={handleInputChange}
               />
@@ -502,7 +503,7 @@ const AddListing = () => {
                 name="description"
                 placeholder="e.g. A luxurious apartment with a spacious interior and a great view."
                 required
-                className="px-3 py-2 mt-1 border border-borderColor2 hover:border-blue-800 rounded-md outline-none focus:ring focus:ring-blue-800  rounded-md outline-none"
+                className="px-3 py-2 mt-1 border border-gray-500  hover:border-blue-800 rounded-md outline-none focus:ring focus:ring-blue-800  rounded-md outline-none"
                 value={listing.description}
                 onChange={handleInputChange}
               ></textarea>
@@ -514,7 +515,7 @@ const AddListing = () => {
                   name="propertytype"
                   value={listing.propertytype}
                   onChange={handleInputChange}
-                  className="px-3 py-2 mt-1 border border-borderColor2 hover:border-blue-800 rounded-md outline-none focus:ring focus:ring-blue-800  rounded-md outline-none"
+                  className="px-3 py-2 mt-1 border border-gray-500  hover:border-blue-800 rounded-md outline-none focus:ring focus:ring-blue-800  rounded-md outline-none"
                 >
                   <option value="">Select a property type</option>
                   <option value="Apartment">Apartment</option>
@@ -529,7 +530,7 @@ const AddListing = () => {
                   name="offertype"
                   value={listing.offertype}
                   onChange={handleInputChange}
-                  className="px-3 py-2 mt-1 border border-borderColor2 hover:border-blue-800 rounded-md outline-none focus:ring focus:ring-blue-800  rounded-md outline-none"
+                  className="px-3 py-2 mt-1 border border-gray-500  hover:border-blue-800 rounded-md outline-none focus:ring focus:ring-blue-800  rounded-md outline-none"
                 >
                   <option value="">Select an offer type</option>
                   <option value="sale">Sale</option>
@@ -543,7 +544,7 @@ const AddListing = () => {
                   name="price"
                   placeholder="500000"
                   required
-                  className="px-3 py-2 mt-1 border border-borderColor2 hover:border-blue-800 rounded-md outline-none focus:ring focus:ring-blue-800  rounded-md outline-none"
+                  className="px-3 py-2 mt-1 border border-gray-500  hover:border-blue-800 rounded-md outline-none focus:ring focus:ring-blue-800  rounded-md outline-none"
                   value={listing.price}
                   onChange={handleInputChange}
                 />
@@ -557,7 +558,7 @@ const AddListing = () => {
                   type="number"
                   name="bedrooms"
                   placeholder="3"
-                  className="px-3 py-2 mt-1 border border-borderColor2 hover:border-blue-800 rounded-md outline-none focus:ring focus:ring-blue-800  rounded-md outline-none"
+                  className="px-3 py-2 mt-1 border border-gray-500  hover:border-blue-800 rounded-md outline-none focus:ring focus:ring-blue-800  rounded-md outline-none"
                   value={listing.features.bedrooms}
                   onChange={handleFeaturesChange}
                 />
@@ -568,7 +569,7 @@ const AddListing = () => {
                   type="number"
                   name="bathrooms"
                   placeholder="2"
-                  className="px-3 py-2 mt-1 border border-borderColor2 hover:border-blue-800 rounded-md outline-none focus:ring focus:ring-blue-800  rounded-md outline-none"
+                  className="px-3 py-2 mt-1 border border-gray-500  hover:border-blue-800 rounded-md outline-none focus:ring focus:ring-blue-800  rounded-md outline-none"
                   value={listing.features.bathrooms}
                   onChange={handleFeaturesChange}
                 />
@@ -579,7 +580,7 @@ const AddListing = () => {
                   type="number"
                   name="rooms"
                   placeholder="5"
-                  className="px-3 py-2 mt-1 border border-borderColor2 hover:border-blue-800 rounded-md outline-none focus:ring focus:ring-blue-800  rounded-md outline-none"
+                  className="px-3 py-2 mt-1 border border-gray-500  hover:border-blue-800 rounded-md outline-none focus:ring focus:ring-blue-800  rounded-md outline-none"
                   value={listing.features.rooms}
                   onChange={handleFeaturesChange}
                 />
@@ -590,7 +591,7 @@ const AddListing = () => {
                   type="number"
                   name="size"
                   placeholder="e.g. 120 sft"
-                  className="px-3 py-2 mt-1 border border-borderColor2 hover:border-blue-800 rounded-md outline-none focus:ring focus:ring-blue-800  rounded-md outline-none"
+                  className="px-3 py-2 mt-1 border border-gray-500  hover:border-blue-800 rounded-md outline-none focus:ring focus:ring-blue-800  rounded-md outline-none"
                   value={listing.features.size}
                   onChange={handleFeaturesChange}
                 />
@@ -690,6 +691,7 @@ const AddListing = () => {
               </div>
             )}
           </form>
+        </div>
         </div>
   
     </DndProvider>
