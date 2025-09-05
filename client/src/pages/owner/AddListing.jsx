@@ -375,7 +375,7 @@ const AddListing = () => {
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div className="px-4 py-10 md:px-10 border border-blue-800  flex-1">
+      <div className="px-4 py-10 md:px-10 flex-1">
         <Title
           title="Add New Listing"
           subTitle="Fill in the details to create a new listing for sale or rent."
@@ -385,7 +385,7 @@ const AddListing = () => {
           className="flex flex-col gap-5 text-gray-800 text-sm mt-6 max-w-xl"
         >
           {/* Upload Section */}
-          <div className="flex flex-col gap-3 w-full">
+          <div className="flex flex-col border border-blue-600  gap-3 w-full">
             <label
               htmlFor="listing-images"
               className="flex items-center gap-2 border-2 border-blue-400 p-2 rounded-md cursor-pointer"
@@ -410,13 +410,13 @@ const AddListing = () => {
               {images.map((img, index) => {
                 if (img.uploading) {
                   return (
-                    <div key={img.id} className="relative w-full h-32 rounded-xl overflow-hidden shadow bg-gray-100 flex items-center justify-center">
+                    <div key={img.id} className="relative w-full h-32 border border-blue-600  rounded-xl overflow-hidden shadow bg-gray-100 flex items-center justify-center">
                       <img
                         src={img.url}
                         alt="preview"
                         className="w-full h-full object-cover rounded-xl shadow opacity-50"
                       />
-                      <div className="absolute inset-0 border border-blue-800 bg-black/20 flex flex-col items-center justify-center rounded-xl">
+                      <div className="absolute inset-0 border border-blue-600 bg-black/20 flex flex-col items-center justify-center rounded-xl">
                         <p className="text-white text-sm">Uploading...</p>
                           </div>
                     </div>
