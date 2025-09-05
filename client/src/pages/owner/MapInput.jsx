@@ -4,7 +4,7 @@ import 'leaflet/dist/leaflet.css';
 import { OpenStreetMapProvider } from 'leaflet-geosearch';
 import 'leaflet-geosearch/dist/geosearch.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMapMarkerAlt, faCrosshairs } from '@fortawesome/free-solid-svg-icons';
+import { faCrosshairs } from '@fortawesome/free-solid-svg-icons';
 import L from 'leaflet';
 import { toast } from 'react-hot-toast';
 
@@ -16,9 +16,10 @@ L.Icon.Default.mergeOptions({
   shadowUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png',
 });
 
-// A custom icon for the marker
-const markerIcon = new L.Icon({
-  iconUrl: `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" fill="%231a56db"><path d="M172.268 50.758C99.648-25.044-14.475 22.181-14.475 125.795c0 74.529 65.65 147.205 174.558 290.155 1.156 1.542 2.371 3.085 3.64 4.629C231.139 494.464 268.046 512 304 512c52.923 0 96-43.077 96-96 0-111.905-151.047-214.286-227.732-290.155z"/></svg>`,
+// Create a new custom icon that is a simple red dot or pin
+const redPinIcon = new L.Icon({
+  iconUrl: `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png`,
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
   iconSize: [25, 41],
   iconAnchor: [12, 41],
   popupAnchor: [1, -34],
@@ -27,11 +28,12 @@ const markerIcon = new L.Icon({
 
 // Component to handle map events and user interaction
 const MapEvents = ({ setPosition, setAddress }) => {
-  useMapEvents({
+  const map = useMapEvents({
     click: async (e) => {
       const { lat, lng } = e.latlng;
       setPosition([lat, lng]);
       await getAddressFromCoordinates([lat, lng], setAddress);
+      map.flyTo(e.latlng, map.getZoom()); // Optional: center map on click
     },
   });
   return null;
@@ -76,8 +78,8 @@ const MapInput = ({ initialAddress, onLocationChange }) => {
     setLoading(true);
     if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition(
-        async (position) => {
-          const { latitude, longitude } = position.coords;
+        async (pos) => {
+          const { latitude, longitude } = pos.coords;
           setPosition([latitude, longitude]);
           await getAddressFromCoordinates([latitude, longitude], setAddress);
           setLoading(false);
@@ -128,7 +130,7 @@ const MapInput = ({ initialAddress, onLocationChange }) => {
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-          {position && <Marker position={position} icon={markerIcon} />}
+          {position && <Marker position={position} icon={redPinIcon} />}
           <MapEvents setPosition={setPosition} setAddress={setAddress} />
         </MapContainer>
       </div>
