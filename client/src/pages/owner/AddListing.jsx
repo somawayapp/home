@@ -64,22 +64,18 @@ const DraggableImage = ({ id, url, index, moveImage, onDelete }) => {
       <img
         src={url}
         alt="preview"
-        className="w-full h-full object-cover transition-transform duration-200 group-hover:scale-105"
+        className="w-full h-full object-cover border border-blue-800 transition-transform duration-200 group-hover:scale-105"
       />
       {/* Delete button */}
       <button
         type="button"
         onClick={() => onDelete(id)}
-        className="absolute top-2 right-2 p-1 bg-red-600 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity z-10"
-        aria-label="Delete image"
+       className="absolute top-2 right-2 p-1 bg-black/20 text-red rounded-full opacity-0 group-hover:opacity-100 transition-opacity cursor-grab"        aria-label="Delete image"
       >
         <FaTimesCircle className="w-5 h-5" />
       </button>
 
-      {/* Drag handle */}
-      <div className="absolute top-2 left-2 p-1 bg-black/20 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity cursor-grab">
-        <RxDragHandleDots2 className="w-5 h-5" />
-      </div>
+  
     </div>
   );
 };
@@ -383,7 +379,7 @@ const AddListing = () => {
         />
         <form
           onSubmit={onSubmitHandler}
-          className="flex flex-col gap-5 text-gray-800 text-sm mt-6 max-w-xl"
+          className="flex flex-col gap-5  md:gap-9  text-gray-800 text-sm mt-6 max-w-xl"
         >
           {/* Upload Section */}
           <div className="flex flex-col gap-3 w-full">
@@ -420,6 +416,13 @@ const AddListing = () => {
                       <div className="absolute inset-0 border border-blue-800 bg-black/20 flex flex-col items-center justify-center rounded-xl">
                         <p className="text-white text-sm">Uploading...</p>
                           </div>
+         <button
+        type="button"
+        onClick={() => onDelete(id)}
+       className="absolute top-2 right-2 p-1 bg-black/20 text-red rounded-full opacity-0 group-hover:opacity-100 transition-opacity cursor-grab"        aria-label="Delete image"
+      >
+        <FaTimesCircle className="w-5 h-5" />
+      </button>
                     </div>
                   );
                 }
