@@ -6,7 +6,7 @@ import { assets } from '../../assets/assets';
 import { useAppContext } from '../../context/AppContext';
 import toast from 'react-hot-toast';
 import { IKCore } from 'imagekitio-react';
-import { FaTrash, FaTimesCircle } from 'react-icons/fa'; // Import an icon for deletion
+import { FaTrash, FaTimes } from 'react-icons/fa'; // Import an icon for deletion
 import { RxDragHandleDots2 } from 'react-icons/rx'; // Import a drag handle icon
 import MapInput from "./MapInput";
 
@@ -73,7 +73,7 @@ const DraggableImage = ({ id, url, index, uploading, moveImage, onDelete }) => {
         className="absolute top-2 right-2 p-1 bg-black/20 text-red rounded-full opacity-100 group-hover:opacity-100 transition-opacity"
         aria-label="Delete image"
       >
-        <FaTimesCircle className="w-5 h-5 text-red-500" />
+        <FaTimes className="w-5 h-5 text-red-500" />
       </button>
 
   
@@ -417,10 +417,10 @@ const AddListing = () => {
                <button
         type="button"
         onClick={() => onDelete(id)}
-        className="absolute top-2 right-2 p-1 bg-black/20 text-red rounded-full opacity-100 group-hover:opacity-100 transition-opacity"
+        className="absolute top-2 right-2 p-1 z-20 bg-black/20 text-red rounded-full opacity-100 group-hover:opacity-100 transition-opacity"
         aria-label="Delete image"
       >
-        <FaTimesCircle className="w-5 h-5 text-red-500" />
+        <FaTimes className="w-5 h-5 text-red-500" />
       </button>
                       <div className="absolute inset-0 border border-blue-800 bg-black/20 flex flex-col items-center justify-center rounded-xl">
                         <p className="text-white text-sm">Uploading...</p>
