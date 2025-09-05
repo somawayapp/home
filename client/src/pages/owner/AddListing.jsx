@@ -392,10 +392,7 @@ const AddListing = () => {
                       <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col items-center justify-center rounded-xl">
                         <p className="text-white text-sm">Uploading...</p>
                         <div className="w-2/3 h-1 bg-gray-300 rounded-full mt-2">
-                          <div
-                            className="h-full bg-blue-500 rounded-full transition-all duration-300"
-                            style={{ width: `${uploadProgress[img.id] || 0}%` }}
-                          />
+                        
                         </div>
                       </div>
                     </div>
@@ -528,29 +525,7 @@ const AddListing = () => {
                 />
               </div>
             </div>
-            <div className="flex flex-col w-full">
-              <label>Location</label>
-              <input
-                type="text"
-                name="location"
-                placeholder="e.g. New York, Houston..."
-                required
-                className="px-3 py-2 mt-1 border border-borderColor2 hover:border-blue200 rounded-md outline-none focus:ring focus:ring-blue-400  rounded-md outline-none"
-                value={listing.location}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div className="flex flex-col w-full">
-              <label>Scrapping URL (optional)</label>
-              <input
-                type="url"
-                name="scrappingurl"
-                placeholder="https://example-listing.com"
-                className="px-3 py-2 mt-1 border border-borderColor2 hover:border-blue200 rounded-md outline-none focus:ring focus:ring-blue-400  rounded-md outline-none"
-                value={listing.scrappingurl}
-                onChange={handleInputChange}
-              />
-            </div>
+     
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
               <div className="flex flex-col w-full">
                 <label>Bedrooms</label>

@@ -9,12 +9,20 @@ const listingSchema = new mongoose.Schema(
     agentwhatsapp: { type: String, required: true },
 
     scrappingurl: { type: String }, // Optional if scraped from external source
-    listingstatus: { type: Boolean, default: false },
+    listingstatus: { type: Boolean, default: true },
     visits: { type: Number, default: 0 },
     featured: { type: Boolean, default: false },
     featuredexpiry: { type: Date },
-    coordinates: { type: String, required: true },
+    location: { type: String, required: true },
 
+  coordinates: {
+    type: [Number], // An array of numbers: [longitude, latitude]
+    required: false, // Make it optional if you want
+    validate: {
+      validator: (v) => v === null || (Array.isArray(v) && v.length === 2),
+      message: 'Coordinates must be an array of two numbers or null.'
+    }
+  },
     
     title: { type: String, required: true },
     description: { type: String, required: true },
@@ -26,7 +34,6 @@ const listingSchema = new mongoose.Schema(
       nearby: [{ type: String }],
     },
 
-    location: { type: String, required: true },
 
     propertytype: { type: String, required: true }, // e.g., apartment, land, office
     features: {
