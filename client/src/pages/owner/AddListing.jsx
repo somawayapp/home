@@ -392,7 +392,7 @@ const AddListing = () => {
             >
               <img src={assets.upload_icon} alt="Upload" className="h-14 rounded-xl" />
               <p className="text-sm text-gray-800">
-                Upload one or more pictures of your listing (max 20, 10MB each)
+                Upload one or  pictures of your listing (max 20, 10MB each)
               </p>
               <input
                 id="listing-images"
