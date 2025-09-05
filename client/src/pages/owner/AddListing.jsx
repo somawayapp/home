@@ -70,7 +70,7 @@ const DraggableImage = ({ id, url, index, uploading, moveImage, onDelete }) => {
      <button
         type="button"
         onClick={() => onDelete(id)}
-        className="absolute top-2 right-2 p-1 bg-black/20 text-red rounded-full opacity-100 group-hover:opacity-100 transition-opacity"
+        className="absolute top-2 right-2 p-1 bg-black/20 text-red cursor-pointer rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
         aria-label="Delete image"
       >
         <FaTimes className="w-5 h-5 text-red-500" />
@@ -417,7 +417,7 @@ const AddListing = () => {
                <button
         type="button"
         onClick={() => onDelete(id)}
-        className="absolute top-2 right-2 p-1 z-20 bg-black/20 text-red rounded-full opacity-100 group-hover:opacity-100 transition-opacity"
+        className="absolute top-2 right-2 p-1 z-50 bg-black/20 text-red cursor-pointer rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
         aria-label="Delete image"
       >
         <FaTimes className="w-5 h-5 text-red-500" />
