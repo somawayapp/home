@@ -105,14 +105,14 @@ const MapInput = ({ initialAddress, onLocationChange }) => {
           type="text"
           name="location"
           placeholder="Enter address or click on the map"
-          className="px-3 py-2 mt-1 flex-1 border border-gray-300 hover:border-blue-400 rounded-md outline-none focus:ring focus:ring-blue-400"
+          className="px-3 py-2 mt-1 flex-1 border border-gray-300 hover:border-blue700 rounded-md outline-none focus:ring focus:ring-blue700"
           value={address}
           onChange={(e) => setAddress(e.target.value)}
         />
         <button
           type="button"
           onClick={handleGetCurrentLocation}
-          className="px-4 py-2 mt-1 text-sm bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors flex items-center gap-2 cursor-pointer"
+          className="px-4 py-2 mt-1 text-sm bg-blue-700 text-white rounded-md hover:bg-blue-800 transition-colors flex items-center gap-2 cursor-pointer"
           disabled={loading}
         >
           {loading ? 'Fetching...' : <><FontAwesomeIcon icon={faCrosshairs} /> Current Location</>}
