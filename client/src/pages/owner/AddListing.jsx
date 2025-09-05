@@ -8,6 +8,7 @@ import toast from 'react-hot-toast';
 import { IKCore } from 'imagekitio-react';
 import { FaTrash, FaTimesCircle } from 'react-icons/fa'; // Import an icon for deletion
 import { RxDragHandleDots2 } from 'react-icons/rx'; // Import a drag handle icon
+import MapInput from "./MapInput";
 
 const ItemTypes = {
   IMAGE: 'image',
@@ -107,6 +108,7 @@ const AddListing = () => {
     propertytype: '',
     offertype: '',
     location: '',
+    coordinates: null, // Add a new state for coordinates
     amenities: { internal: [], external: [], nearby: [] },
     features: { bathrooms: 0, bedrooms: 0, rooms: 0, size: '' },
     agentname: '',
@@ -116,6 +118,15 @@ const AddListing = () => {
     featured: false,
     featuredexpiry: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
   });
+
+    const handleLocationChange = useCallback((newLocation) => {
+    setListing(prev => ({
+      ...prev,
+      location: newLocation.location,
+      coordinates: newLocation.coordinates,
+    }));
+  }, []);
+
 
   const authenticator = async () => {
     try {
@@ -279,6 +290,11 @@ const AddListing = () => {
       return;
     }
 
+     if (!listing.location || !listing.coordinates) {
+      toast.error('Please select a location on the map or type in an address.');
+      return;
+    }
+
     setIsLoading(true);
     setListingProgress(0);
 
@@ -287,7 +303,7 @@ const AddListing = () => {
 
       const { data } = await axios.post(
         '/api/owner/add-listing',
-        { ...listing, images: imageUrls },
+        { ...listing, images: imageUrls, coordinates: listing.coordinates },
         {
           onUploadProgress: (progressEvent) => {
             const percent = Math.round((progressEvent.loaded / progressEvent.total) * 100);
@@ -400,6 +416,11 @@ const AddListing = () => {
           </div>
 
 
+  {/* Map Input Component */}
+          <MapInput
+            initialAddress={listing.location}
+            onLocationChange={handleLocationChange}
+          />
             {/* Other form fields ... */}
             {/* Agent info, title, description, features, amenities, etc. */}
 

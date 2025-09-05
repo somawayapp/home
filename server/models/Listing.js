@@ -13,7 +13,9 @@ const listingSchema = new mongoose.Schema(
     visits: { type: Number, default: 0 },
     featured: { type: Boolean, default: false },
     featuredexpiry: { type: Date },
+    coordinates: { type: String, required: true },
 
+    
     title: { type: String, required: true },
     description: { type: String, required: true },
     price: { type: Number, required: true },
