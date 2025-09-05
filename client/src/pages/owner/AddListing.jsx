@@ -321,10 +321,7 @@ const AddListing = () => {
       toast.error('Please offertype, for rent or sale.');
       return;
     }
-    if (!listing.images ) {
-      toast.error('Please upload atleast one images.');
-      return;
-    }
+ 
     setIsLoading(true);
     setListingProgress(0);
 
