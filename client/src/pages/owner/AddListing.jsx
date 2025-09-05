@@ -15,7 +15,7 @@ const ItemTypes = {
 };
 
 // Draggable and Deletable Image Component
-const DraggableImage = ({ id, url, index, moveImage, onDelete }) => {
+const DraggableImage = ({ id, url, index, uploading, moveImage, onDelete }) => {
   const ref = useRef(null);
 
   const [, drop] = useDrop({
@@ -67,12 +67,13 @@ const DraggableImage = ({ id, url, index, moveImage, onDelete }) => {
         className="w-full h-full object-cover border border-blue-800 transition-transform duration-200 group-hover:scale-105"
       />
       {/* Delete button */}
-      <button
+     <button
         type="button"
         onClick={() => onDelete(id)}
-       className="absolute top-2 right-2 p-1 bg-black/20 text-red rounded-full opacity-0 group-hover:opacity-100 transition-opacity cursor-grab"        aria-label="Delete image"
+        className="absolute top-2 right-2 p-1 bg-black/20 text-red rounded-full opacity-100 group-hover:opacity-100 transition-opacity"
+        aria-label="Delete image"
       >
-        <FaTimesCircle className="w-5 h-5 text-red " />
+        <FaTimesCircle className="w-5 h-5 text-red-500" />
       </button>
 
   
@@ -413,12 +414,13 @@ const AddListing = () => {
                         alt="preview"
                         className="w-full h-full object-cover rounded-xl border border-blue-800 shadow opacity-50"
                       />
-                        <button
+               <button
         type="button"
-        onClick={() => handleDeleteImage(id)}
-       className="absolute top-2 right-2 p-1 bg-black/20 text-red rounded-full opacity-0 group-hover:opacity-100 transition-opacity cursor-grab"        aria-label="Delete image"
+        onClick={() => onDelete(id)}
+        className="absolute top-2 right-2 p-1 bg-black/20 text-red rounded-full opacity-100 group-hover:opacity-100 transition-opacity"
+        aria-label="Delete image"
       >
-        <FaTimesCircle className="w-5 h-5 text-red " />
+        <FaTimesCircle className="w-5 h-5 text-red-500" />
       </button>
                       <div className="absolute inset-0 border border-blue-800 bg-black/20 flex flex-col items-center justify-center rounded-xl">
                         <p className="text-white text-sm">Uploading...</p>
