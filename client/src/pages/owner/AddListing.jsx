@@ -104,13 +104,13 @@ const AddListing = () => {
   const [listing, setListing] = useState({
     title: '',
     description: '',
-    price: 0,
+    price: '',
     propertytype: '',
     offertype: '',
     location: '',
     coordinates: null, // Add a new state for coordinates
     amenities: { internal: [], external: [], nearby: [] },
-    features: { bathrooms: 0, bedrooms: 0, rooms: 0, size: '' },
+    features: { bathrooms: '', bedrooms: '', rooms: '', size: '' },
     agentname: '',
     agentphone: '',
     agentwhatsapp: '',
@@ -390,7 +390,7 @@ const AddListing = () => {
               htmlFor="listing-images"
               className="flex items-center gap-2 border-2 border-blue-400 p-2 rounded-md cursor-pointer"
             >
-              <img src={assets.upload_icon} alt="Upload" className="h-14 rounded" />
+              <img src={assets.upload_icon} alt="Upload" className="h-14 rounded-xl" />
               <p className="text-sm text-gray-800">
                 Upload one or more pictures of your listing (max 20, 10MB each)
               </p>
