@@ -294,7 +294,37 @@ const AddListing = () => {
       toast.error('Please select a location on the map or type in an address.');
       return;
     }
+  if (!listing.agentname ) {
+      toast.error('Please enter an Agent name.');
+      return;
+    }
+  if (!listing.agentphone ) {
+      toast.error('Please enter an agent contact phone numbetr.');
+      return;
+    }
+       if (!listing.agentwhatsapp ) {
+      toast.error('Please enter an agent whatsapp numbetr.');
+      return;
+    }
 
+  if (!listing.title ) {
+      toast.error('Please eneter a title for your property.');
+      return;
+    }  if (!listing.description ) {
+      toast.error('Please enter property description.');
+      return;
+    }  if (!listing.propertytype ) {
+      toast.error('Please select property type.');
+      return;
+    }
+      if (!listing.offertype ) {
+      toast.error('Please offertype, for rent or sale.');
+      return;
+    }
+    if (!listing.images ) {
+      toast.error('Please upload atleast one images.');
+      return;
+    }
     setIsLoading(true);
     setListingProgress(0);
 
