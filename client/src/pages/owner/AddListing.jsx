@@ -77,7 +77,7 @@ const DraggableImage = ({ id, url, index, moveImage, onDelete }) => {
       </button>
 
       {/* Drag handle */}
-      <div className="absolute top-2 left-2 p-1 bg-black bg-opacity-50 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity cursor-grab">
+      <div className="absolute top-2 left-2 p-1 bg-black/20 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity cursor-grab">
         <RxDragHandleDots2 className="w-5 h-5" />
       </div>
     </div>
@@ -416,12 +416,9 @@ const AddListing = () => {
                         alt="preview"
                         className="w-full h-full object-cover rounded-xl shadow opacity-50"
                       />
-                      <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col items-center justify-center rounded-xl">
+                      <div className="absolute inset-0 border border-blue-800 bg-black/20 flex flex-col items-center justify-center rounded-xl">
                         <p className="text-white text-sm">Uploading...</p>
-                        <div className="w-2/3 h-1 bg-gray-300 rounded-full mt-2">
-                        
-                        </div>
-                      </div>
+                          </div>
                     </div>
                   );
                 }
