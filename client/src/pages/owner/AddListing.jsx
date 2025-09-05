@@ -72,7 +72,7 @@ const DraggableImage = ({ id, url, index, moveImage, onDelete }) => {
         onClick={() => onDelete(id)}
        className="absolute top-2 right-2 p-1 bg-black/20 text-red rounded-full opacity-0 group-hover:opacity-100 transition-opacity cursor-grab"        aria-label="Delete image"
       >
-        <FaTimesCircle className="w-5 h-5" />
+        <FaTimesCircle className="w-5 h-5 text-red " />
       </button>
 
   
@@ -413,16 +413,17 @@ const AddListing = () => {
                         alt="preview"
                         className="w-full h-full object-cover rounded-xl border border-blue-800 shadow opacity-50"
                       />
+                        <button
+        type="button"
+        onClick={() => handleDeleteImage(id)}
+       className="absolute top-2 right-2 p-1 bg-black/20 text-red rounded-full opacity-0 group-hover:opacity-100 transition-opacity cursor-grab"        aria-label="Delete image"
+      >
+        <FaTimesCircle className="w-5 h-5 text-red " />
+      </button>
                       <div className="absolute inset-0 border border-blue-800 bg-black/20 flex flex-col items-center justify-center rounded-xl">
                         <p className="text-white text-sm">Uploading...</p>
                           </div>
-         <button
-        type="button"
-        onClick={() => onDelete(id)}
-       className="absolute top-2 right-2 p-1 bg-black/20 text-red rounded-full opacity-0 group-hover:opacity-100 transition-opacity cursor-grab"        aria-label="Delete image"
-      >
-        <FaTimesCircle className="w-5 h-5" />
-      </button>
+       
                     </div>
                   );
                 }
