@@ -410,11 +410,11 @@ const AddListing = () => {
               {images.map((img, index) => {
                 if (img.uploading) {
                   return (
-                    <div key={img.id} className="relative w-full h-32 border border-blue-600  rounded-xl overflow-hidden shadow bg-gray-100 flex items-center justify-center">
+                    <div key={img.id} className="relative w-full h-32 rounded-xl overflow-hidden shadow bg-gray-100 flex items-center justify-center">
                       <img
                         src={img.url}
                         alt="preview"
-                        className="w-full h-full object-cover rounded-xl shadow opacity-50"
+                        className="w-full h-full object-cover rounded-xl border border-blue-600 shadow opacity-50"
                       />
                       <div className="absolute inset-0 border border-blue-600 bg-black/20 flex flex-col items-center justify-center rounded-xl">
                         <p className="text-white text-sm">Uploading...</p>
