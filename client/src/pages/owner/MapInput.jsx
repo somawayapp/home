@@ -99,7 +99,7 @@ const MapInput = ({ initialAddress, onLocationChange }) => {
 
   return (
     <div className="flex flex-col gap-2 w-full">
-      <label>Location</label>
+     <label className="font-semibold md:text-lg" >Location</label>
       <div className="flex items-center gap-2 mb-2">
         <input
           type="text"

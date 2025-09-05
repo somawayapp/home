@@ -454,7 +454,7 @@ const AddListing = () => {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
               <div className="flex flex-col w-full">
-                <label>Agent Name</label>
+                <label className="font-semibold md:text-lg" > Agent Name</label>
                 <input
                   type="text"
                   name="agentname"
@@ -466,7 +466,7 @@ const AddListing = () => {
                 />
               </div>
               <div className="flex flex-col w-full">
-                <label>Agent Phone</label>
+               <label className="font-semibold md:text-lg" >Agent Phone</label>
                 <input
                   type="number"
                   name="agentphone"
@@ -478,7 +478,7 @@ const AddListing = () => {
                 />
               </div>
               <div className="flex flex-col w-full">
-                <label>Agent WhatsApp</label>
+               <label className="font-semibold md:text-lg" >Agent WhatsApp</label>
                 <input
                   type="number"
                   name="agentwhatsapp"
@@ -491,7 +491,7 @@ const AddListing = () => {
               </div>
             </div>
             <div className="flex flex-col w-full">
-              <label>Title</label>
+             <label className="font-semibold md:text-lg" >Title</label>
               <input
                 type="text"
                 name="title"
@@ -503,7 +503,7 @@ const AddListing = () => {
               />
             </div>
             <div className="flex flex-col w-full">
-              <label>Description</label>
+             <label className="font-semibold md:text-lg" >Description</label>
               <textarea
                 rows={5}
                 name="description"
@@ -516,7 +516,7 @@ const AddListing = () => {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
               <div className="flex flex-col w-full">
-                <label>Property Type</label>
+               <label className="font-semibold md:text-lg" >Property Type</label>
                 <select
                   name="propertytype"
                   value={listing.propertytype}
@@ -531,7 +531,7 @@ const AddListing = () => {
                 </select>
               </div>
               <div className="flex flex-col w-full">
-                <label>Offer Type</label>
+               <label className="font-semibold md:text-lg" >Offer Type</label>
                 <select
                   name="offertype"
                   value={listing.offertype}
@@ -544,7 +544,7 @@ const AddListing = () => {
                 </select>
               </div>
               <div className="flex flex-col w-full">
-                <label>Price ({currency})</label>
+               <label className="font-semibold md:text-lg" >Price ({currency})</label>
                 <input
                   type="number"
                   name="price"
@@ -559,7 +559,7 @@ const AddListing = () => {
      
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
               <div className="flex flex-col w-full">
-                <label>Bedrooms</label>
+               <label className="font-semibold md:text-lg" >Bedrooms</label>
                 <input
                   type="number"
                   name="bedrooms"
@@ -570,7 +570,7 @@ const AddListing = () => {
                 />
               </div>
               <div className="flex flex-col w-full">
-                <label>Bathrooms</label>
+               <label className="font-semibold md:text-lg" >Bathrooms</label>
                 <input
                   type="number"
                   name="bathrooms"
@@ -581,7 +581,7 @@ const AddListing = () => {
                 />
               </div>
               <div className="flex flex-col w-full">
-                <label>Rooms</label>
+               <label className="font-semibold md:text-lg" >Rooms</label>
                 <input
                   type="number"
                   name="rooms"
@@ -592,7 +592,7 @@ const AddListing = () => {
                 />
               </div>
               <div className="flex flex-col w-full">
-                <label>Size</label>
+               <label className="font-semibold md:text-lg" >Size</label>
                 <input
                   type="number"
                   name="size"
