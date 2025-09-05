@@ -375,7 +375,7 @@ const AddListing = () => {
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div className="px-4 py-10 md:px-10 flex-1">
+      <div className="px-4 py-10 md:px-10 border border-blue-800  flex-1">
         <Title
           title="Add New Listing"
           subTitle="Fill in the details to create a new listing for sale or rent."
