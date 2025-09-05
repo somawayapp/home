@@ -454,7 +454,7 @@ const AddListing = () => {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
               <div className="flex flex-col w-full">
-                <label className="font-semibold md:text-md" > Agent Name</label>
+                <label className="font-semibold md:text-lg " > Agent Name</label>
                 <input
                   type="text"
                   name="agentname"
@@ -466,7 +466,7 @@ const AddListing = () => {
                 />
               </div>
               <div className="flex flex-col w-full">
-               <label className="font-semibold md:text-md" >Agent Phone</label>
+               <label className="font-semibold md:text-lg " >Agent Phone</label>
                 <input
                   type="number"
                   name="agentphone"
@@ -478,7 +478,7 @@ const AddListing = () => {
                 />
               </div>
               <div className="flex flex-col w-full">
-               <label className="font-semibold md:text-md" >Agent WhatsApp</label>
+               <label className="font-semibold md:text-lg " >Agent WhatsApp</label>
                 <input
                   type="number"
                   name="agentwhatsapp"
@@ -491,7 +491,7 @@ const AddListing = () => {
               </div>
             </div>
             <div className="flex flex-col w-full">
-             <label className="font-semibold md:text-md" >Title</label>
+             <label className="font-semibold md:text-lg " >Title</label>
               <input
                 type="text"
                 name="title"
@@ -503,7 +503,7 @@ const AddListing = () => {
               />
             </div>
             <div className="flex flex-col w-full">
-             <label className="font-semibold md:text-md" >Description</label>
+             <label className="font-semibold md:text-lg " >Description</label>
               <textarea
                 rows={5}
                 name="description"
@@ -516,7 +516,7 @@ const AddListing = () => {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
               <div className="flex flex-col w-full">
-               <label className="font-semibold md:text-md" >Property Type</label>
+               <label className="font-semibold md:text-lg " >Property Type</label>
                 <select
                   name="propertytype"
                   value={listing.propertytype}
@@ -531,7 +531,7 @@ const AddListing = () => {
                 </select>
               </div>
               <div className="flex flex-col w-full">
-               <label className="font-semibold md:text-md" >Offer Type</label>
+               <label className="font-semibold md:text-lg " >Offer Type</label>
                 <select
                   name="offertype"
                   value={listing.offertype}
@@ -544,7 +544,7 @@ const AddListing = () => {
                 </select>
               </div>
               <div className="flex flex-col w-full">
-               <label className="font-semibold md:text-md" >Price ({currency})</label>
+               <label className="font-semibold md:text-lg " >Price ({currency})</label>
                 <input
                   type="number"
                   name="price"
@@ -559,7 +559,7 @@ const AddListing = () => {
      
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
               <div className="flex flex-col w-full">
-               <label className="font-semibold md:text-md" >Bedrooms</label>
+               <label className="font-semibold md:text-lg " >Bedrooms</label>
                 <input
                   type="number"
                   name="bedrooms"
@@ -570,7 +570,7 @@ const AddListing = () => {
                 />
               </div>
               <div className="flex flex-col w-full">
-               <label className="font-semibold md:text-md" >Bathrooms</label>
+               <label className="font-semibold md:text-lg " >Bathrooms</label>
                 <input
                   type="number"
                   name="bathrooms"
@@ -581,7 +581,7 @@ const AddListing = () => {
                 />
               </div>
               <div className="flex flex-col w-full">
-               <label className="font-semibold md:text-md" >Rooms</label>
+               <label className="font-semibold md:text-lg " >Rooms</label>
                 <input
                   type="number"
                   name="rooms"
@@ -592,7 +592,7 @@ const AddListing = () => {
                 />
               </div>
               <div className="flex flex-col w-full">
-               <label className="font-semibold md:text-md" >Size</label>
+               <label className="font-semibold md:text-lg " >Size</label>
                 <input
                   type="number"
                   name="size"
@@ -604,10 +604,10 @@ const AddListing = () => {
               </div>
             </div>
             <div className="flex flex-col w-full gap-3">
-              <label className="text-sm font-md  text-gray-700">Amenities</label>
+              <label className="font-semibold md:text-lg  ">Amenities</label>
               <div className="flex flex-col gap-4 md:gap-8 ">
                 <div>
-                  <h4 className="text-md font-semibold text-gray-800">Internal Amenities</h4>
+                  <h4 className="md:text-lg  font-semibold">Internal Amenities</h4>
                   <div className="flex flex-wrap gap-4 mt-2">
                     {internalAmenities.map((amenity) => (
                       <label key={amenity} className="flex items-center">
@@ -625,7 +625,7 @@ const AddListing = () => {
                   </div>
                 </div>
                 <div>
-                  <h4 className="text-md font-semibold text-gray-800">External Amenities</h4>
+                  <h4 className="md:text-lg  font-semibold ">External Amenities</h4>
                   <div className="flex flex-wrap gap-4 mt-2">
                     {externalAmenities.map((amenity) => (
                       <label key={amenity} className="flex items-center">
@@ -643,7 +643,7 @@ const AddListing = () => {
                   </div>
                 </div>
                 <div>
-                  <h4 className="text-md font-semibold text-gray-800">Nearby Amenities</h4>
+                  <h4 className="md:text-lg  font-semibold ">Nearby Amenities</h4>
                   <div className="flex flex-wrap gap-4 mt-2">
                     {nearbyAmenities.map((amenity) => (
                       <label key={amenity} className="flex items-center">
@@ -671,7 +671,7 @@ const AddListing = () => {
                 onChange={handleInputChange}
                 className="w-4 h-4 text-primary"
               />
-              <label htmlFor="featured" className="text-sm text-gray-700">
+              <label htmlFor="featured" className="md:text-lg  font-semibold ">
                 Mark as Featured
               </label>
             </div>
