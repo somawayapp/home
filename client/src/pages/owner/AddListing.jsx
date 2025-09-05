@@ -385,10 +385,10 @@ const AddListing = () => {
           className="flex flex-col gap-5 text-gray-800 text-sm mt-6 max-w-xl"
         >
           {/* Upload Section */}
-          <div className="flex flex-col border border-blue-600  gap-3 w-full">
+          <div className="flex flex-col gap-3 w-full">
             <label
               htmlFor="listing-images"
-              className="flex items-center gap-2 border-2 border-blue-400 p-2 rounded-md cursor-pointer"
+              className="flex items-center gap-2 border-2 border-blue-600 p-2 rounded-md cursor-pointer"
             >
               <img src={assets.upload_icon} alt="Upload" className="h-14 rounded-xl" />
               <p className="text-sm text-gray-800">
