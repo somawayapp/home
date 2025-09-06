@@ -373,7 +373,7 @@ const AddListing = () => {
   return (
     <DndProvider backend={HTML5Backend}>
       <div className="flex justify-center items-center "> 
-      <div className="px-4 py-10 md:px-10 flex-1">
+      <div className="px-4 py-10 md:px-10 ">
         <Title
           title="Add New Listing"
           subTitle="Fill in the details to create a new listing for sale or rent."
