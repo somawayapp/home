@@ -11,7 +11,10 @@ import { RxDragHandleDots2 } from 'react-icons/rx'; // Import a drag handle icon
 import MapInput from "./MapInput";
 import axios from 'axios'; // Make sure you import axios here
 
-
+// Add this line at the top of your file, right after your imports
+const ItemTypes = {
+  IMAGE: 'image',
+};
 // Draggable and Deletable Image Component
 const DraggableImage = ({ id, url, index, uploading, moveImage, onDelete }) => {
   const ref = useRef(null);
