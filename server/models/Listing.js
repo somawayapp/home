@@ -4,9 +4,9 @@ const { ObjectId } = mongoose.Schema.Types;
 const listingSchema = new mongoose.Schema(
   {
     agency: { type: ObjectId, ref: "User", required: true }, // Owner or uploader
-    agentname: { type: String, required: true },
-    agentphone: { type: String, required: true },
-    agentwhatsapp: { type: String, required: true },
+    agentname: { type: String },
+    agentphone: { type: String},
+    agentwhatsapp: { type: String},
 
     scrappingurl: { type: String }, // Optional if scraped from external source
     listingstatus: { type: Boolean, default: true },
@@ -14,20 +14,19 @@ const listingSchema = new mongoose.Schema(
     featured: { type: Boolean, default: false },
      draft: { type: Boolean, default: true },
     featuredexpiry: { type: Date },
-    location: { type: String, required: true },
+    location: { type: String },
 
   coordinates: {
     type: [Number], // An array of numbers: [longitude, latitude]
-    required: false, // Make it optional if you want
     validate: {
       validator: (v) => v === null || (Array.isArray(v) && v.length === 2),
       message: 'Coordinates must be an array of two numbers or null.'
     }
   },
     
-    title: { type: String, required: true },
-    description: { type: String, required: true },
-    price: { type: Number, required: true },
+    title: { type: String },
+    description: { type: String },
+    price: { type: Number},
 
     amenities: {
       internal: [{ type: String }],
@@ -36,7 +35,7 @@ const listingSchema = new mongoose.Schema(
     },
 
 
-    propertytype: { type: String, required: true }, // e.g., apartment, land, office
+    propertytype: { type: String }, // e.g., apartment, land, office
     features: {
       bathrooms: { type: Number },
       bedrooms: { type: Number },
@@ -44,9 +43,9 @@ const listingSchema = new mongoose.Schema(
       size: { type: String }, // Could be "120 sqm" or "0.5 acres"
     },
 
-    offertype: { type: String, enum: ["sale", "rent"], required: true },
+    offertype: { type: String, enum: ["sale", "rent"] },
 
-    images: [{ type: String, required: true }],
+    images: [{ type: String }],
   },
   { timestamps: true }
 );
