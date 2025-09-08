@@ -107,7 +107,7 @@ const AddListing = () => {
     description: '',
     price: '',
     propertytype: '',
-    offertype: '',
+    offertype: 'rent',
     location: '',
     coordinates: null, // Add a new state for coordinates
     amenities: { internal: [], external: [], nearby: [] },
