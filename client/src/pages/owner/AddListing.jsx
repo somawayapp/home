@@ -502,7 +502,7 @@ useEffect(() => {
   {/* Upload Label */}
   <label
     htmlFor="listing-images"
-    className="flex items-center gap-2 border-4 border-[#] hover:border-[#ff1971ff] p-2 bg-bgColor rounded-xl cursor-pointer hover:bg-bgColorhover transition"
+    className="flex items-center gap-2 border-4 border-[#FD297B] hover:border-[#ff1971ff] p-2 bg-bgColor rounded-xl cursor-pointer hover:bg-bgColorhover transition"
   >
     <img src={assets.upload_icon} alt="Upload" className="h-14 rounded-xl" />
     <p className="text-sm text-gray-800">
