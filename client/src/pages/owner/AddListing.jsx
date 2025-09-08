@@ -9,6 +9,7 @@ import { IKCore } from 'imagekitio-react';
 import { FaTrash, FaTimes } from 'react-icons/fa'; // Import an icon for deletion
 import { RxDragHandleDots2 } from 'react-icons/rx'; // Import a drag handle icon
 import MapInput from "./MapInput";
+import { Axios } from "axios";
 // ... other imports
 
 const autosaveDraft = useCallback(async () => {
