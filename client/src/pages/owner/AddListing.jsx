@@ -9,7 +9,6 @@ import { IKCore } from 'imagekitio-react';
 import { FaTrash, FaTimes } from 'react-icons/fa'; // Import an icon for deletion
 import { RxDragHandleDots2 } from 'react-icons/rx'; // Import a drag handle icon
 import MapInput from "./MapInput";
-import { useEffect } from "react";
 import { Dialog } from "@headlessui/react"; // You can also use your own modal component
 
 
@@ -83,30 +82,8 @@ const DraggableImage = ({ id, url, index, uploading, moveImage, onDelete }) => {
 
 const AddListing = () => {
   const { axios, currency } = useAppContext();
-  const [showDraftModal, setShowDraftModal] = useState(false);
-  const [draftData, setDraftData] = useState(null);
 
-  useEffect(() => {
-    const savedDraft = localStorage.getItem("draftListing");
-    if (savedDraft) {
-      setDraftData(JSON.parse(savedDraft));
-      setShowDraftModal(true);
-    }
-  }, []);
 
-  const handleRestoreDraft = () => {
-    if (draftData) {
-      setListing(draftData.listing);
-      setImages(draftData.images);
-    }
-    setShowDraftModal(false);
-  };
-
-  const handleDiscardDraft = () => {
-    localStorage.removeItem("draftListing");
-    setDraftData(null);
-    setShowDraftModal(false);
-  };
 
 
   // Create an instance of IKCore for manual uploads
@@ -426,49 +403,6 @@ const AddListing = () => {
   }
 };
 
-
-// --- Auto Save to Local Storage ---
-React.useEffect(() => {
-  localStorage.setItem("draftListing", JSON.stringify({ listing, images }));
-}, [listing, images]);
-
-React.useEffect(() => {
-  const handleBeforeUnload = (e) => {
-    // Only show prompt if there are unsaved changes
-    if (images.length > 0 || listing.title || listing.description) {
-      e.preventDefault();
-      e.returnValue = ""; // Required for Chrome
-      const shouldSave = window.confirm(
-        "Do you want to save your current progress before leaving?"
-      );
-      if (shouldSave) {
-        localStorage.setItem("draftListing", JSON.stringify({ 
-          listing: { ...listing, status: false }, // 👈 mark as status: false
-          images 
-        }));
-      } else {
-        localStorage.removeItem("draftListing");
-      }
-    }
-  };
-
-  window.addEventListener("beforeunload", handleBeforeUnload);
-  return () => {
-    window.removeEventListener("beforeunload", handleBeforeUnload);
-  };
-}, [listing, images]);
-
-
-React.useEffect(() => {
-  const savedDraft = localStorage.getItem("draftListing");
-  if (savedDraft) {
-    const { listing: savedListing, images: savedImages } = JSON.parse(savedDraft);
-    setListing(savedListing);
-    setImages(savedImages);
-  }
-}, []);
-
-
   // --- AMENITIES OPTIONS (unchanged) ---
   const internalAmenities = [
     'AC', 'Heating', 'Wi-Fi', 'Bathtub', 'Dishwasher', 'Built-in washer', 'Built-in dryer',
@@ -491,7 +425,6 @@ React.useEffect(() => {
 
   return (
 
-    <>
     <DndProvider backend={HTML5Backend}>
       <div className="flex justify-center items-center "> 
       <div className="px-4 py-10 md:px-10 flex-1">
@@ -844,33 +777,7 @@ React.useEffect(() => {
 
 
 
- <Dialog open={showDraftModal} onClose={handleDiscardDraft} className="fixed inset-0 z-50 flex items-center justify-center">
-        <Dialog.Overlay className="fixed inset-0 bg-black/30" />
-        <div className="bg-white rounded-2xl shadow-lg p-6 max-w-md mx-auto">
-          <Dialog.Title className="text-xl font-semibold text-gray-900">
-            Continue where you left off?
-          </Dialog.Title>
-          <Dialog.Description className="text-gray-600 mt-2">
-            We found a saved draft of your listing. Would you like to continue editing it or start fresh?
-          </Dialog.Description>
 
-          <div className="flex justify-end gap-3 mt-6">
-            <button
-              onClick={handleDiscardDraft}
-              className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-xl transition"
-            >
-              Discard
-            </button>
-            <button
-              onClick={handleRestoreDraft}
-              className="px-4 py-2 bg-gradient-to-tr from-[#FD297B] via-[#FF5864] to-[#FF655b] text-white rounded-xl shadow-md hover:opacity-90 transition"
-            >
-              Restore
-            </button>
-          </div>
-        </div>
-      </Dialog>
-      </>
   );
 };
 

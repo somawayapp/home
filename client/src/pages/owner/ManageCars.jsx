@@ -8,13 +8,13 @@ const ManageCars = () => {
 
   const {isOwner, axios, currency} = useAppContext()
 
-  const [cars, setCars] = useState([])
+  const [listings, setListings] = useState([])
 
-  const fetchOwnerCars = async ()=>{
+  const fetchOwnerListings = async ()=>{
     try {
-      const {data} = await axios.get('/api/owner/cars')
+      const {data} = await axios.get('/api/owner/listings')
       if(data.success){
-        setCars(data.cars)
+        setListings(data.listings)
       }else{
         toast.error(data.message)
       }
@@ -23,12 +23,12 @@ const ManageCars = () => {
     }
   }
 
-  const toggleAvailability = async (carId)=>{
+  const toggleAvailability = async (listingId)=>{
     try {
-      const {data} = await axios.post('/api/owner/toggle-car', {carId})
+      const {data} = await axios.post('/api/owner/toggle-listing', {listingId})
       if(data.success){
         toast.success(data.message)
-        fetchOwnerCars()
+        fetchOwnerListings()
       }else{
         toast.error(data.message)
       }
@@ -37,17 +37,17 @@ const ManageCars = () => {
     }
   }
 
-  const deleteCar = async (carId)=>{
+  const deleteCar = async (listingId)=>{
     try {
 
-      const confirm = window.confirm('Are you sure you want to delete this car?')
+      const confirm = window.confirm('Are you sure you want to delete this listings?')
 
       if(!confirm) return null
 
-      const {data} = await axios.post('/api/owner/delete-car', {carId})
+      const {data} = await axios.post('/api/owner/delete-listings', {carId})
       if(data.success){
         toast.success(data.message)
-        fetchOwnerCars()
+        fetchOwnerListings()
       }else{
         toast.error(data.message)
       }
@@ -57,13 +57,13 @@ const ManageCars = () => {
   }
 
   useEffect(()=>{
-    isOwner && fetchOwnerCars()
+    isOwner && fetchOwnerListings()
   },[isOwner])
 
   return (
     <div className='px-4 pt-10 md:px-10 w-full'>
       
-      <Title title="Manage Cars" subTitle="View all listed cars, update their details, or remove them from the booking platform."/>
+      <Title title="Manage Listings" subTitle="View all listings, update their details, or remove them from the booking platform."/>
 
       <div className='max-w-3xl w-full rounded-md overflow-hidden border border-borderColor mt-6'>
 
@@ -78,31 +78,31 @@ const ManageCars = () => {
             </tr>
           </thead>
           <tbody>
-            {cars.map((car, index)=>(
+            {listings.map((listing, index)=>(
               <tr key={index} className='border-t border-borderColor'>
 
                 <td className='p-3 flex items-center gap-3'>
-                  <img src={car.image} alt="" className="h-12 w-12 aspect-square rounded-md object-cover"/>
+                  <img src={listing.image} alt="" className="h-12 w-12 aspect-square rounded-md object-cover"/>
                   <div className='max-md:hidden'>
-                    <p className='font-medium'>{car.brand} {car.model}</p>
-                    <p className='text-xs text-gray-500'>{car.seating_capacity} • {car.transmission}</p>
+                    <p className='font-medium'>{listing.brand} {listing.model}</p>
+                    <p className='text-xs text-gray-500'>{listing.seating_capacity} • {listing.transmission}</p>
                   </div>
                 </td>
 
-                <td className='p-3 max-md:hidden'>{car.category}</td>
-                <td className='p-3'>{currency}{car.pricePerDay}/day</td>
+                <td className='p-3 max-md:hidden'>{listing.category}</td>
+                <td className='p-3'>{currency}{listing.pricePerDay}/day</td>
 
                 <td className='p-3 max-md:hidden'>
-                  <span className={`px-3 py-1 rounded-full text-xs ${car.isAvaliable ? 'bg-green-100 text-green-500' : 'bg-red-100 text-red-500'}`}>
-                    {car.isAvaliable ? "Available" : "Unavailable" }
+                  <span className={`px-3 py-1 rounded-full text-xs ${listing.isAvaliable ? 'bg-green-100 text-green-500' : 'bg-red-100 text-red-500'}`}>
+                    {listing.isAvaliable ? "Available" : "Unavailable" }
                   </span>
                 </td>
 
                 <td className='flex items-center p-3'>
 
-                  <img onClick={()=> toggleAvailability(car._id)} src={car.isAvaliable ? assets.eye_close_icon : assets.eye_icon} alt="" className='cursor-pointer'/>
+                  <img onClick={()=> toggleAvailability(listing._id)} src={listing.isAvaliable ? assets.eye_close_icon : assets.eye_icon} alt="" className='cursor-pointer'/>
 
-                  <img onClick={()=> deleteCar(car._id)} src={assets.delete_icon} alt="" className='cursor-pointer'/>
+                  <img onClick={()=> deleteCar(listing._id)} src={assets.delete_icon} alt="" className='cursor-pointer'/>
                 </td>
 
               </tr>
