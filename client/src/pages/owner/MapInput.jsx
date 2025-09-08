@@ -105,7 +105,7 @@ const MapInput = ({ initialAddress, onLocationChange }) => {
           type="text"
           name="location"
           placeholder="Enter address or click on the map"
-          className="px-3 py-2 mt-1 flex-1 border-3 border-gray-500 hover:border-[#FF5864] rounded-md outline-none focus:ring focus:ring-[#FF655b]"
+          className="px-3 py-2 mt-1 flex-1 border-3 border-gray-400 hover:border-[#FF5864] rounded-md outline-none focus:ring focus:ring-[#FF655b]"
           value={address}
           onChange={(e) => setAddress(e.target.value)}
         />
