@@ -8,8 +8,10 @@ const NavbarOwner = () => {
 
   return (
     <div className="flex sticky top-0 flex-col z-50 bg-white">
-      {/* Moving Instagram Gradient Bar */}
-    
+      {/* Moving Tinder Gradient Bar */}
+      <div className="relative w-full h-[6px] overflow-hidden">
+        <div className="absolute inset-0 animate-gradient-move bg-[linear-gradient(90deg,#ff6b6b,#ff3cac,#784ba0,#ff6b6b)] bg-[length:200%_100%]"></div>
+      </div>
 
       {/* Navbar Content */}
       <div className="flex items-center justify-between px-6 md:px-10 py-4 text-gray-500 border-b border-borderColor relative transition-all">
@@ -17,11 +19,6 @@ const NavbarOwner = () => {
           <img src={assets.logo} alt="" className="h-7"/>
         </Link>
         <p>Welcome, {user?.name || "Owner"}</p>
-      </div>
-
-
-        <div className="relative w-full h-[65px] overflow-hidden">
-        <div className="absolute inset-0 animate-gradient-move bg-[linear-gradient(90deg,#d62976,#962fbf,#4f5bd5,#d62976)] bg-[length:200%_100%]"></div>
       </div>
     </div>
   );
