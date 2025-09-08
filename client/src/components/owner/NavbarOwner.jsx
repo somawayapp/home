@@ -21,7 +21,8 @@ const NavbarOwner = () => {
 
 
        <div className="relative w-full h-[45px] overflow-hidden">
-        <div className="absolute inset-0 animate-gradient-move bg-[linear-gradient(90deg,#FD297B,#ff1971ff,#ff2176ff)] bg-[length:200%_100%]"></div>
+        <div className="absolute inset-0 animate-gradient-move bg-[linear-gradient(90deg,#E61E4D,#E31C5F,#D70466,#E31C5F)]
+           bg-[length:200%_100%]"></div>
       </div>
     </div>
   );
