@@ -455,66 +455,84 @@ React.useEffect(() => {
           className="flex flex-col gap-5  md:gap-9  text-gray-800 text-sm mt-6 max-w-xl"
         >
           {/* Upload Section */}
-          <div className="flex flex-col gap-3 w-full">
-            <label
-              htmlFor="listing-images"
-              className="flex items-center gap-2 border-4 border-[#FF5864] p-2 bg-bgColor rounded-xl cursor-pointer"
-            >
-              <img src={assets.upload_icon} alt="Upload" className="h-14 rounded-xl" />
-              <p className="text-sm text-gray-800">
-                Upload one or more pictures of your listing (max 20, 10MB each)
-              </p>
-              <input
-                id="listing-images"
-                ref={fileInputRef}
-                type="file"
-                multiple
-                accept="image/jpeg,image/png,image/webp"
-                className="hidden"
-                onChange={handleFileInputChange}
-              />
-            </label>
+         {/* 📤 Upload Section */}
+<div className="flex flex-col gap-3 w-full">
+  {/* Upload Label */}
+  <label
+    htmlFor="listing-images"
+    className="flex items-center gap-2 border-4 border-[#FF5864] p-2 bg-bgColor rounded-xl cursor-pointer hover:bg-[#ff58641a] transition"
+  >
+    <img src={assets.upload_icon} alt="Upload" className="h-14 rounded-xl" />
+    <p className="text-sm text-gray-800">
+      Upload one or more pictures of your listing (max 20, 10MB each)
+    </p>
+    <input
+      id="listing-images"
+      ref={fileInputRef}
+      type="file"
+      multiple
+      accept="image/jpeg,image/png,image/webp"
+      className="hidden"
+      onChange={handleFileInputChange}
+    />
+  </label>
 
-            {/* ✅ Preview & Drag-and-drop area */}
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mt-4">
-              {images.map((img, index) => {
-                if (img.uploading) {
-                  return (
-                    <div key={img.id} className="relative w-full h-32 rounded-xl overflow-hidden shadow bg-gray-100 flex items-center justify-center">
-                      <img
-                        src={img.url}
-                        alt="preview"
-                        className="w-full h-full object-cover rounded-xl border border-[#FF5864] shadow opacity-50"
-                      />
-                       <button
-  type="button"
-  onClick={() => handleDeleteImage(img.id)} // ✅ Call the actual delete handler
-  className="absolute top-2 right-2 p-2 z-50 bg-black/40 cursor-pointer rounded-full opacity-100"
-  aria-label="Delete image"
->
-  <FaTimes className="w-5 h-5 text-red-500" />
-</button>
+  {/* 🖼️ Preview & Drag-and-drop Area */}
+  <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mt-4">
+    {images.map((img, index) => (
+      <div key={img.id} className="relative w-full h-32 rounded-xl overflow-hidden shadow bg-gray-100">
+        {/* 📷 Image Preview */}
+        <img
+          src={img.url}
+          alt={img.status === "failed" ? "failed" : "preview"}
+          className={`w-full h-full object-cover rounded-xl border ${img.status === "failed" ? "opacity-50" : ""}`}
+        />
 
-                      <div className="absolute inset-0  bg-black/20 flex flex-col items-center justify-center rounded-xl">
-                        <p className="text-white text-sm">Uploading...</p>
-                          </div>
-       
-                    </div>
-                  );
-                }
-                return (
-                  <DraggableImage
-                    key={img.id}
-                    id={img.id}
-                    url={img.url}
-                    index={index}
-                    moveImage={moveImage}
-                    onDelete={handleDeleteImage}
-                  />
-                );
-              })}
-            </div>
+        {/* ❌ Delete Button (Always Visible) */}
+        <button
+          type="button"
+          onClick={() => handleDeleteImage(img.id)}
+          className="absolute top-2 right-2 p-2 z-50 bg-black/40 cursor-pointer rounded-full hover:bg-black/60 transition"
+          aria-label="Delete image"
+        >
+          <FaTimes className="w-5 h-5 text-red-500" />
+        </button>
+
+        {/* 🔄 Overlay for Uploading */}
+        {img.uploading && (
+          <div className="absolute inset-0 bg-black/20 flex flex-col items-center justify-center rounded-xl">
+            <p className="text-white text-sm animate-pulse">Uploading...</p>
           </div>
+        )}
+
+        {/* ⚠️ Overlay for Failed Upload */}
+        {img.status === "failed" && (
+          <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center rounded-xl">
+            <p className="text-white text-sm">Upload failed</p>
+            <button
+              onClick={() => retryUpload(img)}
+              className="px-3 py-1 mt-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition"
+            >
+              Retry
+            </button>
+          </div>
+        )}
+
+        {/* ✅ If successfully uploaded, make it draggable */}
+        {!img.uploading && img.status !== "failed" && (
+          <DraggableImage
+            id={img.id}
+            url={img.url}
+            index={index}
+            moveImage={moveImage}
+            onDelete={handleDeleteImage}
+          />
+        )}
+      </div>
+    ))}
+  </div>
+</div>
+
 
 
   {/* Map Input Component */}
