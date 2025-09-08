@@ -9,7 +9,7 @@ const ownerRouter = express.Router();
 ownerRouter.get('/imagekit-auth', getAuthenticationParameters);
 ownerRouter.post("/change-role", protect, changeRoleToOwner)
 ownerRouter.post('/add-listing', protect, addListing);
-router.post("/autosave-listing", protect, autosaveListingDraft);
+ownerRouter.post("/autosave-listing", protect, autosaveListingDraft);
 ownerRouter.get("/listings", protect, getOwnerListings)
 ownerRouter.post("/toggle-car", protect, toggleCarAvailability)
 ownerRouter.post("/delete-car", protect, deleteCar)
