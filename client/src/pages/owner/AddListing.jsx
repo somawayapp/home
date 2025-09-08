@@ -9,7 +9,7 @@ import { IKCore } from 'imagekitio-react';
 import { FaTrash, FaTimes } from 'react-icons/fa'; // Import an icon for deletion
 import { RxDragHandleDots2 } from 'react-icons/rx'; // Import a drag handle icon
 import MapInput from "./MapInput";
-import { useEffect, useState } from "react";
+import { useEffect,  } from "react";
 import { Dialog } from "@headlessui/react"; // You can also use your own modal component
 
 
