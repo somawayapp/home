@@ -58,13 +58,13 @@ const DraggableImage = ({ id, url, index, uploading, moveImage, onDelete }) => {
   return (
     <div
       ref={ref}
-      className="relative w-full h-32 rounded-xl overflow-hidden shadow group cursor-grab"
+      className="relative w-full h-32 rounded-xl border border-[#FF5864] overflow-hidden shadow group cursor-grab"
       style={{ opacity: isDragging ? 0.5 : 1 }}
     >
       <img
         src={url}
         alt="preview"
-        className="w-full h-full object-cover border border-blue-800 transition-transform duration-200 group-hover:scale-105"
+        className="w-full h-full object-cover  transition-transform duration-200 group-hover:scale-105"
       />
       {/* Delete button */}
      <button
@@ -412,17 +412,17 @@ const AddListing = () => {
                       <img
                         src={img.url}
                         alt="preview"
-                        className="w-full h-full object-cover rounded-xl border border-blue-800 shadow opacity-50"
+                        className="w-full h-full object-cover rounded-xl border border-[#FF5864] shadow opacity-50"
                       />
                <button
         type="button"
         onClick={() => onDelete(id)}
-        className="absolute top-2 right-2 p-1 z-50 bg-black/20 text-red cursor-pointer rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+        className="absolute top-2 right-2 p-2 z-50 bg-black/40 text-red cursor-pointer rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
         aria-label="Delete image"
       >
         <FaTimes className="w-5 h-5 text-red-500" />
       </button>
-                      <div className="absolute inset-0 border border-blue-800 bg-black/20 flex flex-col items-center justify-center rounded-xl">
+                      <div className="absolute inset-0  bg-black/20 flex flex-col items-center justify-center rounded-xl">
                         <p className="text-white text-sm">Uploading...</p>
                           </div>
        
