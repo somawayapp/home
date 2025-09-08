@@ -9,7 +9,7 @@ import { IKCore } from 'imagekitio-react';
 import { FaTrash, FaTimes } from 'react-icons/fa'; // Import an icon for deletion
 import { RxDragHandleDots2 } from 'react-icons/rx'; // Import a drag handle icon
 import MapInput from "./MapInput";
-import axios from "axios";
+import axios from 'axios'; // Make sure you import axios here
 
 const autosaveDraft = useCallback(async () => {
   // Don't autosave if the form is empty
