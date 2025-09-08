@@ -167,6 +167,7 @@ const AddListing = () => {
       name: file.name,
       url: URL.createObjectURL(file),
       uploading: true,
+      status: "uploading", // ✅ "uploading" | "success" | "failed"
       file,
     }));
     setImages(prev => [...prev, ...previews]);
@@ -193,13 +194,14 @@ const AddListing = () => {
         });
 
         // Update the image object with the final URL and mark as not uploading
-        setImages(prev =>
-          prev.map(img =>
-            img.id === image.id
-              ? { ...img, url: result.url, uploading: false }
-              : img
-          )
-        );
+       setImages(prev =>
+  prev.map(img =>
+    img.id === image.id
+      ? { ...img, uploading: false, status: "failed" }
+      : img
+  )
+);
+
         toast.success(`${image.name} uploaded successfully!`);
 
         // Clean up the progress state for this image once it's done
@@ -350,6 +352,76 @@ const AddListing = () => {
     }
   };
 
+
+  const retryUpload = async (image) => {
+  setImages(prev =>
+    prev.map(img => img.id === image.id ? { ...img, uploading: true, status: "uploading" } : img)
+  );
+
+  try {
+    const authParams = await authenticator();
+    const result = await coreImageKit.upload({
+      file: image.file,
+      fileName: image.name,
+      folder: "/listings",
+      useUniqueFileName: true,
+      token: authParams.token,
+      signature: authParams.signature,
+      expire: authParams.expire,
+      onUploadProgress: (progressEvent) => {
+        const percent = Math.round((progressEvent.loaded / progressEvent.total) * 100);
+        setUploadProgress(prev => ({ ...prev, [image.id]: percent }));
+      },
+    });
+
+    setImages(prev =>
+      prev.map(img => img.id === image.id
+        ? { ...img, url: result.url, uploading: false, status: "success" }
+        : img
+      )
+    );
+
+    toast.success(`${image.name} uploaded successfully!`);
+  } catch (err) {
+    toast.error(`Retry failed for ${image.name}`);
+    setImages(prev =>
+      prev.map(img =>
+        img.id === image.id ? { ...img, uploading: false, status: "failed" } : img
+      )
+    );
+  }
+};
+
+
+// --- Auto Save to Local Storage ---
+React.useEffect(() => {
+  localStorage.setItem("draftListing", JSON.stringify({ listing, images }));
+}, [listing, images]);
+
+// --- Prompt Before Closing ---
+React.useEffect(() => {
+  const handleBeforeUnload = (e) => {
+    e.preventDefault();
+    e.returnValue = "You have unsaved changes. Do you want to leave?";
+  };
+
+  window.addEventListener("beforeunload", handleBeforeUnload);
+  return () => {
+    window.removeEventListener("beforeunload", handleBeforeUnload);
+  };
+}, []);
+
+
+React.useEffect(() => {
+  const savedDraft = localStorage.getItem("draftListing");
+  if (savedDraft) {
+    const { listing: savedListing, images: savedImages } = JSON.parse(savedDraft);
+    setListing(savedListing);
+    setImages(savedImages);
+  }
+}, []);
+
+
   // --- AMENITIES OPTIONS (unchanged) ---
   const internalAmenities = [
     'AC', 'Heating', 'Wi-Fi', 'Bathtub', 'Dishwasher', 'Built-in washer', 'Built-in dryer',
@@ -414,14 +486,15 @@ const AddListing = () => {
                         alt="preview"
                         className="w-full h-full object-cover rounded-xl border border-[#FF5864] shadow opacity-50"
                       />
-               <button
-        type="button"
-        onClick={() => onDelete(id)}
-        className="absolute top-2 right-2 p-2 z-50 bg-black/40 text-red cursor-pointer rounded-full opacity-100  transition-opacity"
-        aria-label="Delete image"
-      >
-        <FaTimes className="w-5 h-5 text-red-500" />
-      </button>
+                       <button
+  type="button"
+  onClick={() => handleDeleteImage(img.id)} // ✅ Call the actual delete handler
+  className="absolute top-2 right-2 p-2 z-50 bg-black/40 cursor-pointer rounded-full opacity-100"
+  aria-label="Delete image"
+>
+  <FaTimes className="w-5 h-5 text-red-500" />
+</button>
+
                       <div className="absolute inset-0  bg-black/20 flex flex-col items-center justify-center rounded-xl">
                         <p className="text-white text-sm">Uploading...</p>
                           </div>
