@@ -740,6 +740,9 @@ useEffect(() => {
               <label className="font-semibold md:text-lg  ">Amenities</label>
               <div className="flex flex-col gap-4 md:gap-8 ">
                 <div>
+
+
+                  <div className="border-2 p-2 md:p-6  border-bgColor   hover:border-bgColorhover " >
                   <h4 className="md:text-lg  font-semibold">Internal Amenities</h4>
                   <div className="flex flex-wrap gap-4 mt-2">
                     {internalAmenities.map((amenity) => (
@@ -757,7 +760,10 @@ useEffect(() => {
                     ))}
                   </div>
                 </div>
-                <div>
+                <div> </div>
+
+                                    <div className="border-2 p-2 md:p-6  border-bgColor   hover:border-bgColorhover " >
+
                   <h4 className="md:text-lg  font-semibold ">External Amenities</h4>
                   <div className="flex flex-wrap gap-4 mt-2">
                     {externalAmenities.map((amenity) => (
@@ -775,8 +781,11 @@ useEffect(() => {
                     ))}
                   </div>
                 </div>
-                <div>
-                  <h4 className="md:text-lg  font-semibold ">Nearby Amenities</h4>
+                <div></div>
+
+
+                <div className="border-2 p-2 md:p-6  border-bgColor   hover:border-bgColorhover " >
+                <h4 className="md:text-lg  font-semibold ">Nearby Amenities</h4>
                   <div className="flex flex-wrap gap-4 mt-2">
                     {nearbyAmenities.map((amenity) => (
                       <label key={amenity} className="flex items-center">
@@ -792,9 +801,15 @@ useEffect(() => {
                       </label>
                     ))}
                   </div>
+                  </div>
+
+
+
                 </div>
               </div>
             </div>
+                                                <div className="border-2 p-2 md:p-6  border-bgColor   hover:border-bgColorhover " >
+
             <div className="flex items-center gap-2 mt-2">
               <input
                 type="checkbox"
@@ -807,7 +822,8 @@ useEffect(() => {
               <label htmlFor="featured" className="md:text-lg  font-semibold ">
                 Mark as Featured
               </label>
-            </div>
+            </div>             </div>
+
 
             <button
               type="submit"
