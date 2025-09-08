@@ -427,35 +427,26 @@ const AddListing = () => {
 };
 
 
-// --- Auto Save to Local Storage ---
-React.useEffect(() => {
+// Auto-save on every change (you already have this)
+useEffect(() => {
   localStorage.setItem("draftListing", JSON.stringify({ listing, images }));
 }, [listing, images]);
 
-React.useEffect(() => {
+// Instead of beforeunload confirm, just save automatically
+useEffect(() => {
   const handleBeforeUnload = (e) => {
-    // Only show prompt if there are unsaved changes
     if (images.length > 0 || listing.title || listing.description) {
+      // ✅ Always save automatically
+      localStorage.setItem("draftListing", JSON.stringify({ 
+        listing: { ...listing, status: false },
+        images
+      }));
       e.preventDefault();
-      e.returnValue = ""; // Required for Chrome
-      const shouldSave = window.confirm(
-        "Do you want to save your current progress before leaving?"
-      );
-      if (shouldSave) {
-        localStorage.setItem("draftListing", JSON.stringify({ 
-          listing: { ...listing, status: false }, // 👈 mark as status: false
-          images 
-        }));
-      } else {
-        localStorage.removeItem("draftListing");
-      }
+      e.returnValue = ""; // shows browser warning
     }
   };
-
   window.addEventListener("beforeunload", handleBeforeUnload);
-  return () => {
-    window.removeEventListener("beforeunload", handleBeforeUnload);
-  };
+  return () => window.removeEventListener("beforeunload", handleBeforeUnload);
 }, [listing, images]);
 
 
