@@ -9,8 +9,9 @@ import { IKCore } from 'imagekitio-react';
 import { FaTrash, FaTimes } from 'react-icons/fa'; // Import an icon for deletion
 import { RxDragHandleDots2 } from 'react-icons/rx'; // Import a drag handle icon
 import MapInput from "./MapInput";
-import { useEffect,  } from "react";
-cd 
+import { useEffect } from "react";
+import { Dialog } from "@headlessui/react"; // You can also use your own modal component
+
 
 
 // Draggable and Deletable Image Component
@@ -426,26 +427,35 @@ const AddListing = () => {
 };
 
 
-// Auto-save on every change (you already have this)
-useEffect(() => {
+// --- Auto Save to Local Storage ---
+React.useEffect(() => {
   localStorage.setItem("draftListing", JSON.stringify({ listing, images }));
 }, [listing, images]);
 
-// Instead of beforeunload confirm, just save automatically
-useEffect(() => {
+React.useEffect(() => {
   const handleBeforeUnload = (e) => {
+    // Only show prompt if there are unsaved changes
     if (images.length > 0 || listing.title || listing.description) {
-      // ✅ Always save automatically
-      localStorage.setItem("draftListing", JSON.stringify({ 
-        listing: { ...listing, status: false },
-        images
-      }));
       e.preventDefault();
-      e.returnValue = ""; // shows browser warning
+      e.returnValue = ""; // Required for Chrome
+      const shouldSave = window.confirm(
+        "Do you want to save your current progress before leaving?"
+      );
+      if (shouldSave) {
+        localStorage.setItem("draftListing", JSON.stringify({ 
+          listing: { ...listing, status: false }, // 👈 mark as status: false
+          images 
+        }));
+      } else {
+        localStorage.removeItem("draftListing");
+      }
     }
   };
+
   window.addEventListener("beforeunload", handleBeforeUnload);
-  return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  return () => {
+    window.removeEventListener("beforeunload", handleBeforeUnload);
+  };
 }, [listing, images]);
 
 
