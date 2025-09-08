@@ -60,24 +60,21 @@
 
 @layer components {
   .btn {
-    @apply relative inline-flex items-center justify-center rounded-xl text-white  font-semibold tracking-wide cursor-pointer select-none transition-all duration-300 ease-out;
+    @apply  tracking-wide cursor-pointer select-none transition-all duration-300 ease-out;
     background: linear-gradient(135deg, #FD297B, #FF5864, #FF655B);
     background-size: 200% 200%;
-    box-shadow: 0 4px 20px rgba(255, 88, 100, 0.4);
   }
 
   /* ✨ Hover effect: gradient shifts + glow + smooth scale */
   .btn:hover {
     background-position: right center;
     transform: scale(1.05);
-    box-shadow: 0 8px 30px rgba(255, 88, 100, 0.6);
     filter: brightness(1.15) saturate(1.2);
   }
 
   /* 🖱️ Click (active) state: subtle press-in effect */
   .btn:active {
     transform: scale(0.97);
-    box-shadow: 0 4px 15px rgba(255, 88, 100, 0.5);
   }
 
   /* 🔒 Disabled state */

@@ -112,7 +112,7 @@ const MapInput = ({ initialAddress, onLocationChange }) => {
         <button
           type="button"
           onClick={handleGetCurrentLocation}
-          className="px-4 py-2 mt-1 text-sm  btn "
+          className="px-4 py-3 mt-1 text-sm relative inline-flex items-center justify-center rounded-xl text-white  font-semibold btn "
           disabled={loading}
         >
           {loading ? 'Fetching...' : <><FontAwesomeIcon icon={faCrosshairs} /> Current Location</>}
