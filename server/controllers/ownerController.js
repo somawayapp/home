@@ -26,40 +26,77 @@ export const changeRoleToOwner = async (req, res)=>{
 
 
 
-// API for Listing - OPTIMIZED for Vercel Serverless
 
 // server/controllers/listingController.js (or wherever your controller is)
+export const autosaveListingDraft = async (req, res) => {
+  try {
+    const { _id: agency } = req.user;
+    const listingData = req.body;
+    const { title } = listingData;
+
+    // A simple way to manage drafts: find an existing draft by the same user
+    // You could also store a tempListingId on the front-end to identify the draft
+    const existingDraft = await Listing.findOne({ agency, draft: true, listingstatus: false });
+
+    if (existingDraft) {
+      // If a draft exists, update it
+      await Listing.findByIdAndUpdate(existingDraft._id, {
+        ...listingData,
+        agency,
+        draft: true,
+        listingstatus: false,
+      });
+      return res.status(200).json({ success: true, message: "Draft updated successfully." });
+    } else {
+      // Otherwise, create a new draft
+      await Listing.create({
+        ...listingData,
+        agency,
+        draft: true,
+        listingstatus: false,
+      });
+      return res.status(201).json({ success: true, message: "New draft created." });
+    }
+  } catch (error) {
+    console.error("Error in autosaveListingDraft:", error.message);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
 
 export const addListing = async (req, res) => {
   try {
-    const { _id } = req.user; // Assuming user is authenticated and `_id` is available
+    const { _id } = req.user;
     const listingData = req.body;
-    const {
-      agentname,
-      agentphone,
-      agentwhatsapp,
-      images, // The URLs from ImageKit will now be in the request body
-      ...restOfListingData
-    } = listingData;
+    const { draft, listingstatus, ...restOfListingData } = listingData;
 
-    // The image upload is now handled on the client-side.
-    // The server just needs to receive the ImageKit URLs.
-    if (!images || images.length === 0) {
+    if (!restOfListingData.images || restOfListingData.images.length === 0) {
       return res.json({ success: false, message: "At least one image is required" });
     }
 
-    const newListing = {
-      ...restOfListingData,
-      agency: _id,
-      images, // Store the array of URLs from the client
-      agentname,
-      agentphone,
-      agentwhatsapp,
-    };
+    // Find if a draft exists and update it, or create a new one
+    const existingDraft = await Listing.findOne({ agency: _id, draft: true, listingstatus: false });
 
-    await Listing.create(newListing);
+    if (existingDraft) {
+       // Update the draft to a final, active listing
+      const updatedListing = await Listing.findByIdAndUpdate(existingDraft._id, {
+        ...restOfListingData,
+        agency: _id,
+        draft: false, // It's no longer a draft
+        listingstatus: true, // It's now an active listing
+      }, { new: true });
 
-    res.status(200).json({ success: true, message: "Listing Created Successfully" });
+      return res.status(200).json({ success: true, message: "Listing published successfully", listingId: updatedListing._id });
+    } else {
+       // If no draft exists, create a new active listing
+       const newListing = await Listing.create({
+         ...restOfListingData,
+         agency: _id,
+         draft: false,
+         listingstatus: true
+       });
+       return res.status(201).json({ success: true, message: "Listing created successfully", listingId: newListing._id });
+    }
+
   } catch (error) {
     console.error("Error in addListing:", error.message);
     res.status(500).json({ success: false, message: error.message });

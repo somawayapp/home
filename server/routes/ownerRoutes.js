@@ -1,6 +1,6 @@
 import express from "express";
 import { protect } from "../middleware/auth.js";
-import { addListing, changeRoleToOwner, getAuthenticationParameters, deleteCar, getDashboardData, getOwnerListings, toggleCarAvailability, updateUserImage } from "../controllers/ownerController.js";
+import { addListing, autosaveListingDraft, changeRoleToOwner, getAuthenticationParameters, deleteCar, getDashboardData, getOwnerListings, toggleCarAvailability, updateUserImage } from "../controllers/ownerController.js";
 import upload from "../middleware/multer.js";
 
 const ownerRouter = express.Router();
@@ -9,6 +9,7 @@ const ownerRouter = express.Router();
 ownerRouter.get('/imagekit-auth', getAuthenticationParameters);
 ownerRouter.post("/change-role", protect, changeRoleToOwner)
 ownerRouter.post('/add-listing', protect, addListing);
+router.post("/autosave-listing", protect, autosaveListingDraft);
 ownerRouter.get("/listings", protect, getOwnerListings)
 ownerRouter.post("/toggle-car", protect, toggleCarAvailability)
 ownerRouter.post("/delete-car", protect, deleteCar)

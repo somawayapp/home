@@ -12,6 +12,7 @@ const listingSchema = new mongoose.Schema(
     listingstatus: { type: Boolean, default: true },
     visits: { type: Number, default: 0 },
     featured: { type: Boolean, default: false },
+     draft: { type: Boolean, default: true },
     featuredexpiry: { type: Date },
     location: { type: String, required: true },
 

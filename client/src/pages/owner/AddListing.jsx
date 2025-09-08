@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef } from "react";
+import React, { useState, useCallback, useRef, useEffect } from "react";
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import Title from '../../components/owner/Title';
@@ -9,9 +9,62 @@ import { IKCore } from 'imagekitio-react';
 import { FaTrash, FaTimes } from 'react-icons/fa'; // Import an icon for deletion
 import { RxDragHandleDots2 } from 'react-icons/rx'; // Import a drag handle icon
 import MapInput from "./MapInput";
-import { Dialog } from "@headlessui/react"; // You can also use your own modal component
+// ... other imports
+
+const autosaveDraft = useCallback(async () => {
+  // Don't autosave if the form is empty
+  if (!listing.title && images.length === 0) {
+    return;
+  }
+
+  // Check for pending uploads before autosaving
+  const pendingUploads = images.filter(img => img.uploading);
+  if (pendingUploads.length > 0) {
+      // You can show a subtle message to the user that autosave is waiting for uploads
+      console.log("Autosave is waiting for images to finish uploading.");
+      return;
+  }
+
+  const imageUrls = images.map(img => img.url);
+  const dataToSave = {
+      ...listing,
+      images: imageUrls,
+      draft: true, // Mark as draft
+      listingstatus: false, // Inactive status for a draft
+  };
+
+  try {
+      const response = await axios.post('/api/owner/autosave-listing', dataToSave);
+      if (response.data.success) {
+        // Optionally, you can show a small, non-intrusive toast
+        console.log("Listing autosaved as a draft!");
+      }
+  } catch (error) {
+      console.error("Autosave failed:", error);
+  }
+}, [axios, listing, images]);
 
 
+const timerRef = useRef(null);
+
+useEffect(() => {
+    // Clear previous timer to prevent multiple saves on rapid changes
+    if (timerRef.current) {
+        clearTimeout(timerRef.current);
+    }
+
+    // Set a new timer. Adjust the delay as needed (e.g., 5000ms = 5 seconds)
+    timerRef.current = setTimeout(() => {
+        autosaveDraft();
+    }, 5000); // Autosave every 5 seconds of inactivity
+
+    // Cleanup function: This runs when the component unmounts or the dependencies change
+    return () => {
+        if (timerRef.current) {
+            clearTimeout(timerRef.current);
+        }
+    };
+}, [listing, images, autosaveDraft]); // Dependencies to trigger the effect
 
 // Draggable and Deletable Image Component
 const DraggableImage = ({ id, url, index, uploading, moveImage, onDelete }) => {
@@ -116,6 +169,8 @@ const AddListing = () => {
     scrappingurl: '',
     featured: false,
     featuredexpiry: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+    listingstatus: false, // ✅ false = not published
+    draft: true,   
   });
 
     const handleLocationChange = useCallback((newLocation) => {
@@ -340,7 +395,7 @@ const AddListing = () => {
 
       const { data } = await axios.post(
         '/api/owner/add-listing',
-        { ...listing, images: imageUrls, coordinates: listing.coordinates },
+        { ...listing, images: imageUrls, coordinates: listing.coordinates, draft: false, listingstatus: true  },
         {
           onUploadProgress: (progressEvent) => {
             const percent = Math.round((progressEvent.loaded / progressEvent.total) * 100);
