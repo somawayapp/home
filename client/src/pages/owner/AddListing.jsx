@@ -172,57 +172,66 @@ const AddListing = () => {
     }));
     setImages(prev => [...prev, ...previews]);
 
-    for (const image of previews) {
-      try {
-        const authParams = await authenticator();
+   for (const image of previews) {
+  try {
+    const authParams = await authenticator();
 
-        const result = await coreImageKit.upload({
-          file: image.file,
-          fileName: image.name,
-          folder: "/listings",
-          useUniqueFileName: true,
-          token: authParams.token,
-          signature: authParams.signature,
-          expire: authParams.expire,
-          onUploadProgress: (progressEvent) => {
-            const percent = Math.round((progressEvent.loaded / progressEvent.total) * 100);
-            setUploadProgress(prev => ({
-              ...prev,
-              [image.id]: percent,
-            }));
-          },
-        });
+    const result = await coreImageKit.upload({
+      file: image.file,
+      fileName: image.name,
+      folder: "/listings",
+      useUniqueFileName: true,
+      token: authParams.token,
+      signature: authParams.signature,
+      expire: authParams.expire,
+      onUploadProgress: (progressEvent) => {
+        const percent = Math.round((progressEvent.loaded / progressEvent.total) * 100);
+        setUploadProgress(prev => ({
+          ...prev,
+          [image.id]: percent,
+        }));
+      },
+    });
 
-        // Update the image object with the final URL and mark as not uploading
-       setImages(prev =>
-  prev.map(img =>
-    img.id === image.id
-      ? { ...img, uploading: false, status: "failed" }
-      : img
-  )
-);
+    // ✅ SUCCESS: update image with final URL + mark success
+    setImages(prev =>
+      prev.map(img =>
+        img.id === image.id
+          ? { ...img, url: result.url, uploading: false, status: "success" }
+          : img
+      )
+    );
 
-        toast.success(`${image.name} uploaded successfully!`);
+    toast.success(`${image.name} uploaded successfully!`);
 
-        // Clean up the progress state for this image once it's done
-        setUploadProgress(prev => {
-          const newState = { ...prev };
-          delete newState[image.id];
-          return newState;
-        });
+    // Remove progress tracker for this image
+    setUploadProgress(prev => {
+      const newState = { ...prev };
+      delete newState[image.id];
+      return newState;
+    });
 
-      } catch (err) {
-        console.error("Upload failed", err);
-        toast.error(`Failed to upload ${image.name}`);
-        // Remove the failed image from the state
-        setImages(prev => prev.filter(img => img.id !== image.id));
-        setUploadProgress(prev => {
-          const newState = { ...prev };
-          delete newState[image.id];
-          return newState;
-        });
-      }
-    }
+  } catch (err) {
+    console.error("Upload failed", err);
+    toast.error(`Failed to upload ${image.name}`);
+
+    // ❌ FAILED: keep image but mark as failed for retry
+    setImages(prev =>
+      prev.map(img =>
+        img.id === image.id
+          ? { ...img, uploading: false, status: "failed" }
+          : img
+      )
+    );
+
+    setUploadProgress(prev => {
+      const newState = { ...prev };
+      delete newState[image.id];
+      return newState;
+    });
+  }
+}
+
   };
 
   // --- DRAG-AND-DROP HANDLERS ---
@@ -398,18 +407,31 @@ React.useEffect(() => {
   localStorage.setItem("draftListing", JSON.stringify({ listing, images }));
 }, [listing, images]);
 
-// --- Prompt Before Closing ---
 React.useEffect(() => {
   const handleBeforeUnload = (e) => {
-    e.preventDefault();
-    e.returnValue = "You have unsaved changes. Do you want to leave?";
+    // Only show prompt if there are unsaved changes
+    if (images.length > 0 || listing.title || listing.description) {
+      e.preventDefault();
+      e.returnValue = ""; // Required for Chrome
+      const shouldSave = window.confirm(
+        "Do you want to save your current progress before leaving?"
+      );
+      if (shouldSave) {
+        localStorage.setItem("draftListing", JSON.stringify({ 
+          listing: { ...listing, status: false }, // 👈 mark as status: false
+          images 
+        }));
+      } else {
+        localStorage.removeItem("draftListing");
+      }
+    }
   };
 
   window.addEventListener("beforeunload", handleBeforeUnload);
   return () => {
     window.removeEventListener("beforeunload", handleBeforeUnload);
   };
-}, []);
+}, [listing, images]);
 
 
 React.useEffect(() => {
