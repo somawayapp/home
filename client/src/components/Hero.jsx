@@ -313,7 +313,7 @@ useEffect(() => {
     <motion.button
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
-      className="flex items-center justify-center md:ml-2 gap-1 px-3 py-3 bg-primary hover:bg-primary-dull text-white rounded-full cursor-pointer"
+      className="flex items-center justify-center md:ml-2 gap-1 px-3 py-3 btn text-white rounded-full cursor-pointer"
     >
       <img src={assets.search_icon} alt="search" className="brightness-300" />
     </motion.button>
@@ -487,7 +487,7 @@ useEffect(() => {
                     <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            class="flex items-center justify-center gap-1 px-4 mr-2 py-4 bg-primary hover:bg-primary-dull text-white rounded-full cursor-pointer"
+            class="flex items-center justify-center gap-1 px-4 mr-2 py-4 bg-primary btn text-white rounded-full cursor-pointer"
           >
             <img src={assets.search_icon} alt="search" class="brightness-300 md:h-5 md:w-5" />
           </motion.button>
