@@ -1,8 +1,7 @@
 import User from "../models/User.js"
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
-import Like from "../models/like.js";
-import Listing from "../models/Listing.js";
+import Car from "../models/Car.js";
 
 
 // Generate JWT Token
@@ -66,163 +65,32 @@ export const getUserData = async (req, res) =>{
         res.json({success: false, message: error.message})
     }
 }
-// Get All Listings for the Frontend with Filters
-// Get All Listings for the Frontend with Filters
-
-export const getListings = async (req, res) => {
+// Get All Cars for the Frontend with Filters
+// Get All Cars for the Frontend with Filters
+export const getCars = async (req, res) => {
   try {
-    const {
-      location,
-      minPrice,
-      maxPrice,
-      propertytype,
-      offertype, // "sale" or "rent"
-      bedrooms,
-      bathrooms,
-      rooms,
-      size, // optional string match
-      amenitiesInternal,
-      amenitiesExternal,
-      amenitiesNearby,
-      featured,
-      available,
-    } = req.query;
+    const { pickupLocation, pricePerDay, seatingCapacity } = req.query;
 
-    // ✅ Build filter dynamically
-    const filter = {};
+    // Base filter
+    const filter = { isAvaliable: true };
 
-    // ✅ Listing status (true = available)
-    if (available !== undefined) {
-      filter.listingstatus = available === "true";
+    if (pickupLocation) {
+      // Case-insensitive location match
+      filter.location = { $regex: new RegExp(pickupLocation, "i") };
     }
 
-    // ✅ Location (case-insensitive partial match)
-    if (location) {
-      filter.location = { $regex: new RegExp(location, "i") };
+    if (pricePerDay) {
+      filter.pricePerDay = { $lte: Number(pricePerDay) };
     }
 
-    // ✅ Price range
-    if (minPrice || maxPrice) {
-      filter.price = {};
-      if (minPrice) filter.price.$gte = Number(minPrice);
-      if (maxPrice) filter.price.$lte = Number(maxPrice);
+    if (seatingCapacity) {
+      filter.seating_capacity = Number(seatingCapacity); // ✅ matches schema
     }
 
-    // ✅ Property Type
-    if (propertytype) {
-      filter.propertytype = { $regex: new RegExp(propertytype, "i") };
-    }
-
-    // ✅ Offer Type (sale/rent)
-    if (offertype) {
-      filter.offertype = offertype;
-    }
-
-    // ✅ Features (exact match)
-    if (bedrooms) {
-      filter["features.bedrooms"] = Number(bedrooms);
-    }
-    if (bathrooms) {
-      filter["features.bathrooms"] = Number(bathrooms);
-    }
-    if (rooms) {
-      filter["features.rooms"] = Number(rooms);
-    }
-    if (size) {
-      filter["features.size"] = { $regex: new RegExp(size, "i") };
-    }
-
-    // ✅ Amenities (array match)
-    if (amenitiesInternal) {
-      filter["amenities.internal"] = { $all: amenitiesInternal.split(",") };
-    }
-    if (amenitiesExternal) {
-      filter["amenities.external"] = { $all: amenitiesExternal.split(",") };
-    }
-    if (amenitiesNearby) {
-      filter["amenities.nearby"] = { $all: amenitiesNearby.split(",") };
-    }
-
-    // ✅ Featured filter
-    if (featured !== undefined) {
-      filter.featured = featured === "true";
-    }
-
-    // ✅ Fetch listings
-    const listings = await Listing.find(filter).sort({ createdAt: -1 });
-
-    res.json({ success: true, count: listings.length, listings });
+    const cars = await Car.find(filter);
+    res.json({ success: true, cars });
   } catch (error) {
-    console.error("Error fetching listings:", error.message);
-    res.status(500).json({ success: false, message: error.message });
+    console.log(error.message);
+    res.json({ success: false, message: error.message });
   }
 };
-
-
-
-export const getLikedListings = async (req, res) => {
-  try {
-    const userId = req.user._id;
-
-    const liked = await Like.find({ user: userId }).populate("listing");
-    res.json({ success: true, likedListings: liked.map((l) => l.listing) });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ success: false, message: error.message });
-  }
-};
-
-
-
-// controllers/likeController.js
-
-export const toggleLike = async (req, res) => {
-  try {
-    // ✅ Ensure user is logged in
-    if (!req.user) {
-      return res.status(401).json({ success: false, error: "NOT_AUTHENTICATED" });
-    }
-
-    const { listingId } = req.body;
-    const userId = req.user._id;
-
-    // ✅ Check if like exists
-    const existingLike = await Like.findOne({ user: userId, listing: listingId });
-
-    if (existingLike) {
-      // ✅ Unlike (delete)
-      await Like.deleteOne({ _id: existingLike._id });
-      return res.json({ success: true, liked: false });
-    }
-
-    // ✅ Like (create new)
-    await Like.create({ user: userId, listing: listingId });
-    return res.json({ success: true, liked: true });
-
-  } catch (error) {
-    console.error("Toggle Like Error:", error);
-    return res.status(500).json({ success: false, message: "Internal server error" });
-  }
-};
-
-
-
-
-
-export const checkIfLiked = async (req, res) => {
-  try {
-    if (!req.user) {
-      return res.status(401).json({ success: false, liked: false, error: "NOT_AUTHENTICATED" });
-    }
-
-    const userId = req.user._id;
-    const { listingId } = req.query;
-
-    const existingLike = await Like.findOne({ user: userId, listing: listingId });
-    return res.json({ success: true, liked: !!existingLike });
-  } catch (error) {
-    console.error("CheckIfLiked Error:", error);
-    return res.status(500).json({ success: false, message: "Internal server error" });
-  }
-};
-
