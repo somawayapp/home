@@ -1,7 +1,8 @@
 import User from "../models/User.js"
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
-import Car from "../models/Car.js";
+import Like from "../models/like.js";
+import Listing from "../models/Listing.js";
 
 
 // Generate JWT Token
@@ -65,32 +66,76 @@ export const getUserData = async (req, res) =>{
         res.json({success: false, message: error.message})
     }
 }
-// Get All Cars for the Frontend with Filters
-// Get All Cars for the Frontend with Filters
-export const getCars = async (req, res) => {
+// Get All Listings for the Frontend with Filters
+// Get All Listings for the Frontend with Filters
+
+
+
+
+
+export const getLikedListings = async (req, res) => {
   try {
-    const { pickupLocation, pricePerDay, seatingCapacity } = req.query;
+    const userId = req.user._id;
 
-    // Base filter
-    const filter = { isAvaliable: true };
-
-    if (pickupLocation) {
-      // Case-insensitive location match
-      filter.location = { $regex: new RegExp(pickupLocation, "i") };
-    }
-
-    if (pricePerDay) {
-      filter.pricePerDay = { $lte: Number(pricePerDay) };
-    }
-
-    if (seatingCapacity) {
-      filter.seating_capacity = Number(seatingCapacity); // ✅ matches schema
-    }
-
-    const cars = await Car.find(filter);
-    res.json({ success: true, cars });
+    const liked = await Like.find({ user: userId }).populate("listing");
+    res.json({ success: true, likedListings: liked.map((l) => l.listing) });
   } catch (error) {
-    console.log(error.message);
-    res.json({ success: false, message: error.message });
+    console.log(error);
+    res.status(500).json({ success: false, message: error.message });
   }
 };
+
+
+
+// controllers/likeController.js
+
+export const toggleLike = async (req, res) => {
+  try {
+    // ✅ Ensure user is logged in
+    if (!req.user) {
+      return res.status(401).json({ success: false, error: "NOT_AUTHENTICATED" });
+    }
+
+    const { listingId } = req.body;
+    const userId = req.user._id;
+
+    // ✅ Check if like exists
+    const existingLike = await Like.findOne({ user: userId, listing: listingId });
+
+    if (existingLike) {
+      // ✅ Unlike (delete)
+      await Like.deleteOne({ _id: existingLike._id });
+      return res.json({ success: true, liked: false });
+    }
+
+    // ✅ Like (create new)
+    await Like.create({ user: userId, listing: listingId });
+    return res.json({ success: true, liked: true });
+
+  } catch (error) {
+    console.error("Toggle Like Error:", error);
+    return res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
+
+
+
+
+export const checkIfLiked = async (req, res) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({ success: false, liked: false, error: "NOT_AUTHENTICATED" });
+    }
+
+    const userId = req.user._id;
+    const { listingId } = req.query;
+
+    const existingLike = await Like.findOne({ user: userId, listing: listingId });
+    return res.json({ success: true, liked: !!existingLike });
+  } catch (error) {
+    console.error("CheckIfLiked Error:", error);
+    return res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
