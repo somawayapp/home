@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Title from '../components/Title'
 import { assets, dummyCarData } from '../assets/assets'
-import CarCard from '../components/CarCard'
+import ListingCard from '../components/ListingCard'
 import { useSearchParams } from 'react-router-dom'
 import { useAppContext } from '../context/AppContext'
 import toast from 'react-hot-toast'
@@ -75,7 +75,7 @@ const Cars = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 * index, duration: 0.4 }}
             >
-              <CarCard car={car}/>
+              <ListingCard car={car}/>
             </motion.div>
           ))}
         </div>

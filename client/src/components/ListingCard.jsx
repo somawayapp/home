@@ -3,7 +3,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useState, useRef } from "react";
 import LikeButton from "./LikeButton";
 
-const CarCard = ({ listing }) => {
+const ListingCard = ({ listing }) => {
   const images = Array.isArray(listing.image) ? listing.image : listing.image ? [listing.image] : [];
   const [currentIndex, setCurrentIndex] = useState(0);
   const scrollRef = useRef(null);
@@ -141,4 +141,4 @@ const CarCard = ({ listing }) => {
   );
 };
 
-export default CarCard;
+export default ListingCard;

@@ -1,7 +1,7 @@
 import React from 'react'
 import Title from './Title'
 import { assets } from '../assets/assets'
-import CarCard from './CarCard'
+import ListingCard from './ListingCard'
 import { useNavigate } from 'react-router-dom'
 import { useAppContext } from '../context/AppContext'
 import { motion } from 'motion/react'
@@ -38,7 +38,7 @@ const FeaturedSection = () => {
                 whileInView={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.4, ease: "easeOut"  }}
                 >
-                    <CarCard car={car}/>
+                    <ListingCard car={car}/>
                 </motion.div>
             ))
         }

@@ -21,7 +21,7 @@ export const AppProvider = ({ children })=>{
     const [pricePerDay, setPricePerDay] = useState('')
     const [seatingCapacity, setSeatingCapacity] = useState('')
 
-    const [listings, setListings] = useState([])
+    const [cars, setCars] = useState([])
 
     // Function to check if user is logged in
     const fetchUser = async ()=>{
@@ -37,11 +37,11 @@ export const AppProvider = ({ children })=>{
             toast.error(error.message)
         }
     }
-    // Function to fetch all listings from the server
+    // Function to fetch all cars from the server
 
 
 
-const fetchListings = async () =>{
+const fetchCars = async () =>{
     try {
         // Grab query params from current URL
         const params = new URLSearchParams(location.search);
@@ -50,11 +50,11 @@ const fetchListings = async () =>{
         const seatingCapacity = params.get("seatingCapacity");
 
         // Send them to backend
-        const { data } = await axios.get("/api/user/listings", {
+        const { data } = await axios.get("/api/user/cars", {
             params: { pickupLocation, pricePerDay, seatingCapacity }
         });
 
-        data.success ? setListings(data.listings) : toast.error(data.message);
+        data.success ? setCars(data.cars) : toast.error(data.message);
     } catch (error) {
         toast.error(error.message);
     }
@@ -76,7 +76,7 @@ const fetchListings = async () =>{
     useEffect(()=>{
         const token = localStorage.getItem('token')
         setToken(token)
-        fetchListings()
+        fetchCars()
     },[])
 
     // useEffect to fetch user data when token is available
@@ -89,7 +89,7 @@ const fetchListings = async () =>{
 
     const value = {
         navigate, currency, axios, user, setUser,
-        token, setToken, isOwner, setIsOwner, fetchUser, showLogin, setShowLogin, logout, fetchListings, listings, setListings, 
+        token, setToken, isOwner, setIsOwner, fetchUser, showLogin, setShowLogin, logout, fetchCars, cars, setCars, 
         pricePerDay, setPricePerDay, seatingCapacity, setSeatingCapacity
     }
 
