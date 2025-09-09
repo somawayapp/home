@@ -5,8 +5,45 @@ import { motion } from "framer-motion"
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import FilterModal from './FilterModal'
+import { MapContainer, TileLayer, Marker, Circle, useMapEvents } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
 
-const Hero = () => {
+const Hero = ( {  showModal,
+    setShowModal,
+    handleSearch,
+    filters,
+    setFilters,
+    useCurrentLocation,
+   
+  }) => {
+    const [mapCenter, setMapCenter] = useState([0.3476, 32.5825]); // Default center (Kampala as fallback)
+    const [radius, setRadius] = useState(2000); // meters
+    const [markerPosition, setMarkerPosition] = useState(null);
+  
+    // Get current location if available
+    const handleUseCurrentLocation = () => {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          const { latitude, longitude } = pos.coords;
+          setMapCenter([latitude, longitude]);
+          setMarkerPosition([latitude, longitude]);
+          setFilters({ ...filters, lat: latitude, lng: longitude, radius });
+        },
+        (err) => console.log("Location error:", err),
+        { enableHighAccuracy: true }
+      );
+    };
+  
+    function LocationSelector() {
+      useMapEvents({
+        click(e) {
+          setMarkerPosition([e.latlng.lat, e.latlng.lng]);
+          setFilters({ ...filters, lat: e.latlng.lat, lng: e.latlng.lng, radius });
+        },
+      });
+      return null;
+    }
+  
   const [pickupLocation, setPickupLocation] = useState('')
   const [showModal, setShowModal] = useState(false)
   const [showDesktop, setShowDesktop] = useState(true)
