@@ -737,7 +737,6 @@ useEffect(() => {
               </div>
             </div>
             <div className="flex flex-col w-full gap-3">
-              <div className="flex flex-col gap-4 md:gap-8 ">
                 <div className=" gap-4 md:gap-9 ">
 
 
@@ -759,7 +758,6 @@ useEffect(() => {
                     ))}
                   </div>
                 </div>
-                <div> </div>
 
                                     <div className="border-2 p-2 md:p-6  border-bgColor   hover:border-bgColorhover " >
 
@@ -801,6 +799,7 @@ useEffect(() => {
                     ))}
                   </div>
                   </div>
+                   <div>
 
 
 
