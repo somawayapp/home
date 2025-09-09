@@ -9,7 +9,6 @@ import { MapContainer, TileLayer, Marker, Circle, useMapEvents } from "react-lea
 import "leaflet/dist/leaflet.css";
 
 const Hero = ( { 
-      handleSearch,
     filters,
     setFilters,
     useCurrentLocation,
