@@ -536,8 +536,6 @@ useEffect(() => {
                    <input
                      type="number"
                      placeholder="Max price"
-                     value={filters.pricePerDay || ""}
-                     onChange={(e) => setFilters({ ...filters, pricePerDay: e.target.value })}
                      className="w-full border rounded-lg p-2"
                    />
                  </div>
