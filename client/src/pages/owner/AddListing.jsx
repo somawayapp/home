@@ -778,7 +778,6 @@ useEffect(() => {
                     ))}
                   </div>
                 </div>
-                <div>
 
 
                 <div className="border-2 p-2 md:p-6  border-bgColor   hover:border-bgColorhover " >
@@ -799,6 +798,7 @@ useEffect(() => {
                     ))}
                   </div>
                   </div>
+                <div>
 
                 </div>
 
