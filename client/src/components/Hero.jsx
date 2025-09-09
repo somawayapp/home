@@ -4,7 +4,7 @@ import { useAppContext } from '../context/AppContext'
 import { motion } from "framer-motion"
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
-
+import FilterModal from './FilterModal'
 
 const Hero = () => {
   const [pickupLocation, setPickupLocation] = useState('')
@@ -517,57 +517,7 @@ useEffect(() => {
 
       {/* === Popup Modal */}
       {showModal && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="fixed inset-0 bg-black/10 flex p-2 items-center justify-center z-50"
-          onClick={() => setShowModal(false)}
-        >
-          <motion.div
-            initial={{ y: 100, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.3 }}
-            className="bg-white rounded-2xl p-6 w-full border border-light max-w-md shadow-xl"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <h2 className="text-lg font-semibold mb-4">Filter Cars</h2>
-            <form onSubmit={handleSearch} className="flex flex-col gap-4">
-              <div>
-                <label className="block mb-1">Pickup Location</label>
-                <select value={pickupLocation} onChange={(e) => setPickupLocation(e.target.value)} className="w-full border rounded-lg p-2">
-                  <option value="">Select Location</option>
-                  {cityList.map((city) => (
-                    <option key={city} value={city}>{city}</option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <label className="block mb-1">Price Per Day</label>
-                <input
-                  value={pricePerDay}
-                  onChange={(e) => setPricePerDay(e.target.value)}
-                  type="number"
-                  placeholder="Enter price per day"
-                  className="w-full border rounded-lg p-2"
-                />
-              </div>
-              <div>
-                <label className="block mb-1">Seating Capacity</label>
-                <input
-                  value={seatingCapacity}
-                  onChange={(e) => setSeatingCapacity(e.target.value)}
-                  type="number"
-                  placeholder="Enter seating capacity"
-                  className="w-full border rounded-lg p-2"
-                />
-              </div>
-              <div className="flex justify-between mt-4">
-                <button type="button" onClick={() => setShowModal(false)} className="px-4 py-2 rounded-lg bg-gray-200">Cancel</button>
-                <button type="submit" className="px-4 py-2 rounded-lg bg-primary text-white">Apply Filters</button>
-              </div>
-            </form>
-          </motion.div>
-        </motion.div>
+      <FilterModal/>
       )}
     </div>
   )
