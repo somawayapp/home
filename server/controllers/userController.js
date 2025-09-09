@@ -68,7 +68,6 @@ export const getUserData = async (req, res) =>{
 }
 // Get All Listings for the Frontend with Filters
 // Get All Listings for the Frontend with Filters
-import Listing from "../models/listingModel.js";
 
 export const getListings = async (req, res) => {
   try {
