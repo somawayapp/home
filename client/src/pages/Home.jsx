@@ -36,7 +36,6 @@ const Home = () => {
 
   return (
     <div>
-      <Hero />
 
       <motion.div
         initial={{ opacity: 0 }}
