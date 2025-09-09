@@ -8,9 +8,8 @@ import FilterModal from './FilterModal'
 import { MapContainer, TileLayer, Marker, Circle, useMapEvents } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 
-const Hero = ( {  showModal,
-    setShowModal,
-    handleSearch,
+const Hero = ( { 
+      handleSearch,
     filters,
     setFilters,
     useCurrentLocation,
