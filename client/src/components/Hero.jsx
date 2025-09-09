@@ -4,7 +4,6 @@ import { useAppContext } from '../context/AppContext'
 import { motion } from "framer-motion"
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
-import FilterModal from './FilterModal'
 import { MapContainer, TileLayer, Marker, Circle, useMapEvents } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 
