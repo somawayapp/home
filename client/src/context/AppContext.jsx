@@ -80,7 +80,7 @@ export const AppProvider = ({ children }) => {
         if (value) queryParams[key] = value;
       });
 
-      const { data } = await axios.get("/api/listings", { params: queryParams });
+      const { data } = await axios.get("/api/user/listings", { params: queryParams });
 
       data.success ? setListings(data.listings) : toast.error(data.message);
     } catch (error) {
