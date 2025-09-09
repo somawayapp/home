@@ -132,16 +132,6 @@ const Hero = ( {
   }, [])
 
   // Read query params on mount
-  useEffect(() => {
-    const params = new URLSearchParams(location.search)
-    const pickupLocationParam = params.get('pickupLocation')
-    const pricePerDayParam = params.get('pricePerDay')
-    const seatingCapacityParam = params.get('seatingCapacity')
-
-    if (pickupLocationParam) setPickupLocation(pickupLocationParam)
-    if (pricePerDayParam) setPricePerDay(pricePerDayParam)
-    if (seatingCapacityParam) setSeatingCapacity(seatingCapacityParam)
-  }, [location.search])
 
   // Disable scroll when modal is open
   useEffect(() => {
@@ -183,13 +173,7 @@ useEffect(() => {
 }, [location.pathname])
 
 
-  const handleSearch = (e) => {
-    e.preventDefault()
-    navigate(
-      `/cars?pickupLocation=${pickupLocation}&pricePerDay=${pricePerDay}&seatingCapacity=${seatingCapacity}`
-    )
-    setShowModal(false)
-  }
+ 
 
   return (
     <div className="flex border border-bottom border-borderColor flex-col bg-white transition-colors duration-300 px-4 md:px-12 items-center justify-between 
@@ -505,8 +489,6 @@ useEffect(() => {
                  <input
                    type="text"
                    placeholder="Type a city or area"
-                   value={filters.pickupLocation || ""}
-                   onChange={(e) => setFilters({ ...filters, pickupLocation: e.target.value })}
                    className="w-full border rounded-lg p-2"
                  />
                  <button
