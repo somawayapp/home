@@ -3,8 +3,8 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useState, useRef } from "react";
 import LikeButton from "./LikeButton";
 
-const CarCard = ({ car }) => {
-  const images = Array.isArray(car.image) ? car.image : car.image ? [car.image] : [];
+const CarCard = ({ listing }) => {
+  const images = Array.isArray(listing.image) ? listing.image : listing.image ? [listing.image] : [];
   const [currentIndex, setCurrentIndex] = useState(0);
   const scrollRef = useRef(null);
 
@@ -47,7 +47,7 @@ const CarCard = ({ car }) => {
 
   return (
     <div className="relative gap-2 md:gap-4 group mb-2 md:mb-[8px] overflow-hidden rounded-xl">
-      <Link to={`/car-details/${car._id}`} className="block">
+      <Link to={`/car-details/${listing._id}`} className="block">
         <div className="relative w-full h-full aspect-[3/3] rounded-xl overflow-hidden">
           <div
             ref={scrollRef}
@@ -71,7 +71,7 @@ const CarCard = ({ car }) => {
           </div>
 
           <div className="absolute rounded-full hover:bg-[#0556f7] bg-[#2F74FD] bottom-3 right-3 px-3 py-1 text-white text-sm font-medium">
-            {car.isAvailable ? "Available" : "Unavailable"}
+            {listing.listingstatus ? "Available" : "Unavailable"}
           </div>
 
           {/* Dots */}
@@ -92,7 +92,7 @@ const CarCard = ({ car }) => {
 
     
        <div className="absolute top-3 right-3">
-        <LikeButton carId={car._id} />
+        <LikeButton listingId={listing._id} />
       </div>
 
       {/* Arros */}
@@ -115,24 +115,24 @@ const CarCard = ({ car }) => {
 
       {/* Info */}
       <div className="mt-3 gap-1">
-        <Link to={`/car-details/${car._id}`} className="block">
+        <Link to={`/car-details/${listing._id}`} className="block">
           <div className="flex justify-between mr-1">
             <p className="text-[var(--softTextColor)] font-semibold capitalize text-[14px] md:text-[15px]">
-              {car.location || "America"}
+              {listing.location || "America"}
             </p>
           </div>
 
           <p className="text-[var(--softTextColor)] capitalize text-[14px] md:text-[15px]">
-            {car.seating_capacity ? `${car.seating_capacity} Seats` : ""}{" "}
-            {car.model ? `${car.model}` : ""} for hire
+            {listing.seating_capacity ? `${listing.seating_capacity} Seats` : ""}{" "}
+            {listing.model ? `${listing.model}` : ""} for hire
           </p>
 
           <p className="text-[var(--softTextColor)] text-[13px] md:text-[14px]">
-            {car.year}
+            {listing.year}
           </p>
 
           <p className="text-[var(--softTextColor)] font-semibold text-[14px] md:text-[15px]">
-            KSh {car.pricePerDay}
+            KSh {listing.price}
             <span className="font-normal"> /day</span>
           </p>
         </Link>
