@@ -41,11 +41,9 @@ const Hero = ( {
       return null;
     }
   
-  const [pickupLocation, setPickupLocation] = useState('')
   const [showModal, setShowModal] = useState(false)
   const [showDesktop, setShowDesktop] = useState(true)
 
-  const { pricePerDay, setPricePerDay, seatingCapacity, setSeatingCapacity, navigate } = useAppContext()
   const location = useLocation()
   const currentPath = location.pathname
     const { setShowLogin, user, logout, isOwner, axios, setIsOwner } = useAppContext()
@@ -325,7 +323,6 @@ useEffect(() => {
 
   {/* === Text === */}
   <span className="px-2 py-2 font-medium text-textdark text-md md:text-lg md:pr-4 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
-    {pickupLocation || "Any where"}
   </span>
 </div>
 
@@ -333,13 +330,11 @@ useEffect(() => {
     <span className="self-stretch  w-px bg-borderColor"></span>
 
     <span className="px-2 md:px-4 font-medium  text-textdark py-2 text-md md:text-lg rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
-      {pricePerDay || "Any price"}
     </span>
 
     <span className="self-stretch w-px bg-borderColor"></span>
 
     <span className="px-2 md:px-4 font-medium  text-textdark  py-2 text-md md:text-lg rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
-      {seatingCapacity || "Any size"}
     </span>
   </div>
 
@@ -472,69 +467,7 @@ useEffect(() => {
 </div>
 
 
-   {!isSmallScreen && showDesktop && location.pathname === "/" && (
 
-<motion.div
-  initial={{ scale: 0.85, opacity: 0, y: -20 }}
-  animate={{ scale: 1, opacity: 1, y: 0 }}
-  transition={{ type: "spring", stiffness: 200, damping: 25, duration: 0.3 }}
-  className="flex flex-col mb-8 w-full items-center"
->
-  <div
-  onClick={() => setShowModal(true)}
-    className="hidden md:flex mt-2 w-full flex-row max-w-215 items-center justify-between rounded-full bg-white shadow-[0px_8px_20px_rgba(0,0,0,0.1)] border border-borderColor"
-  >
-    <div className="flex flex-row items-center w-full">
-            <div class="group flex flex-row items-center">
-        <div class="flex flex-col py-3 pr-29 pl-9 items-start rounded-full group-hover:bg-gray-100 transition-colors cursor-pointer">
-          <p class="text-sm font-sm text-dark">Any where</p>
-          <p class="mt-[-4px] text-textlight">
-            {pickupLocation || " Search destinations"}
-          </p>
-        </div>
-                <span class="h-9 w-px bg-borderColor opacity-100 group-hover:opacity-0 transition-opacity"></span>
-      </div>
-
-            <div class="group flex flex-row items-center">
-        <span class="h-9 w-px bg-borderColor opacity-100 group-hover:opacity-0 transition-opacity"></span>
-        <div class="flex flex-col py-3 px-8 items-start rounded-full group-hover:bg-gray-100 transition-colors cursor-pointer">
-          <p class="text-sm font-sm text-dark">Any price</p>
-          <p class="mt-[-4px] text-textlight">{pricePerDay || "Enter price "}</p>
-        </div>
-      </div>
-
-            <div class="group flex flex-row items-center">
-        <span class="h-9 w-px bg-borderColor opacity-100 group-hover:opacity-0 transition-opacity"></span>
-        <div class="flex flex-col py-3 px-8 items-start rounded-full group-hover:bg-gray-100 transition-colors cursor-pointer">
-          <p class="text-sm font-sm text-dark">Any type</p>
-          <p class="mt-[-4px] text-textlight">{pickupLocation || " Select type"}</p>
-        </div>
-      </div>
-
-            <div class="group flex flex-row items-center flex-grow">
-        <span class="h-9 w-px bg-borderColor opacity-100 group-hover:opacity-0 transition-opacity"></span>
-        <div class="flex flex-row items-center justify-between w-full rounded-full group-hover:bg-gray-100 transition-colors cursor-pointer">
-                    <div class="flex flex-col py-3 px-8 items-start">
-            <p class="text-sm font-sm text-textdark">Any size</p>
-            <p class="mt-[-4px] text-textlight">{seatingCapacity || "Enter size"}</p>
-          </div>
-                    <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            class="flex items-center justify-center gap-1 px-4 mr-2 py-4 bg-primary btn text-white rounded-full cursor-pointer"
-          >
-            <img src={assets.search_icon} alt="search" class="brightness-300 md:h-5 md:w-5" />
-          </motion.button>
-        </div>
-      </div>
-    </div>
-  </div>
-</motion.div>
-
-
-
-
-      )}
 
      
               
