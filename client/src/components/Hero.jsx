@@ -1,602 +1,335 @@
-import React, { useState, useEffect, useRef } from 'react'
-import { assets, cityList, menuLinks } from '../assets/assets'
-import { useAppContext } from '../context/AppContext'
-import { motion } from "framer-motion"
-import { Link, useLocation, useNavigate } from 'react-router-dom'
-import toast from 'react-hot-toast'
-import { MapContainer, TileLayer, Marker, Circle, useMapEvents } from "react-leaflet";
+import React, { useState, useEffect, useRef } from "react";
+import { assets, menuLinks, cityList } from "../assets/assets";
+import { useAppContext } from "../context/AppContext";
+import { motion } from "framer-motion";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Circle,
+  useMapEvents,
+} from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 
-const Hero = ( { 
-    filters,
-    setFilters,
-    useCurrentLocation,
-   
-  }) => {
-    const [mapCenter, setMapCenter] = useState([0.3476, 32.5825]); // Default center (Kampala as fallback)
-    const [radius, setRadius] = useState(2000); // meters
-    const [markerPosition, setMarkerPosition] = useState(null);
-  
-    // Get current location if available
-    const handleUseCurrentLocation = () => {
-      navigator.geolocation.getCurrentPosition(
-        (pos) => {
-          const { latitude, longitude } = pos.coords;
-          setMapCenter([latitude, longitude]);
-          setMarkerPosition([latitude, longitude]);
-          setFilters({ ...filters, lat: latitude, lng: longitude, radius });
-        },
-        (err) => console.log("Location error:", err),
-        { enableHighAccuracy: true }
-      );
-    };
-  
-    function LocationSelector() {
-      useMapEvents({
-        click(e) {
-          setMarkerPosition([e.latlng.lat, e.latlng.lng]);
-          setFilters({ ...filters, lat: e.latlng.lat, lng: e.latlng.lng, radius });
-        },
-      });
-      return null;
-    }
-  
-  const [showModal, setShowModal] = useState(false)
-  const [showDesktop, setShowDesktop] = useState(true)
+const Hero = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { setShowLogin, user, logout, isOwner, axios, setIsOwner } =
+    useAppContext();
 
-  const location = useLocation()
-  const currentPath = location.pathname
-    const { setShowLogin, user, logout, isOwner, axios, setIsOwner } = useAppContext()
-    const [open, setOpen] = useState(false)
-    const dropdownRef = useRef(null)
-  
-    const changeRole = async () => {
-      try {
-        const { data } = await axios.post('/api/owner/change-role')
-        if (data.success) {
-          setIsOwner(true)
-          toast.success(data.message)
-        } else {
-          toast.error(data.message)
-        }
-      } catch (error) {
-        toast.error(error.message)
-      }
-    }
-  
-    // Prevents body scroll when the mobile menu is open
-    useEffect(() => {
-      if (open) {
-        document.body.style.overflow = 'hidden'
-      } else {
-        document.body.style.overflow = 'auto'
-      }
-      return () => {
-        document.body.style.overflow = 'auto'
-      }
-    }, [open])
-  
-    // Closes the dropdown when clicking outside
-    useEffect(() => {
-      const handleClickOutside = (e) => {
-        if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-          setOpen(false)
-        }
-      }
-      if (open) {
-        document.addEventListener('mousedown', handleClickOutside)
-      }
-      return () => document.removeEventListener('mousedown', handleClickOutside)
-    }, [open])
+  const [open, setOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
+  // --- Filter state ---
+  const [filters, setFilters] = useState({
+    location: "",
+    lat: null,
+    lng: null,
+    radius: 2000,
+    price: "",
+    propertyType: "",
+    bedrooms: "",
+    bathrooms: "",
+  });
 
- const links = [
-  { name: "Homes", path: "/", type: "video", src: assets.housevid },
-  { name: "Agents", path: "/agents", type: "image", src: assets.agenticon },
-  { name: "Projects", path: "/projects", type: "video", src: assets.upcomingvid },
-]
+  const [showModal, setShowModal] = useState(false);
+  const [mapCenter, setMapCenter] = useState([0.3476, 32.5825]); // Kampala default
+  const [markerPosition, setMarkerPosition] = useState(null);
 
+  // --- Current Location ---
+  const handleUseCurrentLocation = () => {
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const { latitude, longitude } = pos.coords;
+        setMapCenter([latitude, longitude]);
+        setMarkerPosition([latitude, longitude]);
+        setFilters({ ...filters, lat: latitude, lng: longitude });
+      },
+      (err) => toast.error("Failed to get location"),
+      { enableHighAccuracy: true }
+    );
+  };
 
-  // Track screen size
-  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 768)
-    const [isMdScreen, setIsMdScreen] = useState(false);
-
-  useEffect(() => {
-    // Define the media query for 'md' screen size.
-    // Tailwind's 'md' is typically >= 768px.
-    const mediaQuery = window.matchMedia('(min-width: 768px)');
-
-    const handleResize = () => {
-      setIsMdScreen(mediaQuery.matches);
-    };
-
-    // Initial check
-    handleResize();
-
-    // Add listener for screen size changes
-    mediaQuery.addEventListener('change', handleResize);
-
-    // Cleanup function to remove the listener
-    return () => {
-      mediaQuery.removeEventListener('change', handleResize);
-    };
-  }, []); // Empty dependency array means this effect runs once on mount
-
-  // Determine if the button should be animated
-  const shouldAnimate = isMdScreen;
-
-  useEffect(() => {
-    const handleResize = () => setIsSmallScreen(window.innerWidth < 768)
-    window.addEventListener("resize", handleResize)
-    return () => window.removeEventListener("resize", handleResize)
-  }, [])
-
-  // Read query params on mount
-
-  // Disable scroll when modal is open
-  useEffect(() => {
-    document.body.style.overflow = showModal ? 'hidden' : 'auto'
-    return () => { document.body.style.overflow = 'auto' }
-  }, [showModal])
-
-  // Handle scroll compress (only desktop + home route)
-
-
-useEffect(() => {
-  if (isSmallScreen || location.pathname !== "/") {
-    setShowDesktop(false)
-    return
+  // --- Map click to choose location ---
+  function LocationSelector() {
+    useMapEvents({
+      click(e) {
+        setMarkerPosition([e.latlng.lat, e.latlng.lng]);
+        setFilters({ ...filters, lat: e.latlng.lat, lng: e.latlng.lng });
+      },
+    });
+    return null;
   }
 
-  const topThreshold = 20    // First change after 20px
-  const wall = 100           // Dead zone between 20px and 40px
-  const bottomThreshold = topThreshold + wall // 40px
-  let lastState = 'top'      // can be 'top' or 'bottom'
+  // --- Handle Search ---
+  const handleSearch = () => {
+    const query = new URLSearchParams(filters).toString();
+    navigate(`/listings?${query}`);
+    setShowModal(false);
+  };
 
-  const handleScroll = () => {
-    const scrollY = window.scrollY
-
-    if (scrollY < topThreshold && lastState !== 'top') {
-      // Scroll is in top zone
-      setShowDesktop(true)
-      lastState = 'top'
-    } else if (scrollY > bottomThreshold && lastState !== 'bottom') {
-      // Scroll is in bottom zone
-      setShowDesktop(false)
-      lastState = 'bottom'
-    }
-    // If scroll is between topThreshold and bottomThreshold, do nothing (wall)
-  }
-
-  window.addEventListener("scroll", handleScroll)
-  return () => window.removeEventListener("scroll", handleScroll)
-}, [location.pathname])
-
-
- 
+  // --- Close dropdown on outside click ---
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
-    <div className="flex border border-bottom border-borderColor flex-col bg-white transition-colors duration-300 px-4 md:px-12 items-center justify-between 
-    w-full sticky top-0 left-0 right-0 z-50  "
-     style={{
-    background: "linear-gradient(180deg, #ffffff 39.9%, #f8f8f8 100%)",
-  }}>
-
-      {/* === Desktop / MD+ form (expanded) */}
-  
-
-               
-
-
-<div className="flex flex-row w-full items-start justify-between">
-
-
-<Link to="/" className="z-50 py-4 md:py-7 ">
-              {/* Small screens → small icon */}
-              <motion.img
-                whileHover={{ scale: 1.05 }}
-                src={assets.smalllogo}
-                alt="logo"
-                className="h-8 block sm:hidden"
-              />
-            
-              {/* Larger screens → full logo */}
-              <motion.img
-                whileHover={{ scale: 1.05 }}
-                src={assets.logo}
-                alt="logo"
-                className="h-8 hidden sm:block"
-              />
-            </Link>
-
-              
-
-  {/* === Links Section === */}
-
-   {!isSmallScreen && showDesktop && location.pathname === "/" && (
-    <div className='flex flex-col mt-5  items-center justify-center'>
-
-
-<div className="hidden md:flex  flex-row gap-10 mb-2 ml-4">
-  
-
-  {links.map((link) => {
-    const isActive = currentPath === link.path
-    return (
-      <Link
-        key={link.path}
-        to={link.path}
-        className={`relative flex items-center gap-2 transition-colors hover:text-black ${
-          isActive ? " text-textdark" : " text-textlight"
-        }`}
-      >
-        {/* === Icon/Video/Image Left of Text === */}
-        {link.type === "video" ? (
-          <video
-            src={link.src}
-            autoPlay
-            muted
-            playsInline
-            className="w-15 h-15 rounded-full object-cover"
-          />
-        ) : (
-          <img
-            src={link.src}
-            alt={link.name}
-            className="w-8 h-8 rounded-full object-cover"
-          />
-        )}
-
-        {/* === Link Text === */}
-        <span className="inline-block">{link.name}</span>
-
-        {/* === Active Underline === */}
-        {isActive && (
-          <span className="absolute left-[-1px] -bottom-0    w-[calc(100%+9px)] h-[3px] bg-black rounded-full"></span>
-        )}
-      </Link>
-    )
-  })}  
-
-</div>
-
-
-        
-
-</div>
-      )}
-
-
-
-
-
-
-          {/* === Compressed / other screens & routes */}
-
-         {(isSmallScreen || !showDesktop) && (
-       <motion.button
-    initial={{ scale: 1, opacity: 1 }}
-          animate={{
-            // Apply animation only if it's an 'md' screen
-            scale: shouldAnimate ? (showDesktop ? 1 : 0.85) : 1,
-            opacity: shouldAnimate ? (showDesktop ? 1 : 0.95) : 1,
-            y: shouldAnimate ? (showDesktop ? -10 : -5) : (showDesktop ? -10 : -5), // You might still want the 'y' animation
-          }}
-          transition={{ type: "spring", stiffness: 200, damping: 25, duration: 0.3 }}
-          
-  onClick={() => setShowModal(true)}
-  className="
-    flex items-center justify-between
-    gap-1 md:gap-4
-    bg-white rounded-full text-gray-600
-    shadow-[0px_8px_20px_rgba(0,0,0,0.1)] border border-light
-    mt-4 md:mt-6 max-w-150
-  "
->
-  <div className="flex-1 gap-1 md:gap-4 flex justify-between items-center">
-   <div className="flex items-center gap-2">
-  {/* === House Video Icon === */}
-  <video
-    src={assets.housevid}
-    autoPlay
-    loop
-    muted
-    playsInline
-    className="w-11 h-11 rounded-full pl-3 md:pl-5  object-cover"
-  />
-
-  {/* === Text === */}
-  <span className="px-2 py-2 font-medium text-textdark text-md md:text-lg md:pr-4 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
-  </span>
-</div>
-
-
-    <span className="self-stretch  w-px bg-borderColor"></span>
-
-    <span className="px-2 md:px-4 font-medium  text-textdark py-2 text-md md:text-lg rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
-    </span>
-
-    <span className="self-stretch w-px bg-borderColor"></span>
-
-    <span className="px-2 md:px-4 font-medium  text-textdark  py-2 text-md md:text-lg rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
-    </span>
-  </div>
-
-  <div className="p-1 md:p-2">
-    <motion.button
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.95 }}
-      className="flex items-center justify-center md:ml-2 gap-1 px-3 py-3 btn text-white rounded-full cursor-pointer"
+    <div
+      className="flex flex-col bg-white sticky top-0 left-0 right-0 z-50 border-b border-borderColor px-4 md:px-12"
+      style={{
+        background: "linear-gradient(180deg, #ffffff 39.9%, #f8f8f8 100%)",
+      }}
     >
-      <img src={assets.search_icon} alt="search" className="brightness-300" />
-    </motion.button>
-  </div>
-</motion.button>
+      {/* --- Top Navigation --- */}
+      <div className="flex w-full items-center justify-between">
+        <Link to="/" className="z-50 py-4 md:py-6">
+          <img src={assets.logo} alt="logo" className="h-8" />
+        </Link>
 
-      )}
+        {/* Right Actions */}
+        <div className="flex items-center gap-4">
+          {/* Add Listing / Dashboard */}
+          <button
+            onClick={() => {
+              if (isOwner) navigate("/owner");
+              else if (!user) setShowLogin(true);
+              else changeRole();
+            }}
+            className="hidden sm:flex cursor-pointer rounded-3xl px-4 py-2 hover:bg-bgColor"
+          >
+            {isOwner ? "Dashboard" : "Add Listing"}
+          </button>
 
-
-
-
-   <div className='flex items-center py-4 md:py-7 gap-4'>
-          {/* Dashboard/Add Listing button (hidden on small screens) */}
-          <div className='hidden sm:flex items-center gap-4'>
+          {/* Dropdown Menu */}
+          <div className="relative" ref={dropdownRef}>
             <button
-              onClick={() => {
-                if (isOwner) {
-                  navigate('/owner')
-                } else if (!user) {
-                  setShowLogin(true)
-                } else {
-                  changeRole()
-                }
-              }}
-              className='cursor-pointer  rounded-3xl px-4 py-2 transition hover:bg-bgColor'
-            >
-              {isOwner ? 'Dashboard' : 'Add listing'}
-            </button>
-          </div>
-
-          {/* Toggle Menu Button */}
-          <div className='relative text-textlight'>
-            <button
-              className='flex cursor-pointer items-center gap-3 rounded-full border border-borderColor 
-              px-3 py-3  transition hover:shadow-md md:px-2 md:py-1'
-              aria-label='Menu'
+              className="flex items-center gap-3 rounded-full border border-borderColor px-3 py-2 hover:shadow-md"
               onClick={() => setOpen(!open)}
             >
-              <img src={assets.menu_icon} alt='menu' className='h-4 w-4 md:h-4 md:w-6' />
+              <img src={assets.menu_icon} alt="menu" className="h-4 w-4" />
               <img
                 src={user?.image || assets.user_profile}
-                alt='user'
-                className='hidden h-8 w-8 rounded-full object-cover lg:block'
+                alt="user"
+                className="h-8 w-8 rounded-full object-cover"
               />
             </button>
 
-            {/* Backdrop for mobile menu */}
             {open && (
-              <div
-                className='fixed inset-0 z-30 bg-black/10'
-                onClick={() => setOpen(false)}
-              ></div>
-            )}
-
-            {/* Dropdown Menu */}
-            <div
-              ref={dropdownRef}
-              className={`fixed  right-6  md:right-16 lg:right-24 xl:right-32  top-14 z-40 flex w-55 flex-col items-stretch rounded-lg border border-light bg-white pb-2 pt-1 shadow-xl transition-all duration-300 md:w-60 md:rounded-xl ${
-                open ? 'translate-x-0 opacity-100' : 'translate-x-10 opacity-0 pointer-events-none'
-              }`}
-            >
-              {menuLinks.map((link, index) => (
-                <Link
-                  key={index}
-                  to={link.path}
-                  onClick={() => setOpen(false)}
-                  className='group relative w-full border-b border-borderColor px-4 py-1'
+              <div className="absolute right-0 mt-2 w-56 rounded-lg border border-light bg-white shadow-xl">
+                {menuLinks.map((link) => (
+                  <Link
+                    key={link.path}
+                    to={link.path}
+                    className="block px-4 py-2 hover:bg-gray-100"
+                    onClick={() => setOpen(false)}
+                  >
+                    {link.name}
+                  </Link>
+                ))}
+                <div
+                  className="block px-4 py-2 cursor-pointer hover:bg-gray-100"
+                  onClick={() => {
+                    if (!user) setShowLogin(true);
+                    else logout();
+                    setOpen(false);
+                  }}
                 >
-                  <span className='relative z-10 block py-2 text-left'>{link.name}</span>
-                  <span className='absolute inset-x-0 bottom-1 top-1 bg-gray-100 opacity-0 transition group-hover:opacity-100'></span>
-                </Link>
-              ))}
-
-              {/* List Cars / Dashboard */}
-              <div
-                onClick={() => {
-                  if (!user) {
-                    setShowLogin(true)
-                  } else if (isOwner) {
-                    navigate('/owner')
-                  } else {
-                    changeRole()
-                  }
-                  setOpen(false)
-                }}
-                className='group relative w-full cursor-pointer border-b border-borderColor px-4 py-1'
-              >
-                <span className='relative z-10 block py-2 text-left'>
-                  {isOwner ? 'Dashboard' : 'List cars'}
-                </span>
-                <span className='absolute inset-x-0 bottom-1 top-1 bg-gray-100 opacity-0 transition group-hover:opacity-100'></span>
+                  {user ? "Logout" : "Login / Signup"}
+                </div>
               </div>
-
-              {/* Auth section */}
-              {user ? (
-                <div
-                  onClick={() => {
-                    logout()
-                    setOpen(false)
-                  }}
-                  className='group relative w-full cursor-pointer px-4 py-1'
-                >
-                  <span className='relative z-10 block py-2 text-left'>Logout</span>
-                  <span className='absolute inset-x-0 bottom-1 top-1 bg-gray-100 opacity-0 transition group-hover:opacity-100'></span>
-                </div>
-              ) : (
-                <div
-                  onClick={() => {
-                    setShowLogin(true)
-                    setOpen(false)
-                  }}
-                  className='group relative w-full cursor-pointer px-4 py-1'
-                >
-                  <span className='relative z-10 block py-2 text-left'>Login / Signup</span>
-                  <span className='absolute inset-x-0 bottom-1 top-1 bg-gray-100 opacity-0 transition group-hover:opacity-100'></span>
-                </div>
-              )}
-            </div>
+            )}
           </div>
         </div>
+      </div>
 
-</div>
+      {/* --- Search Bar --- */}
+      <motion.div
+        whileHover={{ scale: 1.02 }}
+        className="flex items-center justify-between max-w-4xl mx-auto w-full rounded-full bg-white shadow-md border px-6 py-3 cursor-pointer"
+        onClick={() => setShowModal(true)}
+      >
+        <span className="text-gray-700">
+          {filters.location || "Search location"}
+        </span>
+        <span className="text-gray-400">|</span>
+        <span>{filters.price ? `Up to ${filters.price}` : "Any Price"}</span>
+        <span className="text-gray-400">|</span>
+        <span>
+          {filters.propertyType ? filters.propertyType : "Any Property Type"}
+        </span>
+        <span className="text-gray-400">|</span>
+        <span>
+          {filters.bedrooms
+            ? `${filters.bedrooms}+ Beds`
+            : "Any Bedrooms"}
+        </span>
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="ml-4 bg-primary text-white px-4 py-2 rounded-full"
+        >
+          <img src={assets.search_icon} alt="search" className="h-4 w-4" />
+        </motion.button>
+      </motion.div>
 
+      {/* --- Filter Modal --- */}
+      {showModal && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="fixed inset-0 bg-black/20 flex items-center justify-center p-4 z-50"
+          onClick={() => setShowModal(false)}
+        >
+          <motion.div
+            initial={{ y: 100, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.3 }}
+            onClick={(e) => e.stopPropagation()}
+            className="bg-white rounded-2xl p-6 w-full max-w-3xl border border-light shadow-xl max-h-[90vh] overflow-y-auto"
+          >
+            <h2 className="text-lg font-semibold mb-4">Filter Listings</h2>
 
+            {/* --- Location Input --- */}
+            <label className="block mb-2">Location</label>
+            <input
+              type="text"
+              value={filters.location}
+              onChange={(e) => setFilters({ ...filters, location: e.target.value })}
+              placeholder="Type a city or area"
+              list="city-list"
+              className="w-full border rounded-lg p-2"
+            />
+            <datalist id="city-list">
+              {cityList.map((city) => (
+                <option key={city} value={city} />
+              ))}
+            </datalist>
 
+            <button
+              type="button"
+              onClick={handleUseCurrentLocation}
+              className="mt-2 px-4 py-2 rounded-lg bg-primary text-white"
+            >
+              Use Current Location
+            </button>
 
-     
-              
-              
-           
-    
+            {/* --- Map Picker --- */}
+            <div className="mt-4 rounded-lg overflow-hidden border h-72">
+              <MapContainer center={mapCenter} zoom={13} style={{ height: "100%" }}>
+                <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+                <LocationSelector />
+                {markerPosition && (
+                  <>
+                    <Marker position={markerPosition} />
+                    <Circle center={markerPosition} radius={filters.radius} />
+                  </>
+                )}
+              </MapContainer>
+              <div className="flex items-center gap-3 mt-2">
+                <label>Radius:</label>
+                <input
+                  type="range"
+                  min="500"
+                  max="10000"
+                  step="500"
+                  value={filters.radius}
+                  onChange={(e) =>
+                    setFilters({ ...filters, radius: Number(e.target.value) })
+                  }
+                />
+                <span>{Math.round(filters.radius / 1000)} km</span>
+              </div>
+            </div>
 
+            {/* --- Other Filters --- */}
+            <div className="grid grid-cols-2 gap-4 mt-4">
+              <div>
+                <label className="block mb-1">Max Price</label>
+                <input
+                  type="number"
+                  value={filters.price}
+                  onChange={(e) =>
+                    setFilters({ ...filters, price: e.target.value })
+                  }
+                  placeholder="Enter max price"
+                  className="w-full border rounded-lg p-2"
+                />
+              </div>
 
+              <div>
+                <label className="block mb-1">Property Type</label>
+                <select
+                  value={filters.propertyType}
+                  onChange={(e) =>
+                    setFilters({ ...filters, propertyType: e.target.value })
+                  }
+                  className="w-full border rounded-lg p-2"
+                >
+                  <option value="">Any</option>
+                  <option value="apartment">Apartment</option>
+                  <option value="house">House</option>
+                  <option value="land">Land</option>
+                  <option value="commercial">Commercial</option>
+                </select>
+              </div>
 
+              <div>
+                <label className="block mb-1">Bedrooms</label>
+                <input
+                  type="number"
+                  value={filters.bedrooms}
+                  onChange={(e) =>
+                    setFilters({ ...filters, bedrooms: e.target.value })
+                  }
+                  className="w-full border rounded-lg p-2"
+                  placeholder="Min bedrooms"
+                />
+              </div>
 
+              <div>
+                <label className="block mb-1">Bathrooms</label>
+                <input
+                  type="number"
+                  value={filters.bathrooms}
+                  onChange={(e) =>
+                    setFilters({ ...filters, bathrooms: e.target.value })
+                  }
+                  className="w-full border rounded-lg p-2"
+                  placeholder="Min bathrooms"
+                />
+              </div>
+            </div>
 
-
-
-
-      {/* === Popup Modal */}
-       showModal && (
-           <motion.div
-             initial={{ opacity: 0 }}
-             animate={{ opacity: 1 }}
-             className="fixed inset-0 bg-black/10 flex p-2 items-center justify-center z-50"
-             onClick={() => setShowModal(false)}
-           >
-             <motion.div
-               initial={{ y: 100, opacity: 0 }}
-               animate={{ y: 0, opacity: 1 }}
-               transition={{ duration: 0.3 }}
-               className="bg-white rounded-2xl p-6 w-full border border-light max-w-3xl shadow-xl max-h-[90vh] overflow-y-auto"
-               onClick={(e) => e.stopPropagation()}
-             >
-               <h2 className="text-lg font-semibold mb-4">Filter Listings</h2>
-     
-               {/* Location Search */}
-               <div className="flex flex-col gap-4">
-                 <label className="block text-sm font-medium">Location</label>
-                 <input
-                   type="text"
-                   placeholder="Type a city or area"
-                   className="w-full border rounded-lg p-2"
-                 />
-                 <button
-                   type="button"
-                   onClick={handleUseCurrentLocation}
-                   className="px-4 py-2 rounded-lg bg-primary text-white"
-                 >
-                   Use Current Location
-                 </button>
-               </div>
-     
-               {/* Map Picker */}
-               <div className="mt-4 rounded-lg overflow-hidden border h-72">
-                 <MapContainer center={mapCenter} zoom={13} style={{ height: "100%", width: "100%" }}>
-                   <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-                   <LocationSelector />
-                   {markerPosition && (
-                     <>
-                       <Marker position={markerPosition}></Marker>
-                       <Circle center={markerPosition} radius={radius} />
-                     </>
-                   )}
-                 </MapContainer>
-                 <div className="flex items-center gap-3 mt-2">
-                   <label>Search Radius:</label>
-                   <input
-                     type="range"
-                     min="500"
-                     max="10000"
-                     step="500"
-                     value={radius}
-                     onChange={(e) => {
-                       setRadius(Number(e.target.value));
-                       setFilters({ ...filters, radius: Number(e.target.value) });
-                     }}
-                   />
-                   <span>{Math.round(radius / 1000)} km</span>
-                 </div>
-               </div>
-     
-               {/* Filters */}
-               <div className="grid grid-cols-2 gap-4 mt-4">
-                 <div>
-                   <label className="block mb-1">Max Price</label>
-                   <input
-                     type="number"
-                     placeholder="Max price"
-                     className="w-full border rounded-lg p-2"
-                   />
-                 </div>
-                 <div>
-                   <label className="block mb-1">Property Type</label>
-                   <select
-                     value={filters.propertyType || ""}
-                     onChange={(e) => setFilters({ ...filters, propertyType: e.target.value })}
-                     className="w-full border rounded-lg p-2"
-                   >
-                     <option value="">Any</option>
-                     <option value="apartment">Apartment</option>
-                     <option value="house">House</option>
-                     <option value="land">Land</option>
-                     <option value="commercial">Commercial</option>
-                   </select>
-                 </div>
-                 <div>
-                   <label className="block mb-1">Bedrooms</label>
-                   <input
-                     type="number"
-                     placeholder="Min bedrooms"
-                     value={filters.bedrooms || ""}
-                     onChange={(e) => setFilters({ ...filters, bedrooms: e.target.value })}
-                     className="w-full border rounded-lg p-2"
-                   />
-                 </div>
-                 <div>
-                   <label className="block mb-1">Bathrooms</label>
-                   <input
-                     type="number"
-                     placeholder="Min bathrooms"
-                     value={filters.bathrooms || ""}
-                     onChange={(e) => setFilters({ ...filters, bathrooms: e.target.value })}
-                     className="w-full border rounded-lg p-2"
-                   />
-                 </div>
-               </div>
-     
-               {/* Footer */}
-               <div className="flex justify-between mt-6">
-                 <button
-                   type="button"
-                   onClick={() => setShowModal(false)}
-                   className="px-4 py-2 rounded-lg bg-gray-200"
-                 >
-                   Cancel
-                 </button>
-                 <button
-                   type="button"
-                   onClick={handleSearch}
-                   className="px-4 py-2 rounded-lg bg-primary text-white"
-                 >
-                   Apply Filters
-                 </button>
-               </div>
-             </motion.div>
-           </motion.div>
-         )
+            {/* --- Footer --- */}
+            <div className="flex justify-between mt-6">
+              <button
+                type="button"
+                onClick={() => setShowModal(false)}
+                className="px-4 py-2 rounded-lg bg-gray-200"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={handleSearch}
+                className="px-4 py-2 rounded-lg bg-primary text-white"
+              >
+                Apply Filters
+              </button>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
     </div>
-  )
-}
+  );
+};
 
-export default Hero
+export default Hero;
