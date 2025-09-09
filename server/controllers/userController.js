@@ -69,7 +69,94 @@ export const getUserData = async (req, res) =>{
 // Get All Listings for the Frontend with Filters
 // Get All Listings for the Frontend with Filters
 
+export const getListings = async (req, res) => {
+  try {
+    const {
+      location,
+      minPrice,
+      maxPrice,
+      propertytype,
+      offertype, // "sale" or "rent"
+      bedrooms,
+      bathrooms,
+      rooms,
+      size, // optional string match
+      amenitiesInternal,
+      amenitiesExternal,
+      amenitiesNearby,
+      featured,
+      available,
+    } = req.query;
 
+    // ✅ Build filter dynamically
+    const filter = {};
+
+    // ✅ Listing status (true = available)
+    if (available !== undefined) {
+      filter.listingstatus = available === "true";
+    }
+
+    // ✅ Location (case-insensitive partial match)
+    if (location) {
+      filter.location = { $regex: new RegExp(location, "i") };
+    }
+
+    // ✅ Price range
+    if (minPrice || maxPrice) {
+      filter.price = {};
+      if (minPrice) filter.price.$gte = Number(minPrice);
+      if (maxPrice) filter.price.$lte = Number(maxPrice);
+    }
+
+    // ✅ Property Type
+    if (propertytype) {
+      filter.propertytype = { $regex: new RegExp(propertytype, "i") };
+    }
+
+    // ✅ Offer Type (sale/rent)
+    if (offertype) {
+      filter.offertype = offertype;
+    }
+
+    // ✅ Features (exact match)
+    if (bedrooms) {
+      filter["features.bedrooms"] = Number(bedrooms);
+    }
+    if (bathrooms) {
+      filter["features.bathrooms"] = Number(bathrooms);
+    }
+    if (rooms) {
+      filter["features.rooms"] = Number(rooms);
+    }
+    if (size) {
+      filter["features.size"] = { $regex: new RegExp(size, "i") };
+    }
+
+    // ✅ Amenities (array match)
+    if (amenitiesInternal) {
+      filter["amenities.internal"] = { $all: amenitiesInternal.split(",") };
+    }
+    if (amenitiesExternal) {
+      filter["amenities.external"] = { $all: amenitiesExternal.split(",") };
+    }
+    if (amenitiesNearby) {
+      filter["amenities.nearby"] = { $all: amenitiesNearby.split(",") };
+    }
+
+    // ✅ Featured filter
+    if (featured !== undefined) {
+      filter.featured = featured === "true";
+    }
+
+    // ✅ Fetch listings
+    const listings = await Listing.find(filter).sort({ createdAt: -1 });
+
+    res.json({ success: true, count: listings.length, listings });
+  } catch (error) {
+    console.error("Error fetching listings:", error.message);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
 
 
 

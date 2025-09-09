@@ -4,7 +4,8 @@ import { useState, useRef } from "react";
 import LikeButton from "./LikeButton";
 
 const ListingCard = ({ listing }) => {
-  const images = Array.isArray(listing.image) ? listing.image : listing.image ? [listing.image] : [];
+  // ✅ Use `images` field from schema
+  const images = Array.isArray(listing.images) ? listing.images : listing.images ? [listing.images] : [];
   const [currentIndex, setCurrentIndex] = useState(0);
   const scrollRef = useRef(null);
 
@@ -47,7 +48,8 @@ const ListingCard = ({ listing }) => {
 
   return (
     <div className="relative gap-2 md:gap-4 group mb-2 md:mb-[8px] overflow-hidden rounded-xl">
-      <Link to={`/car-details/${listing._id}`} className="block">
+      {/* ✅ Updated Link to generic listing page */}
+      <Link to={`/listing-details/${listing._id}`} className="block">
         <div className="relative w-full h-full aspect-[3/3] rounded-xl overflow-hidden">
           <div
             ref={scrollRef}
@@ -70,11 +72,13 @@ const ListingCard = ({ listing }) => {
             )}
           </div>
 
-          <div className="absolute rounded-full hover:bg-[#0556f7] bg-[#2F74FD] bottom-3 right-3 px-3 py-1 text-white text-sm font-medium">
+          {/* ✅ Status Badge */}
+          <div className={`absolute rounded-full bottom-3 right-3 px-3 py-1 text-white text-sm font-medium
+            ${listing.listingstatus ? "bg-[#2F74FD] hover:bg-[#0556f7]" : "bg-gray-500"}`}>
             {listing.listingstatus ? "Available" : "Unavailable"}
           </div>
 
-          {/* Dots */}
+          {/* ✅ Image Dots */}
           {images.length > 1 && (
             <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 flex gap-1 px-2 py-1 rounded-full">
               {images.map((_, index) => (
@@ -90,12 +94,12 @@ const ListingCard = ({ listing }) => {
         </div>
       </Link>
 
-    
-       <div className="absolute top-3 right-3">
+      {/* ✅ Like Button */}
+      <div className="absolute top-3 right-3">
         <LikeButton listingId={listing._id} />
       </div>
 
-      {/* Arros */}
+      {/* ✅ Navigation Arrows */}
       {images.length > 1 && (
         <>
           <button
@@ -113,28 +117,37 @@ const ListingCard = ({ listing }) => {
         </>
       )}
 
-      {/* Info */}
+      {/* ✅ Info Section */}
       <div className="mt-3 gap-1">
-        <Link to={`/car-details/${listing._id}`} className="block">
+        <Link to={`/listing-details/${listing._id}`} className="block">
+          {/* Location */}
           <div className="flex justify-between mr-1">
             <p className="text-[var(--softTextColor)] font-semibold capitalize text-[14px] md:text-[15px]">
-              {listing.location || "America"}
+              {listing.location || "Unknown Location"}
             </p>
           </div>
 
+          {/* Title */}
           <p className="text-[var(--softTextColor)] capitalize text-[14px] md:text-[15px]">
-            {listing.seating_capacity ? `${listing.seating_capacity} Seats` : ""}{" "}
-            {listing.model ? `${listing.model}` : ""} for hire
+            {listing.title || listing.propertytype || "Property"} 
           </p>
 
-          <p className="text-[var(--softTextColor)] text-[13px] md:text-[14px]">
-            {listing.year}
-          </p>
+          {/* Size / Features */}
+          {(listing.features?.size || listing.features?.bedrooms || listing.features?.bathrooms) && (
+            <p className="text-[var(--softTextColor)] text-[13px] md:text-[14px]">
+              {listing.features?.size ? `${listing.features.size}` : ""}
+              {listing.features?.bedrooms ? ` • ${listing.features.bedrooms} Bed` : ""}
+              {listing.features?.bathrooms ? ` • ${listing.features.bathrooms} Bath` : ""}
+            </p>
+          )}
 
-          <p className="text-[var(--softTextColor)] font-semibold text-[14px] md:text-[15px]">
-            KSh {listing.price}
-            <span className="font-normal"> /day</span>
-          </p>
+          {/* Price */}
+          {listing.price && (
+            <p className="text-[var(--softTextColor)] font-semibold text-[14px] md:text-[15px]">
+              KSh {listing.price.toLocaleString()}
+              {listing.offertype === "rent" && <span className="font-normal"> /month</span>}
+            </p>
+          )}
         </Link>
       </div>
     </div>

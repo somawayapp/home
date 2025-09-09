@@ -1,5 +1,5 @@
 import express from "express";
-import { getUserData, loginUser, registerUser,toggleLike, getLikedListings, checkIfLiked } from "../controllers/userController.js";
+import { getListings, getUserData, loginUser, registerUser,toggleLike, getLikedListings, checkIfLiked } from "../controllers/userController.js";
 import { protect } from "../middleware/auth.js";
 
 const userRouter = express.Router();
@@ -7,6 +7,7 @@ const userRouter = express.Router();
 userRouter.post('/register', registerUser)
 userRouter.post('/login', loginUser)
 userRouter.get('/data', protect, getUserData)
+userRouter.get('/listing', getListings)
 
 userRouter.post("/togglelike", protect, toggleLike);
 userRouter.get("/alllikes", protect, getLikedListings);
