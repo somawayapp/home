@@ -1,9 +1,7 @@
 import { MapContainer, TileLayer, Marker, Circle, useMapEvents } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import "leaflet-draw/dist/leaflet.draw.css";
 import { motion } from "motion/react";
 import { useState, useEffect } from "react";
-import L from "leaflet";
 
 const FilterModal = ({
   showModal,
