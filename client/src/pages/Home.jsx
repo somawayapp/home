@@ -70,13 +70,13 @@ const Home = () => {
       className='px-4 md:px-12 lg:px-16 xl:px-24 mt-8'>
 
         <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8  mx-auto'>
-         {filteredCars.map((car, index)=> (
+         {filteredCars.map((listing, index)=> (
             <motion.div key={index}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 * index, duration: 0.4 }}
             >
-              <CarCard car={car}/>
+              <CarCard listing={listing}/>
             </motion.div>
           ))}
         </div>
