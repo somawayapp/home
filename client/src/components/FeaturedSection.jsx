@@ -9,7 +9,7 @@ import { motion } from 'motion/react'
 const FeaturedSection = () => {
 
     const navigate = useNavigate()
-    const {cars} = useAppContext()
+    const {listing} = useAppContext()
 
   return (
     <motion.div 
@@ -32,13 +32,13 @@ const FeaturedSection = () => {
         transition={{ delay: 0.5, duration: 1 }}
         className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-18'>
         {
-            cars.slice(0,6).map((car)=> (
-                <motion.div key={car._id}
+            listing.slice(0,6).map((listing)=> (
+                <motion.div key={listing._id}
                 initial={{ opacity: 0, scale: 0.95 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.4, ease: "easeOut"  }}
                 >
-                    <ListingCard car={car}/>
+                    <ListingCard listing={listing}/>
                 </motion.div>
             ))
         }
@@ -49,10 +49,10 @@ const FeaturedSection = () => {
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.6, duration: 0.4 }}
         onClick={()=> {
-            navigate('/cars'); scrollTo(0,0)
+            navigate('/listings'); scrollTo(0,0)
         }}
          className='flex items-center justify-center gap-2 px-6 py-2 border border-borderColor hover:bg-gray-50 rounded-md mt-18 cursor-pointer'>
-            Explore all cars <img src={assets.arrow_icon} alt="arrow" />
+            Explore all listings <img src={assets.arrow_icon} alt="arrow" />
         </motion.button>
       
     </motion.div>

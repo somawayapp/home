@@ -2,7 +2,7 @@ import React from 'react'
 import { Route, Routes } from 'react-router-dom'
 import Home from './pages/Home'
 import CarDetails from './pages/CarDetails'
-import Cars from './pages/Cars'
+import Listings from './pages/Listings'
 import MyBookings from './pages/MyBookings'
 import Layout from './pages/owner/Layout'
 import Dashboard from './pages/owner/Dashboard'
@@ -27,7 +27,7 @@ const App = () => {
         <Route element={<SiteLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/car-details/:id" element={<CarDetails />} />
-          <Route path="/cars" element={<Cars />} />
+          <Route path="/listings" element={<Listings />} />
           <Route path="/my-bookings" element={<MyBookings />} />
         </Route>
 
