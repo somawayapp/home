@@ -15,8 +15,7 @@ import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import "leaflet/dist/images/marker-icon-2x.png";
 import "leaflet/dist/images/marker-shadow.png";
-import ReactSlider from "react-slider";
-
+import Slider from "rc-slider";
 // Fix for default Leaflet marker icons
 delete L.Icon.Default.prototype._get  
 
@@ -475,7 +474,7 @@ const Hero = () => {
             <div className="grid grid-cols-2 gap-4 mt-4">
               <div className="col-span-2">
                 <label className="block mb-4">Price Range</label>
-                <ReactSlider
+                <Slider
                   className="horizontal-slider"
                   thumbClassName="example-thumb"
                   trackClassName="example-track"
