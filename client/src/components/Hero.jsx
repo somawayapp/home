@@ -12,6 +12,21 @@ import {
   useMapEvents,
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
+import L from "leaflet";
+import "leaflet/dist/images/marker-icon-2x.png";
+import "leaflet/dist/images/marker-shadow.png";
+import ReactSlider from "react-slider";
+
+// Fix for default Leaflet marker icons
+delete L.Icon.Default.prototype._get  
+
+// eslint-disable-next-line
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png',
+  iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
+  shadowUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png',
+});
+
 
 const Hero = () => {
   const navigate = useNavigate();
@@ -28,17 +43,33 @@ const Hero = () => {
     lat: null,
     lng: null,
     radius: 2000,
-    price: "",
+    minPrice: "",
+    maxPrice: "",
     propertyType: "",
     bedrooms: "",
     bathrooms: "",
+    amenities: [],
+    features: [],
   });
 
   const [showModal, setShowModal] = useState(false);
   const [mapCenter, setMapCenter] = useState([0.3476, 32.5825]); // Kampala default
   const [markerPosition, setMarkerPosition] = useState(null);
+  const [locationSuggestions, setLocationSuggestions] = useState([]);
 
-  // --- Sync filters from URL on page load or URL change ---
+  // Mock geocoding function (replace with a real API call)
+  const geocodeLocation = async (query) => {
+    // This is a placeholder. In a real app, you'd call a geocoding API.
+    // Example: `const res = await axios.get('https://api.opencagedata.com/geocode/v1/json', { params: { q: query, key: 'YOUR_API_KEY' } });`
+    const mockData = [
+      { name: "Kampala, Uganda", lat: 0.3476, lng: 32.5825 },
+      { name: "Entebbe, Uganda", lat: 0.0506, lng: 32.4632 },
+      { name: "Jinja, Uganda", lat: 0.4243, lng: 33.2045 },
+    ];
+    return mockData.filter(loc => loc.name.toLowerCase().includes(query.toLowerCase()));
+  };
+
+  // Sync filters from URL on page load or URL change
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
     const newFilters = {
@@ -46,10 +77,13 @@ const Hero = () => {
       lat: searchParams.get("lat") ? parseFloat(searchParams.get("lat")) : null,
       lng: searchParams.get("lng") ? parseFloat(searchParams.get("lng")) : null,
       radius: searchParams.get("radius") ? parseInt(searchParams.get("radius")) : 2000,
-      price: searchParams.get("price") || "",
+      minPrice: searchParams.get("minPrice") || "",
+      maxPrice: searchParams.get("maxPrice") || "",
       propertyType: searchParams.get("propertyType") || "",
       bedrooms: searchParams.get("bedrooms") || "",
       bathrooms: searchParams.get("bathrooms") || "",
+      amenities: searchParams.get("amenities") ? searchParams.get("amenities").split(',') : [],
+      features: searchParams.get("features") ? searchParams.get("features").split(',') : [],
     };
     setFilters(newFilters);
     if (newFilters.lat && newFilters.lng) {
@@ -58,10 +92,15 @@ const Hero = () => {
     }
   }, [location.search]);
 
-  // --- Handle Search ---
+  // Handle Search
   const handleSearch = () => {
     const validFilters = Object.fromEntries(
-      Object.entries(filters).filter(([key, value]) => value !== "" && value !== null)
+      Object.entries(filters).filter(([key, value]) => {
+        if (Array.isArray(value)) {
+          return value.length > 0;
+        }
+        return value !== "" && value !== null;
+      })
     );
     navigate({
       pathname: '/listings',
@@ -70,23 +109,35 @@ const Hero = () => {
     setShowModal(false);
   };
 
-  // --- Update a single filter ---
+  // Update a single filter
   const handleFilterChange = (key, value) => {
     const updatedFilters = { ...filters, [key]: value };
     setFilters(updatedFilters);
   };
 
-  // --- Remove a single filter ---
+  // Remove a single filter
   const handleRemoveFilter = (key) => {
-    const newFilters = { ...filters, [key]: "" };
+    let newFilters = { ...filters };
     if (key === "lat" || key === "lng") {
       newFilters.lat = null;
       newFilters.lng = null;
       setMarkerPosition(null);
+    } else if (key === "amenities" || key === "features") {
+      newFilters[key] = [];
+    } else if (key === "minPrice" || key === "maxPrice") {
+      newFilters.minPrice = "";
+      newFilters.maxPrice = "";
+    } else {
+      newFilters[key] = "";
     }
     setFilters(newFilters);
     const validFilters = Object.fromEntries(
-      Object.entries(newFilters).filter(([k, v]) => v !== "" && v !== null)
+      Object.entries(newFilters).filter(([k, v]) => {
+        if (Array.isArray(v)) {
+          return v.length > 0;
+        }
+        return v !== "" && v !== null;
+      })
     );
     navigate({
       pathname: '/listings',
@@ -94,50 +145,75 @@ const Hero = () => {
     });
   };
 
-  // --- Remove all filters ---
+  // Remove all filters
   const handleRemoveAllFilters = () => {
     setFilters({
       location: "",
       lat: null,
       lng: null,
       radius: 2000,
-      price: "",
+      minPrice: "",
+      maxPrice: "",
       propertyType: "",
       bedrooms: "",
       bathrooms: "",
+      amenities: [],
+      features: [],
     });
     setMarkerPosition(null);
     navigate("/listings");
   };
 
-  // --- Current Location ---
+  // Current Location
   const handleUseCurrentLocation = () => {
     navigator.geolocation.getCurrentPosition(
       (pos) => {
         const { latitude, longitude } = pos.coords;
         setMapCenter([latitude, longitude]);
         setMarkerPosition([latitude, longitude]);
-        handleFilterChange("lat", latitude);
-        handleFilterChange("lng", longitude);
+        setFilters(prev => ({ ...prev, lat: latitude, lng: longitude }));
       },
-      (err) => toast.error("Failed to get location"),
+      (err) => toast.error("Failed to get location: " + err.message),
       { enableHighAccuracy: true }
     );
   };
 
-  // --- Map click to choose location ---
+  // Map click to choose location
   function LocationSelector() {
     useMapEvents({
       click(e) {
         setMarkerPosition([e.latlng.lat, e.latlng.lng]);
-        handleFilterChange("lat", e.latlng.lat);
-        handleFilterChange("lng", e.latlng.lng);
+        setFilters(prev => ({ ...prev, lat: e.latlng.lat, lng: e.latlng.lng }));
       },
     });
     return null;
   }
 
-  // --- Close dropdown on outside click ---
+  // Handle geocoding input
+  const handleGeocodeInput = async (e) => {
+    const query = e.target.value;
+    handleFilterChange("location", query);
+    if (query.length > 2) {
+      const suggestions = await geocodeLocation(query);
+      setLocationSuggestions(suggestions);
+    } else {
+      setLocationSuggestions([]);
+    }
+  };
+
+  const handleSelectSuggestion = (suggestion) => {
+    setFilters(prev => ({
+      ...prev,
+      location: suggestion.name,
+      lat: suggestion.lat,
+      lng: suggestion.lng,
+    }));
+    setMapCenter([suggestion.lat, suggestion.lng]);
+    setMarkerPosition([suggestion.lat, suggestion.lng]);
+    setLocationSuggestions([]);
+  };
+
+  // Close dropdown on outside click
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
@@ -148,14 +224,22 @@ const Hero = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // --- Get active filters for display ---
-  const activeFilters = Object.entries(filters).filter(([key, value]) => value !== "" && value !== null);
+  // Get active filters for display
+  const activeFilters = Object.entries(filters).filter(([key, value]) => {
+    if (Array.isArray(value)) {
+      return value.length > 0;
+    }
+    return value !== "" && value !== null;
+  });
+
   const getFilterLabel = (key, value) => {
     switch (key) {
       case "location":
         return `Location: ${value}`;
-      case "price":
-        return `Max Price: ${value}`;
+      case "minPrice":
+        return `Price: $${value} - $${filters.maxPrice}`;
+      case "maxPrice":
+        return null;
       case "propertyType":
         return `Type: ${value}`;
       case "bedrooms":
@@ -167,6 +251,10 @@ const Hero = () => {
         return `Map Location`;
       case "radius":
         return `Radius: ${Math.round(value / 1000)} km`;
+      case "amenities":
+        return `Amenities: ${value.join(", ")}`;
+      case "features":
+        return `Features: ${value.join(", ")}`;
       default:
         return `${key}: ${value}`;
     }
@@ -192,7 +280,7 @@ const Hero = () => {
             onClick={() => {
               if (isOwner) navigate("/owner");
               else if (!user) setShowLogin(true);
-              else changeRole(); // This function is not defined in the original code. Assuming it exists elsewhere.
+              else toast.error("This functionality needs to be implemented.");
             }}
             className="hidden sm:flex cursor-pointer rounded-3xl px-4 py-2 hover:bg-bgColor"
           >
@@ -251,7 +339,11 @@ const Hero = () => {
           {filters.location || "Search location"}
         </span>
         <span className="text-gray-400">|</span>
-        <span>{filters.price ? `Up to ${filters.price}` : "Any Price"}</span>
+        <span>
+          {filters.minPrice || filters.maxPrice
+            ? `$${filters.minPrice || 0} - $${filters.maxPrice || "Max"}`
+            : "Any Price"}
+        </span>
         <span className="text-gray-400">|</span>
         <span>
           {filters.propertyType || "Any Property Type"}
@@ -273,22 +365,25 @@ const Hero = () => {
 
       {/* --- Applied Filters Display --- */}
       {activeFilters.length > 0 && (
-        <div className="flex flex-wrap items-center justify-center gap-2 mt-4">
+        <div className="flex flex-wrap items-center justify-center gap-2 mt-4 pb-4">
           <span className="font-semibold text-sm">Active Filters:</span>
-          {activeFilters.map(([key, value]) => (
-            <div key={key} className="flex items-center gap-1 bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm">
-              <span>{getFilterLabel(key, value)}</span>
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleRemoveFilter(key);
-                }}
-                className="text-red-500 hover:text-red-700"
-              >
-                &times;
-              </button>
-            </div>
-          ))}
+          {activeFilters.map(([key, value]) => {
+            const label = getFilterLabel(key, value);
+            return label ? (
+              <div key={key} className="flex items-center gap-1 bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm">
+                <span>{label}</span>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleRemoveFilter(key);
+                  }}
+                  className="text-red-500 hover:text-red-700"
+                >
+                  &times;
+                </button>
+              </div>
+            ) : null;
+          })}
           <button
             onClick={handleRemoveAllFilters}
             className="px-3 py-1 text-sm rounded-full bg-red-500 text-white hover:bg-red-600 transition"
@@ -316,25 +411,34 @@ const Hero = () => {
             <h2 className="text-lg font-semibold mb-4">Filter Listings</h2>
 
             {/* --- Location Input --- */}
-            <label className="block mb-2">Location</label>
-            <input
-              type="text"
-              value={filters.location}
-              onChange={(e) => handleFilterChange("location", e.target.value)}
-              placeholder="Type a city or area"
-              list="city-list"
-              className="w-full border rounded-lg p-2"
-            />
-            <datalist id="city-list">
-              {cityList.map((city) => (
-                <option key={city} value={city} />
-              ))}
-            </datalist>
+            <div className="relative mb-4">
+              <label className="block mb-2">Location</label>
+              <input
+                type="text"
+                value={filters.location}
+                onChange={handleGeocodeInput}
+                placeholder="Search for a city or area"
+                className="w-full border rounded-lg p-2"
+              />
+              {locationSuggestions.length > 0 && (
+                <ul className="absolute z-10 w-full bg-white border border-gray-300 rounded-lg mt-1 max-h-48 overflow-y-auto shadow-lg">
+                  {locationSuggestions.map((suggestion, index) => (
+                    <li
+                      key={index}
+                      onClick={() => handleSelectSuggestion(suggestion)}
+                      className="p-2 hover:bg-gray-100 cursor-pointer"
+                    >
+                      {suggestion.name}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
 
             <button
               type="button"
               onClick={handleUseCurrentLocation}
-              className="mt-2 px-4 py-2 rounded-lg bg-primary text-white"
+              className="px-4 py-2 rounded-lg bg-primary text-white"
             >
               Use Current Location
             </button>
@@ -369,17 +473,26 @@ const Hero = () => {
 
             {/* --- Other Filters --- */}
             <div className="grid grid-cols-2 gap-4 mt-4">
-              <div>
-                <label className="block mb-1">Max Price</label>
-                <input
-                  type="number"
-                  value={filters.price}
-                  onChange={(e) =>
-                    handleFilterChange("price", e.target.value)
-                  }
-                  placeholder="Enter max price"
-                  className="w-full border rounded-lg p-2"
+              <div className="col-span-2">
+                <label className="block mb-4">Price Range</label>
+                <ReactSlider
+                  className="horizontal-slider"
+                  thumbClassName="example-thumb"
+                  trackClassName="example-track"
+                  defaultValue={[Number(filters.minPrice) || 0, Number(filters.maxPrice) || 5000000]}
+                  min={0}
+                  max={5000000}
+                  step={100000}
+                  onChange={([min, max]) => {
+                    handleFilterChange("minPrice", min);
+                    handleFilterChange("maxPrice", max);
+                  }}
+                  renderThumb={(props, state) => <div {...props}>${state.valueNow}</div>}
                 />
+                <div className="flex justify-between mt-2 text-sm text-gray-500">
+                  <span>Min: ${filters.minPrice || 0}</span>
+                  <span>Max: ${filters.maxPrice || "Max"}</span>
+                </div>
               </div>
 
               <div>
@@ -424,6 +537,50 @@ const Hero = () => {
                   placeholder="Min bathrooms"
                 />
               </div>
+
+              {/* Amenities Filter */}
+              <div className="col-span-2">
+                <label className="block mb-2">Amenities</label>
+                <div className="flex flex-wrap gap-2">
+                  {['Pool', 'Gym', 'WiFi', 'Parking', 'A/C'].map(amenity => (
+                    <label key={amenity} className="flex items-center gap-1">
+                      <input
+                        type="checkbox"
+                        checked={filters.amenities.includes(amenity.toLowerCase())}
+                        onChange={(e) => {
+                          const newAmenities = e.target.checked
+                            ? [...filters.amenities, amenity.toLowerCase()]
+                            : filters.amenities.filter(a => a !== amenity.toLowerCase());
+                          handleFilterChange("amenities", newAmenities);
+                        }}
+                      />
+                      {amenity}
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              {/* Features Filter */}
+              <div className="col-span-2">
+                <label className="block mb-2">Features</label>
+                <div className="flex flex-wrap gap-2">
+                  {['Balcony', 'Garden', 'Furnished', 'Pet-Friendly'].map(feature => (
+                    <label key={feature} className="flex items-center gap-1">
+                      <input
+                        type="checkbox"
+                        checked={filters.features.includes(feature.toLowerCase())}
+                        onChange={(e) => {
+                          const newFeatures = e.target.checked
+                            ? [...filters.features, feature.toLowerCase()]
+                            : filters.features.filter(f => f !== feature.toLowerCase());
+                          handleFilterChange("features", newFeatures);
+                        }}
+                      />
+                      {feature}
+                    </label>
+                  ))}
+                </div>
+              </div>
             </div>
 
             {/* --- Footer --- */}
@@ -440,7 +597,7 @@ const Hero = () => {
                 onClick={handleSearch}
                 className="px-4 py-2 rounded-lg bg-primary text-white"
               >
-                Apply Filter
+                Apply Filters
               </button>
             </div>
           </motion.div>
