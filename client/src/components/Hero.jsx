@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { assets, menuLinks, cityList } from "../assets/assets";
 import { useAppContext } from "../context/AppContext";
 import { motion } from "framer-motion";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate, createSearchParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import {
   MapContainer,
@@ -38,6 +38,78 @@ const Hero = () => {
   const [mapCenter, setMapCenter] = useState([0.3476, 32.5825]); // Kampala default
   const [markerPosition, setMarkerPosition] = useState(null);
 
+  // --- Sync filters from URL on page load or URL change ---
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const newFilters = {
+      location: searchParams.get("location") || "",
+      lat: searchParams.get("lat") ? parseFloat(searchParams.get("lat")) : null,
+      lng: searchParams.get("lng") ? parseFloat(searchParams.get("lng")) : null,
+      radius: searchParams.get("radius") ? parseInt(searchParams.get("radius")) : 2000,
+      price: searchParams.get("price") || "",
+      propertyType: searchParams.get("propertyType") || "",
+      bedrooms: searchParams.get("bedrooms") || "",
+      bathrooms: searchParams.get("bathrooms") || "",
+    };
+    setFilters(newFilters);
+    if (newFilters.lat && newFilters.lng) {
+      setMapCenter([newFilters.lat, newFilters.lng]);
+      setMarkerPosition([newFilters.lat, newFilters.lng]);
+    }
+  }, [location.search]);
+
+  // --- Handle Search ---
+  const handleSearch = () => {
+    const validFilters = Object.fromEntries(
+      Object.entries(filters).filter(([key, value]) => value !== "" && value !== null)
+    );
+    navigate({
+      pathname: '/listings',
+      search: `?${createSearchParams(validFilters)}`
+    });
+    setShowModal(false);
+  };
+
+  // --- Update a single filter ---
+  const handleFilterChange = (key, value) => {
+    const updatedFilters = { ...filters, [key]: value };
+    setFilters(updatedFilters);
+  };
+
+  // --- Remove a single filter ---
+  const handleRemoveFilter = (key) => {
+    const newFilters = { ...filters, [key]: "" };
+    if (key === "lat" || key === "lng") {
+      newFilters.lat = null;
+      newFilters.lng = null;
+      setMarkerPosition(null);
+    }
+    setFilters(newFilters);
+    const validFilters = Object.fromEntries(
+      Object.entries(newFilters).filter(([k, v]) => v !== "" && v !== null)
+    );
+    navigate({
+      pathname: '/listings',
+      search: `?${createSearchParams(validFilters)}`
+    });
+  };
+
+  // --- Remove all filters ---
+  const handleRemoveAllFilters = () => {
+    setFilters({
+      location: "",
+      lat: null,
+      lng: null,
+      radius: 2000,
+      price: "",
+      propertyType: "",
+      bedrooms: "",
+      bathrooms: "",
+    });
+    setMarkerPosition(null);
+    navigate("/listings");
+  };
+
   // --- Current Location ---
   const handleUseCurrentLocation = () => {
     navigator.geolocation.getCurrentPosition(
@@ -45,7 +117,8 @@ const Hero = () => {
         const { latitude, longitude } = pos.coords;
         setMapCenter([latitude, longitude]);
         setMarkerPosition([latitude, longitude]);
-        setFilters({ ...filters, lat: latitude, lng: longitude });
+        handleFilterChange("lat", latitude);
+        handleFilterChange("lng", longitude);
       },
       (err) => toast.error("Failed to get location"),
       { enableHighAccuracy: true }
@@ -57,18 +130,12 @@ const Hero = () => {
     useMapEvents({
       click(e) {
         setMarkerPosition([e.latlng.lat, e.latlng.lng]);
-        setFilters({ ...filters, lat: e.latlng.lat, lng: e.latlng.lng });
+        handleFilterChange("lat", e.latlng.lat);
+        handleFilterChange("lng", e.latlng.lng);
       },
     });
     return null;
   }
-
-  // --- Handle Search ---
-  const handleSearch = () => {
-    const query = new URLSearchParams(filters).toString();
-    navigate(`/listings?${query}`);
-    setShowModal(false);
-  };
 
   // --- Close dropdown on outside click ---
   useEffect(() => {
@@ -80,6 +147,30 @@ const Hero = () => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  // --- Get active filters for display ---
+  const activeFilters = Object.entries(filters).filter(([key, value]) => value !== "" && value !== null);
+  const getFilterLabel = (key, value) => {
+    switch (key) {
+      case "location":
+        return `Location: ${value}`;
+      case "price":
+        return `Max Price: ${value}`;
+      case "propertyType":
+        return `Type: ${value}`;
+      case "bedrooms":
+        return `${value}+ Beds`;
+      case "bathrooms":
+        return `${value}+ Baths`;
+      case "lat":
+      case "lng":
+        return `Map Location`;
+      case "radius":
+        return `Radius: ${Math.round(value / 1000)} km`;
+      default:
+        return `${key}: ${value}`;
+    }
+  };
 
   return (
     <div
@@ -101,7 +192,7 @@ const Hero = () => {
             onClick={() => {
               if (isOwner) navigate("/owner");
               else if (!user) setShowLogin(true);
-              else changeRole();
+              else changeRole(); // This function is not defined in the original code. Assuming it exists elsewhere.
             }}
             className="hidden sm:flex cursor-pointer rounded-3xl px-4 py-2 hover:bg-bgColor"
           >
@@ -153,7 +244,7 @@ const Hero = () => {
       {/* --- Search Bar --- */}
       <motion.div
         whileHover={{ scale: 1.02 }}
-        className="flex items-center justify-between max-w-4xl mx-auto w-full rounded-full bg-white shadow-md border px-6 py-3 cursor-pointer"
+        className="flex items-center justify-between max-w-4xl mx-auto w-full rounded-full bg-white shadow-md border px-6 py-3 cursor-pointer mt-4"
         onClick={() => setShowModal(true)}
       >
         <span className="text-gray-700">
@@ -163,7 +254,7 @@ const Hero = () => {
         <span>{filters.price ? `Up to ${filters.price}` : "Any Price"}</span>
         <span className="text-gray-400">|</span>
         <span>
-          {filters.propertyType ? filters.propertyType : "Any Property Type"}
+          {filters.propertyType || "Any Property Type"}
         </span>
         <span className="text-gray-400">|</span>
         <span>
@@ -179,6 +270,33 @@ const Hero = () => {
           <img src={assets.search_icon} alt="search" className="h-4 w-4" />
         </motion.button>
       </motion.div>
+
+      {/* --- Applied Filters Display --- */}
+      {activeFilters.length > 0 && (
+        <div className="flex flex-wrap items-center justify-center gap-2 mt-4">
+          <span className="font-semibold text-sm">Active Filters:</span>
+          {activeFilters.map(([key, value]) => (
+            <div key={key} className="flex items-center gap-1 bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm">
+              <span>{getFilterLabel(key, value)}</span>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleRemoveFilter(key);
+                }}
+                className="text-red-500 hover:text-red-700"
+              >
+                &times;
+              </button>
+            </div>
+          ))}
+          <button
+            onClick={handleRemoveAllFilters}
+            className="px-3 py-1 text-sm rounded-full bg-red-500 text-white hover:bg-red-600 transition"
+          >
+            Remove All
+          </button>
+        </div>
+      )}
 
       {/* --- Filter Modal --- */}
       {showModal && (
@@ -202,7 +320,7 @@ const Hero = () => {
             <input
               type="text"
               value={filters.location}
-              onChange={(e) => setFilters({ ...filters, location: e.target.value })}
+              onChange={(e) => handleFilterChange("location", e.target.value)}
               placeholder="Type a city or area"
               list="city-list"
               className="w-full border rounded-lg p-2"
@@ -242,7 +360,7 @@ const Hero = () => {
                   step="500"
                   value={filters.radius}
                   onChange={(e) =>
-                    setFilters({ ...filters, radius: Number(e.target.value) })
+                    handleFilterChange("radius", Number(e.target.value))
                   }
                 />
                 <span>{Math.round(filters.radius / 1000)} km</span>
@@ -257,7 +375,7 @@ const Hero = () => {
                   type="number"
                   value={filters.price}
                   onChange={(e) =>
-                    setFilters({ ...filters, price: e.target.value })
+                    handleFilterChange("price", e.target.value)
                   }
                   placeholder="Enter max price"
                   className="w-full border rounded-lg p-2"
@@ -269,7 +387,7 @@ const Hero = () => {
                 <select
                   value={filters.propertyType}
                   onChange={(e) =>
-                    setFilters({ ...filters, propertyType: e.target.value })
+                    handleFilterChange("propertyType", e.target.value)
                   }
                   className="w-full border rounded-lg p-2"
                 >
@@ -287,7 +405,7 @@ const Hero = () => {
                   type="number"
                   value={filters.bedrooms}
                   onChange={(e) =>
-                    setFilters({ ...filters, bedrooms: e.target.value })
+                    handleFilterChange("bedrooms", e.target.value)
                   }
                   className="w-full border rounded-lg p-2"
                   placeholder="Min bedrooms"
@@ -300,7 +418,7 @@ const Hero = () => {
                   type="number"
                   value={filters.bathrooms}
                   onChange={(e) =>
-                    setFilters({ ...filters, bathrooms: e.target.value })
+                    handleFilterChange("bathrooms", e.target.value)
                   }
                   className="w-full border rounded-lg p-2"
                   placeholder="Min bathrooms"
