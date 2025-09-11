@@ -113,6 +113,12 @@ export const AppProvider = ({ children }) => {
     }
   }, [token]);
 
+
+  useEffect(() => {
+  fetchListings();
+}, [locationHook.search]);
+
+
   const value = {
     navigate,
     currency,
