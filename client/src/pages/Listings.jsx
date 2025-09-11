@@ -1,28 +1,25 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import ListingCard from "../components/ListingCard";
 import { useAppContext } from "../context/AppContext";
 import { motion } from "motion/react";
 import { useLocation } from "react-router-dom";
 
 const Listings = () => {
-  const { axios } = useAppContext();
+  const { listings } = useAppContext();
   const location = useLocation();
-  const [filteredListings, setFilteredListings] = useState([]);
 
-  useEffect(() => {
-    const fetchListings = async () => {
-      try {
-        const query = location.search; // ?location=...&minPrice=...
-        const res = await axios.get(`/listings${query}`);
-        setFilteredListings(res.data);
-      } catch (err) {
-        console.error(err);
-        setFilteredListings([]);
-      }
-    };
+  const searchParams = new URLSearchParams(location.search);
 
-    fetchListings();
-  }, [location.search]); // ✅ refetch whenever filters change
+  // ✅ Apply client-side filtering
+  const filteredListings = listings.filter((l) => {
+    const minPrice = searchParams.get("minPrice");
+    const maxPrice = searchParams.get("maxPrice");
+
+    if (minPrice && l.price < parseInt(minPrice)) return false;
+    if (maxPrice && l.price > parseInt(maxPrice)) return false;
+
+    return true;
+  });
 
   return (
     <div className="px-4 md:px-12 lg:px-16 xl:px-24 mt-8">
@@ -54,4 +51,3 @@ const Listings = () => {
 };
 
 export default Listings;
-
