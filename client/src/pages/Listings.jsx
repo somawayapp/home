@@ -5,42 +5,10 @@ import { motion } from "motion/react";
 
 const Listings = () => {
   const { listings } = useAppContext();
-  const [input, setInput] = useState("");
-  const [filteredListings, setFilteredListings] = useState([]);
-
-  const applyFilter = () => {
-    if (input.trim() === "") {
-      setFilteredListings(listings);
-      return;
-    }
-
-    const filtered = listings.slice().filter((listing) => {
-      return (
-        (listing.title && listing.title.toLowerCase().includes(input.toLowerCase())) ||
-        (listing.propertytype && listing.propertytype.toLowerCase().includes(input.toLowerCase())) ||
-        (listing.location && listing.location.toLowerCase().includes(input.toLowerCase()))
-      );
-    });
-
-    setFilteredListings(filtered);
-  };
-
-  useEffect(() => {
-    if (listings.length > 0) applyFilter();
-  }, [input, listings]);
 
   return (
     <div className="px-4 md:px-12 lg:px-16 xl:px-24 mt-8">
-      {/* ✅ Search Input */}
-      <div className="max-w-6xl mx-auto mb-6">
-        <input
-          type="text"
-          placeholder="Search by title, property type, or location..."
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-      </div>
+
 
       {/* ✅ Listings Grid */}
       <motion.div
