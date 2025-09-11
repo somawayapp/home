@@ -1,28 +1,48 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ListingCard from "../components/ListingCard";
 import { useAppContext } from "../context/AppContext";
 import { motion } from "motion/react";
-import { useLocation } from "react-router-dom";
 
 const Listings = () => {
   const { listings } = useAppContext();
-  const location = useLocation();
+  const [input, setInput] = useState("");
+  const [filteredListings, setFilteredListings] = useState([]);
 
-  const searchParams = new URLSearchParams(location.search);
+  const applyFilter = () => {
+    if (input.trim() === "") {
+      setFilteredListings(listings);
+      return;
+    }
 
-  // ✅ Apply client-side filtering
-  const filteredListings = listings.filter((l) => {
-    const minPrice = searchParams.get("minPrice");
-    const maxPrice = searchParams.get("maxPrice");
+    const filtered = listings.slice().filter((listing) => {
+      return (
+        (listing.title && listing.title.toLowerCase().includes(input.toLowerCase())) ||
+        (listing.propertytype && listing.propertytype.toLowerCase().includes(input.toLowerCase())) ||
+        (listing.location && listing.location.toLowerCase().includes(input.toLowerCase()))
+      );
+    });
 
-    if (minPrice && l.price < parseInt(minPrice)) return false;
-    if (maxPrice && l.price > parseInt(maxPrice)) return false;
+    setFilteredListings(filtered);
+  };
 
-    return true;
-  });
+  useEffect(() => {
+    if (listings.length > 0) applyFilter();
+  }, [input, listings]);
 
   return (
     <div className="px-4 md:px-12 lg:px-16 xl:px-24 mt-8">
+      {/* ✅ Search Input */}
+      <div className="max-w-6xl mx-auto mb-6">
+        <input
+          type="text"
+          placeholder="Search by title, property type, or location..."
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+
+      {/* ✅ Listings Grid */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -40,6 +60,7 @@ const Listings = () => {
           </motion.div>
         ))}
 
+        {/* ✅ Empty State */}
         {filteredListings.length === 0 && (
           <div className="col-span-full text-center text-gray-500 mt-6">
             No listings found matching your search.
