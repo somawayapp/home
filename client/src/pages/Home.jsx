@@ -9,7 +9,8 @@ import Hero from "../components/Hero";
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
-import ReactSlider from "react-slider";
+import Slider from "rc-slider";
+
 
 // Fix for default marker icon in React-Leaflet
 delete L.Icon.Default.prototype._getIconUrl;
