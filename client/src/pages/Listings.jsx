@@ -63,7 +63,7 @@ const Listings = () => {
         {/* ✅ Empty State */}
         {filteredListings.length === 0 && (
           <div className="col-span-full text-center text-gray-500 mt-6">
-            No listings found matching your search.
+            No listings found matching you search.
           </div>
         )}
       </motion.div>
