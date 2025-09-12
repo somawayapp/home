@@ -242,33 +242,54 @@ const getAddressFromCoordinates = async ([lat, lng]) => {
     return 'Unknown Location';
   }
 };
-  const handleUseCurrentLocation = async () => {
-    if ("geolocation" in navigator) {
-      setIsFetchingLocation(true);
-      navigator.geolocation.getCurrentPosition(
-        async (position) => {
-          const { latitude, longitude } = position.coords;
-          setMarkerPosition([latitude, longitude]);
-          setMapCenter([latitude, longitude]);
-          
-          const locationName = await getAddressFromCoordinates([latitude, longitude]);
-          
-          handleFilterChange("lat", latitude);
-          handleFilterChange("location", locationName);
-          
-          toast.success("Location fetched!");
-          setIsFetchingLocation(false);
-        },
-        () => {
-          toast.error("Unable to retrieve your location.");
-          setIsFetchingLocation(false);
-        }
-      );
-    } else {
-      toast.error("Geolocation is not supported by your browser.");
-    }
-  };
 
+
+
+// Function to get a smaller address (e.g., City, Suburb) from coordinates
+const getSmallerLocationName = async ([lat, lng]) => {
+  try {
+    const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`);
+    const data = await response.json();
+    if (data && data.address) {
+      const address = data.address;
+      // Prioritize city, then suburb, then county, etc.
+      return address.city || address.town || address.village || address.suburb || address.county || 'Unknown Location';
+    }
+    return 'Unknown Location';
+  } catch (error) {
+    console.error("Error fetching address:", error);
+    return 'Unknown Location';
+  }
+};
+
+const handleUseCurrentLocation = async () => {
+  if ("geolocation" in navigator) {
+    setIsFetchingLocation(true);
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const { latitude, longitude } = position.coords;
+        setMarkerPosition([latitude, longitude]);
+        setMapCenter([latitude, longitude]);
+        
+        // Use the new function to get a smaller name for the default location
+        const locationName = await getSmallerLocationName([latitude, longitude]);
+        
+        handleFilterChange("location", locationName);
+        handleFilterChange("lat", null);
+        handleFilterChange("lng", null);
+        
+        toast.success("Location fetched!");
+        setIsFetchingLocation(false);
+      },
+      () => {
+        toast.error("Unable to retrieve your location.");
+        setIsFetchingLocation(false);
+      }
+    );
+  } else {
+    toast.error("Geolocation is not supported by your browser.");
+  }
+};
 
   const handleMapClick = async (latlng) => {
   setMarkerPosition(latlng);
