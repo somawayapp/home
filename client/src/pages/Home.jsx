@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { MapContainer, TileLayer, Marker, Circle, useMapEvents } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 import { motion } from "framer-motion";
@@ -9,11 +9,10 @@ import { useAppContext } from "../context/AppContext";
 import toast from "react-hot-toast";
 
 // Helper components for Leaflet
-const LocationSelector = ({ setMarkerPosition, setMapCenter }) => {
+const LocationSelector = ({ onMapClick }) => {
   useMapEvents({
     click: (e) => {
-      setMarkerPosition([e.latlng.lat, e.latlng.lng]);
-      setMapCenter([e.latlng.lat, e.latlng.lng]);
+      onMapClick([e.latlng.lat, e.latlng.lng]);
     },
   });
   return null;
@@ -29,11 +28,10 @@ const Home = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // State for the main page filters (synced with URL)
   const [filters, setFilters] = useState({
     location: "",
     minPrice: 0,
-    maxPrice: 1000000000, // Default max price to 1 billion
+    maxPrice: 1000000000,
     propertytype: "",
     offertype: "",
     bedrooms: "",
@@ -47,16 +45,14 @@ const Home = () => {
     available: "",
     lat: null,
     lng: null,
-    radius: 5000,
   });
 
-  // State for the modal's temporary filters
-  const [modalFilters, setModalFilters] = useState(filters);
   const [showModal, setShowModal] = useState(false);
   const [filteredListings, setFilteredListings] = useState([]);
   const [locationSuggestions, setLocationSuggestions] = useState([]);
   const [mapCenter, setMapCenter] = useState([51.505, -0.09]);
   const [markerPosition, setMarkerPosition] = useState(null);
+  const [isFetchingLocation, setIsFetchingLocation] = useState(false);
 
   // Function to get filters from URL
   const getFiltersFromUrl = () => {
@@ -89,7 +85,6 @@ const Home = () => {
       amenitiesNearby,
       lat,
       lng,
-      radius,
     } = filters;
 
     // Text search filter
@@ -144,16 +139,12 @@ const Home = () => {
       });
     }
 
-    // Proximity search (You'll need a proper distance calculation function)
-    if (lat && lng && radius) {
-      newFilteredListings = newFilteredListings.filter((listing) => {
-        // Implement haversine or similar distance calculation
-        // For demonstration, let's assume a dummy function
-        // const distance = getDistance(lat, lng, listing.lat, listing.lng);
-        // return distance <= radius;
-        return true; // Placeholder
-      });
-    }
+    // Proximity search (Requires haversine calculation, omitted for brevity)
+    // if (lat && lng) {
+    //   newFilteredListings = newFilteredListings.filter((listing) => {
+    //     return true; // Placeholder
+    //   });
+    // }
 
     setFilteredListings(newFilteredListings);
   };
@@ -164,7 +155,7 @@ const Home = () => {
     Object.entries(filters).forEach(([key, value]) => {
       if (Array.isArray(value) && value.length > 0) {
         params.append(key, value.join(","));
-      } else if (value && !Array.isArray(value)) {
+      } else if (value && typeof value !== 'object') {
         params.append(key, value);
       }
     });
@@ -179,25 +170,20 @@ const Home = () => {
     if (listings.length > 0) applyFilter();
   }, [listings, filters]);
 
-  // Handle a single filter change in the modal
-  const handleModalFilterChange = (key, value) => {
-    setModalFilters((prev) => ({ ...prev, [key]: value }));
+  // Handle a single filter change
+  const handleFilterChange = (key, value) => {
+    setFilters((prev) => ({ ...prev, [key]: value }));
   };
 
-  // Handle amenity change in the modal
+  // Handle amenity change
   const handleAmenityChange = (amenity, category) => {
-    setModalFilters((prev) => {
+    setFilters((prev) => {
       const currentAmenities = prev[category] || [];
       const newAmenities = currentAmenities.includes(amenity)
         ? currentAmenities.filter((a) => a !== amenity)
         : [...currentAmenities, amenity];
       return { ...prev, [category]: newAmenities };
     });
-  };
-
-  const handleApplyFilters = () => {
-    setFilters(modalFilters);
-    setShowModal(false);
   };
 
   const handleClearAll = () => {
@@ -218,10 +204,8 @@ const Home = () => {
       available: "",
       lat: null,
       lng: null,
-      radius: 5000,
     };
     setFilters(defaultFilters);
-    setModalFilters(defaultFilters);
     setMarkerPosition(null);
   };
 
@@ -239,9 +223,34 @@ const Home = () => {
     return active;
   };
 
-  // Note: The location suggestions and map functions from the user's prompt
-  // are included here, but require external libraries (e.g., Nominatim API)
-  // to be fully functional.
+  const handleUseCurrentLocation = () => {
+    if ("geolocation" in navigator) {
+      setIsFetchingLocation(true);
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          setMarkerPosition([latitude, longitude]);
+          setMapCenter([latitude, longitude]);
+          handleFilterChange("lat", latitude);
+          handleFilterChange("lng", longitude);
+          toast.success("Location fetched!");
+          setIsFetchingLocation(false);
+        },
+        () => {
+          toast.error("Unable to retrieve your location.");
+          setIsFetchingLocation(false);
+        }
+      );
+    } else {
+      toast.error("Geolocation is not supported by your browser.");
+    }
+  };
+
+  const handleMapClick = (latlng) => {
+    setMarkerPosition(latlng);
+    handleFilterChange("lat", latlng[0]);
+    handleFilterChange("lng", latlng[1]);
+  };
 
   return (
     <div>
@@ -278,7 +287,6 @@ const Home = () => {
                   {key}: {value}
                   <button
                     onClick={() => {
-                      // Remove filter logic
                       const newFilters = { ...filters };
                       if (key.startsWith("amenities")) {
                         newFilters[key] = [];
@@ -341,14 +349,25 @@ const Home = () => {
             onClick={(e) => e.stopPropagation()}
             className="bg-white rounded-2xl p-6 w-full max-w-3xl border border-light shadow-xl max-h-[90vh] overflow-y-auto"
           >
-            <h2 className="text-lg font-semibold mb-4">Filter Listings</h2>
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-lg font-semibold">Filter Listings</h2>
+              <button
+                onClick={() => setShowModal(false)}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
 
             {/* --- Location Input with Autocomplete --- */}
             <label className="block mb-2">Location</label>
             <input
               type="text"
-              value={modalFilters.location}
-              onChange={(e) => handleModalFilterChange("location", e.target.value)}
+              name="location"
+              value={filters.location}
+              onChange={(e) => handleFilterChange(e.target.name, e.target.value)}
               placeholder="Type a city or area"
               className="w-full border rounded-lg p-2"
             />
@@ -359,14 +378,9 @@ const Home = () => {
                     key={suggestion.place_id}
                     className="p-2 cursor-pointer hover:bg-gray-100"
                     onClick={() => {
-                      setModalFilters(prev => ({
-                        ...prev,
-                        location: suggestion.display_name,
-                        lat: parseFloat(suggestion.lat),
-                        lng: parseFloat(suggestion.lon)
-                      }));
-                      setMapCenter([parseFloat(suggestion.lat), parseFloat(suggestion.lon)]);
+                      handleFilterChange("location", suggestion.display_name);
                       setMarkerPosition([parseFloat(suggestion.lat), parseFloat(suggestion.lon)]);
+                      setMapCenter([parseFloat(suggestion.lat), parseFloat(suggestion.lon)]);
                       setLocationSuggestions([]);
                     }}
                   >
@@ -376,30 +390,26 @@ const Home = () => {
               </ul>
             )}
 
+            <button
+              type="button"
+              onClick={handleUseCurrentLocation}
+              className={`mt-2 px-4 py-2 rounded-lg text-white ${
+                isFetchingLocation ? 'bg-gray-400 cursor-not-allowed animate-pulse' : 'bg-blue-500 hover:bg-blue-600'
+              }`}
+              disabled={isFetchingLocation}
+            >
+              {isFetchingLocation ? "Fetching..." : "Use Current Location"}
+            </button>
+
             {/* --- Map Picker --- */}
             <div className="mt-4 rounded-lg overflow-hidden border h-72">
               <MapContainer center={mapCenter} zoom={13} style={{ height: "100%" }}>
                 <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-                <LocationSelector setMarkerPosition={(pos) => handleModalFilterChange('lat', pos[0]) & handleModalFilterChange('lng', pos[1])} setMapCenter={setMapCenter} />
+                <LocationSelector onMapClick={handleMapClick} />
                 {markerPosition && (
-                  <>
-                    <Marker position={markerPosition} />
-                    <Circle center={markerPosition} radius={modalFilters.radius} />
-                  </>
+                  <Marker position={markerPosition} />
                 )}
               </MapContainer>
-              <div className="flex items-center gap-3 mt-2">
-                <label>Radius:</label>
-                <input
-                  type="range"
-                  min="500"
-                  max="10000"
-                  step="500"
-                  value={modalFilters.radius}
-                  onChange={(e) => handleModalFilterChange("radius", Number(e.target.value))}
-                />
-                <span>{Math.round(modalFilters.radius / 1000)} km</span>
-              </div>
             </div>
 
             {/* --- Other Filters --- */}
@@ -412,24 +422,25 @@ const Home = () => {
                     min={0}
                     max={1000000000}
                     step={10000}
-                    value={[modalFilters.minPrice, modalFilters.maxPrice]}
+                    value={[filters.minPrice, filters.maxPrice]}
                     onChange={(value) => {
-                      handleModalFilterChange("minPrice", value[0]);
-                      handleModalFilterChange("maxPrice", value[1]);
+                      handleFilterChange("minPrice", value[0]);
+                      handleFilterChange("maxPrice", value[1]);
                     }}
                   />
                 </div>
                 <div className="flex justify-between text-sm text-gray-600 mt-2">
-                  <span>${modalFilters.minPrice || 0}</span>
-                  <span>${modalFilters.maxPrice || 1000000000}</span>
+                  <span>${filters.minPrice || 0}</span>
+                  <span>${filters.maxPrice || 1000000000}</span>
                 </div>
               </div>
               
               <div>
                 <label className="block mb-1">Property Type</label>
                 <select
-                  value={modalFilters.propertytype}
-                  onChange={(e) => handleModalFilterChange("propertytype", e.target.value)}
+                  name="propertytype"
+                  value={filters.propertytype}
+                  onChange={(e) => handleFilterChange(e.target.name, e.target.value)}
                   className="w-full border rounded-lg p-2"
                 >
                   <option value="">Any</option>
@@ -444,8 +455,9 @@ const Home = () => {
                 <label className="block mb-1">Min Bedrooms</label>
                 <input
                   type="number"
-                  value={modalFilters.bedrooms || ""}
-                  onChange={(e) => handleModalFilterChange("bedrooms", e.target.value ? parseInt(e.target.value) : "")}
+                  name="bedrooms"
+                  value={filters.bedrooms || ""}
+                  onChange={(e) => handleFilterChange(e.target.name, e.target.value ? parseInt(e.target.value) : "")}
                   className="w-full border rounded-lg p-2"
                   placeholder="Min bedrooms"
                 />
@@ -455,8 +467,9 @@ const Home = () => {
                 <label className="block mb-1">Min Bathrooms</label>
                 <input
                   type="number"
-                  value={modalFilters.bathrooms || ""}
-                  onChange={(e) => handleModalFilterChange("bathrooms", e.target.value ? parseInt(e.target.value) : "")}
+                  name="bathrooms"
+                  value={filters.bathrooms || ""}
+                  onChange={(e) => handleFilterChange(e.target.name, e.target.value ? parseInt(e.target.value) : "")}
                   className="w-full border rounded-lg p-2"
                   placeholder="Min bathrooms"
                 />
@@ -466,8 +479,9 @@ const Home = () => {
                 <label className="block mb-1">Min Size (sqft)</label>
                 <input
                   type="number"
-                  value={modalFilters.size || ""}
-                  onChange={(e) => handleModalFilterChange("size", e.target.value ? parseInt(e.target.value) : "")}
+                  name="size"
+                  value={filters.size || ""}
+                  onChange={(e) => handleFilterChange(e.target.name, e.target.value ? parseInt(e.target.value) : "")}
                   className="w-full border rounded-lg p-2"
                   placeholder="Min size"
                 />
@@ -485,7 +499,7 @@ const Home = () => {
                       <input
                         type="checkbox"
                         id={`internal-${amenity}`}
-                        checked={modalFilters.amenitiesInternal.includes(amenity)}
+                        checked={filters.amenitiesInternal.includes(amenity)}
                         onChange={() => handleAmenityChange(amenity, "amenitiesInternal")}
                         className="accent-blue-500"
                       />
@@ -504,7 +518,7 @@ const Home = () => {
                       <input
                         type="checkbox"
                         id={`external-${amenity}`}
-                        checked={modalFilters.amenitiesExternal.includes(amenity)}
+                        checked={filters.amenitiesExternal.includes(amenity)}
                         onChange={() => handleAmenityChange(amenity, "amenitiesExternal")}
                         className="accent-blue-500"
                       />
@@ -523,7 +537,7 @@ const Home = () => {
                       <input
                         type="checkbox"
                         id={`nearby-${amenity}`}
-                        checked={modalFilters.amenitiesNearby.includes(amenity)}
+                        checked={filters.amenitiesNearby.includes(amenity)}
                         onChange={() => handleAmenityChange(amenity, "amenitiesNearby")}
                         className="accent-blue-500"
                       />
@@ -532,24 +546,6 @@ const Home = () => {
                   ))}
                 </div>
               </div>
-            </div>
-
-            {/* --- Footer --- */}
-            <div className="flex justify-between mt-6">
-              <button
-                type="button"
-                onClick={() => setShowModal(false)}
-                className="px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300"
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                onClick={handleApplyFilters}
-                className="px-4 py-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600"
-              >
-                Apply Filters
-              </button>
             </div>
           </motion.div>
         </motion.div>
