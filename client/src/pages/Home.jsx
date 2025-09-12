@@ -250,7 +250,6 @@ const Home = () => {
           const locationName = await getAddressFromCoordinates([latitude, longitude]);
           
           handleFilterChange("lat", latitude);
-          handleFilterChange("lng", longitude);
           handleFilterChange("location", locationName);
           
           toast.success("Location fetched!");
@@ -266,11 +265,22 @@ const Home = () => {
     }
   };
 
-  const handleMapClick = (latlng) => {
-    setMarkerPosition(latlng);
-    handleFilterChange("lat", latlng[0]);
-    handleFilterChange("lng", latlng[1]);
-  };
+
+  const handleMapClick = async (latlng) => {
+  setMarkerPosition(latlng);
+
+  // Call the reverse geocoding function
+  const locationName = await getAddressFromCoordinates(latlng);
+  
+  // Update the 'location' filter with the fetched name
+  handleFilterChange("location", locationName);
+
+  // Also clear the lat/lng filters since we're now filtering by name
+  handleFilterChange("lat", null);
+  handleFilterChange("lng", null);
+
+  toast.success(`Location set to: ${locationName}`);
+};
 
   return (
     <div>
