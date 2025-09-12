@@ -224,20 +224,24 @@ const Home = () => {
   };
 
   // Function to get address from coordinates
-  const getAddressFromCoordinates = async ([lat, lng]) => {
-    try {
-      const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`);
-      const data = await response.json();
-      if (data && data.display_name) {
-        return data.display_name;
-      }
-      return 'Unknown Location';
-    } catch (error) {
-      console.error("Error fetching address:", error);
-      return 'Unknown Location';
-    }
-  };
+// Function to get address from coordinates
+const getAddressFromCoordinates = async ([lat, lng]) => {
+  try {
+    const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`);
+    const data = await response.json();
 
+    if (data && data.address) {
+      // Prioritize the city, then the suburb, then the county
+      const locationName = data.address.city || data.address.suburb || data.address.county || 'Unknown Location';
+      return locationName;
+    }
+    
+    return 'Unknown Location';
+  } catch (error) {
+    console.error("Error fetching address:", error);
+    return 'Unknown Location';
+  }
+};
   const handleUseCurrentLocation = async () => {
     if ("geolocation" in navigator) {
       setIsFetchingLocation(true);
@@ -281,6 +285,14 @@ const Home = () => {
 
   toast.success(`Location set to: ${locationName}`);
 };
+
+
+  useEffect(() => {
+    // Check if the location filter is empty to avoid overwriting a URL-based filter
+    if (filters.location === "" && !isFetchingLocation) {
+      handleUseCurrentLocation();
+    }
+  }, []); // The empty dependency array ensures this runs only on mount
 
   return (
     <div>
