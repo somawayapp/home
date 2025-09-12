@@ -5,12 +5,11 @@ import ListingCard from "../components/ListingCard";
 import { useAppContext } from "../context/AppContext";
 import toast from "react-hot-toast";
 import { motion } from "framer-motion";
-import Hero from "../components/Hero";
+import Hero from "../components/Hero"; // Assuming this is your search bar component
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import Slider from "rc-slider";
-
 
 // Fix for default marker icon in React-Leaflet
 delete L.Icon.Default.prototype._getIconUrl;
@@ -29,14 +28,14 @@ const Home = () => {
 
   const [loading, setLoading] = useState(false);
   const [showMapModal, setShowMapModal] = useState(false);
-  const [mapCenter, setMapCenter] = useState([0, 0]); // Default to [0,0] before getting user location
+  const [mapCenter, setMapCenter] = useState([51.505, -0.09]);
 
   const MAX_PRICE_DEFAULT = 1000000000;
 
   const [filters, setFilters] = useState({
     location: "",
     minPrice: "",
-    maxPrice: MAX_PRICE_DEFAULT,
+    maxPrice: MAX_PRICE_DEFAULT, // Default max price
     propertytype: "",
     offertype: "",
     bedrooms: "",
@@ -72,8 +71,10 @@ const Home = () => {
   const applyFilter = () => {
     let newFilteredListings = [...listings];
 
-    setLoading(true);
+    setLoading(true); // Start loading state
 
+    // Filter logic
+    // ... (Your existing filter logic here)
     const searchTerm = filters.location.toLowerCase();
     if (searchTerm) {
       newFilteredListings = newFilteredListings.filter(
@@ -140,34 +141,34 @@ const Home = () => {
 
     // Amenities Filters
     if (filters.amenitiesInternal) {
-      const internalAmenities = filters.amenitiesInternal.split(",").map(item => item.trim());
+      const internalAmenities = filters.amenitiesInternal.split(",");
       newFilteredListings = newFilteredListings.filter((listing) =>
         internalAmenities.every((amenity) =>
-          listing.amenitiesInternal?.includes(amenity)
+          listing.amenitiesInternal.includes(amenity.trim())
         )
       );
     }
 
     if (filters.amenitiesExternal) {
-      const externalAmenities = filters.amenitiesExternal.split(",").map(item => item.trim());
+      const externalAmenities = filters.amenitiesExternal.split(",");
       newFilteredListings = newFilteredListings.filter((listing) =>
         externalAmenities.every((amenity) =>
-          listing.amenitiesExternal?.includes(amenity)
+          listing.amenitiesExternal.includes(amenity.trim())
         )
       );
     }
     
     if (filters.amenitiesNearby) {
-      const nearbyAmenities = filters.amenitiesNearby.split(",").map(item => item.trim());
+      const nearbyAmenities = filters.amenitiesNearby.split(",");
       newFilteredListings = newFilteredListings.filter((listing) =>
         nearbyAmenities.every((amenity) =>
-          listing.amenitiesNearby?.includes(amenity)
+          listing.amenitiesNearby.includes(amenity.trim())
         )
       );
     }
 
     setFilteredListings(newFilteredListings);
-    setLoading(false);
+    setLoading(false); // End loading state
   };
 
   // Update URL whenever filters change
@@ -236,7 +237,6 @@ const Home = () => {
   // Map logic
   const handleMapClick = (e) => {
     const { lat, lng } = e.latlng;
-    setLoading(true);
     fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}`)
       .then((res) => res.json())
       .then((data) => {
@@ -247,13 +247,11 @@ const Home = () => {
         const formattedAddress = `${city}, ${state}, ${country}`.replace(/, ,/g, "").trim();
         setFilters((prev) => ({ ...prev, location: formattedAddress }));
         toast.success(`Location set to: ${formattedAddress}`);
-        setLoading(false);
         setShowMapModal(false);
       })
       .catch((error) => {
         console.error("Error fetching location:", error);
         toast.error("Could not fetch location details.");
-        setLoading(false);
       });
   };
 
@@ -266,7 +264,6 @@ const Home = () => {
 
   const getUserLocation = () => {
     if (navigator.geolocation) {
-      setLoading(true);
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
@@ -277,19 +274,15 @@ const Home = () => {
               const address = data.address;
               const city = address.city || address.town || address.village || "";
               setFilters((prev) => ({ ...prev, location: city }));
-              setLoading(false);
-              toast.success(`Default location set to: ${city}`);
             })
             .catch((error) => {
               console.error("Error fetching location:", error);
               toast.error("Could not fetch location details from coordinates.");
-              setLoading(false);
             });
         },
         (error) => {
           console.error("Geolocation error:", error);
           toast.error("Could not retrieve your current location.");
-          setLoading(false);
         }
       );
     } else {
@@ -335,30 +328,47 @@ const Home = () => {
                 </button>
               </div>
 
-              {/* Min Price */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Min Price</label>
-                <input
-                  type="number"
-                  name="minPrice"
-                  placeholder="Min Price"
-                  value={filters.minPrice}
-                  onChange={handleFilterChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-
-              {/* Max Price */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Max Price</label>
-                <input
-                  type="number"
-                  name="maxPrice"
-                  placeholder="Max Price"
-                  value={filters.maxPrice === MAX_PRICE_DEFAULT ? "" : filters.maxPrice}
-                  onChange={handleFilterChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
+              {/* Price Range with Slider */}
+              <div className="sm:col-span-2">
+                <label className="block text-sm font-medium text-gray-700 mb-2">Price Range</label>
+                <div className="flex items-center gap-4">
+                  <div className="flex-1">
+                    <input
+                      type="number"
+                      name="minPrice"
+                      placeholder="Min"
+                      value={filters.minPrice}
+                      onChange={handleFilterChange}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <input
+                      type="number"
+                      name="maxPrice"
+                      placeholder="Max"
+                      value={filters.maxPrice === MAX_PRICE_DEFAULT ? "" : filters.maxPrice}
+                      onChange={handleFilterChange}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+                </div>
+                <div className="mt-4">
+                  <Slider
+                    className="horizontal-slider"
+                    thumbClassName="example-thumb"
+                    trackClassName="example-track"
+                    value={[parseFloat(filters.minPrice) || 0, parseFloat(filters.maxPrice) || MAX_PRICE_DEFAULT]}
+                    min={0}
+                    max={MAX_PRICE_DEFAULT}
+                    step={1000}
+                    onChange={handlePriceChange}
+                  />
+                  <div className="flex justify-between text-xs text-gray-500 mt-2">
+                    <span>${parseFloat(filters.minPrice) || 0}</span>
+                    <span>${parseFloat(filters.maxPrice) || MAX_PRICE_DEFAULT}</span>
+                  </div>
+                </div>
               </div>
 
               {/* Property Type */}
@@ -394,6 +404,7 @@ const Home = () => {
               </div>
 
               {/* Bedrooms, Bathrooms, Rooms, Size */}
+              {/* These will be simple text/number inputs */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">Bedrooms</label>
                 <input
@@ -441,40 +452,37 @@ const Home = () => {
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
-              
-              {/* Amenities */}
+
+              {/* Amenity Checkboxes (or multi-select) */}
+              {/* For simplicity, we'll use a multi-select or a list of checkboxes */}
               <div className="col-span-full">
-                <label className="block text-sm font-medium text-gray-700">Internal Amenities (comma-separated)</label>
-                <input
-                  type="text"
-                  name="amenitiesInternal"
-                  placeholder="e.g. AC, Wi-Fi"
-                  value={filters.amenitiesInternal}
-                  onChange={handleFilterChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
+                <label className="block text-sm font-medium text-gray-700">Internal Amenities</label>
+                <select multiple name="amenitiesInternal" onChange={handleFilterChange} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 h-24">
+                  <option value="AC">AC</option>
+                  <option value="Wi-Fi">Wi-Fi</option>
+                  <option value="Built-in washer">Built-in washer</option>
+                  {/* ... add all internal amenities */}
+                </select>
               </div>
+
               <div className="col-span-full">
-                <label className="block text-sm font-medium text-gray-700">External Amenities (comma-separated)</label>
-                <input
-                  type="text"
-                  name="amenitiesExternal"
-                  placeholder="e.g. Parking, Pool"
-                  value={filters.amenitiesExternal}
-                  onChange={handleFilterChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
+                <label className="block text-sm font-medium text-gray-700">External Amenities</label>
+                <select multiple name="amenitiesExternal" onChange={handleFilterChange} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 h-24">
+                  <option value="Parking">Parking</option>
+                  <option value="Pool">Pool</option>
+                  <option value="Gym & Fitness center">Gym & Fitness center</option>
+                  {/* ... add all external amenities */}
+                </select>
               </div>
+
               <div className="col-span-full">
-                <label className="block text-sm font-medium text-gray-700">Nearby Amenities (comma-separated)</label>
-                <input
-                  type="text"
-                  name="amenitiesNearby"
-                  placeholder="e.g. Gym, Schools"
-                  value={filters.amenitiesNearby}
-                  onChange={handleFilterChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
+                <label className="block text-sm font-medium text-gray-700">Nearby Amenities</label>
+                <select multiple name="amenitiesNearby" onChange={handleFilterChange} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 h-24">
+                  <option value="Gym">Gym</option>
+                  <option value="Shopping Mall">Shopping Mall</option>
+                  <option value="Public transportation access">Public transportation access</option>
+                  {/* ... add all nearby amenities */}
+                </select>
               </div>
             </div>
           </div>
