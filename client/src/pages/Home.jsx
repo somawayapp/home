@@ -525,6 +525,9 @@ const handleUseCurrentLocation = async () => {
                 </div>
               </div>
               
+
+                          <div className="flex-col gap-4 ">
+
               <div>
                 <label className="block mb-1">Property Type</label>
                 <select
@@ -541,6 +544,21 @@ const handleUseCurrentLocation = async () => {
                 </select>
               </div>
 
+
+
+                <div>
+                <label className="block mb-1">Min Size (sqft)</label>
+                <input
+                  type="number"
+                  name="size"
+                  value={filters.size || ""}
+                  onChange={(e) => handleFilterChange(e.target.name, e.target.value ? parseInt(e.target.value) : "")}
+                  className="w-full border rounded-lg p-2"
+                  placeholder="Min size"
+                />
+              </div>
+              </div>
+ 
               <div>
                 <label className="block mb-1">Min Bedrooms</label>
                 <input
@@ -565,21 +583,11 @@ const handleUseCurrentLocation = async () => {
                 />
               </div>
 
-              <div>
-                <label className="block mb-1">Min Size (sqft)</label>
-                <input
-                  type="number"
-                  name="size"
-                  value={filters.size || ""}
-                  onChange={(e) => handleFilterChange(e.target.name, e.target.value ? parseInt(e.target.value) : "")}
-                  className="w-full border rounded-lg p-2"
-                  placeholder="Min size"
-                />
-              </div>
+            
             </div>
 
             {/* --- Amenities --- */}
-            <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="mt-6 flex  flex-row  gap-6">
               {/* Internal Amenities */}
               <div>
                 <h3 className="text-md font-semibold mb-2">Internal Amenities</h3>
