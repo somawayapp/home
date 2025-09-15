@@ -326,17 +326,7 @@ const handleUseCurrentLocation = async () => {
         transition={{ delay: 0.6, duration: 0.5 }}
         className="px-4 md:px-16 lg:px-24 xl:px-32 mt-10"
       >
-        <div className="max-w-7xl mx-auto flex justify-between items-center mb-6">
-          <p className="text-gray-500">
-            Showing {filteredListings.length} Listings
-          </p>
-          <button
-            onClick={() => setShowModal(true)}
-            className="px-4 py-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600 focus:outline-none"
-          >
-            Filter
-          </button>
-        </div>
+       
 
         {/* --- Active Filters --- */}
         {getActiveFilters().length > 0 && (
@@ -375,6 +365,14 @@ const handleUseCurrentLocation = async () => {
               >
                 Remove all
               </button>
+
+
+                <button
+            onClick={() => setShowModal(true)}
+            className="px-4 py-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600 focus:outline-none"
+          >
+            Filters
+          </button>
             </div>
           </div>
         )}
