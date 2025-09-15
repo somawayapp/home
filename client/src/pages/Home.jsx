@@ -499,7 +499,7 @@ const handleUseCurrentLocation = async () => {
                 </div>
 
                 {/* New Input Fields */}
-                <div className="flex gap-4 mt-2">
+                <div className="flex gap-4 mt-4">
                   <div className="w-1/2">
                     <label className="block text-sm text-gray-500 mb-1" htmlFor="min-price">Min Price ($)</label>
                     <input
@@ -512,7 +512,7 @@ const handleUseCurrentLocation = async () => {
                     />
                   </div>
                   <div className="w-1/2">
-                    <label className="block text-sm text-gray-500 mb-1" htmlFor="max-price">Max Price ($)</label>
+                    <label className="block text-sm text-gray-500  mb-1" htmlFor="max-price">Max Price ($)</label>
                     <input
                       id="max-price"
                       type="number"
@@ -547,7 +547,7 @@ const handleUseCurrentLocation = async () => {
 
 
                 <div>
-                <label className="block mb-1">Min Size (sqft)</label>
+                <label className="block mb-1 mt-4">Min Size (sqft)</label>
                 <input
                   type="number"
                   name="size"
@@ -557,6 +557,7 @@ const handleUseCurrentLocation = async () => {
                   placeholder="Min size"
                 />
               </div>
+
               </div>
  
               <div>
@@ -587,11 +588,11 @@ const handleUseCurrentLocation = async () => {
             </div>
 
             {/* --- Amenities --- */}
-            <div className="mt-6 flex  flex-row  gap-6">
+            <div className="mt-6 flex  flex-col  gap-6">
               {/* Internal Amenities */}
               <div>
                 <h3 className="text-md font-semibold mb-2">Internal Amenities</h3>
-                <div className="grid grid-cols-2 gap-y-2 gap-x-4">
+                <div className="flex flex-row   gap-y-2 gap-x-4">
                   {internalAmenities.map((amenity) => (
                     <div key={amenity} className="flex items-center gap-2">
                       <input
