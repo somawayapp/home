@@ -338,7 +338,7 @@ const handleUseCurrentLocation = async () => {
               {getActiveFilters().map(([key, value]) => (
                 <div
                   key={key}
-                  className="flex items-center bg-blue-100 text-blue-800 text-sm font-medium px-2.5 py-1 rounded-full"
+                  className="flex items-center bg-pink-100 text-pink-800 text-sm font-medium px-2.5 py-1 rounded-full"
                 >
                   {key}: {value}
                   <button
@@ -351,7 +351,7 @@ const handleUseCurrentLocation = async () => {
                       }
                       setFilters(newFilters);
                     }}
-                    className="ml-2 text-blue-600 hover:text-blue-900 focus:outline-none"
+                    className="ml-2 text-pink-600 hover:text-pink-900 focus:outline-none"
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                       <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
@@ -369,7 +369,7 @@ const handleUseCurrentLocation = async () => {
 
                 <button
             onClick={() => setShowModal(true)}
-            className="px-4 py-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600 focus:outline-none"
+            className="px-4 py-2 rounded-lg bg-pink-500 text-white hover:bg-pink-600 focus:outline-none"
           >
             Filters
           </button>
@@ -458,7 +458,7 @@ const handleUseCurrentLocation = async () => {
               type="button"
               onClick={handleUseCurrentLocation}
               className={`mt-2 px-4 py-2 rounded-lg text-white ${
-                isFetchingLocation ? 'bg-gray-400 cursor-not-allowed animate-pulse' : 'bg-blue-500 hover:bg-blue-600'
+                isFetchingLocation ? 'bg-gray-400 cursor-not-allowed animate-pulse' : 'bg-pink-500 hover:bg-pink-600'
               }`}
               disabled={isFetchingLocation}
             >
@@ -480,7 +480,7 @@ const handleUseCurrentLocation = async () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
               <div>
                 <label className="block mb-1">Price Range</label>
-                <div className="px-1">
+                <div className="px-1 text-pink-500">
                   <Slider
                     range
                     min={0}
@@ -600,7 +600,7 @@ const handleUseCurrentLocation = async () => {
                         id={`internal-${amenity}`}
                         checked={filters.amenitiesInternal.includes(amenity)}
                         onChange={() => handleAmenityChange(amenity, "amenitiesInternal")}
-                        className="accent-blue-500"
+                        className="accent-pink-500"
                       />
                       <label htmlFor={`internal-${amenity}`} className="text-sm cursor-pointer">{amenity}</label>
                     </div>
@@ -619,7 +619,7 @@ const handleUseCurrentLocation = async () => {
                         id={`external-${amenity}`}
                         checked={filters.amenitiesExternal.includes(amenity)}
                         onChange={() => handleAmenityChange(amenity, "amenitiesExternal")}
-                        className="accent-blue-500"
+                        className="accent-pink-500"
                       />
                       <label htmlFor={`external-${amenity}`} className="text-sm cursor-pointer">{amenity}</label>
                     </div>
@@ -638,7 +638,7 @@ const handleUseCurrentLocation = async () => {
                         id={`nearby-${amenity}`}
                         checked={filters.amenitiesNearby.includes(amenity)}
                         onChange={() => handleAmenityChange(amenity, "amenitiesNearby")}
-                        className="accent-blue-500"
+                        className="accent-pink-500"
                       />
                       <label htmlFor={`nearby-${amenity}`} className="text-sm cursor-pointer">{amenity}</label>
                     </div>
