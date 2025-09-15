@@ -153,7 +153,6 @@ const Hero = () => {
       </div>
 
 
-<button onClick={() => setShowModal(true)}>Open Filter Modal</button>
 
 
 
@@ -161,8 +160,12 @@ const Hero = () => {
       <motion.div
         whileHover={{ scale: 1.02 }}
         className="flex items-center justify-between max-w-4xl mx-auto w-full rounded-full bg-white shadow-md border px-6 py-3 cursor-pointer"
-        onClick={() => setShowModal(true)}
       >
+
+
+        <button onClick={() => setShowModal(true)}>Open Filter Modal</button>
+
+
         <span className="text-gray-700">
           {filters.location || "Search location"}
         </span>
