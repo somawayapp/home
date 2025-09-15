@@ -11,6 +11,8 @@ export const AppProvider = ({ children }) => {
   const navigate = useNavigate();
   const currency = import.meta.env.VITE_CURRENCY;
   const locationHook = useLocation();
+  const [showModal, setShowModal] = useState(false);
+
 
   const [token, setToken] = useState(null);
   const [user, setUser] = useState(null);
@@ -118,6 +120,8 @@ export const AppProvider = ({ children }) => {
     currency,
     axios,
     user,
+    showModal,
+     setShowModal,
     setUser,
     token,
     setToken,
@@ -135,6 +139,8 @@ export const AppProvider = ({ children }) => {
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
+
+
 };
 
 export const useAppContext = () => {

@@ -18,6 +18,8 @@ const LocationSelector = ({ onMapClick }) => {
   return null;
 };
 
+
+
 // Available amenities
 const internalAmenities = ["AC", "Heating", "Wi-Fi", "Bathtub", "Dishwasher", "Built-in washer", "Built-in dryer", "Smart home", "Balcony", "Security systems", "CCTV cameras", "Intercoms"];
 const externalAmenities = ["Parking", "Pool", "Gym & Fitness center", "Social areas", "Rooftop gardens", "Back garden", "Bike parking", "Covered parking", "Package lockers", "Party room", "Billiards table", "Clubhouse", "Spa", "Playgrounds", "Walking paths", "Friendly spaces", "Valet trash", "Surveillance cameras", "Building Wi-Fi", "Greenery around the space"];
@@ -47,7 +49,8 @@ const Home = () => {
     lng: null,
   });
 
-  const [showModal, setShowModal] = useState(false);
+  const { showModal, setShowModal } = useAppContext();
+
   const [filteredListings, setFilteredListings] = useState([]);
   const [locationSuggestions, setLocationSuggestions] = useState([]);
   const [mapCenter, setMapCenter] = useState([51.505, -0.09]);

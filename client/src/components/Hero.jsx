@@ -34,7 +34,9 @@ const Hero = () => {
     bathrooms: "",
   });
 
-  const [showModal, setShowModal] = useState(false);
+  const { setShowModal } = useAppContext();
+
+
   const [mapCenter, setMapCenter] = useState([0.3476, 32.5825]); // Kampala default
   const [markerPosition, setMarkerPosition] = useState(null);
 
@@ -150,6 +152,11 @@ const Hero = () => {
         </div>
       </div>
 
+
+<button onClick={() => setShowModal(true)}>Open Filter Modal</button>
+
+
+
       {/* --- Search Bar --- */}
       <motion.div
         whileHover={{ scale: 1.02 }}
@@ -180,154 +187,7 @@ const Hero = () => {
         </motion.button>
       </motion.div>
 
-      {/* --- Filter Modal --- */}
-      {showModal && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="fixed inset-0 bg-black/20 flex items-center justify-center p-4 z-50"
-          onClick={() => setShowModal(false)}
-        >
-          <motion.div
-            initial={{ y: 100, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.3 }}
-            onClick={(e) => e.stopPropagation()}
-            className="bg-white rounded-2xl p-6 w-full max-w-3xl border border-light shadow-xl max-h-[90vh] overflow-y-auto"
-          >
-            <h2 className="text-lg font-semibold mb-4">Filter Listings</h2>
-
-            {/* --- Location Input --- */}
-            <label className="block mb-2">Location</label>
-            <input
-              type="text"
-              value={filters.location}
-              onChange={(e) => setFilters({ ...filters, location: e.target.value })}
-              placeholder="Type a city or area"
-              list="city-list"
-              className="w-full border rounded-lg p-2"
-            />
-            <datalist id="city-list">
-              {cityList.map((city) => (
-                <option key={city} value={city} />
-              ))}
-            </datalist>
-
-            <button
-              type="button"
-              onClick={handleUseCurrentLocation}
-              className="mt-2 px-4 py-2 rounded-lg bg-primary text-white"
-            >
-              Use Current Location
-            </button>
-
-            {/* --- Map Picker --- */}
-            <div className="mt-4 rounded-lg overflow-hidden border h-72">
-              <MapContainer center={mapCenter} zoom={13} style={{ height: "100%" }}>
-                <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-                <LocationSelector />
-                {markerPosition && (
-                  <>
-                    <Marker position={markerPosition} />
-                    <Circle center={markerPosition} radius={filters.radius} />
-                  </>
-                )}
-              </MapContainer>
-              <div className="flex items-center gap-3 mt-2">
-                <label>Radius:</label>
-                <input
-                  type="range"
-                  min="500"
-                  max="10000"
-                  step="500"
-                  value={filters.radius}
-                  onChange={(e) =>
-                    setFilters({ ...filters, radius: Number(e.target.value) })
-                  }
-                />
-                <span>{Math.round(filters.radius / 1000)} km</span>
-              </div>
-            </div>
-
-            {/* --- Other Filters --- */}
-            <div className="grid grid-cols-2 gap-4 mt-4">
-              <div>
-                <label className="block mb-1">Max Price</label>
-                <input
-                  type="number"
-                  value={filters.price}
-                  onChange={(e) =>
-                    setFilters({ ...filters, price: e.target.value })
-                  }
-                  placeholder="Enter max price"
-                  className="w-full border rounded-lg p-2"
-                />
-              </div>
-
-              <div>
-                <label className="block mb-1">Property Type</label>
-                <select
-                  value={filters.propertyType}
-                  onChange={(e) =>
-                    setFilters({ ...filters, propertyType: e.target.value })
-                  }
-                  className="w-full border rounded-lg p-2"
-                >
-                  <option value="">Any</option>
-                  <option value="apartment">Apartment</option>
-                  <option value="house">House</option>
-                  <option value="land">Land</option>
-                  <option value="commercial">Commercial</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="block mb-1">Bedrooms</label>
-                <input
-                  type="number"
-                  value={filters.bedrooms}
-                  onChange={(e) =>
-                    setFilters({ ...filters, bedrooms: e.target.value })
-                  }
-                  className="w-full border rounded-lg p-2"
-                  placeholder="Min bedrooms"
-                />
-              </div>
-
-              <div>
-                <label className="block mb-1">Bathrooms</label>
-                <input
-                  type="number"
-                  value={filters.bathrooms}
-                  onChange={(e) =>
-                    setFilters({ ...filters, bathrooms: e.target.value })
-                  }
-                  className="w-full border rounded-lg p-2"
-                  placeholder="Min bathrooms"
-                />
-              </div>
-            </div>
-
-            {/* --- Footer --- */}
-            <div className="flex justify-between mt-6">
-              <button
-                type="button"
-                onClick={() => setShowModal(false)}
-                className="px-4 py-2 rounded-lg bg-gray-200"
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                onClick={handleSearch}
-                className="px-4 py-2 rounded-lg bg-primary text-white"
-              >
-                Apply Filters
-              </button>
-            </div>
-          </motion.div>
-        </motion.div>
-      )}
+    
     </div>
   );
 };
