@@ -499,7 +499,7 @@ const handleUseCurrentLocation = async () => {
                 </div>
 
                 {/* New Input Fields */}
-                <div className="flex gap-4 mt-4">
+                <div className="flex gap-4 mt-5">
                   <div className="w-1/2">
                     <label className="block text-sm text-gray-500 mb-1" htmlFor="min-price">Min Price ($)</label>
                     <input
@@ -592,8 +592,8 @@ const handleUseCurrentLocation = async () => {
               {/* Internal Amenities */}
               <div>
                 <h3 className="text-md font-semibold mb-2">Internal Amenities</h3>
-                <div className="flex flex-row   gap-y-2 gap-x-4">
-                  {internalAmenities.map((amenity) => (
+                 <div className="grid grid-cols-2 gap-y-2 gap-x-4">
+                                   {internalAmenities.map((amenity) => (
                     <div key={amenity} className="flex items-center gap-2">
                       <input
                         type="checkbox"
