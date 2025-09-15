@@ -8,7 +8,7 @@ import toast from 'react-hot-toast'
 
 const Hero = () => {
   const [pickupLocation, setPickupLocation] = useState('')
-  const { setShowModal } = useAppContext();
+  const {showModal,  setShowModal } = useAppContext();
   const [showDesktop, setShowDesktop] = useState(true)
 
   const { pricePerDay, setPricePerDay, seatingCapacity, setSeatingCapacity, navigate } = useAppContext()
