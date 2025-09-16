@@ -7,6 +7,9 @@ import { motion } from "framer-motion";
 import ListingCard from "../components/ListingCard";
 import { useAppContext } from "../context/AppContext";
 import toast from "react-hot-toast";
+import "leaflet/dist/leaflet.css";
+import L from "leaflet";
+
 
 // Helper components for Leaflet
 const LocationSelector = ({ onMapClick }) => {
@@ -57,6 +60,17 @@ const Home = () => {
   const [markerPosition, setMarkerPosition] = useState(null);
   const [isFetchingLocation, setIsFetchingLocation] = useState(false);
 
+// Custom pink marker icon
+const pinkIcon = new L.Icon({
+  iconUrl:
+    "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-pink.png",
+  shadowUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41],
+});
   // Function to get filters from URL
   const getFiltersFromUrl = () => {
     const params = new URLSearchParams(location.search);
@@ -403,7 +417,7 @@ const handleUseCurrentLocation = async () => {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="fixed inset-0 bg-black/20 flex items-center justify-center p-4 z-50"
+          className="fixed inset-0 bg-black/20 flex items-center justify-center py-4 z-50"
           onClick={() => setShowModal(false)}
         >
           <motion.div
@@ -471,7 +485,7 @@ const handleUseCurrentLocation = async () => {
                 <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
                 <LocationSelector onMapClick={handleMapClick} />
                 {markerPosition && (
-                  <Marker position={markerPosition} />
+            <Marker position={markerPosition} icon={pinkIcon} />
                 )}
               </MapContainer>
             </div>

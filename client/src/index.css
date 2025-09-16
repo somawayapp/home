@@ -86,3 +86,18 @@
   }
 }
 
+/* Track (the line behind) */
+.rc-slider-track {
+  background-color: #ec4899; /* Tailwind pink-500 */
+}
+
+/* Handle (the draggable dots) */
+.rc-slider-handle {
+  border: solid 2px #ec4899 !important;
+  background-color: #ec4899 !important;
+}
+
+/* Rail (the inactive track) */
+.rc-slider-rail {
+  background-color: #fbcfe8; /* lighter pink (pink-200) */
+}
