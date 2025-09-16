@@ -61,15 +61,21 @@ const Home = () => {
   const [isFetchingLocation, setIsFetchingLocation] = useState(false);
 
 // Custom pink marker icon
-const pinkIcon = new L.Icon({
-  iconUrl:
-    "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-pink.png",
-  shadowUrl:
-    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41],
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png',
+  iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+});
+
+// Create a new custom icon that is a simple red dot or pin
+const redPinIcon = new L.Icon({
+  iconUrl: `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png`,
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41],
 });
   // Function to get filters from URL
   const getFiltersFromUrl = () => {
@@ -425,7 +431,7 @@ const handleUseCurrentLocation = async () => {
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.3 }}
             onClick={(e) => e.stopPropagation()}
-            className="bg-white rounded-2xl p-6 w-full max-w-3xl border border-light shadow-xl max-h-[90vh] overflow-y-auto"
+            className="bg-white rounded-2xl py-6 w-full max-w-3xl border border-light shadow-xl max-h-[90vh] overflow-y-auto"
           >
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-lg font-semibold">Filter Listings</h2>
@@ -485,7 +491,7 @@ const handleUseCurrentLocation = async () => {
                 <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
                 <LocationSelector onMapClick={handleMapClick} />
                 {markerPosition && (
-            <Marker position={markerPosition} icon={pinkIcon} />
+            <Marker position={markerPosition} icon={redPinIcon} />
                 )}
               </MapContainer>
             </div>
