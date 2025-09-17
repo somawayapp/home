@@ -423,7 +423,7 @@ const handleUseCurrentLocation = async () => {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="fixed inset-0 bg-black/20 flex items-center justify-center  z-50"
+          className="fixed inset-0 bg-black/20 flex items-center justify-center   p-4 md:p-9 z-50"
           onClick={() => setShowModal(false)}
         >
           <motion.div
@@ -431,7 +431,7 @@ const handleUseCurrentLocation = async () => {
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.3 }}
             onClick={(e) => e.stopPropagation()}
-            className="bg-white rounded-2xl p-4 md:p-9  my-4 md:my-9  w-full max-w-3xl border border-light shadow-xl max-h-[90vh] overflow-y-auto"
+            className="bg-white rounded-2xl p-4 md:p-9  my-4 md:my-9  w-full max-w-3xl border border-light shadow-xl max-h-[80vh] md:max-h-[90vh] overflow-y-auto"
           >
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-lg font-semibold">Filter Listings</h2>
