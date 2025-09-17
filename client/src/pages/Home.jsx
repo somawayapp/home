@@ -431,7 +431,7 @@ const handleUseCurrentLocation = async () => {
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.3 }}
             onClick={(e) => e.stopPropagation()}
-            className="bg-white rounded-2xl  w-full max-w-3xl border border-light shadow-xl  overflow-y-auto"
+            className="bg-white rounded-2xl  w-full max-w-3xl border border-light shadow-xl gap-6 overflow-y-auto"
           >
             <div className=" p-4 md:p-9 ">
             <div className="flex justify-between items-center mb-4">
