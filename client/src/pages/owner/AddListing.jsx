@@ -108,9 +108,15 @@ const AddListing = () => {
     price: '',
     propertytype: '',
     offertype: 'rent',
-    location:{ county: '', country: '', city: '', surbub: '', area: '' },
-    coordinates: null, // Add a new state for coordinates
-    amenities: { internal: [], external: [], nearby: [] },
+    location: {
+    country: 'Kenya',
+    county: '',
+    city: '',
+    suburb: '',
+    area: '',
+    coordinates: null, // lat, lng inside location
+  },
+      amenities: { internal: [], external: [], nearby: [] },
     features: { bathrooms: '', bedrooms: '', rooms: '', size: '' },
     agentname: '',
     agentphone: '',
@@ -122,13 +128,12 @@ const AddListing = () => {
     draft: true,   
   });
 
-    const handleLocationChange = useCallback((newLocation) => {
-    setListing(prev => ({
-      ...prev,
-      location: newLocation.location,
-      coordinates: newLocation.coordinates,
-    }));
-  }, []);
+   const handleLocationChange = useCallback((newLocation) => {
+  setListing(prev => ({
+    ...prev,
+    location: newLocation, // ✅ use full object from MapInput
+  }));
+}, []);
 
 
   const authenticator = async () => {
@@ -344,7 +349,7 @@ const AddListing = () => {
 
       const { data } = await axios.post(
         '/api/owner/add-listing',
-        { ...listing, images: imageUrls, coordinates: listing.coordinates, draft: false, listingstatus: true  },
+        { ...listing, images: imageUrls, draft: false, listingstatus: true  },
         {
           onUploadProgress: (progressEvent) => {
             const percent = Math.round((progressEvent.loaded / progressEvent.total) * 100);
