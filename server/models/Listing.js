@@ -14,15 +14,20 @@ const listingSchema = new mongoose.Schema(
     featured: { type: Boolean, default: false },
      draft: { type: Boolean, default: true },
     featuredexpiry: { type: Date },
-    location: { type: String },
-
+location: {
+  country: { type: String, required: true, default: "Kenya" }, // fixed to Kenya
+  county: { type: String },
+  city: { type: String },
+  suburb: { type: String },
+  area: { type: String },
   coordinates: {
-    type: [Number], // An array of numbers: [longitude, latitude]
+    type: [Number], // [longitude, latitude]
     validate: {
       validator: (v) => v === null || (Array.isArray(v) && v.length === 2),
-      message: 'Coordinates must be an array of two numbers or null.'
+      message: 'Coordinates must be [longitude, latitude] or null.'
     }
-  },
+  }
+},
     
     title: { type: String },
     description: { type: String },

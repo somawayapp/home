@@ -1,200 +1,201 @@
-import React, { useState, useEffect } from "react";
-import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
-import "leaflet/dist/leaflet.css";
-import { OpenStreetMapProvider } from "leaflet-geosearch";
-import "leaflet-geosearch/dist/geosearch.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCrosshairs } from "@fortawesome/free-solid-svg-icons";
-import L from "leaflet";
-import { toast } from "react-hot-toast";
+import React, { useState, useEffect } from 'react';
+import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
+import { OpenStreetMapProvider } from 'leaflet-geosearch';
+import 'leaflet-geosearch/dist/geosearch.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCrosshairs } from '@fortawesome/free-solid-svg-icons';
+import L from 'leaflet';
+import { toast } from 'react-hot-toast';
 
-// Fix Leaflet marker issue
+// Fix for default marker icon issue with Leaflet in React
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
-  iconRetinaUrl:
-    "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png",
-  iconUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png",
-  shadowUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png",
+  iconRetinaUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png',
+  iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
+  shadowUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png',
 });
 
-// Red pin
+// Red custom marker icon
 const redPinIcon = new L.Icon({
   iconUrl: `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png`,
-  shadowUrl:
-    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
   iconSize: [25, 41],
   iconAnchor: [12, 41],
   popupAnchor: [1, -34],
   shadowSize: [41, 41],
 });
 
-// Helper: reverse geocode with structured details
-const getAddressFromCoordinates = async (coords, setForm) => {
-  const provider = new OpenStreetMapProvider({
-    params: { "accept-language": "en" },
-  });
-  try {
-    const results = await provider.search({
-      query: `${coords[0]}, ${coords[1]}`,
-    });
-    if (results.length > 0) {
-      const result = results[0];
-      const raw = result.raw.address || {};
-
-      setForm((prev) => ({
-        ...prev,
-        country: raw.country || "Kenya",
-        county: raw.county || "",
-        city: raw.city || raw.town || raw.village || "",
-        area: raw.suburb || raw.neighbourhood || "",
-        exactLocation: result.label,
-        coordinates: coords,
-      }));
-    } else {
-      toast.error("Could not find an address for this location.");
-    }
-  } catch (err) {
-    console.error("Geocoding error:", err);
-    toast.error("Error fetching address. Try again.");
-  }
-};
-
 // Map click handler
-const MapEvents = ({ setForm }) => {
+const MapEvents = ({ setLocationData }) => {
   const map = useMapEvents({
     click: async (e) => {
       const { lat, lng } = e.latlng;
-      await getAddressFromCoordinates([lat, lng], setForm);
+      await getAddressFromCoordinates([lat, lng], setLocationData);
       map.flyTo(e.latlng, map.getZoom());
     },
   });
   return null;
 };
 
-const MapInput = ({ onLocationChange }) => {
-  const [form, setForm] = useState({
-    country: "Kenya",
-    county: "",
-    city: "",
-    area: "",
-    exactLocation: "",
-    coordinates: null, // [lat, lng]
-  });
+// Reverse geocoding
+const getAddressFromCoordinates = async (coords, setLocationData) => {
+  const provider = new OpenStreetMapProvider({ params: { 'accept-language': 'en' } });
+  try {
+    const results = await provider.search({ query: `${coords[0]}, ${coords[1]}` });
+    if (results.length > 0) {
+      const place = results[0].raw.address;
+
+      setLocationData((prev) => ({
+        ...prev,
+        country: "Kenya", // fixed
+        county: place.county || "",
+        city: place.city || place.town || place.village || "",
+        suburb: place.suburb || "",
+        area: place.neighbourhood || place.road || place.hamlet || "",
+        coordinates: [coords[0], coords[1]], // lat, lng
+      }));
+    } else {
+      toast.error("Could not find an address for this location.");
+    }
+  } catch (error) {
+    console.error("Geocoding error:", error);
+    toast.error("Error fetching address. Please try again.");
+  }
+};
+
+const MapInput = ({ initialLocation, onLocationChange }) => {
+  const [locationData, setLocationData] = useState(
+    initialLocation || {
+      country: "Kenya",
+      county: "",
+      city: "",
+      suburb: "",
+      area: "",
+      coordinates: null,
+    }
+  );
   const [loading, setLoading] = useState(false);
 
-  // Send data upwards
+  // Send changes to parent
   useEffect(() => {
-    onLocationChange(form);
-  }, [form, onLocationChange]);
+    onLocationChange(locationData);
+  }, [locationData, onLocationChange]);
 
-  // Get current device location
+  // Use browser geolocation
   const handleGetCurrentLocation = () => {
     setLoading(true);
-    if ("geolocation" in navigator) {
+    if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition(
         async (pos) => {
           const { latitude, longitude } = pos.coords;
-          await getAddressFromCoordinates([latitude, longitude], setForm);
+          await getAddressFromCoordinates([latitude, longitude], setLocationData);
           setLoading(false);
           toast.success("Current location set!");
         },
-        (err) => {
-          console.error("Geolocation error:", err);
-          toast.error("Enable location services.");
+        (error) => {
+          console.error("Geolocation error:", error);
+          toast.error("Error getting your location.");
           setLoading(false);
         }
       );
     } else {
-      toast.error("Geolocation not supported.");
+      toast.error("Geolocation not supported by your browser.");
       setLoading(false);
     }
   };
 
   return (
-    <div className="flex flex-col gap-3 w-full">
+    <div className="flex flex-col gap-4 w-full">
       <label className="font-semibold md:text-lg">Location</label>
 
-      {/* Inputs */}
-      <input
-        type="text"
-        placeholder="Country"
-        value={form.country}
-        readOnly
-        className="px-3 py-2 border rounded-md"
-      />
-      <input
-        type="text"
-        placeholder="County"
-        value={form.county}
-        onChange={(e) => setForm({ ...form, county: e.target.value })}
-        className="px-3 py-2 border rounded-md"
-      />
-      <input
-        type="text"
-        placeholder="City / Town"
-        value={form.city}
-        onChange={(e) => setForm({ ...form, city: e.target.value })}
-        className="px-3 py-2 border rounded-md"
-      />
-      <input
-        type="text"
-        placeholder="Area"
-        value={form.area}
-        onChange={(e) => setForm({ ...form, area: e.target.value })}
-        className="px-3 py-2 border rounded-md"
-      />
-      <input
-        type="text"
-        placeholder="Exact Location"
-        value={form.exactLocation}
-        onChange={(e) => setForm({ ...form, exactLocation: e.target.value })}
-        className="px-3 py-2 border rounded-md"
-      />
+      {/* Form inputs */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <input
+          type="text"
+          placeholder="Country"
+          value={locationData.country}
+          onChange={(e) => setLocationData({ ...locationData, country: e.target.value })}
+          className="px-3 py-2 border rounded-md"
+        />
 
-      {/* Lat / Lng (optional) */}
-      <div className="flex gap-2">
+        <input
+          type="text"
+          placeholder="County"
+          value={locationData.county}
+          onChange={(e) => setLocationData({ ...locationData, county: e.target.value })}
+          className="px-3 py-2 border rounded-md"
+        />
+
+        <input
+          type="text"
+          placeholder="City or Town"
+          value={locationData.city}
+          onChange={(e) => setLocationData({ ...locationData, city: e.target.value })}
+          className="px-3 py-2 border rounded-md"
+        />
+
+        <input
+          type="text"
+          placeholder="Suburb"
+          value={locationData.suburb}
+          onChange={(e) => setLocationData({ ...locationData, suburb: e.target.value })}
+          className="px-3 py-2 border rounded-md"
+        />
+
+        <input
+          type="text"
+          placeholder="Area"
+          value={locationData.area}
+          onChange={(e) => setLocationData({ ...locationData, area: e.target.value })}
+          className="px-3 py-2 border rounded-md"
+        />
+
         <input
           type="text"
           placeholder="Latitude"
-          value={form.coordinates ? form.coordinates[0] : ""}
+          value={locationData.coordinates ? locationData.coordinates[0] : ""}
           readOnly
-          className="px-3 py-2 border rounded-md flex-1"
+          className="px-3 py-2 border rounded-md bg-gray-100"
         />
+
         <input
           type="text"
           placeholder="Longitude"
-          value={form.coordinates ? form.coordinates[1] : ""}
+          value={locationData.coordinates ? locationData.coordinates[1] : ""}
           readOnly
-          className="px-3 py-2 border rounded-md flex-1"
+          className="px-3 py-2 border rounded-md bg-gray-100"
         />
       </div>
 
       {/* Button */}
-      <button
-        type="button"
-        onClick={handleGetCurrentLocation}
-        disabled={loading}
-        className="px-4 py-3 rounded-xl text-white bg-blue-600 font-semibold"
-      >
-        {loading ? "Fetching..." : <><FontAwesomeIcon icon={faCrosshairs} /> Use Exact Location</>}
-      </button>
+      <div className="flex items-center gap-2">
+        <button
+          type="button"
+          onClick={handleGetCurrentLocation}
+          className="px-4 py-3 text-sm inline-flex items-center justify-center rounded-xl text-white font-semibold bg-blue-600 hover:bg-blue-700"
+          disabled={loading}
+        >
+          {loading ? 'Fetching...' : <><FontAwesomeIcon icon={faCrosshairs} /> Use Current Location</>}
+        </button>
+      </div>
 
       {/* Map */}
       <div className="w-full h-80 rounded-md overflow-hidden shadow-md z-0">
         <MapContainer
-          center={form.coordinates || [-1.286389, 36.817223]} // Nairobi
-          zoom={form.coordinates ? 15 : 8}
+          center={locationData.coordinates || [-1.286389, 36.817223]} // Nairobi default
+          zoom={locationData.coordinates ? 15 : 8}
           scrollWheelZoom={false}
           className="h-full w-full"
         >
           <TileLayer
-            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a>'
+            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-          {form.coordinates && (
-            <Marker position={form.coordinates} icon={redPinIcon} />
+          {locationData.coordinates && (
+            <Marker position={locationData.coordinates} icon={redPinIcon} />
           )}
-          <MapEvents setForm={setForm} />
+          <MapEvents setLocationData={setLocationData} />
         </MapContainer>
       </div>
     </div>
@@ -202,3 +203,4 @@ const MapInput = ({ onLocationChange }) => {
 };
 
 export default MapInput;
+
