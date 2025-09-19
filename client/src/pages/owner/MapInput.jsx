@@ -29,6 +29,7 @@ const redPinIcon = new L.Icon({
 // Reverse geocoding
 const getAddressFromCoordinates = async (coords, setLocationData) => {
   const provider = new OpenStreetMapProvider({ params: { 'accept-language': 'en' } });
+
   try {
     const results = await provider.search({ query: `${coords[0]}, ${coords[1]}` });
 
@@ -42,16 +43,27 @@ const getAddressFromCoordinates = async (coords, setLocationData) => {
         city: place.city || place.town || place.village || "",
         suburb: place.suburb || "",
         area: place.neighbourhood || place.road || place.hamlet || "",
-        coordinates: coords, // lat, lng
+        coordinates: coords, // always update coords
       }));
     } else {
+      // ✅ Fallback: still set lat/lng, but leave address fields empty
+      setLocationData((prev) => ({
+        ...prev,
+        coordinates: coords,
+      }));
       toast.error("Could not find address details for this location.");
     }
   } catch (error) {
     console.error("Geocoding error:", error);
-    toast.error("Error fetching address. Please try again.");
+    // ✅ Also fallback to just lat/lng
+    setLocationData((prev) => ({
+      ...prev,
+      coordinates: coords,
+    }));
+    toast.error("Error fetching address. Coordinates were saved.");
   }
 };
+
 
 // Map click handler
 const MapEvents = ({ setLocationData }) => {
