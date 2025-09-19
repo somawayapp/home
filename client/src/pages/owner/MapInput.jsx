@@ -26,6 +26,33 @@ const redPinIcon = new L.Icon({
   shadowSize: [41, 41],
 });
 
+// Reverse geocoding
+const getAddressFromCoordinates = async (coords, setLocationData) => {
+  const provider = new OpenStreetMapProvider({ params: { 'accept-language': 'en' } });
+  try {
+    const results = await provider.search({ query: `${coords[0]}, ${coords[1]}` });
+
+    if (results.length > 0 && results[0].raw && results[0].raw.address) {
+      const place = results[0].raw.address;
+
+      setLocationData((prev) => ({
+        ...prev,
+        country: "Kenya", // fixed
+        county: place.county || "",
+        city: place.city || place.town || place.village || "",
+        suburb: place.suburb || "",
+        area: place.neighbourhood || place.road || place.hamlet || "",
+        coordinates: coords, // lat, lng
+      }));
+    } else {
+      toast.error("Could not find address details for this location.");
+    }
+  } catch (error) {
+    console.error("Geocoding error:", error);
+    toast.error("Error fetching address. Please try again.");
+  }
+};
+
 // Map click handler
 const MapEvents = ({ setLocationData }) => {
   const map = useMapEvents({
@@ -36,32 +63,6 @@ const MapEvents = ({ setLocationData }) => {
     },
   });
   return null;
-};
-
-// Reverse geocoding
-const getAddressFromCoordinates = async (coords, setLocationData) => {
-  const provider = new OpenStreetMapProvider({ params: { 'accept-language': 'en' } });
-  try {
-    const results = await provider.search({ query: `${coords[0]}, ${coords[1]}` });
-    if (results.length > 0) {
-      const place = results[0].raw.address;
-
-      setLocationData((prev) => ({
-        ...prev,
-        country: "Kenya", // fixed
-        county: place.county || "",
-        city: place.city || place.town || place.village || "",
-        suburb: place.suburb || "",
-        area: place.neighbourhood || place.road || place.hamlet || "",
-        coordinates: [coords[0], coords[1]], // lat, lng
-      }));
-    } else {
-      toast.error("Could not find an address for this location.");
-    }
-  } catch (error) {
-    console.error("Geocoding error:", error);
-    toast.error("Error fetching address. Please try again.");
-  }
 };
 
 const MapInput = ({ initialLocation, onLocationChange }) => {
@@ -94,8 +95,12 @@ const MapInput = ({ initialLocation, onLocationChange }) => {
           toast.success("Current location set!");
         },
         (error) => {
-          console.error("Geolocation error:", error);
-          toast.error("Error getting your location.");
+          console.error("Geolocation error:", error.code, error.message);
+          let msg = "Error getting your location.";
+          if (error.code === 1) msg = "Permission denied. Please allow location access.";
+          if (error.code === 2) msg = "Position unavailable.";
+          if (error.code === 3) msg = "Location request timed out.";
+          toast.error(msg);
           setLoading(false);
         }
       );
@@ -151,20 +156,34 @@ const MapInput = ({ initialLocation, onLocationChange }) => {
           className="px-3 py-2 border rounded-md"
         />
 
+        {/* Editable Latitude */}
         <input
           type="text"
           placeholder="Latitude"
           value={locationData.coordinates ? locationData.coordinates[0] : ""}
-          readOnly
-          className="px-3 py-2 border rounded-md bg-gray-100"
+          onChange={(e) => {
+            const lat = parseFloat(e.target.value) || "";
+            setLocationData((prev) => ({
+              ...prev,
+              coordinates: [lat, prev.coordinates ? prev.coordinates[1] : ""],
+            }));
+          }}
+          className="px-3 py-2 border rounded-md"
         />
 
+        {/* Editable Longitude */}
         <input
           type="text"
           placeholder="Longitude"
           value={locationData.coordinates ? locationData.coordinates[1] : ""}
-          readOnly
-          className="px-3 py-2 border rounded-md bg-gray-100"
+          onChange={(e) => {
+            const lng = parseFloat(e.target.value) || "";
+            setLocationData((prev) => ({
+              ...prev,
+              coordinates: [prev.coordinates ? prev.coordinates[0] : "", lng],
+            }));
+          }}
+          className="px-3 py-2 border rounded-md"
         />
       </div>
 
