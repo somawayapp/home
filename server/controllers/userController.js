@@ -93,13 +93,38 @@ export const getListings = async (req, res) => {
 
     // ✅ Listing status (true = available)
     if (available !== undefined) {
-      filter.listingstatus = listingstatus === "true";
+      filter.listingstatus = available === "true";
     }
 
     // ✅ Location (case-insensitive partial match)
-    if (location) {
-      filter.location = { $regex: new RegExp(location, "i") };
-    }
+  if (location) {
+  const terms = location.split(/\s+/); // split by space → ["Nairobi", "Ngara"]
+
+  // Build an array of conditions
+  const conditions = [];
+
+  terms.forEach((term) => {
+    conditions.push(
+      { "location.county": { $regex: term, $options: "i" } },
+      { "location.city": { $regex: term, $options: "i" } },
+      { "location.suburb": { $regex: term, $options: "i" } },
+      { "location.area": { $regex: term, $options: "i" } },
+      { "location.road": { $regex: term, $options: "i" } }
+    );
+  });
+
+  // Require ALL terms to be found somewhere
+  filter.$and = terms.map((term) => ({
+    $or: [
+      { "location.county": { $regex: term, $options: "i" } },
+      { "location.city": { $regex: term, $options: "i" } },
+      { "location.suburb": { $regex: term, $options: "i" } },
+      { "location.area": { $regex: term, $options: "i" } },
+      { "location.road": { $regex: term, $options: "i" } },
+    ],
+  }));
+}
+
 
     // ✅ Price range
     if (minPrice || maxPrice) {
