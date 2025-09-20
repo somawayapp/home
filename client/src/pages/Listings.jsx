@@ -18,7 +18,6 @@ const Listings = () => {
       return (
         (listing.title && listing.title.toLowerCase().includes(input.toLowerCase())) ||
         (listing.propertytype && listing.propertytype.toLowerCase().includes(input.toLowerCase())) ||
-        (listing.location && listing.location.toLowerCase().includes(input.toLowerCase()))
       );
     });
 

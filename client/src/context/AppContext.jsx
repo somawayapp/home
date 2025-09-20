@@ -18,6 +18,7 @@ export const AppProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isOwner, setIsOwner] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
+  
 
   // ✅ Filters for listings
   const [filters, setFilters] = useState({

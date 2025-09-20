@@ -97,6 +97,8 @@ const redPinIcon = new L.Icon({
     setFilters((prev) => ({ ...prev, ...newFilters }));
   };
 
+  
+
   // Function to apply all filters
   const applyFilter = () => {
     let newFilteredListings = [...listings];
@@ -116,14 +118,24 @@ const redPinIcon = new L.Icon({
       lng,
     } = filters;
 
+    
+
     // Text search filter
     const searchTerm = location?.toLowerCase();
-    if (searchTerm) {
-      newFilteredListings = newFilteredListings.filter((listing) =>
-        (listing.title && listing.title.toLowerCase().includes(searchTerm)) ||
-        (listing.propertytype && listing.propertytype.toLowerCase().includes(searchTerm)) ||
-        (listing.location && listing.location.toLowerCase().includes(searchTerm))
-      );
+   if (searchTerm) {
+  newFilteredListings = newFilteredListings.filter((listing) => {
+    const locationStr = listing.location
+      ? Object.values(listing.location).filter(Boolean).join(" ").toLowerCase()
+      : "";
+
+    return (
+      (listing.title && listing.title.toLowerCase().includes(searchTerm)) ||
+      (listing.propertytype && listing.propertytype.toLowerCase().includes(searchTerm)) ||
+      locationStr.includes(searchTerm)
+    );
+  });
+}
+
     }
 
     // Price filter
