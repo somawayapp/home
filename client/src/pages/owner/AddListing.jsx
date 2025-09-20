@@ -746,69 +746,80 @@ useEffect(() => {
               </div>
             </div>
 
+            
+            <div className="flex flex-col w-full gap-3">
+                <div className=" gap-4 md:gap-9 ">
 
-           <div className="flex flex-col w-full gap-6">
-  {/* Internal Amenities */}
-  <div className="border p-4 md:p-6 rounded-md shadow-sm">
-    <h4 className="md:text-lg font-semibold">Internal Amenities</h4>
-    <div className="grid grid-cols-2 gap-3 mt-3">
-      {internalAmenities.map((amenity) => (
-        <label key={amenity} className="flex items-center">
-          <input
-            type="checkbox"
-            name="amenities-internal"
-            value={amenity}
-            onChange={(e) => handleAmenitiesChange(e, "internal")}
-            className="mr-2"
-            checked={listing.amenities.internal.includes(amenity)}
-          />
-          {amenity}
-        </label>
-      ))}
-    </div>
-  </div>
 
-  {/* External Amenities */}
-  <div className="border p-4 md:p-6 rounded-md shadow-sm">
-    <h4 className="md:text-lg font-semibold">External Amenities</h4>
-    <div className="grid grid-cols-2 gap-3 mt-3">
-      {externalAmenities.map((amenity) => (
-        <label key={amenity} className="flex items-center">
-          <input
-            type="checkbox"
-            name="amenities-external"
-            value={amenity}
-            onChange={(e) => handleAmenitiesChange(e, "external")}
-            className="mr-2"
-            checked={listing.amenities.external.includes(amenity)}
-          />
-          {amenity}
-        </label>
-      ))}
-    </div>
-  </div>
+                  <div className="border p-2 md:p-6      " >
+                  <h4 className="md:text-lg  font-semibold">Internal Amenities</h4>
+                  <div className="flex flex-wrap gap-4 mt-2">
+                    {internalAmenities.map((amenity) => (
+                      <label key={amenity} className="flex items-center">
+                        <input
+                          type="checkbox"
+                          name="amenities-internal"
+                          value={amenity}
+                          onChange={(e) => handleAmenitiesChange(e, 'internal')}
+                          className="mr-2"
+                          checked={listing.amenities.internal.includes(amenity)}
+                        />
+                        {amenity}
+                      </label>
+                    ))}
+                  </div>
+                </div>
 
-  {/* Nearby Amenities */}
-  <div className="border p-4 md:p-6 rounded-md shadow-sm">
-    <h4 className="md:text-lg font-semibold">Nearby Amenities</h4>
-    <div className="grid grid-cols-2 gap-3 mt-3">
-      {nearbyAmenities.map((amenity) => (
-        <label key={amenity} className="flex items-center">
-          <input
-            type="checkbox"
-            name="amenities-nearby"
-            value={amenity}
-            onChange={(e) => handleAmenitiesChange(e, "nearby")}
-            className="mr-2"
-            checked={listing.amenities.nearby.includes(amenity)}
-          />
-          {amenity}
-        </label>
-      ))}
-    </div>
-  </div>
-</div>
->
+                                    <div className="border p-2 md:p-6      " >
+
+                  <h4 className="md:text-lg  font-semibold ">External Amenities</h4>
+                  <div className="flex flex-wrap gap-4 mt-2">
+                    {externalAmenities.map((amenity) => (
+                      <label key={amenity} className="flex items-center">
+                        <input
+                          type="checkbox"
+                          name="amenities-external"
+                          value={amenity}
+                          onChange={(e) => handleAmenitiesChange(e, 'external')}
+                          className="mr-2"
+                          checked={listing.amenities.external.includes(amenity)}
+                        />
+                        {amenity}
+                      </label>
+                    ))}
+                  </div>
+                </div>
+
+
+                <div className="border p-2 md:p-6      " >
+                <h4 className="md:text-lg  font-semibold ">Nearby Amenities</h4>
+                  <div className="flex flex-wrap gap-4 mt-2">
+                    {nearbyAmenities.map((amenity) => (
+                      <label key={amenity} className="flex items-center">
+                        <input
+                          type="checkbox"
+                          name="amenities-nearby"
+                          value={amenity}
+                          onChange={(e) => handleAmenitiesChange(e, 'nearby')}
+                          className="mr-2"
+                          checked={listing.amenities.nearby.includes(amenity)}
+                        />
+                        {amenity}
+                      </label>
+                    ))}
+                  </div>
+                  </div>
+                <div>
+
+                </div>
+
+                   <div>
+
+
+
+                </div>
+              </div>
+            </div>
                                           
                                           
                                           
