@@ -123,7 +123,16 @@ const ListingCard = ({ listing }) => {
           {/* Location */}
           <div className="flex justify-between mr-1">
             <p className="text-[var(--softTextColor)] font-semibold capitalize text-[14px] md:text-[15px]">
-              {listing.location || "Unknown Location"}
+{listing.location
+  ? [
+      listing.location.area,
+      listing.location.road,
+      listing.location.suburb,
+      listing.location.city,
+      listing.location.county,
+      listing.location.country,
+    ].filter(Boolean).join(", ")
+  : "Unknown Location"}
             </p>
           </div>
 
