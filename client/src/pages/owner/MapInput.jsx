@@ -194,7 +194,7 @@ const MapInput = ({ initialLocation, onLocationChange }) => {
 
        <input
           type="text"
-          placeholder="Road"
+          placeholder="Road or Estate"
           value={locationData.road}
           onChange={(e) => setLocationData({ ...locationData, road: e.target.value })}
           className="px-3 py-2 border rounded-md"

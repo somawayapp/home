@@ -20,6 +20,8 @@ location: {
   city: { type: String },
   suburb: { type: String },
   area: { type: String },
+  road: { type: String },
+
   coordinates: {
     type: [Number], // [longitude, latitude]
     validate: {

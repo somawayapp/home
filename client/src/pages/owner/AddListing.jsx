@@ -114,6 +114,8 @@ const AddListing = () => {
     city: '',
     suburb: '',
     area: '',
+    road: '',
+
     coordinates: null, // lat, lng inside location
   },
       amenities: { internal: [], external: [], nearby: [] },
@@ -309,10 +311,30 @@ const AddListing = () => {
       return;
     }
 
-     if (!listing.location || !listing.coordinates) {
-      toast.error('Please select a location on the map or type in an address.');
+     if (!listing.location.country) {
+      toast.error('Please select county in the location field.');
       return;
     }
+
+  if (!listing.location.city) {
+      toast.error('Please enter city name in the location field.');
+      return;
+    }
+  
+    
+  if (!listing.location.suburb) {
+      toast.error('Please enter suburb name in the location field.');
+      return;
+    }
+  if (!listing.location.area) {
+      toast.error('Please enter name of the area in the location field.');
+      return;
+    }
+      if (!listing.location.road) {
+      toast.error('Please enter name of the road or estate in the location field.');
+      return;
+    }
+  
   if (!listing.agentname ) {
       toast.error('Please enter an Agent name.');
       return;
