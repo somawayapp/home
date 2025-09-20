@@ -248,87 +248,84 @@ const redPinIcon = new L.Icon({
 
   // Function to get address from coordinates
 // Function to get address from coordinates
-const getAddressFromCoordinates = async ([lat, lng]) => {
+
+
+// Function to get the most specific available location name
+const getPreciseLocationName = async ([lat, lng]) => {
   try {
-    const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`);
+    const response = await fetch(
+      `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
+    );
     const data = await response.json();
 
     if (data && data.address) {
-      // Prioritize the city, then the suburb, then the county
-      const locationName = data.address.city || data.address.suburb || data.address.county || 'Unknown Location';
-      return locationName;
+      const address = data.address;
+
+      // Fallback priority chain: Road → Area → Suburb → City → Town → Village → County
+      return (
+        address.road ||
+        address.neighbourhood ||
+        address.hamlet ||
+        address.suburb ||
+        address.city ||
+        address.town ||
+        address.village ||
+        address.county ||
+        "Unknown Location"
+      );
     }
-    
-    return 'Unknown Location';
+
+    return "Unknown Location";
   } catch (error) {
     console.error("Error fetching address:", error);
-    return 'Unknown Location';
+    return "Unknown Location";
   }
 };
 
 
 
-// Function to get a smaller address (e.g., City, Suburb) from coordinates
-const getSmallerLocationName = async ([lat, lng]) => {
-  try {
-    const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`);
-    const data = await response.json();
-    if (data && data.address) {
-      const address = data.address;
-      // Prioritize city, then suburb, then county, etc.
-      return address.city || address.town || address.village || address.suburb || address.county || 'Unknown Location';
-    }
-    return 'Unknown Location';
-  } catch (error) {
-    console.error("Error fetching address:", error);
-    return 'Unknown Location';
-  }
-};
-
 const handleUseCurrentLocation = async () => {
-  if ("geolocation" in navigator) {
-    setIsFetchingLocation(true);
-    navigator.geolocation.getCurrentPosition(
-      async (position) => {
-        const { latitude, longitude } = position.coords;
-        setMarkerPosition([latitude, longitude]);
-        setMapCenter([latitude, longitude]);
-        
-        // Use the new function to get a smaller name for the default location
-        const locationName = await getSmallerLocationName([latitude, longitude]);
-        
-        handleFilterChange("location", locationName);
-        handleFilterChange("lat", null);
-        handleFilterChange("lng", null);
-        
-        toast.success("Location fetched!");
-        setIsFetchingLocation(false);
-      },
-      () => {
-        toast.error("Unable to retrieve your location.");
-        setIsFetchingLocation(false);
-      }
-    );
-  } else {
-    toast.error("Geolocation is not supported by your browser.");
-  }
+  if ("geolocation" in navigator) {
+    setIsFetchingLocation(true);
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const { latitude, longitude } = position.coords;
+        setMarkerPosition([latitude, longitude]);
+        setMapCenter([latitude, longitude]);
+
+        // Use new fallback function
+        const locationName = await getPreciseLocationName([latitude, longitude]);
+
+        handleFilterChange("location", locationName);
+        handleFilterChange("lat", null);
+        handleFilterChange("lng", null);
+
+        toast.success(`Location set to: ${locationName}`);
+        setIsFetchingLocation(false);
+      },
+      () => {
+        toast.error("Unable to retrieve your location.");
+        setIsFetchingLocation(false);
+      }
+    );
+  } else {
+    toast.error("Geolocation is not supported by your browser.");
+  }
 };
 
-  const handleMapClick = async (latlng) => {
+
+const handleMapClick = async (latlng) => {
   setMarkerPosition(latlng);
 
-  // Call the reverse geocoding function
-  const locationName = await getAddressFromCoordinates(latlng);
-  
-  // Update the 'location' filter with the fetched name
-  handleFilterChange("location", locationName);
+  const locationName = await getPreciseLocationName(latlng);
 
-  // Also clear the lat/lng filters since we're now filtering by name
+  handleFilterChange("location", locationName);
   handleFilterChange("lat", null);
   handleFilterChange("lng", null);
 
   toast.success(`Location set to: ${locationName}`);
 };
+
 
 
   useEffect(() => {
@@ -477,13 +474,12 @@ const handleUseCurrentLocation = async () => {
 
             <button
               type="button"
-              onClick={handleUseCurrentLocation}
-              className={`mt-2 px-4 py-2 rounded-lg text-white ${
-                isFetchingLocation ? 'bg-gray-400 cursor-not-allowed animate-pulse' : 'bg-pink-500 hover:bg-pink-600'
-              }`}
-              disabled={isFetchingLocation}
+              onClick={handleUseCurrentLocation }
+              className={`px-4 py-3 btn text-sm inline-flex items-center justify-center rounded-xl text-white font-semibold
+                ${loading ? "animate-pulse" : ""}`}
             >
-              {isFetchingLocation ? "Fetching..." : "Use Current Location"}
+              <FontAwesomeIcon icon={faCrosshairs} className="mr-2" />
+              {loading ? "Fetching location..." : "Use Current Location"}
             </button>
 
             {/* --- Map Picker --- */}
