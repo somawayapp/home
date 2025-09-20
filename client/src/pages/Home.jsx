@@ -1,4 +1,7 @@
-import React, { useEffect, useState } from "react";
+
+         
+
+          import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
 import Slider from "rc-slider";
@@ -521,7 +524,18 @@ useEffect(() => {
               </ul>
             )}
 
-         
+            <button
+              type="button"
+              onClick={handleUseCurrentLocation }
+              className={`px-4 py-3 btn text-sm inline-flex items-center justify-center rounded-xl text-white font-semibold
+                ${isFetchingLocation ? "animate-pulse" : ""}`}
+            >
+              <FontAwesomeIcon icon={faCrosshairs} className="mr-2" />
+              {isFetchingLocation ? "Fetching location..." : "Use Current Location"}
+            </button>
+
+
+              
 
             {/* --- Map Picker --- */}
             <div className="mt-4 rounded-lg overflow-hidden border h-72">
