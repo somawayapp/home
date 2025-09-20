@@ -145,15 +145,14 @@ const MapInput = ({ initialLocation, onLocationChange }) => {
 
       {/* Form inputs */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-        <input
-          type="text"
-          placeholder="Country"
-          value={locationData.country}
-          onChange={(e) => setLocationData({ ...locationData, country: e.target.value })}
-          className="px-3 py-2 border rounded-md"
-           required
+     <input
+    type="text"
+     placeholder="Country"
+     value={locationData.country}
+     readOnly
+     className="px-3 py-2 border rounded-md cursor-not-allowed"
+     />
 
-        />
 
         <input
           type="text"
@@ -247,7 +246,7 @@ const MapInput = ({ initialLocation, onLocationChange }) => {
 <button
   type="button"
   onClick={handleGetCurrentLocation}
-  className={`px-4 py-3 text-sm inline-flex items-center justify-center rounded-xl text-white font-semibold bg-blue-600 hover:bg-blue-700 
+  className={`px-4 py-3 btn text-sm inline-flex items-center justify-center rounded-xl text-white font-semibold
     ${loading ? "animate-pulse" : ""}`}
 >
   <FontAwesomeIcon icon={faCrosshairs} className="mr-2" />
