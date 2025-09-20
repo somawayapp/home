@@ -119,24 +119,26 @@ const redPinIcon = new L.Icon({
     } = filters;
 
     
+// Text search filter
+const searchTerm = location?.toLowerCase();
+if (searchTerm) {
+  const terms = searchTerm.split(/\s+/); // ["nairobi", "ngara"]
 
-    // Text search filter
-    const searchTerm = location?.toLowerCase();
-   if (searchTerm) {
   newFilteredListings = newFilteredListings.filter((listing) => {
+    const titleStr = listing.title?.toLowerCase() || "";
+    const typeStr = listing.propertytype?.toLowerCase() || "";
     const locationStr = listing.location
       ? Object.values(listing.location).filter(Boolean).join(" ").toLowerCase()
       : "";
 
-    return (
-      (listing.title && listing.title.toLowerCase().includes(searchTerm)) ||
-      (listing.propertytype && listing.propertytype.toLowerCase().includes(searchTerm)) ||
-      locationStr.includes(searchTerm)
+    // All terms must match in at least one field
+    return terms.every((term) =>
+      titleStr.includes(term) ||
+      typeStr.includes(term) ||
+      locationStr.includes(term)
     );
   });
 }
-
-    }
 
     // Price filter
     newFilteredListings = newFilteredListings.filter((listing) =>
