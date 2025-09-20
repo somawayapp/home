@@ -24,6 +24,9 @@ const redPinIcon = new L.Icon({
   shadowSize: [41, 41],
 });
 
+
+
+
 // ✅ Reverse geocoding using Nominatim API
 const getAddressFromCoordinates = async (coords, setLocationData) => {
   try {
@@ -38,10 +41,12 @@ const getAddressFromCoordinates = async (coords, setLocationData) => {
       setLocationData((prev) => ({
         ...prev,
         country: "Kenya", // force Kenya if all your points are inside
-        county: place.county || "",
+        county:  "",
         city: place.city || place.town || place.village || "",
         suburb: place.suburb || "",
-        area: place.neighbourhood || place.road || place.hamlet || "",
+        area: place.neighbourhood || "",
+        road: place.road || place.hamlet || "",
+
         coordinates: coords,
       }));
     } else {
@@ -73,6 +78,18 @@ const MapEvents = ({ setLocationData }) => {
   return null;
 };
 
+
+const KENYA_COUNTIES = [
+  "Mombasa", "Kwale", "Kilifi", "Tana River", "Lamu", "Taita-Taveta",
+  "Garissa", "Wajir", "Mandera", "Marsabit", "Isiolo", "Meru",
+  "Tharaka-Nithi", "Embu", "Kitui", "Machakos", "Makueni", "Nyandarua",
+  "Nyeri", "Kirinyaga", "Murang'a", "Kiambu", "Turkana", "West Pokot",
+  "Samburu", "Trans Nzoia", "Uasin Gishu", "Elgeyo-Marakwet", "Nandi",
+  "Baringo", "Laikipia", "Nakuru", "Narok", "Kajiado", "Kericho", "Bomet",
+  "Kakamega", "Vihiga", "Bungoma", "Busia", "Siaya", "Kisumu", "Homa Bay",
+  "Migori", "Kisii", "Nyamira", "Nairobi"
+];
+
 const MapInput = ({ initialLocation, onLocationChange }) => {
   const [locationData, setLocationData] = useState(
     initialLocation || {
@@ -81,6 +98,7 @@ const MapInput = ({ initialLocation, onLocationChange }) => {
       city: "",
       suburb: "",
       area: "",
+      road: "",
       coordinates: null,
     }
   );
@@ -118,6 +136,9 @@ const MapInput = ({ initialLocation, onLocationChange }) => {
     }
   };
 
+
+  
+
   return (
     <div className="flex flex-col gap-4 w-full">
       <label className="font-semibold md:text-lg">Location</label>
@@ -135,10 +156,16 @@ const MapInput = ({ initialLocation, onLocationChange }) => {
         <input
           type="text"
           placeholder="County"
+          list="counties-list"
           value={locationData.county}
           onChange={(e) => setLocationData({ ...locationData, county: e.target.value })}
           className="px-3 py-2 border rounded-md"
         />
+        <datalist id="counties-list">
+          {KENYA_COUNTIES.map((cty) => (
+            <option key={cty} value={cty} />
+          ))}
+        </datalist>
 
         <input
           type="text"
@@ -164,6 +191,14 @@ const MapInput = ({ initialLocation, onLocationChange }) => {
           className="px-3 py-2 border rounded-md"
         />
 
+
+       <input
+          type="text"
+          placeholder="Road"
+          value={locationData.road}
+          onChange={(e) => setLocationData({ ...locationData, road: e.target.value })}
+          className="px-3 py-2 border rounded-md"
+        />
         {/* Editable Latitude */}
         <input
           type="text"
