@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-import { OpenStreetMapProvider } from 'leaflet-geosearch';
-import 'leaflet-geosearch/dist/geosearch.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCrosshairs } from '@fortawesome/free-solid-svg-icons';
 import L from 'leaflet';
@@ -26,27 +24,27 @@ const redPinIcon = new L.Icon({
   shadowSize: [41, 41],
 });
 
-// Reverse geocoding
+// ✅ Reverse geocoding using Nominatim API
 const getAddressFromCoordinates = async (coords, setLocationData) => {
-  const provider = new OpenStreetMapProvider({ params: { 'accept-language': 'en' } });
-
   try {
-    const results = await provider.search({ query: `${coords[0]}, ${coords[1]}` });
+    const res = await fetch(
+      `https://nominatim.openstreetmap.org/reverse?lat=${coords[0]}&lon=${coords[1]}&format=json&addressdetails=1`
+    );
+    const data = await res.json();
 
-    if (results.length > 0 && results[0].raw && results[0].raw.address) {
-      const place = results[0].raw.address;
+    if (data && data.address) {
+      const place = data.address;
 
       setLocationData((prev) => ({
         ...prev,
-        country: "Kenya", // fixed
+        country: "Kenya", // force Kenya if all your points are inside
         county: place.county || "",
         city: place.city || place.town || place.village || "",
         suburb: place.suburb || "",
         area: place.neighbourhood || place.road || place.hamlet || "",
-        coordinates: coords, // always update coord
+        coordinates: coords,
       }));
     } else {
-      // ✅ Fallback: still set lat/lng, but leave address fields empty
       setLocationData((prev) => ({
         ...prev,
         coordinates: coords,
@@ -55,7 +53,6 @@ const getAddressFromCoordinates = async (coords, setLocationData) => {
     }
   } catch (error) {
     console.error("Geocoding error:", error);
-    // ✅ Also fallback to just lat/lng
     setLocationData((prev) => ({
       ...prev,
       coordinates: coords,
@@ -63,7 +60,6 @@ const getAddressFromCoordinates = async (coords, setLocationData) => {
     toast.error("Error fetching address. Coordinates were saved.");
   }
 };
-
 
 // Map click handler
 const MapEvents = ({ setLocationData }) => {
