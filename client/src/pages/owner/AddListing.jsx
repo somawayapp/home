@@ -537,7 +537,7 @@ useEffect(() => {
         <img
           src={img.url}
           alt={img.status === "failed" ? "failed" : "preview"}
-          className={`w-full h-full object-cover rounded-xl border border-gray-500  focus:outline-none focus:ring-1 focus:ring-black focus:border-black border border-gray-500  focus:outline-none focus:ring-1 focus:ring-black focus:border-black  ${img.status === "failed" ? "opacity-50" : ""}`}
+          className={`w-full h-full object-cover rounded-xl  border border-gray-500  focus:outline-none focus:ring-1 focus:ring-black focus:border-black  ${img.status === "failed" ? "opacity-50" : ""}`}
         />
 
         {/* ❌ Delete Button (Always Visible) */}
