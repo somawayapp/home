@@ -680,7 +680,7 @@ useEffect(() => {
                   onChange={handleInputChange}
                   className="px-3 py-2 mt-1 border border-gray-500  focus:outline-none focus:ring-1 focus:ring-black focus:border-black       rounded-md   rounded-md outline-none"
                 >
-                  <option value="">Select an offer type</option>
+                  <option value="">For rent/ For sale</option>
                   <option value="sale">Sale</option>
                   <option value="rent">Rent</option>
                 </select>
