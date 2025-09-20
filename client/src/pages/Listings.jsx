@@ -17,8 +17,7 @@ const Listings = () => {
     const filtered = listings.slice().filter((listing) => {
       return (
         (listing.title && listing.title.toLowerCase().includes(input.toLowerCase())) ||
-        (listing.propertytype && listing.propertytype.toLowerCase().includes(input.toLowerCase())) ||
-      );
+        (listing.propertytype && listing.propertytype.toLowerCase().includes(input.toLowerCase())) );
     });
 
     setFilteredListings(filtered);
