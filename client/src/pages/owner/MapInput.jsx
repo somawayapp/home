@@ -232,14 +232,16 @@ const MapInput = ({ initialLocation, onLocationChange }) => {
 
       {/* Button */}
       <div className="flex items-center gap-2">
-        <button
-          type="button"
-          onClick={handleGetCurrentLocation}
-          className="px-4 py-3 text-sm inline-flex items-center justify-center rounded-xl text-white font-semibold bg-blue-600 hover:bg-blue-700"
-          disabled={loading}
-        >
-          {loading ? 'Fetching...' : <><FontAwesomeIcon icon={faCrosshairs} /> Use Current Location</>}
-        </button>
+       <button
+  type="button"
+  onClick={handleGetCurrentLocation}
+  className={`px-4 py-3 text-sm inline-flex items-center justify-center rounded-xl text-white font-semibold bg-blue-600 hover:bg-blue-700 
+    ${loading ? "animate-pulse" : ""}`}
+>
+  <FontAwesomeIcon icon={faCrosshairs} className="mr-2" />
+  Use Current Location
+</button>
+
       </div>
 
       {/* Map */}
