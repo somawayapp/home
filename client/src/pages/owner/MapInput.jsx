@@ -151,6 +151,8 @@ const MapInput = ({ initialLocation, onLocationChange }) => {
           value={locationData.country}
           onChange={(e) => setLocationData({ ...locationData, country: e.target.value })}
           className="px-3 py-2 border rounded-md"
+           required
+
         />
 
         <input
@@ -160,6 +162,8 @@ const MapInput = ({ initialLocation, onLocationChange }) => {
           value={locationData.county}
           onChange={(e) => setLocationData({ ...locationData, county: e.target.value })}
           className="px-3 py-2 border rounded-md"
+                     required
+
         />
         <datalist id="counties-list">
           {KENYA_COUNTIES.map((cty) => (
@@ -173,6 +177,8 @@ const MapInput = ({ initialLocation, onLocationChange }) => {
           value={locationData.city}
           onChange={(e) => setLocationData({ ...locationData, city: e.target.value })}
           className="px-3 py-2 border rounded-md"
+                     required
+
         />
 
         <input
@@ -181,6 +187,8 @@ const MapInput = ({ initialLocation, onLocationChange }) => {
           value={locationData.suburb}
           onChange={(e) => setLocationData({ ...locationData, suburb: e.target.value })}
           className="px-3 py-2 border rounded-md"
+                     required
+
         />
 
         <input
@@ -189,6 +197,8 @@ const MapInput = ({ initialLocation, onLocationChange }) => {
           value={locationData.area}
           onChange={(e) => setLocationData({ ...locationData, area: e.target.value })}
           className="px-3 py-2 border rounded-md"
+                     required
+
         />
 
 
@@ -198,6 +208,8 @@ const MapInput = ({ initialLocation, onLocationChange }) => {
           value={locationData.road}
           onChange={(e) => setLocationData({ ...locationData, road: e.target.value })}
           className="px-3 py-2 border rounded-md"
+                     required
+
         />
         {/* Editable Latitude */}
         <input
@@ -232,15 +244,16 @@ const MapInput = ({ initialLocation, onLocationChange }) => {
 
       {/* Button */}
       <div className="flex items-center gap-2">
-       <button
+<button
   type="button"
   onClick={handleGetCurrentLocation}
   className={`px-4 py-3 text-sm inline-flex items-center justify-center rounded-xl text-white font-semibold bg-blue-600 hover:bg-blue-700 
     ${loading ? "animate-pulse" : ""}`}
 >
   <FontAwesomeIcon icon={faCrosshairs} className="mr-2" />
-  Use Current Location
+  {loading ? "Fetching location..." : "Use Current Location"}
 </button>
+
 
       </div>
 
