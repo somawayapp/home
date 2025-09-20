@@ -43,7 +43,7 @@ const getAddressFromCoordinates = async (coords, setLocationData) => {
         city: place.city || place.town || place.village || "",
         suburb: place.suburb || "",
         area: place.neighbourhood || place.road || place.hamlet || "",
-        coordinates: coords, // always update coords
+        coordinates: coords, // always update coord
       }));
     } else {
       // ✅ Fallback: still set lat/lng, but leave address fields empty
