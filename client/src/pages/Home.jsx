@@ -11,6 +11,9 @@ import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCrosshairs } from '@fortawesome/free-solid-svg-icons';
+
 // Helper components for Leaflet
 const LocationSelector = ({ onMapClick }) => {
   useMapEvents({
@@ -251,36 +254,57 @@ const redPinIcon = new L.Icon({
 
 
 // Function to get the most specific available location name
-const getPreciseLocationName = async ([lat, lng]) => {
+// Only city/town/village (for default auto-fetch)
+const getCityLevelLocation = async ([lat, lng]) => {
   try {
-    const response = await fetch(
+    const res = await fetch(
       `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
     );
-    const data = await response.json();
-
+    const data = await res.json();
     if (data && data.address) {
       const address = data.address;
-
-      // Fallback priority chain: Road → Area → Suburb → City → Town → Village → County
       return (
-        address.road ||
-        address.neighbourhood ||
-        address.hamlet ||
-        address.suburb ||
         address.city ||
         address.town ||
         address.village ||
-        address.county ||
         "Unknown Location"
       );
     }
-
     return "Unknown Location";
-  } catch (error) {
-    console.error("Error fetching address:", error);
+  } catch (err) {
+    console.error("City-level geocode error:", err);
     return "Unknown Location";
   }
 };
+
+// Full fallback chain (for button click + map click)
+const getPreciseLocationName = async ([lat, lng]) => {
+  try {
+    const res = await fetch(
+      `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
+    );
+    const data = await res.json();
+    if (data && data.address) {
+      const a = data.address;
+      return (
+        a.road ||
+        a.neighbourhood ||
+        a.hamlet ||
+        a.suburb ||
+        a.city ||
+        a.town ||
+        a.village ||
+        a.county ||
+        "Unknown Location"
+      );
+    }
+    return "Unknown Location";
+  } catch (err) {
+    console.error("Precise geocode error:", err);
+    return "Unknown Location";
+  }
+};
+
 
 
 
@@ -288,19 +312,27 @@ const handleUseCurrentLocation = async () => {
   if ("geolocation" in navigator) {
     setIsFetchingLocation(true);
     navigator.geolocation.getCurrentPosition(
-      async (position) => {
-        const { latitude, longitude } = position.coords;
+      async (pos) => {
+        const { latitude, longitude } = pos.coords;
         setMarkerPosition([latitude, longitude]);
         setMapCenter([latitude, longitude]);
 
-        // Use new fallback function
-        const locationName = await getPreciseLocationName([latitude, longitude]);
+        // full fallback chain
+        const precise = await getPreciseLocationName([latitude, longitude]);
+        handleFilterChange("location", precise);
 
-        handleFilterChange("location", locationName);
-        handleFilterChange("lat", null);
-        handleFilterChange("lng", null);
+        // run filter immediately and check if empty
+        setTimeout(() => {
+          if (filteredListings.length === 0) {
+            // try next broader level (city/town/village/county)
+            getCityLevelLocation([latitude, longitude]).then((cityLevel) => {
+              handleFilterChange("location", cityLevel);
+              toast("No listings for precise spot, falling back to broader area.");
+            });
+          }
+        }, 200);
 
-        toast.success(`Location set to: ${locationName}`);
+        toast.success(`Location set to: ${precise}`);
         setIsFetchingLocation(false);
       },
       () => {
@@ -309,9 +341,10 @@ const handleUseCurrentLocation = async () => {
       }
     );
   } else {
-    toast.error("Geolocation is not supported by your browser.");
+    toast.error("Geolocation not supported.");
   }
 };
+
 
 
 const handleMapClick = async (latlng) => {
@@ -328,12 +361,28 @@ const handleMapClick = async (latlng) => {
 
 
 
-  useEffect(() => {
-    // Check if the location filter is empty to avoid overwriting a URL-based filter
-    if (filters.location === "" && !isFetchingLocation) {
-      handleUseCurrentLocation();
+useEffect(() => {
+  if (filters.location === "" && !isFetchingLocation) {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        async (pos) => {
+          const { latitude, longitude } = pos.coords;
+          setMarkerPosition([latitude, longitude]);
+          setMapCenter([latitude, longitude]);
+
+          const locationName = await getCityLevelLocation([latitude, longitude]);
+
+          handleFilterChange("location", locationName);
+          handleFilterChange("lat", null);
+          handleFilterChange("lng", null);
+        },
+        () => {
+          toast.error("Unable to retrieve location.");
+        }
+      );
     }
-  }, []); // The empty dependency array ensures this runs only on mount
+  }
+}, []); // runs only on mount
 
   return (
     <div>
