@@ -93,7 +93,7 @@ export const getListings = async (req, res) => {
 
     // ✅ Listing status (true = available)
     if (available !== undefined) {
-      filter.listingstatus = available === "true";
+      filter.listingstatus = listingstatus === "true";
     }
 
     // ✅ Location (case-insensitive partial match)
