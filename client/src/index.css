@@ -87,17 +87,19 @@
 }
 
 /* Track (the line behind) */
-.rc-slider-track {
-  background-color: #ec4899; /* Tailwind pink-500 */
+/* Active range (selected track) */
+.rc-slider .rc-slider-track {
+  background-color: #ec4899 !important; /* pink-500 */
 }
 
-/* Handle (the draggable dots) */
-.rc-slider-handle {
-  border: solid 2px #ec4899 !important;
+/* Rail (inactive background) */
+.rc-slider .rc-slider-rail {
+  background-color: #fbcfe8 !important; /* pink-200 */
+}
+
+/* Handle (draggable dots) */
+.rc-slider .rc-slider-handle {
+  border: 2px solid #ec4899 !important;
   background-color: #ec4899 !important;
-}
-
-/* Rail (the inactive track) */
-.rc-slider-rail {
-  background-color: #fbcfe8; /* lighter pink (pink-200) */
+  box-shadow: none !important; /* removes default blue shadow */
 }
