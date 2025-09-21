@@ -180,10 +180,17 @@ if (searchTerm) {
     }
     
     // Amenities filter
+function toArray(val) {
+  if (!val) return [];
+  if (Array.isArray(val)) return val;       // already an array
+  if (typeof val === "string") return val.split(","); // string from query
+  return [];
+}
+
 const allAmenities = [
-  ...(amenitiesInternal ? amenitiesInternal.split(",") : []),
-  ...(amenitiesExternal ? amenitiesExternal.split(",") : []),
-  ...(amenitiesNearby ? amenitiesNearby.split(",") : []),
+  ...toArray(amenitiesInternal),
+  ...toArray(amenitiesExternal),
+  ...toArray(amenitiesNearby),
 ].map(a => a.trim().toLowerCase());
 
 if (allAmenities.length > 0) {
