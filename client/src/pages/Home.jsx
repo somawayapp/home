@@ -148,9 +148,15 @@ if (searchTerm) {
     // Property type filter
     if (propertytype) {
       newFilteredListings = newFilteredListings.filter(
-        (listing) => listing.propertytype === propertytype
+        (listing) => listing.propertytype?.toLowerCase() === propertytype.toLowerCase()
       );
     }
+
+    if (offertype) {
+  newFilteredListings = newFilteredListings.filter(
+    (listing) => listing.offertype?.toLowerCase() === offertype.toLowerCase()
+  );
+}
 
     // Bedrooms filter
     if (bedrooms) {
@@ -174,13 +180,24 @@ if (searchTerm) {
     }
     
     // Amenities filter
-    const allAmenities = [...amenitiesInternal, ...amenitiesExternal, ...amenitiesNearby];
-    if (allAmenities.length > 0) {
-      newFilteredListings = newFilteredListings.filter((listing) => {
-        const listingAmenities = [...(listing.amenitiesInternal || []), ...(listing.amenitiesExternal || []), ...(listing.amenitiesNearby || [])];
-        return allAmenities.every(amenity => listingAmenities.includes(amenity));
-      });
-    }
+const allAmenities = [
+  ...amenitiesInternal,
+  ...amenitiesExternal,
+  ...amenitiesNearby,
+].map(a => a.toLowerCase()); // normalize selected filters
+
+if (allAmenities.length > 0) {
+  newFilteredListings = newFilteredListings.filter((listing) => {
+    const listingAmenities = [
+      ...(listing.amenitiesInternal || []),
+      ...(listing.amenitiesExternal || []),
+      ...(listing.amenitiesNearby || []),
+    ].map(a => a.toLowerCase()); // normalize listing data
+
+    return allAmenities.every(amenity => listingAmenities.includes(amenity));
+  });
+}
+
 
     // Proximity search (Requires haversine calculation, omitted for brevity)
     // if (lat && lng) {

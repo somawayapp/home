@@ -138,24 +138,23 @@ export const getListings = async (req, res) => {
       filter.propertytype = { $regex: new RegExp(propertytype, "i") };
     }
 
-    // ✅ Offer Type (sale/rent)
-    if (offertype) {
-      filter.offertype = offertype;
-    }
+if (offertype) {
+  filter.offertype = { $regex: new RegExp(offertype, "i") };
+}
 
-    // ✅ Features (exact match)
-    if (bedrooms) {
-      filter["features.bedrooms"] = Number(bedrooms);
-    }
-    if (bathrooms) {
-      filter["features.bathrooms"] = Number(bathrooms);
-    }
-    if (rooms) {
-      filter["features.rooms"] = Number(rooms);
-    }
-    if (size) {
-      filter["features.size"] = { $regex: new RegExp(size, "i") };
-    }
+// ✅ Features (at least)
+if (bedrooms) {
+  filter["features.bedrooms"] = { $gte: Number(bedrooms) };
+}
+if (bathrooms) {
+  filter["features.bathrooms"] = { $gte: Number(bathrooms) };
+}
+if (rooms) {
+  filter["features.rooms"] = { $gte: Number(rooms) };
+}
+if (size) {
+  filter["features.size"] = { $gte: Number(size) };
+}
 
     // ✅ Amenities (array match)
     if (amenitiesInternal) {
