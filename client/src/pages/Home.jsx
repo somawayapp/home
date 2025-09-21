@@ -194,15 +194,17 @@ const allAmenities = [
 ].map(a => a.trim().toLowerCase());
 
 if (allAmenities.length > 0) {
-  newFilteredListings = newFilteredListings.filter((listing) => {
-    const listingAmenities = [
-      ...(listing.amenitiesInternal || []),
-      ...(listing.amenitiesExternal || []),
-      ...(listing.amenitiesNearby || []),
-    ].map(a => a.toLowerCase()); // normalize listing data
+newFilteredListings = newFilteredListings.filter((listing) => {
+  const listingAmenities = [
+    ...(listing.amenities?.internal || []),
+    ...(listing.amenities?.external || []),
+    ...(listing.amenities?.nearby || []),
+  ].map(a => a.toLowerCase()); // normalize
 
-    return allAmenities.every(amenity => listingAmenities.includes(amenity));
-  });
+  return allAmenities.every(amenity => listingAmenities.includes(amenity));
+});
+
+    
 }
 
 
