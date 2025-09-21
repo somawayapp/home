@@ -156,16 +156,28 @@ if (size) {
   filter["features.size"] = { $gte: Number(size) };
 }
 
-    // ✅ Amenities (array match)
-    if (amenitiesInternal) {
-      filter["amenities.internal"] = { $all: amenitiesInternal.split(",") };
-    }
-    if (amenitiesExternal) {
-      filter["amenities.external"] = { $all: amenitiesExternal.split(",") };
-    }
-    if (amenitiesNearby) {
-      filter["amenities.nearby"] = { $all: amenitiesNearby.split(",") };
-    }
+// ✅ Parse amenities properly (array or comma string)
+const parseAmenities = (value) => {
+  if (!value) return [];
+  return Array.isArray(value) ? value : value.split(",");
+};
+
+// ✅ Amenities (array match, case-insensitive)
+if (amenitiesInternal) {
+  const values = parseAmenities(amenitiesInternal).map(v => v.toLowerCase());
+  filter["amenities.internal"] = { $all: values };
+}
+
+if (amenitiesExternal) {
+  const values = parseAmenities(amenitiesExternal).map(v => v.toLowerCase());
+  filter["amenities.external"] = { $all: values };
+}
+
+if (amenitiesNearby) {
+  const values = parseAmenities(amenitiesNearby).map(v => v.toLowerCase());
+  filter["amenities.nearby"] = { $all: values };
+}
+
 
     // ✅ Featured filter
     if (featured !== undefined) {

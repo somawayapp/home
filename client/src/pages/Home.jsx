@@ -690,8 +690,10 @@ useEffect(() => {
             
             </div>
 
+
+
           <div>
-  <label className="block mb-1 font-medium">Offer Type</label>
+  <label className="block mb-1 mt-4 md:mt-6 font-medium">Offer Type</label>
   <div className="flex flex-col gap-2">
     <label className="flex items-center gap-2">
       <input
@@ -699,8 +701,13 @@ useEffect(() => {
         name="offertype"
         value="rent"
         checked={filters.offertype === "rent"}
-        onChange={(e) => handleFilterChange("offertype", e.target.value)}
-        className="w-4 h-4 accent-pink-500"
+        onChange={(e) =>
+          handleFilterChange(
+            "offertype",
+            filters.offertype === "rent" ? "" : e.target.value
+          )
+        }
+        className="w-4 h-4 accent-pink-500 cursor-pointer"
       />
       <span>For Rent</span>
     </label>
@@ -711,8 +718,13 @@ useEffect(() => {
         name="offertype"
         value="sale"
         checked={filters.offertype === "sale"}
-        onChange={(e) => handleFilterChange("offertype", e.target.value)}
-        className="w-4 h-4 accent-pink-500"
+        onChange={(e) =>
+          handleFilterChange(
+            "offertype",
+            filters.offertype === "sale" ? "" : e.target.value
+          )
+        }
+        className="w-4 h-4 accent-pink-500 cursor-pointer"
       />
       <span>For Sale</span>
     </label>
@@ -722,7 +734,7 @@ useEffect(() => {
 
 
             {/* --- Amenities --- */}
-            <div className="mt-6 flex  flex-col  gap-6">
+            <div className="mt-6 mb-6 flex  flex-col  gap-6">
               {/* Internal Amenities */}
               <div>
                 <h3 className="text-md font-semibold mb-2">Internal Amenities</h3>
