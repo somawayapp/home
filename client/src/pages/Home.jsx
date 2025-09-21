@@ -690,25 +690,16 @@ useEffect(() => {
             
             </div>
 
-            <div>
+          <div>
   <label className="block mb-1 font-medium">Offer Type</label>
   <div className="flex flex-col gap-2">
     <label className="flex items-center gap-2">
       <input
-        type="checkbox"
+        type="radio"
         name="offertype"
         value="rent"
-        checked={filters.offertype?.includes("rent")}
-        onChange={(e) => {
-          if (e.target.checked) {
-            handleFilterChange("offertype", [...(filters.offertype || []), "rent"]);
-          } else {
-            handleFilterChange(
-              "offertype",
-              (filters.offertype || []).filter((v) => v !== "rent")
-            );
-          }
-        }}
+        checked={filters.offertype === "rent"}
+        onChange={(e) => handleFilterChange("offertype", e.target.value)}
         className="w-4 h-4 accent-pink-500"
       />
       <span>For Rent</span>
@@ -716,26 +707,18 @@ useEffect(() => {
 
     <label className="flex items-center gap-2">
       <input
-        type="checkbox"
+        type="radio"
         name="offertype"
         value="sale"
-        checked={filters.offertype?.includes("sale")}
-        onChange={(e) => {
-          if (e.target.checked) {
-            handleFilterChange("offertype", [...(filters.offertype || []), "sale"]);
-          } else {
-            handleFilterChange(
-              "offertype",
-              (filters.offertype || []).filter((v) => v !== "sale")
-            );
-          }
-        }}
+        checked={filters.offertype === "sale"}
+        onChange={(e) => handleFilterChange("offertype", e.target.value)}
         className="w-4 h-4 accent-pink-500"
       />
       <span>For Sale</span>
     </label>
   </div>
 </div>
+
 
 
             {/* --- Amenities --- */}
