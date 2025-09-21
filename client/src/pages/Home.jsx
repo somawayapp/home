@@ -181,10 +181,10 @@ if (searchTerm) {
     
     // Amenities filter
 const allAmenities = [
-  ...amenitiesInternal,
-  ...amenitiesExternal,
-  ...amenitiesNearby,
-].map(a => a.toLowerCase()); // normalize selected filters
+  ...(amenitiesInternal ? amenitiesInternal.split(",") : []),
+  ...(amenitiesExternal ? amenitiesExternal.split(",") : []),
+  ...(amenitiesNearby ? amenitiesNearby.split(",") : []),
+].map(a => a.trim().toLowerCase());
 
 if (allAmenities.length > 0) {
   newFilteredListings = newFilteredListings.filter((listing) => {
