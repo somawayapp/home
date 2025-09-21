@@ -162,19 +162,27 @@ const parseAmenities = (value) => {
   return Array.isArray(value) ? value : value.split(",");
 };
 
-// ✅ Amenities (array match, case-insensitive)
+// ✅ Internal amenities (case-insensitive)
 if (amenitiesInternal) {
-  const values = parseAmenities(amenitiesInternal).map(v => v.toLowerCase());
+  const values = parseAmenities(amenitiesInternal).map(
+    v => new RegExp(`^${v}$`, "i")
+  );
   filter["amenities.internal"] = { $all: values };
 }
 
+// ✅ External amenities
 if (amenitiesExternal) {
-  const values = parseAmenities(amenitiesExternal).map(v => v.toLowerCase());
+  const values = parseAmenities(amenitiesExternal).map(
+    v => new RegExp(`^${v}$`, "i")
+  );
   filter["amenities.external"] = { $all: values };
 }
 
+// ✅ Nearby amenities
 if (amenitiesNearby) {
-  const values = parseAmenities(amenitiesNearby).map(v => v.toLowerCase());
+  const values = parseAmenities(amenitiesNearby).map(
+    v => new RegExp(`^${v}$`, "i")
+  );
   filter["amenities.nearby"] = { $all: values };
 }
 
