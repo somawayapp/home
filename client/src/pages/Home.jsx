@@ -416,28 +416,34 @@ const handleMapClick = async (latlng) => {
 
 
 
+// ------------------ Mount Logic ------------------
 useEffect(() => {
-  if (filters.location === "" && !isFetchingLocation) {
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(
-        async (pos) => {
-          const { latitude, longitude } = pos.coords;
-          setMarkerPosition([latitude, longitude]);
-          setMapCenter([latitude, longitude]);
+  const savedLocation = localStorage.getItem("lastLocation");
+  const savedLat = localStorage.getItem("lastLat");
+  const savedLng = localStorage.getItem("lastLng");
 
-          const locationName = await getCityLevelLocation([latitude, longitude]);
+  if (savedLocation && savedLat && savedLng) {
+    handleFilterChange("location", savedLocation);
+    setMarkerPosition([parseFloat(savedLat), parseFloat(savedLng)]);
+    setMapCenter([parseFloat(savedLat), parseFloat(savedLng)]);
+  } else if ("geolocation" in navigator) {
+    navigator.geolocation.getCurrentPosition(
+      async (pos) => {
+        const { latitude, longitude } = pos.coords;
+        setMarkerPosition([latitude, longitude]);
+        setMapCenter([latitude, longitude]);
 
-          handleFilterChange("location", locationName);
-          handleFilterChange("lat", null);
-          handleFilterChange("lng", null);
-        },
-        () => {
-          toast.error("Unable to retrieve location.");
-        }
-      );
-    }
+        const locationName = await getCityLevelLocation([latitude, longitude]);
+        setLocation(locationName, latitude, longitude);
+      },
+      () => {
+        toast.error("Unable to retrieve location.");
+      }
+    );
   }
-}, []); // runs only on mount
+}, []);
+
+
 
   return (
     <div>
