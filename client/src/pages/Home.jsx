@@ -350,6 +350,16 @@ const getPreciseLocationName = async ([lat, lng]) => {
 
 
 
+// ------------------ State Helpers ------------------
+const setLocation = (locationName, lat, lng) => {
+  handleFilterChange("location", locationName);
+  localStorage.setItem("lastLocation", locationName);
+
+  if (lat && lng) {
+    localStorage.setItem("lastLat", lat);
+    localStorage.setItem("lastLng", lng);
+  }
+};
 
 const handleUseCurrentLocation = async () => {
   if ("geolocation" in navigator) {
@@ -401,6 +411,8 @@ const handleMapClick = async (latlng) => {
 
   toast.success(`Location set to: ${locationName}`);
 };
+
+
 
 
 
