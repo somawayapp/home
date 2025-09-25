@@ -666,10 +666,23 @@ useEffect(() => {
                   className="px-3 py-2 mt-1 border border-gray-500  focus:outline-none focus:ring-1 focus:ring-black focus:border-black       rounded-md   rounded-md outline-none"
                 >
                   <option value="">Apartments etc </option>
-                  <option value="Apartment">Apartment</option>
-                  <option value="House">House</option>
-                  <option value="Land">Land</option>
-                  <option value="Office">Office</option>
+                 <option value="Apartment">Apartment</option>
+<option value="Bedsitter">Bedsitter</option>
+<option value="singleroom">Single Room</option>
+<option value="Bungalow">Bungalow</option>
+<option value="Maisonette">Maisonette</option>
+<option value="Townhouse">Townhouse</option>
+<option value="Villa">Villa</option>
+<option value="House">House</option>
+<option value="Land">Land / Plot</option>
+<option value="Commercial">Commercial Property</option>
+<option value="Office">Office Space</option>
+<option value="Shop">Shop / Retail</option>
+<option value="Warehouse">Warehouse / Godown</option>
+<option value="Industrial">Industrial Property</option>
+<option value="Hotel">Hotel / Guesthouse</option>
+<option value="Farm">Farm / Agricultural Land</option>
+
                 </select>
               </div>
               <div className="flex flex-col w-full">
@@ -749,7 +762,7 @@ useEffect(() => {
             
            <div className="flex flex-col w-full gap-6">
   {/* Internal Amenities */}
-  <div className="border p-4 md:p-6 rounded-md shadow-sm">
+  <div className="border  border-gray-500  p-4 md:p-6 rounded-md shadow-sm">
     <h4 className="md:text-lg font-semibold">Internal Amenities</h4>
     <div className="grid grid-cols-2 gap-3 mt-3">
       {internalAmenities.map((amenity) => (
@@ -769,7 +782,7 @@ useEffect(() => {
   </div>
 
   {/* External Amenities */}
-  <div className="border p-4 md:p-6 rounded-md shadow-sm">
+  <div className="border  border-gray-500 p-4 md:p-6 rounded-md shadow-sm">
     <h4 className="md:text-lg font-semibold">External Amenities</h4>
     <div className="grid grid-cols-2 gap-3 mt-3">
       {externalAmenities.map((amenity) => (
@@ -789,7 +802,7 @@ useEffect(() => {
   </div>
 
   {/* Nearby Amenities */}
-  <div className="border p-4 md:p-6 rounded-md shadow-sm">
+  <div className="border  border-gray-500  p-4 md:p-6 rounded-md shadow-sm">
     <h4 className="md:text-lg font-semibold">Nearby Amenities</h4>
     <div className="grid grid-cols-2 gap-3 mt-3">
       {nearbyAmenities.map((amenity) => (
@@ -812,7 +825,7 @@ useEffect(() => {
                                           
                                           
                                           
-             <div className="border p-2 md:p-6   rounded-md   " >
+             <div className="border  border-gray-500  p-2 md:p-6   rounded-md   " >
 
             <div className="flex items-center gap-2 mt-2">
               <input

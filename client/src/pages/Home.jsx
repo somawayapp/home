@@ -667,10 +667,22 @@ useEffect(() => {
                   className="w-full border rounded-lg p-2"
                 >
                   <option value="">Any</option>
-                  <option value="apartment">Apartment</option>
-                  <option value="house">House</option>
-                  <option value="land">Land</option>
-                  <option value="commercial">Commercial</option>
+                             <option value="Apartment">Apartment</option>
+<option value="Bedsitter">Bedsitter</option>
+<option value="singleroom">Single Room</option>
+<option value="Bungalow">Bungalow</option>
+<option value="Maisonette">Maisonette</option>
+<option value="Townhouse">Townhouse</option>
+<option value="Villa">Villa</option>
+<option value="House">House</option>
+<option value="Land">Land / Plot</option>
+<option value="Commercial">Commercial Property</option>
+<option value="Office">Office Space</option>
+<option value="Shop">Shop / Retail</option>
+<option value="Warehouse">Warehouse / Godown</option>
+<option value="Industrial">Industrial Property</option>
+<option value="Hotel">Hotel / Guesthouse</option>
+<option value="Farm">Farm / Agricultural Land</option>
                 </select>
               </div>
 
