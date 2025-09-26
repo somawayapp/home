@@ -120,33 +120,42 @@ const ListingCard = ({ listing }) => {
      {/* ✅ Info Section */}
 <div className="mt-3 gap-1">
   <Link to={`/listing-details/${listing._id}`} className="block">
-    
     {/* County + Suburb */}
-    <p className="text-[var(--softTextColor)] font-semibold capitalize text-[14px] md:text-[15px]">
-      {[listing.location?.county, listing.location?.suburb].filter(Boolean).join(" ")}
-    </p>
+    <div className="flex justify-between mr-1">
+      <p className="text-[var(--softTextColor)] font-semibold capitalize text-[14px] md:text-[15px]">
+        {listing.location?.county || ""}
+        {listing.location?.suburb ? `, ${listing.location.suburb}` : ""}
+      </p>
+      <Star postId={listing._id} />
+    </div>
 
-    {/* Size + Propertytype */}
+    {/* Size + Type (or Bedrooms + Type) */}
     <p className="text-[var(--softTextColor)] capitalize text-[14px] md:text-[15px]">
-      {listing.features?.size
-        ? `${listing.features.size} ${listing.propertytype || ""}`
-        : listing.features?.bedrooms
-        ? `${listing.features.bedrooms} Bedroom ${listing.propertytype || ""}`
-        : listing.propertytype || "Property"}
+      {listing.features?.bedrooms
+        ? `${listing.features.bedrooms} Bedroom`
+        : listing.features?.rooms
+        ? `${listing.features.rooms} Room`
+        : listing.features?.size
+        ? `${listing.features.size}`
+        : ""}
+      {listing.propertytype ? ` ${listing.propertytype}` : ""}
+      {listing.offertype === "rent" ? " for rent" : " for sale"}
     </p>
 
-    {/* Phone number */}
+    {/* Phone Number */}
     {listing.agentphone && (
       <p className="text-[var(--softTextColor)] text-[13px] md:text-[14px]">
-        {listing.agentphone}
+        +254 {listing.agentphone}
       </p>
     )}
 
     {/* Price */}
     {listing.price && (
-      <p className="text-[var(--softTextColor)] text-[14px] md:text-[15px]">
-        KSh {listing.price.toLocaleString()}{" "}
-        {listing.offertype === "rent" ? "/month" : "for sale"}
+      <p className="text-[var(--softTextColor)] font-semibold text-[14px] md:text-[15px]">
+        KSh {listing.price.toLocaleString()}
+        <span className="font-normal">
+          {listing.offertype === "rent" ? " /month" : " /sale"}
+        </span>
       </p>
     )}
   </Link>
