@@ -682,7 +682,7 @@ useEffect(() => {
 <option value="Warehouse">Warehouse / Godown</option>
 <option value="Industrial">Industrial Property</option>
 <option value="Hotel">Hotel / Guesthouse</option>
-<option value="Farm">Farm / Agricultural Land</option>
+<option value="Farm">Farm / Agricultural Land</option> 
                 </select>
               </div>
 

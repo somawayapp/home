@@ -117,48 +117,41 @@ const ListingCard = ({ listing }) => {
         </>
       )}
 
-      {/* ✅ Info Section */}
-      <div className="mt-3 gap-1">
-        <Link to={`/listing-details/${listing._id}`} className="block">
-          {/* Location */}
-          <div className="flex justify-between mr-1">
-            <p className="text-[var(--softTextColor)] font-semibold capitalize text-[14px] md:text-[15px]">
-{listing.location
-  ? [
-      listing.location.area,
-      listing.location.road,
-      listing.location.suburb,
-      listing.location.city,
-      listing.location.county,
-      listing.location.country,
-    ].filter(Boolean).join(", ")
-  : "Unknown Location"}
-            </p>
-          </div>
+     {/* ✅ Info Section */}
+<div className="mt-3 gap-1">
+  <Link to={`/listing-details/${listing._id}`} className="block">
+    
+    {/* County + Suburb */}
+    <p className="text-[var(--softTextColor)] font-semibold capitalize text-[14px] md:text-[15px]">
+      {[listing.location?.county, listing.location?.suburb].filter(Boolean).join(" ")}
+    </p>
 
-          {/* Title */}
-          <p className="text-[var(--softTextColor)] capitalize text-[14px] md:text-[15px]">
-            {listing.title || listing.propertytype || "Property"} 
-          </p>
+    {/* Size + Propertytype */}
+    <p className="text-[var(--softTextColor)] capitalize text-[14px] md:text-[15px]">
+      {listing.features?.size
+        ? `${listing.features.size} ${listing.propertytype || ""}`
+        : listing.features?.bedrooms
+        ? `${listing.features.bedrooms} Bedroom ${listing.propertytype || ""}`
+        : listing.propertytype || "Property"}
+    </p>
 
-          {/* Size / Features */}
-          {(listing.features?.size || listing.features?.bedrooms || listing.features?.bathrooms) && (
-            <p className="text-[var(--softTextColor)] text-[13px] md:text-[14px]">
-              {listing.features?.size ? `${listing.features.size}` : ""}
-              {listing.features?.bedrooms ? ` • ${listing.features.bedrooms} Bed` : ""}
-              {listing.features?.bathrooms ? ` • ${listing.features.bathrooms} Bath` : ""}
-            </p>
-          )}
+    {/* Phone number */}
+    {listing.agentphone && (
+      <p className="text-[var(--softTextColor)] text-[13px] md:text-[14px]">
+        {listing.agentphone}
+      </p>
+    )}
 
-          {/* Price */}
-          {listing.price && (
-            <p className="text-[var(--softTextColor)] font-semibold text-[14px] md:text-[15px]">
-              KSh {listing.price.toLocaleString()}
-              {listing.offertype === "rent" && <span className="font-normal"> /month</span>}
-            </p>
-          )}
-        </Link>
-      </div>
+    {/* Price */}
+    {listing.price && (
+      <p className="text-[var(--softTextColor)] text-[14px] md:text-[15px]">
+        KSh {listing.price.toLocaleString()}{" "}
+        {listing.offertype === "rent" ? "/month" : "for sale"}
+      </p>
+    )}
+  </Link>
+</div>
+
     </div>
   );
 };
