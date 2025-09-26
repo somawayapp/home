@@ -126,7 +126,6 @@ const ListingCard = ({ listing }) => {
         {listing.location?.county || ""}
         {listing.location?.suburb ? `, ${listing.location.suburb}` : ""}
       </p>
-      <Star postId={listing._id} />
     </div>
 
     {/* Size + Type (or Bedrooms + Type) */}
