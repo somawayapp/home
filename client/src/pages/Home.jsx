@@ -451,11 +451,11 @@ useEffect(() => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.6, duration: 0.5 }}
-        className="px-4 md:px-16 lg:px-24 xl:px-32 mt-10"
+        className="px-4 md:px-16  mt-10"
       >
        
 
-        {/* --- Active Filters --- */}
+        {/* --- Active Filters --- 
         {getActiveFilters().length > 0 && (
           <div className="max-w-7xl mx-auto mt-4">
             <div className="flex flex-wrap items-center gap-2">
@@ -502,7 +502,11 @@ useEffect(() => {
           </button>
             </div>
           </div>
-        )}
+        )} */}
+
+
+
+        
 
         {/* --- Listings Grid --- */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mt-6 mx-auto">
