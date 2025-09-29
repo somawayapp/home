@@ -455,17 +455,17 @@ useEffect(() => {
       >
        
 
-        {/* --- Active Filters --- 
+        {/* --- Active Filters --- */}
         {getActiveFilters().length > 0 && (
           <div className="max-w-7xl mx-auto mt-4">
             <div className="flex flex-wrap items-center gap-2">
-              <span className="text-sm font-semibold text-gray-700 mr-2">
+              <span className="text-sm font-semibold bg-color-bgColor   rounded-full  text-gray-700 mr-2">
                 Active Filters:
               </span>
               {getActiveFilters().map(([key, value]) => (
                 <div
                   key={key}
-                  className="flex items-center bg-pink-100 text-pink-800 text-sm font-medium px-2.5 py-1 rounded-full"
+                  className="flex items-center bg-color-bgColor   text-sm font-medium px-2.5 py-1 rounded-full"
                 >
                   {key}: {value}
                   <button
@@ -478,7 +478,7 @@ useEffect(() => {
                       }
                       setFilters(newFilters);
                     }}
-                    className="ml-2 text-pink-600 hover:text-pink-900 focus:outline-none"
+                    className="ml-2  hover:text-gray-600 focus:outline-none"
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                       <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
@@ -488,7 +488,7 @@ useEffect(() => {
               ))}
               <button
                 onClick={handleClearAll}
-                className="ml-2 text-gray-500 hover:text-gray-700 text-sm font-medium focus:outline-none"
+                className="ml-2 bg-color-bgColor   rounded-full  text-gray-500 hover:text-gray-700 text-sm font-medium focus:outline-none"
               >
                 Remove all
               </button>
@@ -502,7 +502,7 @@ useEffect(() => {
           </button>
             </div>
           </div>
-        )} */}
+        )} 
 
 
 
