@@ -122,7 +122,7 @@ const ListingCard = ({ listing }) => {
   <Link to={`/listing-details/${listing._id}`} className="block">
     {/* County + Suburb */}
     <div className="flex justify-between mr-1">
-      <p className=" font-semibold text-neutral-800 capitalize text-[14px] md:text-[15px]">
+      <p className=" font-semibold text-neutral-600 capitalize text-[14px] md:text-[15px]">
         {listing.location?.county || ""}
         {listing.location?.suburb ? `, ${listing.location.suburb}` : ""}
       </p>
@@ -149,7 +149,7 @@ const ListingCard = ({ listing }) => {
 
     {/* Price */}
     {listing.price && (
-      <p className=" font-semibold text-neutral-800 text-[14px] md:text-[15px]">
+      <p className=" font-semibold text-neutral-600 text-[14px] md:text-[15px]">
         KSh {listing.price.toLocaleString()}
         <span className="font-normal text-neutral-500 ">
           {listing.offertype === "rent" ? " /month" : " /sale"}
