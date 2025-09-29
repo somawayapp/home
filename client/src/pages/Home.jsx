@@ -451,7 +451,7 @@ useEffect(() => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.6, duration: 0.5 }}
-        className="px-4 md:px-16  mt-10"
+        className="px-4 md:px-16  mt-6"
       >
        
 
@@ -459,13 +459,13 @@ useEffect(() => {
         {getActiveFilters().length > 0 && (
           <div className=" mx-auto">
             <div className="flex flex-wrap items-center gap-2">
-              <span className="text-sm font-semibold bg-bgColor hover:bg-bgColorhover  cursor-pointer  px-2.5 py-1  rounded-full  text-gray-700 mr-2">
+              <span className="text-sm font-semibold bg-bgColor hover:bg-bgColorhover  cursor-pointer  px-2.5 py-2  rounded-full  text-gray-700 mr-2">
                 Active Filters:
               </span>
               {getActiveFilters().map(([key, value]) => (
                 <div
                   key={key}
-                  className="flex items-center bg-bgColor   text-sm px-2.5 py-1 rounded-full"
+                  className="flex items-center bg-bgColor   text-sm px-2.5 py-2 rounded-full"
                 >
                   {key}: {value}
                   <button
@@ -488,7 +488,7 @@ useEffect(() => {
               ))}
               <button
                 onClick={handleClearAll}
-                className="ml-2 bg-bgColor  hover:bg-bgColorhover  cursor-pointer  rounded-full  px-2.5 py-1 text-sm  focus:outline-none"
+                className="ml-2 bg-bgColor  hover:bg-bgColorhover  cursor-pointer  rounded-full  px-2.5 py-2 text-sm  focus:outline-none"
               >
                 Remove all
               </button>
