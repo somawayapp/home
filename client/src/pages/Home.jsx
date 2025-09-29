@@ -66,7 +66,7 @@ const Home = () => {
   const [markerPosition, setMarkerPosition] = useState(null);
   const [isFetchingLocation, setIsFetchingLocation] = useState(false);
 
-// Custom pink marker icon
+// Custom red  marker icon
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png',
@@ -496,7 +496,7 @@ useEffect(() => {
 
                 <button
             onClick={() => setShowModal(true)}
-            className="px-4 py-2 rounded-lg bg-pink-500 text-white hover:bg-pink-600 focus:outline-none"
+            className="px-4 py-2 rounded-lg bg-color-primary text-white hover:bg-color-primary-dull focus:outline-none"
           >
             Filters
           </button>
@@ -614,7 +614,7 @@ useEffect(() => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
               <div>
                 <label className="block mb-1">Price Range</label>
-                <div className="px-1 text-pink-500">
+                <div className="px-1 text-color-primary">
                   <Slider
                     range
                     min={0}
@@ -750,7 +750,7 @@ useEffect(() => {
             filters.offertype === "rent" ? "" : e.target.value
           )
         }
-        className="w-4 h-4 accent-pink-500 cursor-pointer"
+        className="w-4 h-4 accent-color-primary cursor-pointer"
       />
       <span>For Rent</span>
     </label>
@@ -767,7 +767,7 @@ useEffect(() => {
             filters.offertype === "sale" ? "" : e.target.value
           )
         }
-        className="w-4 h-4 accent-pink-500 cursor-pointer"
+        className="w-4 h-4 accent-color-primary cursor-pointer"
       />
       <span>For Sale</span>
     </label>
@@ -789,7 +789,7 @@ useEffect(() => {
                         id={`internal-${amenity}`}
                         checked={filters.amenitiesInternal.includes(amenity)}
                         onChange={() => handleAmenityChange(amenity, "amenitiesInternal")}
-                        className="accent-pink-500"
+                        className="accent-color-primary"
                       />
                       <label htmlFor={`internal-${amenity}`} className="text-sm cursor-pointer">{amenity}</label>
                     </div>
@@ -808,7 +808,7 @@ useEffect(() => {
                         id={`external-${amenity}`}
                         checked={filters.amenitiesExternal.includes(amenity)}
                         onChange={() => handleAmenityChange(amenity, "amenitiesExternal")}
-                        className="accent-pink-500"
+                        className="accent-color-primary"
                       />
                       <label htmlFor={`external-${amenity}`} className="text-sm cursor-pointer">{amenity}</label>
                     </div>
@@ -827,7 +827,7 @@ useEffect(() => {
                         id={`nearby-${amenity}`}
                         checked={filters.amenitiesNearby.includes(amenity)}
                         onChange={() => handleAmenityChange(amenity, "amenitiesNearby")}
-                        className="accent-pink-500"
+                        className="accent-color-primary"
                       />
                       <label htmlFor={`nearby-${amenity}`} className="text-sm cursor-pointer">{amenity}</label>
                     </div>
