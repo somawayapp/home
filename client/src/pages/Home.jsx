@@ -457,7 +457,7 @@ useEffect(() => {
 
         {/* --- Active Filters --- */}
         {getActiveFilters().length > 0 && (
-          <div className="max-w-7xl mx-auto">
+          <div className=" mx-auto">
             <div className="flex flex-wrap items-center gap-2">
               <span className="text-sm font-semibold bg-bgColor hover:bg-bgColorhover  cursor-pointer  px-2.5 py-1  rounded-full  text-gray-700 mr-2">
                 Active Filters:
