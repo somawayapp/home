@@ -459,13 +459,13 @@ useEffect(() => {
         {getActiveFilters().length > 0 && (
           <div className="max-w-7xl mx-auto mt-4">
             <div className="flex flex-wrap items-center gap-2">
-              <span className="text-sm font-semibold bg-color-bgColor   rounded-full  text-gray-700 mr-2">
+              <span className="text-sm font-semibold bg-bgColor   rounded-full  text-gray-700 mr-2">
                 Active Filters:
               </span>
               {getActiveFilters().map(([key, value]) => (
                 <div
                   key={key}
-                  className="flex items-center bg-color-bgColor   text-sm font-medium px-2.5 py-1 rounded-full"
+                  className="flex items-center bg-bgColor   text-sm font-medium px-2.5 py-1 rounded-full"
                 >
                   {key}: {value}
                   <button
@@ -488,7 +488,7 @@ useEffect(() => {
               ))}
               <button
                 onClick={handleClearAll}
-                className="ml-2 bg-color-bgColor   rounded-full  text-gray-500 hover:text-gray-700 text-sm font-medium focus:outline-none"
+                className="ml-2 bg-bgColor   rounded-full text-gray-500 hover:text-gray-700 text-sm font-medium focus:outline-none"
               >
                 Remove all
               </button>
