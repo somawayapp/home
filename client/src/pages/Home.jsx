@@ -12,6 +12,7 @@ import { useAppContext } from "../context/AppContext";
 import toast from "react-hot-toast";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
+import CategoryBar from "../components/Categories";
 
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -504,7 +505,7 @@ useEffect(() => {
           </div>
         )} 
 
-
+<CategoryBar/>
 
         
 
