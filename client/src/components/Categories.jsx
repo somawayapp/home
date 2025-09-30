@@ -77,12 +77,12 @@ export default function CategoryBar({
   }, []);
 
   return (
-    <div className="relative mt-4 group">
+    <div className="relative mt-4 mb-6 group">
       <div className="relative flex items-center">
         {/* Scroll container */}
         <div
           ref={scrollRef}
-          className="flex-1 overflow-x-auto no-scrollbar flex gap-6 px-2 scroll-smooth"
+          className="flex-1 overflow-x-auto no-scrollbar flex gap-6 px-2 scroll-smooth relative"
         >
           {categories.map((cat) => {
             const Icon = cat.icon;
@@ -91,14 +91,17 @@ export default function CategoryBar({
               <div
                 key={cat.value}
                 onClick={() => handleCategoryClick(cat.value)}
-                className={`flex flex-col items-center justify-center cursor-pointer min-w-[70px] transition-colors duration-200 ${
+                className={`flex flex-col items-center justify-center cursor-pointer min-w-[70px] transition-colors duration-200 relative pb-1
+                ${
                   isActive
-                    ? "text-color-primary"
+                    ? "text-color-primary after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[3px] after:bg-color-primary after:rounded"
                     : "text-gray-500 hover:text-color-primary"
                 }`}
               >
                 <Icon size={26} />
-                <span className="text-xs mt-1 text-center">{cat.label}</span>
+                <span className="text-xs mt-1 text-center whitespace-nowrap">
+                  {cat.label}
+                </span>
               </div>
             );
           })}
@@ -118,7 +121,7 @@ export default function CategoryBar({
         {canScrollRight && (
           <button
             onClick={() => scroll("right")}
-            className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 text-white p-2 rounded-full cursor-pointer hover:bg-black/60 transition"
+            className="absolute top-1/2 -translate-y-1/2 right-[4.5rem] bg-black/40 text-white p-2 rounded-full cursor-pointer hover:bg-black/60 transition"
           >
             <ChevronRight size={22} />
           </button>
@@ -142,7 +145,7 @@ export default function CategoryBar({
           initial={{ opacity: 0, y: -5 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -5 }}
-          className="absolute right-0 mt-2 bg-white shadow-lg rounded-lg p-4 w-64 z-20"
+          className="absolute right-0 mt-2 bg-white shadow-lg rounded-lg p-4 w-64 z-20 border border-gray-200"
         >
           {activeFilters.length > 0 ? (
             <div className="space-y-2">
@@ -188,8 +191,6 @@ export default function CategoryBar({
     </div>
   );
 }
-
-
 
 /* Add this CSS globally to hide scrollbars everywhere */
 <style jsx global>{`
