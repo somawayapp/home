@@ -452,7 +452,7 @@ useEffect(() => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.6, duration: 0.5 }}
-        className="px-4 md:px-16  mt-6"
+        className="mt-4"
       >
        
 
@@ -466,6 +466,7 @@ useEffect(() => {
 />
 
         
+         <div className="px-4 md:px-16  ">
 
         {/* --- Listings Grid --- */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mt-6 mx-auto">
@@ -485,7 +486,9 @@ useEffect(() => {
               No listings found matching your search.
             </div>
           )}
-        </div>
+        </div> 
+                 </div>
+
       </motion.div>
 
       {/* --- Filter Modal (Popup) --- */}
