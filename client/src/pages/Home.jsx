@@ -488,8 +488,10 @@ useEffect(() => {
         </div>
                 </div>
 
+      </motion.div>
 
-                  {showModal && (
+      {/* --- Filter Modal (Popup) --- */}
+      {showModal && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -798,11 +800,6 @@ useEffect(() => {
 
         </motion.div>
       )}
-
-      </motion.div>
-
-      {/* --- Filter Modal (Popup) --- */}
-    
     </div>
   );
 };

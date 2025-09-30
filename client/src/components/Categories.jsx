@@ -117,7 +117,7 @@ export default function CategoryBar({
         {canScrollLeft && (
           <button
             onClick={() => scroll("left")}
-            className="absolute left-0 top-1/2 -translate-y-1/2 bg-black/40 text-white p-2 rounded-full cursor-pointer hover:bg-black/60 transition"
+            className="fixed left-0 top-1/2 -translate-y-1/2 bg-black/40 text-white p-2 rounded-full cursor-pointer hover:bg-black/60 transition"
           >
             <ChevronLeft size={22} />
           </button>
@@ -127,7 +127,7 @@ export default function CategoryBar({
         {canScrollRight && (
           <button
             onClick={() => scroll("right")}
-            className="absolute right-0 top-1/2 -translate-y-1/2 bg-black/40 text-white p-2 rounded-full cursor-pointer hover:bg-black/60 transition"
+            className="fixed right-0 top-1/2 -translate-y-1/2 bg-black/40 text-white p-2 rounded-full cursor-pointer hover:bg-black/60 transition"
           >
             <ChevronRight size={22} />
           </button>
@@ -140,7 +140,7 @@ export default function CategoryBar({
         <div className="flex-shrink-0 ml-2 md:ml-4 ">
           <button
             onClick={() => setShowPopup(!showPopup)}
-            className="flex items-center gap-2 bg-bgColor px-3 py-2 rounded-lg text-gray-600 hover:bg-bgColorhover cursor-pointer transition"
+            className="flex items-center gap-2 border border-borderColor px-3 py-2 rounded-lg text-gray-600 hover:border-borderColorhover cursor-pointer transition"
           >
             <FaSlidersH />
             <span className="hidden sm:inline">Current Filters</span>
@@ -154,14 +154,14 @@ export default function CategoryBar({
           initial={{ opacity: 0, y: -5 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -5 }}
-          className="absolute right-0 mt-2 bg-white shadow-lg rounded-lg p-4 w-64 z-20 border border-gray-300"
+          className="absolute right-0 mt-2 bg-white shadow-lg rounded-lg p-4 w-64 z-20 border border-borderColor"
         >
           {activeFilters.length > 0 ? (
             <div className="space-y-2">
               {activeFilters.map(([key, value]) => (
                 <div
                   key={key}
-                  className="flex items-center justify-between bg-gray-100 text-gray-600 text-sm px-2 py-1 rounded"
+                  className="flex items-center justify-between bg-bgColor text-gray-600 text-sm px-2 py-1 rounded"
                 >
                   {key}: {value}
                   <button
@@ -179,7 +179,7 @@ export default function CategoryBar({
                       }
                       setFilters(newFilters);
                     }}
-                    className="bg-gray-300 hover:bg-red-500 hover:text-white rounded-full p-1 cursor-pointer transition"
+                    className="bg-bgColorhover hover:bg-black hover:text-white rounded-full p-1 cursor-pointer transition"
                   >
                     <X size={14} />
                   </button>
@@ -187,7 +187,7 @@ export default function CategoryBar({
               ))}
               <button
                 onClick={handleClearAll}
-                className="w-full mt-2 bg-gray-200 text-gray-600 py-1 rounded hover:bg-gray-300 cursor-pointer transition"
+                className="w-full mt-2 bg-bgColor text-gray-600 py-1 rounded hover:bg-bgColorhover cursor-pointer transition"
               >
                 Clear All
               </button>
