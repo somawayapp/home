@@ -486,8 +486,8 @@ useEffect(() => {
               No listings found matching your search.
             </div>
           )}
-        </div> 
-                 </div>
+        </div>
+                </div>
 
       </motion.div>
 
