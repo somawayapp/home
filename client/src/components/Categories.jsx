@@ -82,58 +82,62 @@ export default function CategoryBar({
         {/* Scroll container */}
 
 
+       <div className="relative w-full">
+  {/* Scrollable categories */}
+  <div
+    ref={scrollRef}
+    className="flex-1 overflow-x-auto no-scrollbar flex gap-4 px-2 scroll-smooth"
+  >
+    {categories.map((cat) => {
+      const Icon = cat.icon;
+      const isActive = filters.propertytype === cat.value;
+      return (
         <div
-          ref={scrollRef}
-          className="flex-1 overflow-x-auto no-scrollbar flex gap-6 px-2 scroll-smooth relative"
+          key={cat.value}
+          onClick={() => handleCategoryClick(cat.value)}
+          className={`flex flex-col items-center justify-center cursor-pointer 
+                      shrink-0 min-w-[80px] px-2 pb-1 relative
+                      transition-all duration-200
+                      ${
+                        isActive
+                          ? "text-black after:block after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-black"
+                          : "text-gray-400 hover:text-gray-800 hover:after:block hover:after:content-[''] hover:after:absolute hover:after:bottom-0 hover:after:left-0 hover:after:right-0 hover:after:h-[2px] hover:after:bg-gray-800"
+                      }`}
         >
-          {categories.map((cat) => {
-            const Icon = cat.icon;
-            const isActive = filters.propertytype === cat.value;
-            return (
-<div
-  key={cat.value}
-  onClick={() => handleCategoryClick(cat.value)}
-  className={`flex flex-col items-center justify-center cursor-pointer 
-              shrink-0 min-w-[80px] px-2 pb-1 relative
-              transition-all duration-200
-              ${
-                isActive
-                  ? "text-black after:block after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-black"
-                  : "text-gray-500 hover:text-gray-800 hover:after:block hover:after:content-[''] hover:after:absolute hover:after:bottom-0 hover:after:left-0 hover:after:right-0 hover:after:h-[1px] hover:after:bg-gray-800"
-              }`}
->
-  <Icon size={26} className="text-inherit" />
-  <span className="text-xs mt-1 text-center whitespace-nowrap">
-    {cat.label}
-  </span>
+          <Icon size={26} className="text-inherit" />
+          <span className="text-xs mt-1 text-center whitespace-nowrap">
+            {cat.label}
+          </span>
+        </div>
+      );
+    })}
+  </div>
+
+  {/* Left arrow */}
+  {canScrollLeft && (
+    <button
+      onClick={() => scroll("left")}
+      className="absolute left-0 top-1/2 -translate-y-1/2 
+                 bg-black/40 text-white p-2 rounded-full cursor-pointer 
+                 hover:bg-black/60 transition"
+    >
+      <ChevronLeft size={22} />
+    </button>
+  )}
+
+  {/* Right arrow */}
+  {canScrollRight && (
+    <button
+      onClick={() => scroll("right")}
+      className="absolute right-0 top-1/2 -translate-y-1/2 
+                 bg-black/40 text-white p-2 rounded-full cursor-pointer 
+                 hover:bg-black/60 transition"
+    >
+      <ChevronRight size={22} />
+    </button>
+  )}
 </div>
 
-
-
-            );
-          })}
-
-        {/* Left arrow */}
-        {canScrollLeft && (
-          <button
-            onClick={() => scroll("left")}
-            className="absolute left-0 top-1/2 -translate-y-1/2 bg-black/40 text-white p-2 rounded-full cursor-pointer hover:bg-black/60 transition"
-          >
-            <ChevronLeft size={22} />
-          </button>
-        )}
-
-        {/* Right arrow */}
-        {canScrollRight && (
-          <button
-            onClick={() => scroll("right")}
-            className="absolute right-0 top-1/2 -translate-y-1/2 bg-black/40 text-white p-2 rounded-full cursor-pointer hover:bg-black/60 transition"
-          >
-            <ChevronRight size={22} />
-          </button>
-        )}
-
-                </div>
 
 
         {/* Filters button */}
