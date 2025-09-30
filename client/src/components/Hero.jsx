@@ -253,7 +253,7 @@ useEffect(() => {
     initial={{ scale: 1, opacity: 1 }}
           animate={{
             // Apply animation only if it's an 'md' screen
-            scale: shouldAnimate ? (showDesktop ? 1 : 0.85) : 1,
+            scale: shouldAnimate ? (showDesktop ? 1 : 0.9) : 1,
             opacity: shouldAnimate ? (showDesktop ? 1 : 0.95) : 1,
           }}
           transition={{ type: "spring", stiffness: 200, damping: 25, duration: 0.3 }}
@@ -280,7 +280,7 @@ useEffect(() => {
   />
 
   {/* === Text === */}
-  <span className="px-2 py-2 font-medium text-textdark text-md md:text-lg md:pr-4 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+  <span className="px-2 py-2 font-medium text-textdark text-sm md:text-md md:pr-4 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
     {pickupLocation || "Any where"}
   </span>
 </div>
@@ -288,13 +288,13 @@ useEffect(() => {
 
     <span className="self-stretch  w-px bg-borderColor"></span>
 
-    <span className="px-2 md:px-4 font-medium  text-textdark py-2 text-md md:text-lg rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+    <span className="px-2 md:px-4 font-medium  text-textdark py-2 text-sm md:text-md rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
       {pricePerDay || "Any price"}
     </span>
 
     <span className="self-stretch w-px bg-borderColor"></span>
 
-    <span className="px-2 md:px-4 font-medium  text-textdark  py-2 text-md md:text-lg rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+    <span className="px-2 md:px-4 font-medium  text-textdark  py-2 text-sm md:text-md rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
       {seatingCapacity || "Any size"}
     </span>
   </div>
