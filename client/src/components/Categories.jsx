@@ -77,58 +77,55 @@ export default function CategoryBar({
   }, []);
 
   return (
-    <div className="relative mt-4">
-      <div className="flex items-center relative">
-        {/* Scroll container wrapper with arrows */}
-        <div className="relative flex-1">
-          {/* Categories scroll */}
-          <div
-            ref={scrollRef}
-            className="flex overflow-x-auto no-scrollbar gap-6 px-2 scroll-smooth"
-          >
-            {categories.map((cat) => {
-              const Icon = cat.icon;
-              const isActive = filters.propertytype === cat.value;
-              return (
-                <div
-                  key={cat.value}
-                  onClick={() => handleCategoryClick(cat.value)}
-                  className={`flex flex-col items-center justify-center cursor-pointer min-w-[70px] rounded-lg transition-all duration-200 ${
-                    isActive
-                      ? "text-color-primary bg-gray-100"
-                      : "text-gray-500 hover:text-color-primary hover:bg-gray-50"
-                  } p-2 hover:scale-105`}
-                >
-                  <Icon size={24} />
-                  <span className="text-xs mt-1 text-center">{cat.label}</span>
-                </div>
-              );
-            })}
-          </div>
-
-          {/* Left arrow */}
-          {canScrollLeft && (
-            <button
-              onClick={() => scroll("left")}
-              className="absolute left-1 top-1/2 -translate-y-1/2 bg-black/40 text-white p-2 rounded-full cursor-pointer hover:bg-black/60 transition"
-            >
-              <ChevronLeft size={22} />
-            </button>
-          )}
-
-          {/* Right arrow */}
-          {canScrollRight && (
-            <button
-              onClick={() => scroll("right")}
-              className="absolute right-1 top-1/2 -translate-y-1/2 bg-black/40 text-white p-2 rounded-full cursor-pointer hover:bg-black/60 transition"
-            >
-              <ChevronRight size={22} />
-            </button>
-          )}
+    <div className="relative mt-4 group">
+      <div className="relative flex items-center">
+        {/* Scroll container */}
+        <div
+          ref={scrollRef}
+          className="flex-1 overflow-x-auto no-scrollbar flex gap-6 px-2 scroll-smooth"
+        >
+          {categories.map((cat) => {
+            const Icon = cat.icon;
+            const isActive = filters.propertytype === cat.value;
+            return (
+              <div
+                key={cat.value}
+                onClick={() => handleCategoryClick(cat.value)}
+                className={`flex flex-col items-center justify-center cursor-pointer min-w-[70px] transition-colors duration-200 ${
+                  isActive
+                    ? "text-color-primary"
+                    : "text-gray-500 hover:text-color-primary"
+                }`}
+              >
+                <Icon size={26} />
+                <span className="text-xs mt-1 text-center">{cat.label}</span>
+              </div>
+            );
+          })}
         </div>
 
-        {/* Filters button */}
-        <div className="flex-shrink-0 ml-3">
+        {/* Left arrow */}
+        {canScrollLeft && (
+          <button
+            onClick={() => scroll("left")}
+            className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 text-white p-2 rounded-full cursor-pointer hover:bg-black/60 transition"
+          >
+            <ChevronLeft size={22} />
+          </button>
+        )}
+
+        {/* Right arrow */}
+        {canScrollRight && (
+          <button
+            onClick={() => scroll("right")}
+            className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 text-white p-2 rounded-full cursor-pointer hover:bg-black/60 transition"
+          >
+            <ChevronRight size={22} />
+          </button>
+        )}
+
+        {/* Filters button fixed at right */}
+        <div className="flex-shrink-0 ml-2">
           <button
             onClick={() => setShowPopup(!showPopup)}
             className="flex items-center gap-2 bg-bgColor px-3 py-2 rounded-lg text-gray-600 hover:bg-bgColorhover cursor-pointer transition"
@@ -191,6 +188,8 @@ export default function CategoryBar({
     </div>
   );
 }
+
+
 
 /* Add this CSS globally to hide scrollbars everywhere */
 <style jsx global>{`
