@@ -255,7 +255,6 @@ useEffect(() => {
             // Apply animation only if it's an 'md' screen
             scale: shouldAnimate ? (showDesktop ? 1 : 0.85) : 1,
             opacity: shouldAnimate ? (showDesktop ? 1 : 0.95) : 1,
-            y: shouldAnimate ? (showDesktop ? -10 : -5) : (showDesktop ? -10 : -5), // You might still want the 'y' animation
           }}
           transition={{ type: "spring", stiffness: 200, damping: 25, duration: 0.3 }}
           

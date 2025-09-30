@@ -140,7 +140,7 @@ export default function CategoryBar({
         <div className="flex-shrink-0 ml-2 md:ml-4 ">
           <button
             onClick={() => setShowPopup(!showPopup)}
-            className="flex items-center gap-2 border border-borderColor px-3 py-2 md:py-4 md:px-6 rounded-lg shadow-lg text-gray-700 hover:border-borderColorhover  cursor-pointer transition"
+            className="flex items-center gap-2 border border-borderColor py-4 px-6 rounded-full shadow-lg text-gray-700 hover:border-borderColorhover  cursor-pointer transition"
           >
             <FaSlidersH />
             <span className="hidden sm:inline">Current Filters</span>
@@ -179,7 +179,7 @@ export default function CategoryBar({
                       }
                       setFilters(newFilters);
                     }}
-                    className="bg-bgColorhover hover:bg-black hover:text-white rounded-full p-1 cursor-pointer transition"
+                    className="bg-gray-700 hover:bg-black hover:text-white rounded-full p-1 cursor-pointer transition"
                   >
                     <X size={14} />
                   </button>
