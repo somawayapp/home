@@ -99,7 +99,7 @@ export default function CategoryBar({
               ${
                 isActive
                   ? "text-black after:block after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-black"
-                  : "text-gray-700 hover:text-gray-900 hover:after:block hover:after:content-[''] hover:after:absolute hover:after:bottom-0 hover:after:left-0 hover:after:right-0 hover:after:h-[1px] hover:after:bg-gray-900"
+                  : "text-gray-500 hover:text-gray-800 hover:after:block hover:after:content-[''] hover:after:absolute hover:after:bottom-0 hover:after:left-0 hover:after:right-0 hover:after:h-[1px] hover:after:bg-gray-800"
               }`}
 >
   <Icon size={26} className="text-inherit" />
