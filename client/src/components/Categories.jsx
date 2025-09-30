@@ -77,7 +77,7 @@ export default function CategoryBar({
   }, []);
 
   return (
-<div className="relative mt-4 mb-8 group border-b border-borderColor ">
+<div className="relative py-4 mb-4 group border-b border-borderColor ">
       <div className="relative flex items-center">
         {/* Scroll container */}
 
