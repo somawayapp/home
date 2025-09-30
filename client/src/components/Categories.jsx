@@ -117,7 +117,7 @@ export default function CategoryBar({
         {canScrollLeft && (
           <button
             onClick={() => scroll("left")}
-            className="fixed left-0 top-1/2 -translate-y-1/2 bg-black/40 text-white p-2 rounded-full cursor-pointer hover:bg-black/60 transition"
+            className="fixed left-0 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full cursor-pointer hover:bg-black/60 transition"
           >
             <ChevronLeft size={22} />
           </button>
@@ -127,7 +127,7 @@ export default function CategoryBar({
         {canScrollRight && (
           <button
             onClick={() => scroll("right")}
-            className="fixed right-0 top-1/2 -translate-y-1/2 bg-black/40 text-white p-2 rounded-full cursor-pointer hover:bg-black/60 transition"
+            className="absolute right-0 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full cursor-pointer hover:bg-black/60 transition"
           >
             <ChevronRight size={22} />
           </button>
@@ -140,7 +140,7 @@ export default function CategoryBar({
         <div className="flex-shrink-0 ml-2 md:ml-4 ">
           <button
             onClick={() => setShowPopup(!showPopup)}
-            className="flex items-center gap-2 border border-borderColor px-3 py-2 rounded-lg text-gray-600 hover:border-borderColorhover cursor-pointer transition"
+            className="flex items-center gap-2 border border-borderColor px-3 py-2 md:py-4 md:px-6 rounded-lg shadow-lg text-gray-700 hover:border-borderColorhover  cursor-pointer transition"
           >
             <FaSlidersH />
             <span className="hidden sm:inline">Current Filters</span>
