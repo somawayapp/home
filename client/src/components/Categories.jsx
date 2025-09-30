@@ -60,7 +60,7 @@ export default function CategoryBar({
 
   const scroll = (dir) => {
     if (!scrollRef.current) return;
-    const width = scrollRef.current.clientWidth;
+    const width = scrollRef.current.clientWidth * 0.8; // scroll ~80% width
     scrollRef.current.scrollBy({
       left: dir === "left" ? -width : width,
       behavior: "smooth",
@@ -77,7 +77,7 @@ export default function CategoryBar({
   }, []);
 
   return (
-    <div className="relative mt-4 mb-6 group">
+    <div className="relative mt-4 mb-8 group">
       <div className="relative flex items-center">
         {/* Scroll container */}
         <div
@@ -91,12 +91,14 @@ export default function CategoryBar({
               <div
                 key={cat.value}
                 onClick={() => handleCategoryClick(cat.value)}
-                className={`flex flex-col items-center justify-center cursor-pointer min-w-[70px] transition-colors duration-200 relative pb-1
-                ${
-                  isActive
-                    ? "text-color-primary after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[3px] after:bg-color-primary after:rounded"
-                    : "text-gray-500 hover:text-color-primary"
-                }`}
+                className={`flex flex-col items-center justify-center cursor-pointer 
+                            shrink-0 min-w-[80px] px-2 relative pb-1
+                            transition-all duration-200
+                            ${
+                              isActive
+                                ? "text-color-primary after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[3px] after:bg-color-primary after:rounded"
+                                : "text-gray-500 hover:text-color-primary"
+                            }`}
               >
                 <Icon size={26} />
                 <span className="text-xs mt-1 text-center whitespace-nowrap">
@@ -111,23 +113,23 @@ export default function CategoryBar({
         {canScrollLeft && (
           <button
             onClick={() => scroll("left")}
-            className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 text-white p-2 rounded-full cursor-pointer hover:bg-black/60 transition"
+            className="absolute left-0 top-1/2 -translate-y-1/2 bg-black/40 text-white p-2 rounded-full cursor-pointer hover:bg-black/60 transition"
           >
             <ChevronLeft size={22} />
           </button>
         )}
 
-        {/* Right arrow */}
+        {/* Right arrow (now anchored to scroll container, not screen) */}
         {canScrollRight && (
           <button
             onClick={() => scroll("right")}
-            className="absolute top-1/2 -translate-y-1/2 right-[4.5rem] bg-black/40 text-white p-2 rounded-full cursor-pointer hover:bg-black/60 transition"
+            className="absolute top-1/2 -translate-y-1/2 right-20 bg-black/40 text-white p-2 rounded-full cursor-pointer hover:bg-black/60 transition"
           >
             <ChevronRight size={22} />
           </button>
         )}
 
-        {/* Filters button fixed at right */}
+        {/* Filters button */}
         <div className="flex-shrink-0 ml-2">
           <button
             onClick={() => setShowPopup(!showPopup)}
@@ -145,7 +147,7 @@ export default function CategoryBar({
           initial={{ opacity: 0, y: -5 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -5 }}
-          className="absolute right-0 mt-2 bg-white shadow-lg rounded-lg p-4 w-64 z-20 border border-gray-200"
+          className="absolute right-0 mt-2 bg-white shadow-lg rounded-lg p-4 w-64 z-20 border border-gray-300"
         >
           {activeFilters.length > 0 ? (
             <div className="space-y-2">
@@ -192,13 +194,13 @@ export default function CategoryBar({
   );
 }
 
-/* Add this CSS globally to hide scrollbars everywhere */
+/* Hide scrollbars globally */
 <style jsx global>{`
   .no-scrollbar::-webkit-scrollbar {
-    display: none;
+    display: none !important;
   }
   .no-scrollbar {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+    -ms-overflow-style: none !important;
+    scrollbar-width: none !important;
   }
 `}</style>
