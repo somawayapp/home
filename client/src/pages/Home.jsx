@@ -505,7 +505,12 @@ useEffect(() => {
           </div>
         )} 
 
-<CategoryBar/>
+<CategoryBar
+  filters={filters}
+  setFilters={setFilters}
+  getActiveFilters={getActiveFilters}
+  handleClearAll={handleClearAll}
+/>
 
         
 
