@@ -60,7 +60,7 @@ export default function CategoryBar({
 
   const scroll = (dir) => {
     if (!scrollRef.current) return;
-    const width = scrollRef.current.clientWidth * 0.8; // scroll ~80% width
+    const width = scrollRef.current.clientWidth * 0.8;
     scrollRef.current.scrollBy({
       left: dir === "left" ? -width : width,
       behavior: "smooth",
@@ -92,12 +92,12 @@ export default function CategoryBar({
                 key={cat.value}
                 onClick={() => handleCategoryClick(cat.value)}
                 className={`flex flex-col items-center justify-center cursor-pointer 
-                            shrink-0 min-w-[80px] px-2 relative pb-1
+                            shrink-0 min-w-[80px] px-2 pb-1 relative
                             transition-all duration-200
                             ${
                               isActive
-                                ? "text-color-primary after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[3px] after:bg-color-primary after:rounded"
-                                : "text-gray-500 hover:text-color-primary"
+                                ? "text-color-primary after:block after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-color-primary"
+                                : "text-gray-500 hover:text-color-primary hover:after:block hover:after:content-[''] hover:after:absolute hover:after:bottom-0 hover:after:left-0 hover:after:right-0 hover:after:h-[2px] hover:after:bg-color-primary"
                             }`}
               >
                 <Icon size={26} />
@@ -119,11 +119,11 @@ export default function CategoryBar({
           </button>
         )}
 
-        {/* Right arrow (now anchored to scroll container, not screen) */}
+        {/* Right arrow */}
         {canScrollRight && (
           <button
             onClick={() => scroll("right")}
-            className="absolute top-1/2 -translate-y-1/2 right-20 bg-black/40 text-white p-2 rounded-full cursor-pointer hover:bg-black/60 transition"
+            className="absolute right-0 top-1/2 -translate-y-1/2 bg-black/40 text-white p-2 rounded-full cursor-pointer hover:bg-black/60 transition"
           >
             <ChevronRight size={22} />
           </button>
@@ -193,14 +193,3 @@ export default function CategoryBar({
     </div>
   );
 }
-
-/* Hide scrollbars globally */
-<style jsx global>{`
-  .no-scrollbar::-webkit-scrollbar {
-    display: none !important;
-  }
-  .no-scrollbar {
-    -ms-overflow-style: none !important;
-    scrollbar-width: none !important;
-  }
-`}</style>
