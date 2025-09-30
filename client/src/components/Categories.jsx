@@ -77,9 +77,12 @@ export default function CategoryBar({
   }, []);
 
   return (
-    <div className="relative mt-4 mb-8 group">
+<div className="relative mt-4 mb-8 group border-b border-borderColor ">
       <div className="relative flex items-center">
         {/* Scroll container */}
+
+        <div>
+
         <div
           ref={scrollRef}
           className="flex-1 overflow-x-auto no-scrollbar flex gap-6 px-2 scroll-smooth relative"
@@ -88,23 +91,24 @@ export default function CategoryBar({
             const Icon = cat.icon;
             const isActive = filters.propertytype === cat.value;
             return (
-              <div
-                key={cat.value}
-                onClick={() => handleCategoryClick(cat.value)}
-                className={`flex flex-col items-center justify-center cursor-pointer 
-                            shrink-0 min-w-[80px] px-2 pb-1 relative
-                            transition-all duration-200
-                            ${
-                              isActive
-                                ? "text-color-primary after:block after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-color-primary"
-                                : "text-gray-500 hover:text-color-primary hover:after:block hover:after:content-[''] hover:after:absolute hover:after:bottom-0 hover:after:left-0 hover:after:right-0 hover:after:h-[2px] hover:after:bg-color-primary"
-                            }`}
-              >
-                <Icon size={26} />
-                <span className="text-xs mt-1 text-center whitespace-nowrap">
-                  {cat.label}
-                </span>
-              </div>
+      <div
+  key={cat.value}
+  onClick={() => handleCategoryClick(cat.value)}
+  className={`flex flex-col items-center justify-center cursor-pointer 
+              shrink-0 min-w-[80px] px-2 pb-1 relative
+              transition-all duration-200
+              ${
+                isActive
+                  ? "text-color-primary after:block after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[3px] after:bg-color-primary"
+                  : "text-gray-500 hover:text-color-black hover:after:block hover:after:content-[''] hover:after:absolute hover:after:bottom-0 hover:after:left-0 hover:after:right-0 hover:after:h-[1px] hover:after:bg-gray-400"
+              }`}
+>
+  <Icon size={26} />
+  <span className="text-xs mt-1 text-center whitespace-nowrap">
+    {cat.label}
+  </span>
+</div>
+
             );
           })}
         </div>
@@ -129,8 +133,11 @@ export default function CategoryBar({
           </button>
         )}
 
+                </div>
+
+
         {/* Filters button */}
-        <div className="flex-shrink-0 ml-2">
+        <div className="flex-shrink-0 ml-2 md:ml-4 ">
           <button
             onClick={() => setShowPopup(!showPopup)}
             className="flex items-center gap-2 bg-bgColor px-3 py-2 rounded-lg text-gray-600 hover:bg-bgColorhover cursor-pointer transition"
