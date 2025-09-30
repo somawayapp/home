@@ -100,7 +100,7 @@ export default function CategoryBar({
               ${
                 isActive
                   ? "text-color-primary after:block after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[3px] after:bg-color-primary"
-                  : "text-gray-500 hover:text-color-black hover:after:block hover:after:content-[''] hover:after:absolute hover:after:bottom-0 hover:after:left-0 hover:after:right-0 hover:after:h-[1px] hover:after:bg-gray-400"
+                  : "text-gray-500 hover:text-black hover:after:block hover:after:content-[''] hover:after:absolute hover:after:bottom-0 hover:after:left-0 hover:after:right-0 hover:after:h-[1px] hover:after:bg-black"
               }`}
 >
   <Icon size={26} />
