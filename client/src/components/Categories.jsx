@@ -1,7 +1,19 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { motion } from "framer-motion";
-import { FaHome, FaWarehouse, FaHotel, FaTractor, FaFilter } from "react-icons/fa"; 
-import { MdApartment, MdMeetingRoom, MdBusiness, MdStore, MdOutlineVilla } from "react-icons/md";
+import {
+  FaHome,
+  FaWarehouse,
+  FaHotel,
+  FaTractor,
+  FaSlidersH,
+} from "react-icons/fa";
+import {
+  MdApartment,
+  MdMeetingRoom,
+  MdBusiness,
+  MdStore,
+  MdOutlineVilla,
+} from "react-icons/md";
 
 const categories = [
   { value: "Bedsitter", label: "Bedsitter", icon: MdApartment },
@@ -18,11 +30,17 @@ const categories = [
   { value: "Warehouse", label: "Warehouse", icon: FaWarehouse },
   { value: "Industrial", label: "Industrial", icon: FaWarehouse },
   { value: "Hotel", label: "Hotel / Guesthouse", icon: FaHotel },
-  { value: "Farm", label: "Farm", icon: FaTractor },
+  { value: "Farm", label: "Farm / Agricultural Land", icon: FaTractor },
 ];
 
-export default function CategoryBar({ filters, setFilters, getActiveFilters, handleClearAll }) {
+export default function CategoryBar({
+  filters,
+  setFilters,
+  getActiveFilters,
+  handleClearAll,
+}) {
   const [showPopup, setShowPopup] = useState(true);
+  const scrollRef = useRef(null);
 
   const handleCategoryClick = (cat) => {
     setFilters((prev) => ({ ...prev, propertytype: cat }));
@@ -30,11 +48,31 @@ export default function CategoryBar({ filters, setFilters, getActiveFilters, han
 
   const activeFilters = getActiveFilters();
 
+  const scroll = (dir) => {
+    if (!scrollRef.current) return;
+    const width = scrollRef.current.clientWidth;
+    scrollRef.current.scrollBy({
+      left: dir === "left" ? -width : width,
+      behavior: "smooth",
+    });
+  };
+
   return (
     <div className="relative mt-4">
       <div className="flex items-center">
+        {/* Left arrow (only on lg screens) */}
+        <button
+          onClick={() => scroll("left")}
+          className="hidden lg:flex items-center justify-center w-8 h-8 rounded-full bg-gray-200 hover:bg-gray-300 mr-2"
+        >
+          ◀
+        </button>
+
         {/* Categories scroll */}
-        <div className="flex-1 overflow-x-auto no-scrollbar flex gap-6 px-2">
+        <div
+          ref={scrollRef}
+          className="flex-1 overflow-x-auto no-scrollbar flex gap-6 px-2"
+        >
           {categories.map((cat) => {
             const Icon = cat.icon;
             const isActive = filters.propertytype === cat.value;
@@ -53,14 +91,22 @@ export default function CategoryBar({ filters, setFilters, getActiveFilters, han
           })}
         </div>
 
+        {/* Right arrow (only on lg screens) */}
+        <button
+          onClick={() => scroll("right")}
+          className="hidden lg:flex items-center justify-center w-8 h-8 rounded-full bg-gray-200 hover:bg-gray-300 ml-2"
+        >
+          ▶
+        </button>
+
         {/* Filters button fixed at right */}
         <div className="flex-shrink-0 ml-2">
           <button
             onClick={() => setShowPopup(!showPopup)}
             className="flex items-center gap-2 bg-bgColor px-3 py-2 rounded-lg text-gray-600 hover:bg-bgColorhover"
           >
-            <FaFilter />
-            <span className="hidden sm:inline">Filters</span>
+            <FaSlidersH />
+            <span className="hidden sm:inline">Current Filters</span>
           </button>
         </div>
       </div>

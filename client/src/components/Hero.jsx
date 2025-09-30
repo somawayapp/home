@@ -189,15 +189,15 @@ useEffect(() => {
 
               
 
-  {/* === Links Section === */}
+{/*
+
 
    {!isSmallScreen && showDesktop && location.pathname === "/" && (
     <div className='flex flex-col mt-5  items-center justify-center'>
 
 
 <div className="hidden md:flex  flex-row gap-10 mb-2 ml-4">
-  
-
+ 
   {links.map((link) => {
     const isActive = currentPath === link.path
     return (
@@ -208,7 +208,6 @@ useEffect(() => {
           isActive ? " text-textdark" : " text-textlight"
         }`}
       >
-        {/* === Icon/Video/Image Left of Text === */}
         {link.type === "video" ? (
           <video
             src={link.src}
@@ -225,10 +224,8 @@ useEffect(() => {
           />
         )}
 
-        {/* === Link Text === */}
         <span className="inline-block">{link.name}</span>
 
-        {/* === Active Underline === */}
         {isActive && (
           <span className="absolute left-[-1px] -bottom-0    w-[calc(100%+9px)] h-[3px] bg-black rounded-full"></span>
         )}
@@ -243,15 +240,15 @@ useEffect(() => {
 
 </div>
       )}
+      
+*/}
 
 
 
 
 
+          {/* Now for all screens but was for  === Compressed / other screens & routes */}
 
-          {/* === Compressed / other screens & routes */}
-
-         {(isSmallScreen || !showDesktop) && (
        <motion.button
     initial={{ scale: 1, opacity: 1 }}
           animate={{
@@ -314,7 +311,6 @@ useEffect(() => {
   </div>
 </motion.button>
 
-      )}
 
 
 
@@ -431,6 +427,7 @@ useEffect(() => {
 
 </div>
 
+          {/* Toggle Menu Button 
 
    {!isSmallScreen && showDesktop && location.pathname === "/" && (
 
@@ -494,7 +491,7 @@ useEffect(() => {
 
 
 
-      )}
+      )} */}
 
      
               

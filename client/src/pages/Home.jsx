@@ -456,54 +456,7 @@ useEffect(() => {
       >
        
 
-        {/* --- Active Filters --- */}
-        {getActiveFilters().length > 0 && (
-          <div className=" mx-auto">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="text-sm text-gray-500 font-semibold bg-bgColor hover:bg-bgColorhover  cursor-pointer  px-2.5 py-2  rounded-full  text-gray-700 mr-2">
-                Active Filters:
-              </span>
-              {getActiveFilters().map(([key, value]) => (
-                <div
-                  key={key}
-                  className="flex items-center bg-bgColor text-gray-500  text-sm px-2.5 py-2 rounded-full"
-                >
-                  {key}: {value}
-                  <button
-                    onClick={() => {
-                      const newFilters = { ...filters };
-                      if (key.startsWith("amenities")) {
-                        newFilters[key] = [];
-                      } else {
-                        newFilters[key] = key === "minPrice" ? 0 : key === "maxPrice" ? 1000000000 : "";
-                      }
-                      setFilters(newFilters);
-                    }}
-                    className="ml-2  hover:text-gray-600 cursor-pointer  focus:outline-none"
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-                    </svg>
-                  </button>
-                </div>
-              ))}
-              <button
-                onClick={handleClearAll}
-                className="ml-2 bg-bgColor  text-gray-500  hover:bg-bgColorhover  cursor-pointer  rounded-full  px-2.5 py-2 text-sm  focus:outline-none"
-              >
-                Remove all
-              </button>
-
-
-                <button
-            onClick={() => setShowModal(true)}
-            className="px-4 py-2 rounded-lg bg-color-primary text-gray-500 hover:bg-color-primary-dull  cursor-pointer  focus:outline-none"
-          >
-            Filters
-          </button>
-            </div>
-          </div>
-        )} 
+      
 
 <CategoryBar
   filters={filters}
