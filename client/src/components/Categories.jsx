@@ -91,7 +91,7 @@ export default function CategoryBar({
             const Icon = cat.icon;
             const isActive = filters.propertytype === cat.value;
             return (
-      <div
+<div
   key={cat.value}
   onClick={() => handleCategoryClick(cat.value)}
   className={`flex flex-col items-center justify-center cursor-pointer 
@@ -99,8 +99,8 @@ export default function CategoryBar({
               transition-all duration-200
               ${
                 isActive
-                  ? "text-color-primary after:block after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[3px] after:bg-color-primary"
-                  : "text-gray-500 hover:text-black hover:after:block hover:after:content-[''] hover:after:absolute hover:after:bottom-0 hover:after:left-0 hover:after:right-0 hover:after:h-[1px] hover:after:bg-black"
+                  ? "text-black after:block after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-black"
+                  : "text-gray-700 hover:text-gray-900 hover:after:block hover:after:content-[''] hover:after:absolute hover:after:bottom-0 hover:after:left-0 hover:after:right-0 hover:after:h-[1px] hover:after:bg-gray-900"
               }`}
 >
   <Icon size={26} />
@@ -108,6 +108,7 @@ export default function CategoryBar({
     {cat.label}
   </span>
 </div>
+
 
             );
           })}
