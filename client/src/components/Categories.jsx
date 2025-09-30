@@ -81,7 +81,6 @@ export default function CategoryBar({
       <div className="relative flex items-center">
         {/* Scroll container */}
 
-        <div>
 
         <div
           ref={scrollRef}
@@ -103,16 +102,16 @@ export default function CategoryBar({
                   : "text-gray-700 hover:text-gray-900 hover:after:block hover:after:content-[''] hover:after:absolute hover:after:bottom-0 hover:after:left-0 hover:after:right-0 hover:after:h-[1px] hover:after:bg-gray-900"
               }`}
 >
-  <Icon size={26} />
+  <Icon size={26} className="text-inherit" />
   <span className="text-xs mt-1 text-center whitespace-nowrap">
     {cat.label}
   </span>
 </div>
 
 
+
             );
           })}
-        </div>
 
         {/* Left arrow */}
         {canScrollLeft && (
