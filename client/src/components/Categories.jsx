@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   FaHome,
@@ -14,6 +14,7 @@ import {
   MdStore,
   MdOutlineVilla,
 } from "react-icons/md";
+import { ChevronLeft, ChevronRight, X } from "lucide-react";
 
 const categories = [
   { value: "Bedsitter", label: "Bedsitter", icon: MdApartment },
@@ -40,6 +41,8 @@ export default function CategoryBar({
   handleClearAll,
 }) {
   const [showPopup, setShowPopup] = useState(true);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
   const scrollRef = useRef(null);
 
   const handleCategoryClick = (cat) => {
@@ -47,6 +50,13 @@ export default function CategoryBar({
   };
 
   const activeFilters = getActiveFilters();
+
+  const updateScrollButtons = () => {
+    if (!scrollRef.current) return;
+    const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+    setCanScrollLeft(scrollLeft > 0);
+    setCanScrollRight(scrollLeft + clientWidth < scrollWidth - 1);
+  };
 
   const scroll = (dir) => {
     if (!scrollRef.current) return;
@@ -57,21 +67,22 @@ export default function CategoryBar({
     });
   };
 
-  return (
-    <div className="relative mt-4">
-      <div className="flex items-center">
-        {/* Left arrow (only on lg screens) */}
-        <button
-          onClick={() => scroll("left")}
-          className="hidden lg:flex items-center justify-center w-8 h-8 rounded-full bg-gray-200 hover:bg-gray-300 mr-2"
-        >
-          ◀
-        </button>
+  useEffect(() => {
+    updateScrollButtons();
+    const ref = scrollRef.current;
+    if (ref) ref.addEventListener("scroll", updateScrollButtons);
+    return () => {
+      if (ref) ref.removeEventListener("scroll", updateScrollButtons);
+    };
+  }, []);
 
-        {/* Categories scroll */}
+  return (
+    <div className="relative mt-4 group">
+      <div className="relative flex items-center">
+        {/* Scroll container */}
         <div
           ref={scrollRef}
-          className="flex-1 overflow-x-auto no-scrollbar flex gap-6 px-2"
+          className="flex-1 overflow-x-auto no-scrollbar flex gap-6 px-2 scroll-smooth"
         >
           {categories.map((cat) => {
             const Icon = cat.icon;
@@ -80,30 +91,44 @@ export default function CategoryBar({
               <div
                 key={cat.value}
                 onClick={() => handleCategoryClick(cat.value)}
-                className={`flex flex-col items-center justify-center cursor-pointer min-w-[70px] ${
-                  isActive ? "text-color-primary" : "text-gray-500"
+                className={`flex flex-col items-center justify-center cursor-pointer min-w-[70px] transition-colors duration-200 ${
+                  isActive
+                    ? "text-color-primary"
+                    : "text-gray-500 hover:text-color-primary"
                 }`}
               >
-                <Icon size={24} />
+                <Icon size={26} />
                 <span className="text-xs mt-1 text-center">{cat.label}</span>
               </div>
             );
           })}
         </div>
 
-        {/* Right arrow (only on lg screens) */}
-        <button
-          onClick={() => scroll("right")}
-          className="hidden lg:flex items-center justify-center w-8 h-8 rounded-full bg-gray-200 hover:bg-gray-300 ml-2"
-        >
-          ▶
-        </button>
+        {/* Left arrow */}
+        {canScrollLeft && (
+          <button
+            onClick={() => scroll("left")}
+            className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 text-white p-2 rounded-full cursor-pointer hover:bg-black/60 transition"
+          >
+            <ChevronLeft size={22} />
+          </button>
+        )}
+
+        {/* Right arrow */}
+        {canScrollRight && (
+          <button
+            onClick={() => scroll("right")}
+            className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 text-white p-2 rounded-full cursor-pointer hover:bg-black/60 transition"
+          >
+            <ChevronRight size={22} />
+          </button>
+        )}
 
         {/* Filters button fixed at right */}
         <div className="flex-shrink-0 ml-2">
           <button
             onClick={() => setShowPopup(!showPopup)}
-            className="flex items-center gap-2 bg-bgColor px-3 py-2 rounded-lg text-gray-600 hover:bg-bgColorhover"
+            className="flex items-center gap-2 bg-bgColor px-3 py-2 rounded-lg text-gray-600 hover:bg-bgColorhover cursor-pointer transition"
           >
             <FaSlidersH />
             <span className="hidden sm:inline">Current Filters</span>
@@ -142,14 +167,15 @@ export default function CategoryBar({
                       }
                       setFilters(newFilters);
                     }}
+                    className="bg-gray-300 hover:bg-red-500 hover:text-white rounded-full p-1 cursor-pointer transition"
                   >
-                    ✕
+                    <X size={14} />
                   </button>
                 </div>
               ))}
               <button
                 onClick={handleClearAll}
-                className="w-full mt-2 bg-gray-200 text-gray-600 py-1 rounded hover:bg-gray-300"
+                className="w-full mt-2 bg-gray-200 text-gray-600 py-1 rounded hover:bg-gray-300 cursor-pointer transition"
               >
                 Clear All
               </button>
