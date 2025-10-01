@@ -113,28 +113,26 @@ export default function CategoryBar({
             );
           })}
 
-        {/* Left arrow */}
+        </div>
+
+          {/* Left arrow */}
         {canScrollLeft && (
           <button
             onClick={() => scroll("left")}
-            className="absolute  hidden md:flex  left-0 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full cursor-pointer hover:bg-black/60 transition"
+            className="absolute  hidden md:flex  left-0 top-1/2 -translate-y-1/2 bg-black/30 text-white p-2 rounded-full cursor-pointer hover:bg-black/60 transition"
           >
             <ChevronLeft size={22} />
           </button>
         )}
 
-       
-
-                </div>
-
 
         {/* Filters button */}
-        <div className="flex-shrink-0 ml-2 gap-4 ">
+        <div className="flex-shrink-0 flex flex-row  ml-2 gap-4 ">
              {/* Right arrow */}
         {canScrollRight && (
           <button
             onClick={() => scroll("right")}
-            className="  hidden md:flex top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full cursor-pointer hover:bg-black/60 transition"
+            className="  hidden md:flex top-1/2 -translate-y-1/2 bg-black/30 text-white p-2 rounded-full cursor-pointer hover:bg-black/60 transition"
           >
             <ChevronRight size={22} />
           </button>
