@@ -14,7 +14,7 @@ export const categories = [
   { value: "Maisonette", label: "Maisonette", icon: TbBuildingEstate, description: "This property is a maisonette!" },
   { value: "Townhouse", label: "Townhouse", icon: TbBuildingCommunity, description: "This property is a townhouse!" },
   { value: "Villa", label: "Villa", icon: MdOutlineVilla, description: "This property is a modern villa!" },
-  { value: "House", label: "House", icon: MdHouse, description: "This property is a house!" },
+  { value: "House", label: "Houseu", icon: MdHouse, description: "This property is a house!" },
   { value: "Land", label: "Land / Plot", icon: FaTractor, description: "This property is land or a plot!" },
   { value: "Commercial", label: "Commercial Property", icon: MdBusiness, description: "This property is a commercial building!" },
   { value: "Office", label: "Office Space", icon: FaCity, description: "This property is an office space!" },
@@ -23,10 +23,6 @@ export const categories = [
   { value: "Industrial", label: "Industrial Property", icon: FaWarehouse, description: "This property is an industrial property!" },
   { value: "Hotel", label: "Hotel / Guesthouse", icon: FaHotel, description: "This property is a hotel or guesthouse!" },
   { value: "Farm", label: "Farm / Agricultural Land", icon: GiBarn, description: "This property is a farm or agricultural land!" },
-  { value: "Mansion", label: "Mansion", icon: GiCastle, description: "This property is a mansion!" },
-  { value: "Tiny-house", label: "Tiny House", icon: GiCube, description: "This property is a tiny house!" },
-  { value: "Carbin", label: "Carbin", icon: FaTrailer, description: "This property is a cabin!" },
-  { value: "Beach-house", label: "Beach House", icon: TbBeach, description: "This property is near the beach!" },
 ];
 
 export default function CategoryBar({ filters, setFilters, getActiveFilters, handleClearAll }) {
@@ -134,7 +130,7 @@ export default function CategoryBar({ filters, setFilters, getActiveFilters, han
                   {activeFilters.map(([key, value]) => (
                     <div
                       key={key}
-                      className="flex items-center justify-between bg-bgColor text-gray-600 text-sm px-2 py-1 rounded"
+                      className="flex items-center justify-between border border-borderColor text-gray-600 text-sm px-2 py-1 rounded"
                     >
                       {key}: {value}
                       <button
@@ -152,7 +148,7 @@ export default function CategoryBar({ filters, setFilters, getActiveFilters, han
                           }
                           setFilters(newFilters);
                         }}
-                        className="bg-gray-600 hover:bg-gray-900 text-white rounded-full p-1 cursor-pointer transition"
+                        className="bg-black hover:bg-gray-700 text-white rounded-full p-1 cursor-pointer transition"
                       >
                         <X size={14} />
                       </button>
@@ -160,7 +156,7 @@ export default function CategoryBar({ filters, setFilters, getActiveFilters, han
                   ))}
                   <button
                     onClick={handleClearAll}
-                    className="w-full mt-2 bg-primary text-white py-1 rounded hover:bg-primary-dull cursor-pointer transition"
+                    className="w-full mt-2 bg-black hover:bg-gray-700 text-white py-1 rounded  cursor-pointer transition"
                   >
                     Clear All
                   </button>

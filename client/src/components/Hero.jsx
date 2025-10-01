@@ -406,7 +406,7 @@ useEffect(() => {
                   className='group relative w-full cursor-pointer px-4 py-1'
                 >
                   <span className='relative z-10 block py-2 text-left'>Logout</span>
-                  <span className='absolute inset-x-0 bottom-1 top-1 bg-gray-100 opacity-0 transition group-hover:opacity-100'></span>
+                  <span className='absolute inset-x-0 bottom-1 top-1 bg-black hover:bg-gray-700 opacity-0 transition group-hover:opacity-100'></span>
                 </div>
               ) : (
                 <div
@@ -417,7 +417,7 @@ useEffect(() => {
                   className='group relative w-full cursor-pointer px-4 py-1'
                 >
                   <span className='relative z-10 block py-2 text-left'>Login / Signup</span>
-                  <span className='absolute inset-x-0 bottom-1 top-1 bg-gray-100 opacity-0 transition group-hover:opacity-100'></span>
+                  <span className='absolute inset-x-0 bottom-1 top-1 bg-black opacity-0 transition group-hover:opacity-100'></span>
                 </div>
               )}
             </div>
