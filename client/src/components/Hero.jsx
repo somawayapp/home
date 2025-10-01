@@ -280,7 +280,7 @@ useEffect(() => {
   />
 
   {/* === Text === */}
-  <span className="px-2 py-2 font-medium text-textdark text-sm md:text-md md:pr-4 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+  <span className="px-2 py-2 font-medium text-neutral-500 text-sm md:text-md md:pr-4 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
     {pickupLocation || "Any where"}
   </span>
 </div>
@@ -288,13 +288,13 @@ useEffect(() => {
 
     <span className="self-stretch  w-px bg-borderColor"></span>
 
-    <span className="px-2 md:px-4 font-medium  text-textdark py-2 text-sm md:text-md rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+    <span className="px-2 md:px-4 font-medium  text-neutral-500 py-2 text-sm md:text-md rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
       {pricePerDay || "Any price"}
     </span>
 
     <span className="self-stretch w-px bg-borderColor"></span>
 
-    <span className="px-2 md:px-4 font-medium  text-textdark  py-2 text-sm md:text-md rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+    <span className="px-2 md:px-4 font-medium  text-neutral-500 py-2 text-sm md:text-md rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
       {seatingCapacity || "Any size"}
     </span>
   </div>

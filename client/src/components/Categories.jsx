@@ -84,7 +84,7 @@ export default function CategoryBar({
 
         <div
           ref={scrollRef}
-          className="flex-1 overflow-x-auto no-scrollbar flex gap-8  md:gap-4 scroll-smooth relative"
+          className="flex-1 overflow-x-auto no-scrollbar flex gap-2  md:gap-4 scroll-smooth relative"
         >
           {categories.map((cat) => {
             const Icon = cat.icon;
@@ -94,7 +94,7 @@ export default function CategoryBar({
   key={cat.value}
   onClick={() => handleCategoryClick(cat.value)}
   className={`flex flex-col items-center justify-center cursor-pointer 
-              shrink-0 min-w-[80px] py-2 pb-1 relative
+              shrink-0 min-w-[80px] pr-2 pb-1 relative
               transition-all duration-200
               ${
                 isActive
@@ -140,7 +140,7 @@ export default function CategoryBar({
         <div className="flex-shrink-0 ml-2 md:ml-12 ">
           <button
             onClick={() => setShowPopup(!showPopup)}
-            className="flex items-center gap-2 border border-borderColor py-4 px-6 rounded-full md:rounded-xl shadow-lg text-gray-700 hover:border-borderColorhover  cursor-pointer transition"
+            className="flex items-center gap-2 border border-borderColor py-4 px-4  md:px-6 rounded-full md:rounded-xl shadow-lg text-gray-700 hover:border-borderColorhover  cursor-pointer transition"
           >
             <FaSlidersH />
             <span className="hidden sm:inline">Current Filters</span>
@@ -179,7 +179,7 @@ export default function CategoryBar({
                       }
                       setFilters(newFilters);
                     }}
-                    className="bg-gray-700 hover:bg-black hover:text-white rounded-full p-1 cursor-pointer transition"
+                    className="bg-gray-600 hover:bg-gray-900 text-white rounded-full p-1 cursor-pointer transition"
                   >
                     <X size={14} />
                   </button>
@@ -187,7 +187,7 @@ export default function CategoryBar({
               ))}
               <button
                 onClick={handleClearAll}
-                className="w-full mt-2 bg-bgColor text-gray-600 py-1 rounded hover:bg-bgColorhover cursor-pointer transition"
+                className="w-full mt-2 bg-primary text-white py-1 rounded hover:bg-primary-dull cursor-pointer transition"
               >
                 Clear All
               </button>
