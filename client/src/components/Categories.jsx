@@ -84,7 +84,7 @@ export default function CategoryBar({
 
         <div
           ref={scrollRef}
-          className="flex-1 overflow-x-auto no-scrollbar flex gap-4  md:gap-2 px-2 scroll-smooth relative"
+          className="flex-1 overflow-x-auto no-scrollbar flex gap-8  md:gap-4 scroll-smooth relative"
         >
           {categories.map((cat) => {
             const Icon = cat.icon;
@@ -94,12 +94,12 @@ export default function CategoryBar({
   key={cat.value}
   onClick={() => handleCategoryClick(cat.value)}
   className={`flex flex-col items-center justify-center cursor-pointer 
-              shrink-0 min-w-[80px] px-2 pb-1 relative
+              shrink-0 min-w-[80px] py-2 pb-1 relative
               transition-all duration-200
               ${
                 isActive
-                  ? "text-black after:block after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-black"
-                  : "text-neutral-500 hover:text-neutral-700 hover:after:block hover:after:content-[''] hover:after:absolute hover:after:bottom-0 hover:after:left-0 hover:after:right-0 hover:after:h-[2px] hover:after:bg-neutral-700"
+                  ? "text-neutral-900 after:block after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-black"
+                  : "text-neutral-400 hover:text-neutral-600 hover:after:block hover:after:content-[''] hover:after:absolute hover:after:bottom-0 hover:after:left-0 hover:after:right-0 hover:after:h-[2px] hover:after:bg-neutral-600"
               }`}
 >
   <Icon size={26} className="text-inherit" />
