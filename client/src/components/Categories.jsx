@@ -150,7 +150,7 @@ export default function CategoryBar({
         {canScrollLeft && (
           <button
             onClick={() => scroll("left")}
-            className="absolute  hidden md:flex  left-0 top-1/2 -translate-y-1/2 bg-black/30 text-white p-2 rounded-full cursor-pointer hover:bg-black/60 transition"
+            className="absolute  hidden md:flex  left-16 top-1/2 -translate-y-1/2 bg-black/30 text-white p-2 rounded-full cursor-pointer hover:bg-black/60 transition"
           >
             <ChevronLeft size={22} />
           </button>
@@ -160,7 +160,7 @@ export default function CategoryBar({
 
 
 
-        
+
       {/* Popup with active filters */}
       {showPopup && (
         <motion.div
