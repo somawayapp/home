@@ -99,7 +99,7 @@ export default function CategoryBar({
               ${
                 isActive
                   ? "text-neutral-900 after:block after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-black"
-                  : "text-neutral-400 hover:text-neutral-600 hover:after:block hover:after:content-[''] hover:after:absolute hover:after:bottom-0 hover:after:left-0 hover:after:right-0 hover:after:h-[2px] hover:after:bg-neutral-600"
+                  : "text-neutral-450 hover:text-neutral-600 hover:after:block hover:after:content-[''] hover:after:absolute hover:after:bottom-0 hover:after:left-0 hover:after:right-0 hover:after:h-[2px] hover:after:bg-neutral-600"
               }`}
 >
   <Icon size={26} className="text-inherit" />
@@ -129,7 +129,7 @@ export default function CategoryBar({
 
 
         {/* Filters button */}
-        <div className="flex-shrink-0 ml-2  ">
+        <div className="flex-shrink-0 ml-2 md:ml-12 ">
              {/* Right arrow */}
         {canScrollRight && (
           <button
@@ -142,7 +142,7 @@ export default function CategoryBar({
 
           <button
             onClick={() => setShowPopup(!showPopup)}
-            className="flex items-center gap-2 border border-borderColor py-4 px-4  md:px-6 rounded-full md:rounded-xl shadow-lg text-gray-700 hover:border-borderColorhover  cursor-pointer transition"
+            className="flex items-center gap-2 border border-borderColor py-4 px-4  md:px-6 rounded-full md:rounded-xl hover:shadow-xl hover:text-gray-900 shadow-lg text-gray-700 hover:border-borderColorhover  cursor-pointer transition"
           >
             <FaSlidersH />
             <span className="hidden sm:inline">Current Filters</span>
