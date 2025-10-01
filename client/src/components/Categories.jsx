@@ -123,14 +123,14 @@ export default function CategoryBar({ filters, setFilters, getActiveFilters, han
               initial={{ opacity: 0, y: -5 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -5 }}
-              className="absolute top-full right-0 mt-2 bg-white shadow-lg rounded-lg p-4 w-64 z-20 border border-borderColor"
+              className="absolute top-full right-0 mt-2 bg-white shadow-lg rounded-xl p-4 w-64 z-20 border border-borderColor"
             >
               {activeFilters.length > 0 ? (
                 <div className="space-y-2">
                   {activeFilters.map(([key, value]) => (
                     <div
                       key={key}
-                      className="flex items-center justify-between border border-borderColor text-gray-600 text-sm px-2 py-1 rounded"
+                      className="flex items-center justify-between border border-borderColor text-gray-600 text-sm px-2 py-1 rounded-xl"
                     >
                       {key}: {value}
                       <button
@@ -156,7 +156,7 @@ export default function CategoryBar({ filters, setFilters, getActiveFilters, han
                   ))}
                   <button
                     onClick={handleClearAll}
-                    className="w-full mt-2 bg-black hover:bg-gray-700 text-white py-1 rounded  cursor-pointer transition"
+                    className="w-full mt-2 bg-black hover:bg-gray-700 text-white py-1 rounded-lx  cursor-pointer transition"
                   >
                     Clear All
                   </button>

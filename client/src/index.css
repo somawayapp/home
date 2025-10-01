@@ -11,8 +11,8 @@
 }
 
 @theme {
-  --color-primary: #FF5A5F;
-  --color-primary-dull: #ff4248;
+  --color-primary: #2F74FD;
+  --color-primary-dull: #0556f7;
   --color-light: #dddddd;
   --color-borderColor: #dddddd;
     --color-borderColor2: #dddddd;
@@ -61,7 +61,7 @@
 @layer components {
   .btn {
     @apply  tracking-wide cursor-pointer select-none transition-all duration-300 ease-out;
-    background: linear-gradient(135deg, #FF5A5F, #fd5156, #ff4248);
+    background: linear-gradient(135deg, #2F74FD, #0556f7);
     background-size: 200% 200%;
   }
   /* ✨ Hover effect: gradient shifts + glow + smooth scale */
@@ -89,18 +89,18 @@
 /* Track (the line behind) */
 /* Active range (selected track) */
 .rc-slider .rc-slider-track {
-  background-color: #FF5A5F !important; /* pink-500 */
+  background-color: #2F74FD !important; /* pink-500 */
 }
 
 /* Rail (inactive background) */
 .rc-slider .rc-slider-rail {
-  background-color: #fbcfe8 !important; /* pink-200 */
+  background-color: #cedeff !important; /* pink-200 */
 }
 
 /* Handle (draggable dots) */
 .rc-slider .rc-slider-handle {
-  border: 2px solid #FF5A5F !important;
-  background-color: #FF5A5F !important;
+  border: 2px solid #2F74FD !important;
+  background-color: #2F74FD !important;
   box-shadow: none !important; /* removes default blue shadow */
 }
 .no-scrollbar::-webkit-scrollbar {
