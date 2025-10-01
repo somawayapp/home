@@ -99,7 +99,7 @@ export default function CategoryBar({
               ${
                 isActive
                   ? "text-neutral-900 after:block after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-black"
-                  : "text-neutral-450 hover:text-neutral-600 hover:after:block hover:after:content-[''] hover:after:absolute hover:after:bottom-0 hover:after:left-0 hover:after:right-0 hover:after:h-[2px] hover:after:bg-neutral-600"
+                  : "text-neutral-500 hover:text-neutral-600 hover:after:block hover:after:content-[''] hover:after:absolute hover:after:bottom-0 hover:after:left-0 hover:after:right-0 hover:after:h-[2px] hover:after:bg-neutral-600"
               }`}
 >
   <Icon size={26} className="text-inherit" />
@@ -129,12 +129,12 @@ export default function CategoryBar({
 
 
         {/* Filters button */}
-        <div className="flex-shrink-0 ml-2 md:ml-12 ">
+        <div className="flex-shrink-0 ml-2 gap-4 ">
              {/* Right arrow */}
         {canScrollRight && (
           <button
             onClick={() => scroll("right")}
-            className="absolute  hidden md:flex top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full cursor-pointer hover:bg-black/60 transition"
+            className="  hidden md:flex top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full cursor-pointer hover:bg-black/60 transition"
           >
             <ChevronRight size={22} />
           </button>
