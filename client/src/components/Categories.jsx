@@ -156,7 +156,7 @@ export default function CategoryBar({ filters, setFilters, getActiveFilters, han
                   ))}
                   <button
                     onClick={handleClearAll}
-                    className="w-full mt-2 bg-black hover:bg-gray-700 text-white py-1 rounded-lx  cursor-pointer transition"
+                    className="w-full mt-2 bg-black hover:bg-gray-700 text-white py-1 rounded-xl  cursor-pointer transition"
                   >
                     Clear All
                   </button>
