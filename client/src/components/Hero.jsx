@@ -7,13 +7,21 @@ import toast from 'react-hot-toast'
 
 
 const Hero = () => {
-  const [pickupLocation, setPickupLocation] = useState('')
   const {showModal,  setShowModal } = useAppContext();
   const [showDesktop, setShowDesktop] = useState(true)
+const { 
+  location, 
+  setlocation, 
+  minPrice, 
+  setminPrice, 
+  propertytype, 
+  setpropertytype, 
+  navigate 
+} = useAppContext()
 
-  const { pricePerDay, setPricePerDay, seatingCapacity, setSeatingCapacity, navigate } = useAppContext()
-  const location = useLocation()
-  const currentPath = location.pathname
+const routerLocation = useLocation()
+const currentPath = routerLocation.pathname
+
     const { setShowLogin, user, logout, isOwner, axios, setIsOwner } = useAppContext()
     const [open, setOpen] = useState(false)
     const dropdownRef = useRef(null)
@@ -101,14 +109,14 @@ const Hero = () => {
 
   // Read query params on mount
   useEffect(() => {
-    const params = new URLSearchParams(location.search)
+    const params = new URLSearchParams(routerLocation.search)
     const locationParam = params.get('location')
     const minPriceParam = params.get('minPrice')
     const propertytypeParam = params.get('propertytype')
 
-    if (locationParam) setPickupLocation(locationParam)
-    if (minPriceParam) setPricePerDay(minPriceParam)
-    if (propertytypeParam) setSeatingCapacity(propertytypeParam)
+    if (locationParam) setlocation(locationParam)
+    if (minPriceParam) setminPrice(minPriceParam)
+    if (propertytypeParam) setpropertytype(propertytypeParam)
   }, [location.search])
 
   // Disable scroll when modal is open
@@ -148,7 +156,7 @@ useEffect(() => {
 
   window.addEventListener("scroll", handleScroll)
   return () => window.removeEventListener("scroll", handleScroll)
-}, [location.pathname])
+}, [routerLocation.pathname])
 
 
 
