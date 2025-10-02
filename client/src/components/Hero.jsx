@@ -9,15 +9,11 @@ import toast from 'react-hot-toast'
 const Hero = () => {
   const {showModal,  setShowModal } = useAppContext();
   const [showDesktop, setShowDesktop] = useState(true)
-const { 
-  location, 
-  setlocation, 
-  minPrice, 
-  setminPrice, 
-  propertytype, 
-  setpropertytype, 
-  navigate 
-} = useAppContext()
+// ✅ Use filters + setFilters from context
+const { filters, setFilters } = useAppContext();
+
+
+const navigate = useNavigate()
 
 const routerLocation = useLocation()
 const currentPath = routerLocation.pathname
@@ -108,16 +104,24 @@ const currentPath = routerLocation.pathname
   }, [])
 
   // Read query params on mount
-  useEffect(() => {
-    const params = new URLSearchParams(routerLocation.search)
-    const locationParam = params.get('location')
-    const minPriceParam = params.get('minPrice')
-    const propertytypeParam = params.get('propertytype')
+useEffect(() => {
+  const params = new URLSearchParams(routerLocation.search);
 
-    if (locationParam) setlocation(locationParam)
-    if (minPriceParam) setminPrice(minPriceParam)
-    if (propertytypeParam) setpropertytype(propertytypeParam)
-  }, [routerLocation.search])
+  const locationParam = params.get("location");
+  const minPriceParam = params.get("minPrice");
+  const propertytypeParam = params.get("propertytype");
+
+  // ✅ Only update if at least one param exists
+  if (locationParam || minPriceParam || propertytypeParam) {
+    setFilters((prev) => ({
+      ...prev,
+      ...(locationParam && { location: locationParam }),
+      ...(minPriceParam && { minPrice: minPriceParam }),
+      ...(propertytypeParam && { propertytype: propertytypeParam }),
+    }));
+  }
+}, [routerLocation.search, setFilters]);
+
 
   // Disable scroll when modal is open
   useEffect(() => {
