@@ -102,7 +102,7 @@ export default function CategoryBar({ filters, setFilters, getActiveFilters, han
           {canScrollRight && (
             <button
               onClick={() => scroll("right")}
-              className="absolute -left-12 top-1/2 -translate-y-1/2 bg-white text-black border border-borderColor  p-2 rounded-full cursor-pointer hover:bg-black/60 transition"
+              className="absolute -left-12 top-1/2 -translate-y-1/2 bg-white text-black border border-borderColor  p-2 rounded-full cursor-pointer shadow-md hover:shadow-xl hover:bg-white/60  transition"
             >
               <ChevronRight size={22} />
             </button>
@@ -173,7 +173,7 @@ export default function CategoryBar({ filters, setFilters, getActiveFilters, han
       {canScrollLeft && (
         <button
           onClick={() => scroll("left")}
-          className="absolute hidden md:flex left-16 top-1/2 -translate-y-1/2  bg-white text-black border border-borderColor p-2 rounded-full cursor-pointer hover:bg-black/60 transition"
+          className="absolute hidden md:flex left-16 top-1/2 -translate-y-1/2  bg-white text-black border border-borderColor p-2 rounded-full cursor-pointer shadow-md hover:shadow-xl hover:bg-white/60 transition"
         >
           <ChevronLeft size={22} />
         </button>
