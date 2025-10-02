@@ -264,7 +264,7 @@ useEffect(() => {
     gap-1 md:gap-4
     bg-white rounded-full text-gray-600
     shadow-[0px_8px_20px_rgba(0,0,0,0.1)] border border-light
-    mt-4 md:mt-6 max-w-150
+    ml-[5%] max-w-150
   "
 >
   <div className="flex-1 gap-1 md:gap-4 flex justify-between items-center">
@@ -360,7 +360,7 @@ useEffect(() => {
             {/* Dropdown Menu */}
             <div
               ref={dropdownRef}
-              className={`fixed  right-6  md:right-16 lg:right-24 xl:right-32  top-14 z-40 flex w-55 flex-col items-stretch rounded-lg border border-light bg-white pb-2 pt-1 shadow-xl transition-all duration-300 md:w-60 md:rounded-xl ${
+              className={`fixed  right-6  md:right-16 top-18 z-40 flex w-55 flex-col items-stretch rounded-lg border border-light bg-white pb-2 pt-1 shadow-xl transition-all duration-300 md:w-60 md:rounded-xl ${
                 open ? 'translate-x-0 opacity-100' : 'translate-x-10 opacity-0 pointer-events-none'
               }`}
             >
@@ -391,7 +391,7 @@ useEffect(() => {
                 className='group relative w-full cursor-pointer border-b border-borderColor px-4 py-1'
               >
                 <span className='relative z-10 block py-2 text-left'>
-                  {isOwner ? 'Dashboard' : 'List cars'}
+                  {isOwner ? 'Dashboard' : '  Create Listing'}
                 </span>
                 <span className='absolute inset-x-0 bottom-1 top-1 bg-gray-100 opacity-0 transition group-hover:opacity-100'></span>
               </div>
@@ -405,8 +405,8 @@ useEffect(() => {
                   }}
                   className='group relative w-full cursor-pointer px-4 py-1'
                 >
-                  <span className='relative z-10 block py-2 text-left'>Logout</span>
-                  <span className='absolute inset-x-0 bottom-1 top-1 bg-gray-100 opacity-0 transition group-hover:opacity-100'></span>
+                  <span className='relative z-10 block py-2 text-white  text-left'>Logout</span>
+                  <span className='absolute inset-x-0 bottom-1 top-1 bg-black  transition group-hover:bg-black/60'></span>
                 </div>
               ) : (
                 <div
@@ -416,8 +416,8 @@ useEffect(() => {
                   }}
                   className='group relative w-full cursor-pointer px-4 py-1'
                 >
-                  <span className='relative z-10 block py-2 text-left'>Login / Signup</span>
-                  <span className='absolute inset-x-0 bottom-1 top-1 bg-gray-100 opacity-0 transition group-hover:opacity-100'></span>
+                  <span className='relative z-10 block py-2 text-white  text-left'>Login / Signup</span>
+                  <span className='absolute inset-x-0 bottom-1 top-1 bg-black opacity-0 transition group-hover:bg-black/60'></span>
                 </div>
               )}
             </div>
