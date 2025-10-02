@@ -102,13 +102,13 @@ const Hero = () => {
   // Read query params on mount
   useEffect(() => {
     const params = new URLSearchParams(location.search)
-    const pickupLocationParam = params.get('pickupLocation')
-    const pricePerDayParam = params.get('pricePerDay')
-    const seatingCapacityParam = params.get('seatingCapacity')
+    const locationParam = params.get('location')
+    const minPriceParam = params.get('minPrice')
+    const propertytypeParam = params.get('propertytype')
 
-    if (pickupLocationParam) setPickupLocation(pickupLocationParam)
-    if (pricePerDayParam) setPricePerDay(pricePerDayParam)
-    if (seatingCapacityParam) setSeatingCapacity(seatingCapacityParam)
+    if (locationParam) setPickupLocation(locationParam)
+    if (minPriceParam) setPricePerDay(minPriceParam)
+    if (propertytypeParam) setSeatingCapacity(propertytypeParam)
   }, [location.search])
 
   // Disable scroll when modal is open
@@ -263,7 +263,7 @@ useEffect(() => {
     gap-1 md:gap-4
     bg-white rounded-full text-gray-600
     shadow-[0px_8px_20px_rgba(0,0,0,0.1)] border border-light
-    ml-[5%] max-w-150
+    md:ml-[5%] max-w-150
   "
 >
   <div className="flex-1 gap-1 md:gap-4 flex justify-between items-center">
@@ -280,7 +280,7 @@ useEffect(() => {
 
   {/* === Text === */}
   <span className="px-2 py-2 font-medium text-neutral-500 text-sm md:text-md md:pr-4 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
-    {pickupLocation || "Any where"}
+    {location || "Any where"}
   </span>
 </div>
 
@@ -288,13 +288,13 @@ useEffect(() => {
     <span className="self-stretch  w-px bg-borderColor"></span>
 
     <span className="px-2 md:px-4 font-medium  text-neutral-500 py-2 text-sm md:text-md rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
-      {pricePerDay || "Any price"}
+      {minPrice || "Any price"}
     </span>
 
     <span className="self-stretch w-px bg-borderColor"></span>
 
     <span className="px-2 md:px-4 font-medium  text-neutral-500 py-2 text-sm md:text-md rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
-      {seatingCapacity || "Any size"}
+      {propertytype || "Any type"}
     </span>
   </div>
 
