@@ -117,7 +117,7 @@ const currentPath = routerLocation.pathname
     if (locationParam) setlocation(locationParam)
     if (minPriceParam) setminPrice(minPriceParam)
     if (propertytypeParam) setpropertytype(propertytypeParam)
-  }, [location.search])
+  }, [routerLocation.search])
 
   // Disable scroll when modal is open
   useEffect(() => {
