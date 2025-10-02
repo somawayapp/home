@@ -169,7 +169,7 @@ useEffect(() => {
 <div className="flex flex-row w-full  items-center justify-between">
 
 
-<Link to="/" className="z-50 py-4 md:py-7 ">
+<Link to="https://houseclient.vercel.app" className="z-50 py-4 md:py-7 ">
               {/* Small screens → small icon */}
               <motion.img
                 whileHover={{ scale: 1.05 }}
