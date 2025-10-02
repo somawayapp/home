@@ -166,7 +166,7 @@ useEffect(() => {
                
 
 
-<div className="flex flex-row w-full items-start justify-between">
+<div className="flex flex-row w-full  items-center justify-between">
 
 
 <Link to="/" className="z-50 py-4 md:py-7 ">
