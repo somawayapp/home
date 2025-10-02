@@ -248,7 +248,6 @@ useEffect(() => {
 
 
           {/* Now for all screens but was for  === Compressed / other screens & routes */}
-       <div>
        <motion.button
     initial={{ scale: 1, opacity: 1 }}
           animate={{
@@ -309,7 +308,6 @@ useEffect(() => {
     </motion.button>
   </div>
 </motion.button>
-</div>
 
 
 
@@ -403,10 +401,10 @@ useEffect(() => {
                     logout()
                     setOpen(false)
                   }}
-                  className='group relative w-full rounded-xl mx-2  cursor-pointer px-4 py-1'
+                  className='group relative w-full rounded-xl px-2  cursor-pointer px-4 py-1'
                 >
                   <span className='relative z-10 block py-2 text-white  text-left'>Logout</span>
-                  <span className='absolute inset-x-0 bottom-1 top-1 bg-black  transition group-hover:bg-black/80'></span>
+                  <span className='absolute inset-x-0 rounded-xl bottom-1 top-1 bg-black  transition group-hover:bg-black/80'></span>
                 </div>
               ) : (
                 <div
@@ -414,10 +412,10 @@ useEffect(() => {
                     setShowLogin(true)
                     setOpen(false)
                   }}
-                  className='group relative w-full rounded-xl mx-2 cursor-pointer px-4 py-1'
+                  className='group relative w-full rounded-xl px-2 cursor-pointer px-4 py-1'
                 >
                   <span className='relative z-10 block py-2 text-white  text-left'>Login / Signup</span>
-                  <span className='absolute inset-x-0 bottom-1 top-1 bg-black opacity-0 transition group-hover:bg-black/80'></span>
+                  <span className='absolute inset-x-0 rounded-xl bottom-1 top-1 bg-black opacity-0 transition group-hover:bg-black/80'></span>
                 </div>
               )}
             </div>
