@@ -292,22 +292,26 @@ useEffect(() => {
 
   {/* === Text === */}
   <span className="px-2 py-2 font-medium text-neutral-500 text-sm md:text-md md:pr-4 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
-    {location || "Any where"}
-  </span>
+  {filters.location || "Any where"}
+</span>
 </div>
 
 
     <span className="self-stretch  w-px bg-borderColor"></span>
 
-    <span className="px-2 md:px-4 font-medium  text-neutral-500 py-2 text-sm md:text-md rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
-      {minPrice || "Any price"}
-    </span>
 
-    <span className="self-stretch w-px bg-borderColor"></span>
 
-    <span className="px-2 md:px-4 font-medium  text-neutral-500 py-2 text-sm md:text-md rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
-      {propertytype || "Any type"}
-    </span>
+<span className="px-2 md:px-4 font-medium  text-neutral-500 py-2 text-sm md:text-md rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+  {filters.minPrice || "Any price"}
+</span>
+
+    <span className="self-stretch  w-px bg-borderColor"></span>
+
+
+<span className="px-2 md:px-4 font-medium  text-neutral-500 py-2 text-sm md:text-md rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+  {filters.propertytype || "Any type"}
+</span>
+
   </div>
 
   <div className="p-1 md:p-2">
