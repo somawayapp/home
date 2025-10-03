@@ -102,10 +102,9 @@ export const assets = {
 
 export const menuLinks = [
     { name: "Home", path: "/" },
-    { name: "Cars", path: "/cars" },
-    { name: "My requests", path: "/my-bookings" },
-    { name: "My Favourites", path: "/my-bookings" },
-    { name: "Helpcenter", path: "/my-bookings" },
+    { name: "My Requests", path: "/my-requests" },
+    { name: "My Favourites", path: "/my-favourites" },
+    { name: "Help Center", path: "/help-center" },
 
 ]
 

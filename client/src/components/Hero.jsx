@@ -430,7 +430,7 @@ useEffect(() => {
                   className='group relative w-full rounded-xl  cursor-pointer px-4 py-1'
                 >
                   <span className='relative z-10 block py-2 text-white  text-left'>Login / Signup</span>
-                  <span className='absolute inset-x-0 rounded-xl mx-2  bottom-1 top-1 bg-black opacity-0 transition group-hover:bg-black/80'></span>
+                  <span className='absolute inset-x-0 rounded-xl mx-2 bottom-1 top-1 bg-black  transition group-hover:bg-black/80'></span>
                 </div>
               )}
             </div>
