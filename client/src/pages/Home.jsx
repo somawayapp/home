@@ -35,11 +35,10 @@ const internalAmenities = ["AC", "Heating", "Wi-Fi", "Bathtub", "Dishwasher", "B
 const externalAmenities = ["Parking", "Pool", "Gym & Fitness center", "Social areas", "Rooftop gardens", "Back garden", "Bike parking", "Covered parking", "Package lockers", "Party room", "Billiards table", "Clubhouse", "Spa", "Playgrounds", "Walking paths", "Friendly spaces", "Valet trash", "Surveillance cameras", "Building Wi-Fi", "Greenery around the space"];
 const nearbyAmenities = ["Gym", "Shopping Mall", "Public transportation access", "Airport", "Train", "Beach", "Parks", "Restaurants", "Coffee shops", "Grocery stores", "Schools", "Hospitals/Clinics", "Banks/ATMs", "Movie theaters", "Libraries"];
 
-const  = () => {
+const Home = () => {
 const { listings, loading } = useAppContext();
   const location = useLocation();
   const navigate = useNavigate();
-
 
   const [filters, setFilters] = useState({
     location: "",
