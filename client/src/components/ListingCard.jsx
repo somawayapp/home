@@ -129,7 +129,7 @@ const ListingCard = ({ listing }) => {
     </div>
 
     {/* Size + Type (or Bedrooms + Type) */}
-    <p className="text-neutral-700 capitalize text-[14px] md:text-[15px]">
+    <p className="text-neutral-600 capitalize text-[14px] md:text-[15px]">
       {listing.features?.bedrooms
         ? `${listing.features.bedrooms} Bedroom`
         : listing.features?.rooms
@@ -142,7 +142,7 @@ const ListingCard = ({ listing }) => {
 
     {/* Phone Number */}
     {listing.agentphone && (
-      <p className="text-neutral-700 text-[13px] md:text-[14px]">
+      <p className="text-neutral-600 text-[13px] md:text-[14px]">
         +254 {listing.agentphone}
       </p>
     )}
@@ -151,7 +151,7 @@ const ListingCard = ({ listing }) => {
     {listing.price && (
       <p className=" font-semibold text-neutral-700 text-[14px] md:text-[15px]">
         KSh {listing.price.toLocaleString()}
-        <span className="font-normal text-neutral-700 ">
+        <span className="font-normal text-neutral-600 ">
           {listing.offertype === "rent" ? " /month" : " /sale"}
         </span>
       </p>
