@@ -34,8 +34,8 @@ const LocationSelector = ({ onMapClick }) => {
 const internalAmenities = ["AC", "Heating", "Wi-Fi", "Bathtub", "Dishwasher", "Built-in washer", "Built-in dryer", "Smart home", "Balcony", "Security systems", "CCTV cameras", "Intercoms"];
 const externalAmenities = ["Parking", "Pool", "Gym & Fitness center", "Social areas", "Rooftop gardens", "Back garden", "Bike parking", "Covered parking", "Package lockers", "Party room", "Billiards table", "Clubhouse", "Spa", "Playgrounds", "Walking paths", "Friendly spaces", "Valet trash", "Surveillance cameras", "Building Wi-Fi", "Greenery around the space"];
 const nearbyAmenities = ["Gym", "Shopping Mall", "Public transportation access", "Airport", "Train", "Beach", "Parks", "Restaurants", "Coffee shops", "Grocery stores", "Schools", "Hospitals/Clinics", "Banks/ATMs", "Movie theaters", "Libraries"];
+const Home = ({ filteredListings, loading }) => {
 
-const Home = () => {
   const { listings } = useAppContext();
   const location = useLocation();
   const navigate = useNavigate();
@@ -470,35 +470,55 @@ useEffect(() => {
 
         {/* --- Listings Grid --- */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mt-6 mx-auto">
-          {filteredListings.map((listing, index) => (
-            <motion.div
-              key={listing._id || index}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 * index, duration: 0.4 }}
-            >
-              <ListingCard listing={listing} />
-            </motion.div>
-          ))}
+      {/* --- Loading Preloaders --- */}
+      {loading &&
+        Array.from({ length: 8 }).map((_, index) => (
+          <div
+            key={index}
+            className="animate-pulse bg-gray-100 rounded-2xl shadow-sm overflow-hidden"
+          >
+            <div className="h-48 bg-gray-200" />
+            <div className="p-4 space-y-3">
+              <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+              <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+              <div className="h-4 bg-gray-200 rounded w-1/3"></div>
+            </div>
+          </div>
+        ))}
 
-      {filteredListings.length === 0 && (
-  <div className="col-span-full text-center text-gray-500 mt-12">
-    <h2 className="text-xl font-semibold text-gray-700 mb-2">No exact matches</h2>
-    <p className="text-gray-500 mb-6">
-      Try changing or removing some of your filters.
-    </p>
+      {/* --- Listings --- */}
+      {!loading &&
+        filteredListings.map((listing, index) => (
+          <motion.div
+            key={listing._id || index}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.05 * index, duration: 0.3 }}
+          >
+            <ListingCard listing={listing} />
+          </motion.div>
+        ))}
 
-    <a
-      href="/"
-      className="inline-block px-6 py-3 bg-black text-white rounded-full font-medium shadow-md 
-                 hover:bg-gray-800 hover:shadow-lg transition-all duration-300 ease-in-out"
-    >
-      Go back home
-    </a>
-  </div>
-)}
+      {/* --- Empty State --- */}
+      {!loading && filteredListings.length === 0 && (
+        <div className="col-span-full text-center text-gray-500 mt-12">
+          <h2 className="text-xl font-semibold text-gray-700 mb-2">
+            No exact matches
+          </h2>
+          <p className="text-gray-500 mb-6">
+            Try changing or removing some of your filters.
+          </p>
 
+          <a
+            href="/"
+            className="inline-block px-6 py-3 bg-black text-white rounded-full font-medium shadow-md 
+                     hover:bg-gray-800 hover:shadow-lg transition-all duration-300 ease-in-out"
+          >
+            Go back home
+          </a>
         </div>
+      )}
+    </div> 
                 </div>
 
       </motion.div>
