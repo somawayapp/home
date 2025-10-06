@@ -31,7 +31,9 @@ const Footer = () => {
                         transition={{ duration: 0.5, delay: 0.4 }}
 
                     className='max-w-80 mt-3'>
-                        Premium car rental service with a wide selection of luxury and everyday vehicles for all your driving needs.
+                        Are you looking for a place to call home. With over 7,500+ listings,
+                        Hodii can match you with your dream property and make that dream come true . 
+.
                     </motion.p>
                     <motion.div 
                         initial={{ opacity: 0 }}
@@ -57,29 +59,29 @@ const Footer = () => {
                     <h2 className='text-base font-medium text-gray-800 uppercase'>Quick Links</h2>
                     <ul className='mt-3 flex flex-col gap-1.5'>
                         <li><a href="#">Home</a></li>
-                        <li><a href="#">Browse Cars</a></li>
-                        <li><a href="#">List Your Car</a></li>
-                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">All Listings</a></li>
+                        <li><a href="/owner/add-listing">List Your Property </a></li>
+                        <li><a href="/about-us">About Us</a></li>
                     </ul>
                 </div>
 
                 <div>
                     <h2 className='text-base font-medium text-gray-800 uppercase'>Resources</h2>
                     <ul className='mt-3 flex flex-col gap-1.5'>
-                        <li><a href="#">Help Center</a></li>
-                        <li><a href="#">Terms of Service</a></li>
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Insurance</a></li>
+                        <li><a href="/lelp-center">Help Center</a></li>
+                        <li><a href="/terms-of-service">Terms of Service</a></li>
+                        <li><a href="/privacy-policy">Privacy Policy</a></li>
+                        <li><a href="#">Blog</a></li>
                     </ul>
                 </div>
 
                 <div>
                     <h2 className='text-base font-medium text-gray-800 uppercase'>Contact</h2>
                     <ul className='mt-3 flex flex-col gap-1.5'>
-                        <li>1234 Luxury Drive</li>
-                        <li>San Francisco, CA 94107</li>
-                        <li>+1 234 567890</li>
-                        <li>info@example.com</li>
+                        <li>1234 Waiyaki Way </li>
+                        <li>Westlands NRB 00800 </li>
+                        <li>+254 703 394 794</li>
+                        <li>info.hodii@gmail.com</li>
                     </ul>
                 </div>
 
@@ -97,7 +99,7 @@ const Footer = () => {
                 transition={{ duration: 0.6, delay: 0.6 }}
                 
             className='flex flex-col md:flex-row gap-2 items-center justify-between py-5'>
-                <p>© {new Date().getFullYear()} Brand. All rights reserved.</p>
+                <p>© {new Date().getFullYear()} Hodii. All rights reserved.</p>
                 <ul className='flex items-center gap-4'>
                     <li><a href="#">Privacy</a></li>
                     <li>|</li>
