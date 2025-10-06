@@ -142,7 +142,7 @@ const ListingCard = ({ listing }) => {
 
     {/* Phone Number */}
     {listing.agentphone && (
-      <p className="text-neutral-500 text-[13px] md:text-[14px]">
+      <p className="text-neutral-700 text-[13px] md:text-[14px]">
         +254 {listing.agentphone}
       </p>
     )}
@@ -151,7 +151,7 @@ const ListingCard = ({ listing }) => {
     {listing.price && (
       <p className=" font-semibold text-neutral-700 text-[14px] md:text-[15px]">
         KSh {listing.price.toLocaleString()}
-        <span className="font-normal text-neutral-500 ">
+        <span className="font-normal text-neutral-700 ">
           {listing.offertype === "rent" ? " /month" : " /sale"}
         </span>
       </p>
