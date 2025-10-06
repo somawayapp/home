@@ -13,6 +13,7 @@ import toast from "react-hot-toast";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import CategoryBar from "../components/Categories";
+  import { Link } from "react-router-dom";
 
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -514,13 +515,15 @@ useEffect(() => {
             Try changing or removing some of your filters.
           </p>
 
-          <a
-            href="/"
-            className="inline-block px-6 py-3 bg-black text-white rounded-full font-medium shadow-md 
-                     hover:bg-gray-800 hover:shadow-lg transition-all duration-300 ease-in-out"
-          >
-            Go back home
-          </a>
+
+<Link
+  to="/"
+  className="inline-block px-6 py-3 bg-black text-white rounded-full font-medium shadow-md 
+             hover:bg-gray-800 hover:shadow-lg transition-all duration-300 ease-in-out"
+>
+  Go back home
+</Link>
+
         </div>
       )}
     </div> 
