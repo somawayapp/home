@@ -35,13 +35,11 @@ const internalAmenities = ["AC", "Heating", "Wi-Fi", "Bathtub", "Dishwasher", "B
 const externalAmenities = ["Parking", "Pool", "Gym & Fitness center", "Social areas", "Rooftop gardens", "Back garden", "Bike parking", "Covered parking", "Package lockers", "Party room", "Billiards table", "Clubhouse", "Spa", "Playgrounds", "Walking paths", "Friendly spaces", "Valet trash", "Surveillance cameras", "Building Wi-Fi", "Greenery around the space"];
 const nearbyAmenities = ["Gym", "Shopping Mall", "Public transportation access", "Airport", "Train", "Beach", "Parks", "Restaurants", "Coffee shops", "Grocery stores", "Schools", "Hospitals/Clinics", "Banks/ATMs", "Movie theaters", "Libraries"];
 
-
-
-const Home = ({loading }) => {
-
-  const { listings } = useAppContext();
+const  = () => {
+const { listings, loading } = useAppContext();
   const location = useLocation();
   const navigate = useNavigate();
+
 
   const [filters, setFilters] = useState({
     location: "",
@@ -503,7 +501,24 @@ useEffect(() => {
         ))}
 
       {/* --- Empty State --- */}
-     
+      {!loading && filteredListings.length === 0 && (
+        <div className="col-span-full text-center text-gray-500 mt-12">
+          <h2 className="text-xl font-semibold text-gray-700 mb-2">
+            No exact matches
+          </h2>
+          <p className="text-gray-500 mb-6">
+            Try changing or removing some of your filters.
+          </p>
+
+          <a
+            href="/"
+            className="inline-block px-6 py-3 bg-black text-white rounded-full font-medium shadow-md 
+                     hover:bg-gray-800 hover:shadow-lg transition-all duration-300 ease-in-out"
+          >
+            Go back home
+          </a>
+        </div>
+      )}
     </div> 
                 </div>
 
