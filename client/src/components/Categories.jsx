@@ -81,12 +81,12 @@ export default function CategoryBar({ filters, setFilters, getActiveFilters, han
                 key={cat.value}
                 onClick={() => handleCategoryClick(cat.value)}
                 className={`flex flex-col items-center justify-center cursor-pointer 
-                  shrink-0 min-w-[80px] pr-2 pb-1 relative
+                  shrink-0 min-w-[80px] pr-2 relative
                   transition-all duration-200
                   ${
                     isActive
                       ? "text-neutral-900 after:block after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-black"
-                      : "text-gray-400 hover:text-neutral-600 hover:after:block hover:after:content-[''] hover:after:absolute hover:after:bottom-0 hover:after:left-0 hover:after:right-0 hover:after:h-[2px] hover:after:bg-neutral-600"
+                      : "text-gray-500 hover:text-neutral-600 hover:after:block hover:after:content-[''] hover:after:absolute hover:after:bottom-0 hover:after:left-0 hover:after:right-0 hover:after:h-[2px] hover:after:bg-neutral-600"
                   }`}
               >
                 <Icon size={24} className="text-inherit" />
