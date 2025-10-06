@@ -86,7 +86,7 @@ export default function CategoryBar({ filters, setFilters, getActiveFilters, han
                   ${
                     isActive
                       ? "text-neutral-800 after:block after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-neutral-800"
-                      : "text-[#A0A0A0] hover:text-neutral-600 hover:after:block hover:after:content-[''] hover:after:absolute hover:after:bottom-0 hover:after:left-0 hover:after:right-0 hover:after:h-[2px] hover:after:bg-neutral-600"
+                      : "text-[#848B98] hover:text-neutral-600 hover:after:block hover:after:content-[''] hover:after:absolute hover:after:bottom-0 hover:after:left-0 hover:after:right-0 hover:after:h-[2px] hover:after:bg-neutral-600"
                   }`}
               >
                 <Icon size={24} className="text-inherit" />
