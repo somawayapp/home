@@ -477,8 +477,10 @@ useEffect(() => {
             key={index}
             className="gap-4 flex flex-col"
           >
-            <div className="animate-pulse bg-gray-100 rounded-2xl shadow-sm overflow-hidden">
-                      </div>
+          <div className="animate-pulse bg-gray-100 rounded-2xl shadow-sm overflow-hidden aspect-square w-full">
+  {/* optional inner skeleton content */}
+</div>
+
 
             <div className="p-4 space-y-3">
               <div className="h-4 bg-gray-200 rounded w-3/4"></div>
