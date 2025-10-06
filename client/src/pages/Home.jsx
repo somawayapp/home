@@ -312,13 +312,13 @@ const getCityLevelLocation = async ([lat, lng]) => {
         address.city ||
         address.town ||
         address.village ||
-        "Unknown Location"
+        "kenya"
       );
     }
-    return "Unknown Location";
+    return "kenya";
   } catch (err) {
     console.error("City-level geocode error:", err);
-    return "Unknown Location";
+    return "kenya";
   }
 };
 
@@ -740,39 +740,36 @@ useEffect(() => {
           <div>
   <label className="block mb-1 mt-4 md:mt-6 font-medium">Offer Type</label>
   <div className="flex flex-col gap-2">
-    <label className="flex items-center gap-2">
-      <input
-        type="radio"
-        name="offertype"
-        value="rent"
-        checked={filters.offertype === "rent"}
-        onChange={(e) =>
-          handleFilterChange(
-            "offertype",
-            filters.offertype === "rent" ? "" : e.target.value
-          )
-        }
-        className="w-4 h-4 accent-primary cursor-pointer"
-      />
-      <span className=" cursor-pointer">For Rent</span>
-    </label>
+  <label className="flex items-center gap-2">
+    <input
+      type="checkbox"
+      checked={filters.offertype === "rent"}
+      onChange={() =>
+        handleFilterChange(
+          "offertype",
+          filters.offertype === "rent" ? "" : "rent"
+        )
+      }
+      className="w-4 h-4 accent-primary cursor-pointer"
+    />
+    <span className="cursor-pointer">For Rent</span>
+  </label>
 
-    <label className="flex items-center gap-2">
-      <input
-        type="radio"
-        name="offertype"
-        value="sale"
-        checked={filters.offertype === "sale"}
-        onChange={(e) =>
-          handleFilterChange(
-            "offertype",
-            filters.offertype === "sale" ? "" : e.target.value
-          )
-        }
-        className="w-4 h-4 accent-primary cursor-pointer"
-      />
-      <span className=" cursor-pointer">For Sale</span>
-    </label>
+  <label className="flex items-center gap-2">
+    <input
+      type="checkbox"
+      checked={filters.offertype === "sale"}
+      onChange={() =>
+        handleFilterChange(
+          "offertype",
+          filters.offertype === "sale" ? "" : "sale"
+        )
+      }
+      className="w-4 h-4 accent-primary cursor-pointer"
+    />
+    <span className="cursor-pointer">For Sale</span>
+  </label>
+
   </div>
 </div>
 
