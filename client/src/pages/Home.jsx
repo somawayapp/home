@@ -340,13 +340,13 @@ const getPreciseLocationName = async ([lat, lng]) => {
         a.town ||
         a.village ||
         a.county ||
-        "Unknown Location"
+        "kenya"
       );
     }
-    return "Unknown Location";
+    return "kenya";
   } catch (err) {
     console.error("Precise geocode error:", err);
-    return "Unknown Location";
+    return "kenya";
   }
 };
 
