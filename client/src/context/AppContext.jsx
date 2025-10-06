@@ -71,40 +71,7 @@ const fetchListings = async () => {
   }
 };
 
-  // ✅ Fetch all listings from the server
-  const fetchListings = async () => {
-    try {
-      // Parse filters from URL search params
-      const params = new URLSearchParams(locationHook.search);
-      const queryParams = {};
 
-      [
-        "location",
-        "minPrice",
-        "maxPrice",
-        "propertytype",
-        "offertype",
-        "bedrooms",
-        "bathrooms",
-        "rooms",
-        "size",
-        "amenitiesInternal",
-        "amenitiesExternal",
-        "amenitiesNearby",
-        "featured",
-        "available",
-      ].forEach((key) => {
-        const value = params.get(key);
-        if (value) queryParams[key] = value;
-      });
-
-      const { data } = await axios.get("/api/user/listings", { params: queryParams });
-
-      data.success ? setListings(data.listings) : toast.error(data.message);
-    } catch (error) {
-      toast.error(error.message);
-    }
-  };
 
   // Function to log out the user
   const logout = () => {
