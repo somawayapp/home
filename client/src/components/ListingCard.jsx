@@ -61,12 +61,12 @@ const ListingCard = ({ listing }) => {
                 <img
                   key={index}
                   src={image}
-                  className="w-full h-full object-cover rounded-xl flex-shrink-0 snap-center"
+                  className="w-full h-full bg-bgColor object-cover rounded-xl flex-shrink-0 snap-center"
                   alt={`image-${index}`}
                 />
               ))
             ) : (
-              <div className="w-full h-full flex items-center justify-center bg-gray-200 text-gray-500">
+              <div className="w-full h-full flex items-center justify-center bg-bgColor text-gray-500">
                 No image
               </div>
             )}
