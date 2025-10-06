@@ -86,11 +86,11 @@ export default function CategoryBar({ filters, setFilters, getActiveFilters, han
                   ${
                     isActive
                       ? "text-neutral-900 after:block after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-black"
-                      : "text-neutral-500 hover:text-neutral-600 hover:after:block hover:after:content-[''] hover:after:absolute hover:after:bottom-0 hover:after:left-0 hover:after:right-0 hover:after:h-[2px] hover:after:bg-neutral-600"
+                      : "text-neutral-400 hover:text-neutral-600 hover:after:block hover:after:content-[''] hover:after:absolute hover:after:bottom-0 hover:after:left-0 hover:after:right-0 hover:after:h-[2px] hover:after:bg-neutral-600"
                   }`}
               >
                 <Icon size={26} className="text-inherit" />
-                <span className="text-xs mt-1 text-center whitespace-nowrap">{cat.label}</span>
+                <span className="text-xs md:text-sm mt-1 text-center whitespace-nowrap">{cat.label}</span>
               </div>
             );
           })}

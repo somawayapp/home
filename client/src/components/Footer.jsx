@@ -32,7 +32,7 @@ const Footer = () => {
 
                     className='max-w-80 mt-3'>
                         Are you looking for a place to call home. With over 7,500+ listings,
-                        Hodii can match you with your dream property and make that dream come true . 
+                        Hodii can match you with your dream property now. 
 .
                     </motion.p>
                     <motion.div 
@@ -60,7 +60,7 @@ const Footer = () => {
                     <ul className='mt-3 flex flex-col gap-1.5'>
                         <li><a href="#">Home</a></li>
                         <li><a href="#">All Listings</a></li>
-                        <li><a href="/owner/add-listing">List Your Property </a></li>
+                        <li><a href="/owner">List Your Property </a></li>
                         <li><a href="/about-us">About Us</a></li>
                     </ul>
                 </div>
@@ -68,10 +68,10 @@ const Footer = () => {
                 <div>
                     <h2 className='text-base font-medium text-gray-800 uppercase'>Resources</h2>
                     <ul className='mt-3 flex flex-col gap-1.5'>
-                        <li><a href="/lelp-center">Help Center</a></li>
+                        <li><a href="/help-center">Help Center</a></li>
                         <li><a href="/terms-of-service">Terms of Service</a></li>
                         <li><a href="/privacy-policy">Privacy Policy</a></li>
-                        <li><a href="#">Blog</a></li>
+                        <li><a href="/careers">Careers</a></li>
                     </ul>
                 </div>
 
@@ -101,11 +101,11 @@ const Footer = () => {
             className='flex flex-col md:flex-row gap-2 items-center justify-between py-5'>
                 <p>© {new Date().getFullYear()} Hodii. All rights reserved.</p>
                 <ul className='flex items-center gap-4'>
-                    <li><a href="#">Privacy</a></li>
+                    <li><a href="/privacy-policy">Privacy</a></li>
                     <li>|</li>
-                    <li><a href="#">Terms</a></li>
+                    <li><a href="/terms-of-service">Terms</a></li>
                     <li>|</li>
-                    <li><a href="#">Cookies</a></li>
+                    <li><a href="/privacy-policy">Cookies</a></li>
                 </ul>
             </motion.div>
         </motion.div>
