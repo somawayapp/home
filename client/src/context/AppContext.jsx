@@ -58,8 +58,11 @@ export const AppProvider = ({ children }) => {
 
 
   // ✅ Fetch all listings from the server (no query filters)
+const [loading, setLoading] = useState(true); // start as true
+
 const fetchListings = async () => {
   try {
+    setLoading(true); // <-- show preloader while fetching
     const { data } = await axios.get("/api/user/listings");
     if (data.success) {
       setListings(data.listings);
@@ -68,8 +71,11 @@ const fetchListings = async () => {
     }
   } catch (error) {
     toast.error(error.message);
+  } finally {
+    setLoading(false); // <-- hide preloader
   }
 };
+
 
 
 
@@ -119,6 +125,9 @@ const fetchListings = async () => {
     setListings,
     filters,
     setFilters,
+    loading,
+    setLoading,    // optional, if you want to toggle manually
+  
     
   };
 
