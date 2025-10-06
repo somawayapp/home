@@ -56,6 +56,21 @@ export const AppProvider = ({ children }) => {
     }
   };
 
+
+  // ✅ Fetch all listings from the server (no query filters)
+const fetchListings = async () => {
+  try {
+    const { data } = await axios.get("/api/user/listings");
+    if (data.success) {
+      setListings(data.listings);
+    } else {
+      toast.error(data.message);
+    }
+  } catch (error) {
+    toast.error(error.message);
+  }
+};
+
   // ✅ Fetch all listings from the server
   const fetchListings = async () => {
     try {

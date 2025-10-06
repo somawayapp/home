@@ -256,28 +256,28 @@ newFilteredListings = newFilteredListings.filter((listing) => {
     });
   };
 
-  const handleClearAll = () => {
-    const defaultFilters = {
-      location: "",
-      minPrice: 0,
-      maxPrice: 1000000000,
-      propertytype: "",
-      offertype: "",
-      bedrooms: "",
-      bathrooms: "",
-      rooms: "",
-      size: "",
-      amenitiesInternal: [],
-      amenitiesExternal: [],
-      amenitiesNearby: [],
-      featured: "",
-      available: "",
-      lat: null,
-      lng: null,
-    };
-    setFilters(defaultFilters);
-    setMarkerPosition(null);
-  };
+ const handleClearAll = () => {
+  setFilters({
+    location: "",
+    minPrice: 0,
+    maxPrice: 1000000000,
+    propertytype: "",
+    offertype: "",
+    bedrooms: "",
+    bathrooms: "",
+    rooms: "",
+    size: "",
+    amenitiesInternal: [],
+    amenitiesExternal: [],
+    amenitiesNearby: [],
+    featured: "",
+    available: "",
+    lat: null,
+    lng: null,
+  });
+  setMarkerPosition(null);
+};
+
 
   const getActiveFilters = () => {
     const active = [];
