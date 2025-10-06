@@ -287,7 +287,7 @@ useEffect(() => {
     loop
     muted
     playsInline
-    className="w-11 h-11 rounded-full pl-3 md:pl-5  object-cover"
+    className="w-11 h-11 rounded-full pl-4 md:pl-7  object-cover"
   />
 
   {/* === Text === */}
@@ -306,7 +306,7 @@ useEffect(() => {
 
 <span className="self-stretch w-px bg-borderColor"></span>
 
-<span className="px-2 md:px-4 font-medium text-neutral-500 py-2 text-sm md:text-md rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+<span className="px-2 md:px-4 font-medium text-neutral-400 py-2 text-sm md:text-md rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
   {(filters.propertytype || "Any type").slice(0, 10)}
 </span>
 
