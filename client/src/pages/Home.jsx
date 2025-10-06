@@ -517,7 +517,7 @@ useEffect(() => {
 
 
 <Link
-  to="/"
+                    onClick={handleClearAll}
   className="inline-block px-6 py-3 bg-black text-white rounded-full font-medium shadow-md 
              hover:bg-gray-800 hover:shadow-lg transition-all duration-300 ease-in-out"
 >
