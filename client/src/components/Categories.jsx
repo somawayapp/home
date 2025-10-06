@@ -66,7 +66,7 @@ export default function CategoryBar({ filters, setFilters, getActiveFilters, han
   }, []);
 
   return (
-    <div className="relative py-4 mb-4 group border-b border-borderColor">
+    <div className="relative py-4 mb-4 group border-b border-gray-200">
       <div className="relative px-4 md:px-16 flex items-center">
         {/* Scroll container */}
         <div
@@ -86,7 +86,7 @@ export default function CategoryBar({ filters, setFilters, getActiveFilters, han
                   ${
                     isActive
                       ? "text-neutral-900 after:block after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-black"
-                      : "text-neutral-400 hover:text-neutral-600 hover:after:block hover:after:content-[''] hover:after:absolute hover:after:bottom-0 hover:after:left-0 hover:after:right-0 hover:after:h-[2px] hover:after:bg-neutral-600"
+                      : "text-gray-400 hover:text-neutral-600 hover:after:block hover:after:content-[''] hover:after:absolute hover:after:bottom-0 hover:after:left-0 hover:after:right-0 hover:after:h-[2px] hover:after:bg-neutral-600"
                   }`}
               >
                 <Icon size={26} className="text-inherit" />
