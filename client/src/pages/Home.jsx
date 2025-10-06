@@ -78,7 +78,7 @@ L.Icon.Default.mergeOptions({
 
 // Create a new custom icon that is a simple red dot or pin
 const redPinIcon = new L.Icon({
-  iconUrl: `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png`,
+  iconUrl: `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png`,
   shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
   iconSize: [25, 41],
   iconAnchor: [12, 41],
@@ -752,7 +752,7 @@ useEffect(() => {
             filters.offertype === "rent" ? "" : e.target.value
           )
         }
-        className="w-4 h-4 accent-color-primary cursor-pointer"
+        className="w-4 h-4 accent-primary cursor-pointer"
       />
       <span className=" cursor-pointer">For Rent</span>
     </label>
@@ -769,7 +769,7 @@ useEffect(() => {
             filters.offertype === "sale" ? "" : e.target.value
           )
         }
-        className="w-4 h-4 accent-color-primary cursor-pointer"
+        className="w-4 h-4 accent-primary cursor-pointer"
       />
       <span className=" cursor-pointer">For Sale</span>
     </label>
@@ -791,7 +791,7 @@ useEffect(() => {
                         id={`internal-${amenity}`}
                         checked={filters.amenitiesInternal.includes(amenity)}
                         onChange={() => handleAmenityChange(amenity, "amenitiesInternal")}
-                        className="accent-color-primary"
+                        className="accent-primary"
                       />
                       <label htmlFor={`internal-${amenity}`} className="text-sm cursor-pointer">{amenity}</label>
                     </div>
@@ -810,7 +810,7 @@ useEffect(() => {
                         id={`external-${amenity}`}
                         checked={filters.amenitiesExternal.includes(amenity)}
                         onChange={() => handleAmenityChange(amenity, "amenitiesExternal")}
-                        className="accent-color-primary"
+                        className="accent-primary"
                       />
                       <label htmlFor={`external-${amenity}`} className="text-sm cursor-pointer">{amenity}</label>
                     </div>
@@ -829,7 +829,7 @@ useEffect(() => {
                         id={`nearby-${amenity}`}
                         checked={filters.amenitiesNearby.includes(amenity)}
                         onChange={() => handleAmenityChange(amenity, "amenitiesNearby")}
-                        className="accent-color-primary"
+                        className="accent-primary"
                       />
                       <label htmlFor={`nearby-${amenity}`} className="text-sm cursor-pointer">{amenity}</label>
                     </div>
