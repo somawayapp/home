@@ -301,7 +301,7 @@ useEffect(() => {
 
 
 <span className="px-2 md:px-4 font-medium text-neutral-500 py-2 text-sm md:text-md rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
-  {( "Ksh", filters.minPrice || "Any price").toString().slice(0, 10)}
+{filters.minPrice ? `Ksh ${filters.minPrice}` : "Any price"}
 </span>
 
 <span className="self-stretch w-px bg-borderColor"></span>
