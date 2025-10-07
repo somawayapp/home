@@ -1,7 +1,7 @@
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
 import Home from './pages/Home'
-import CarDetails from './pages/CarDetails'
+import ListingDetails from './pages/ListingDetails'
 import Listings from './pages/Listings'
 import MyBookings from './pages/MyBookings'
 import Layout from './pages/owner/Layout'
@@ -26,7 +26,7 @@ const App = () => {
         {/* Public site layout */}
         <Route element={<SiteLayout />}>
           <Route path="/" element={<Home />} />
-          <Route path="/listing-details/:id" element={<CarDetails />} />
+          <Route path="/listing-details/:id" element={<ListingDetails />} />
           <Route path="/listings" element={<Listings />} />
           <Route path="/my-bookings" element={<MyBookings />} />
         </Route>
