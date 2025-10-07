@@ -26,7 +26,7 @@ const App = () => {
         {/* Public site layout */}
         <Route element={<SiteLayout />}>
           <Route path="/" element={<Home />} />
-          <Route path="/car-details/:id" element={<CarDetails />} />
+          <Route path="/listing-details/:id" element={<CarDetails />} />
           <Route path="/listings" element={<Listings />} />
           <Route path="/my-bookings" element={<MyBookings />} />
         </Route>
