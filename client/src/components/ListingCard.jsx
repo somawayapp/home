@@ -49,7 +49,7 @@ const ListingCard = ({ listing }) => {
   return (
     <div className="relative gap-2 md:gap-4 group mb-2 md:mb-[8px] overflow-hidden rounded-xl">
       {/* ✅ Updated Link to generic listing page */}
-      <Link to={`/listing-details/${listing._id}`} className="block">
+      <Link to={`/${listing._id}`} className="block">
         <div className="relative w-full h-full aspect-[3/3] rounded-xl overflow-hidden">
           <div
             ref={scrollRef}
@@ -119,7 +119,7 @@ const ListingCard = ({ listing }) => {
 
      {/* ✅ Info Section */}
 <div className="mt-3 gap-1">
-  <Link to={`/listing-details/${listing._id}`} className="block">
+  <Link to={`/${listing._id}`} className="block">
     {/* County + Suburb */}
     <div className="flex justify-between mr-1">
       <p className=" font-semibold text-neutral-700 capitalize text-[14px] md:text-[15px]">
