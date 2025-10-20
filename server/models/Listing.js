@@ -57,6 +57,13 @@ location: {
   { timestamps: true }
 );
 
-const Listing = mongoose.model("listing", listingSchema);
+listingSchema.pre(/^find/, function (next) {
+  this.populate({
+    path: "agency",
+    select: "-password -__v", // exclude sensitive fields
+  });
+  next();
+});
 
+const Listing = mongoose.model("listing", listingSchema);
 export default Listing;

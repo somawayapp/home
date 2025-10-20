@@ -23,9 +23,10 @@ const ListingDetails = () => {
     name: "",
     phone: "",
     email: "",
-    message: "",
+    message: "Hi, I'd like to know more about this property. Please get in touch with me.",
     similar: false,
     agree: false,
+
     allowAgents: false,
   });
 
@@ -236,7 +237,7 @@ const ListingDetails = () => {
       className="w-full max-w-sm bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-md"
     >
       {/* Top banner with phone */}
-      <div className="bg-red-600 text-white text-center py-4">
+      <div className="bg-red-800 text-white text-center py-4">
         <button
           type="button"
           onClick={() => setShowNumber(true)}
