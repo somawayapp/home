@@ -5,7 +5,10 @@ import { useAppContext } from "../context/AppContext";
 import { assets } from "../assets/assets";
 import toast from "react-hot-toast";
 import Loader from "../components/Loader";
-import { Phone, Mail, MessageSquare, MapPin, Bed, Bath, Ruler } from "lucide-react";
+import { Phone, Mail, MessageSquare,SendHorizonal, MapPin, Bed, Bath, Ruler } from "lucide-react";
+
+
+
 
 const ListingDetails = () => {
   const { id } = useParams();
@@ -14,16 +17,20 @@ const ListingDetails = () => {
   const [listing, setListing] = useState(null);
   const [showGallery, setShowGallery] = useState(false);
   const [currentImage, setCurrentImage] = useState(0);
+  const [showNumber, setShowNumber] = useState(false);
 
   const [form, setForm] = useState({
     name: "",
     phone: "",
     email: "",
-    message: "Hi, I'd like to know more about this property. Please get in touch with me.",
+    message: "",
     similar: false,
+    agree: false,
     allowAgents: false,
   });
 
+
+  
   useEffect(() => {
     const found = listings.find((l) => l._id === id);
     setListing(found);
@@ -221,83 +228,106 @@ const ListingDetails = () => {
         </motion.div>
 
         {/* RIGHT: CONTACT FORM */}
-        <motion.form
-  onSubmit={handleSubmit}
-  initial={{ opacity: 0, y: 20 }}
-  animate={{ opacity: 1, y: 0 }}
-  transition={{ delay: 0.2, duration: 0.6 }}
-  className="sticky top-20 w-full max-w-sm mx-auto rounded-xl overflow-hidden shadow-lg border border-gray-200 bg-white"
->
-  {/* Top Banner */}
-  <div className="bg-red-900 text-white text-center py-3">
-    <div className="flex items-center justify-center gap-2">
-      <span className="bg-white text-red-600 p-2 rounded-full">
-        <Phone size={20} />
-      </span>
-      <span className="font-bold text-lg">+254 784 2 ....</span>
-    </div>
-    <p className="text-sm mt-1 font-medium opacity-90">Show the number</p>
-  </div>
+         <motion.form
+      onSubmit={handleSubmit}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="w-full max-w-sm bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-md"
+    >
+      {/* Top banner with phone */}
+      <div className="bg-red-600 text-white text-center py-4">
+        <button
+          type="button"
+          onClick={() => setShowNumber(true)}
+          className="flex flex-col items-center justify-center w-full"
+        >
+          <div className="flex items-center justify-center gap-2">
+            <span className="bg-white text-red-600 p-2 rounded-full">
+              <Phone size={18} />
+            </span>
+            <span className="font-semibold text-lg tracking-wide">
+              {showNumber
+                ? `+254 ${listing.agentphone}`
+                : "+254 " + listing.agentphone?.slice(0, 3) + " ...."}
+            </span>
+          </div>
+          <span className="text-sm mt-1 font-medium opacity-90 hover:underline">
+            {showNumber ? "Tap to Call" : "Show the number"}
+          </span>
+        </button>
+      </div>
 
-  {/* Agent Info */}
-  <div className="flex flex-col items-center py-4">
-    <img
-      src={listing.agency?.logo || "/placeholder-logo.png"}
-      alt="Agent Logo"
-      className="w-12 h-12 object-contain mb-2"
-    />
-    <p className="text-primary font-semibold text-base">{listing.agency?.name || "Agency"}</p>
-  </div>
+      {/* Agency info */}
+      <div className="flex flex-col items-center py-5">
+        <img
+          src={listing.agency?.image || "/placeholder-logo.png"}
+          alt="Agency Logo"
+          className="w-14 h-14 object-contain mb-2"
+        />
+        <p className="text-gray-700 font-semibold text-base">
+          {listing.agency?.name || "Agency"}
+        </p>
+      </div>
 
-  <div className="px-6 pb-6 space-y-4">
-    {/* Fields */}
-    <input
-      type="text"
-      placeholder="* Full name"
-      className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-primary focus:border-primary"
-      value={form.name}
-      onChange={(e) => setForm({ ...form, name: e.target.value })}
-      required
-    />
-    <input
-      type="text"
-      placeholder="* Phone number"
-      className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-primary focus:border-primary"
-      value={form.phone}
-      onChange={(e) => setForm({ ...form, phone: e.target.value })}
-      required
-    />
-    <input
-      type="email"
-      placeholder="* Your email"
-      className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-primary focus:border-primary"
-      value={form.email}
-      onChange={(e) => setForm({ ...form, email: e.target.value })}
-      required
-    />
-    <textarea
-      placeholder="* Fill text with min of 150 chars and max of 4000..."
-      rows="4"
-      className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm resize-none focus:ring-2 focus:ring-primary focus:border-primary"
-      value={form.message}
-      onChange={(e) => setForm({ ...form, message: e.target.value })}
-      required
-    />
+      {/* Contact Form */}
+      <div className="px-6 pb-6 space-y-4">
+        <input
+          type="text"
+          placeholder="* Full name"
+          required
+          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-primary focus:border-primary outline-none transition"
+          value={form.name}
+          onChange={(e) => setForm({ ...form, name: e.target.value })}
+        />
+        <input
+          type="tel"
+          placeholder="* Phone number"
+          required
+          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-primary focus:border-primary outline-none transition"
+          value={form.phone}
+          onChange={(e) => setForm({ ...form, phone: e.target.value })}
+        />
+        <input
+          type="email"
+          placeholder="* Your email"
+          required
+          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-primary focus:border-primary outline-none transition"
+          value={form.email}
+          onChange={(e) => setForm({ ...form, email: e.target.value })}
+        />
+        <textarea
+          placeholder="* Fill text with min of 150 chars and max of 4000..."
+          rows="4"
+          required
+          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm resize-none focus:ring-2 focus:ring-primary focus:border-primary outline-none transition"
+          value={form.message}
+          onChange={(e) => setForm({ ...form, message: e.target.value })}
+        />
 
-    {/* Checkbox */}
-    <div className="flex items-start gap-2 text-xs text-gray-600">
-      <input type="checkbox" required className="mt-1" />
-      <span>
-        * I agree to buyrentkenya.com Terms & Conditions and Privacy Policy.
-      </span>
-    </div>
+        {/* Checkbox */}
+        <label className="flex items-start gap-2 text-xs text-gray-600">
+          <input
+            type="checkbox"
+            required
+            checked={form.agree}
+            onChange={(e) => setForm({ ...form, agree: e.target.checked })}
+            className="mt-0.5 accent-blue-600"
+          />
+          <span>
+            * I agree to hodii.com Terms & Conditions and Privacy Policy.
+          </span>
+        </label>
 
-    {/* Submit Button */}
-    <button className="w-full bg-blue-600 text-white font-semibold py-3 rounded-md hover:bg-blue-700 transition">
-      Message
-    </button>
-  </div>
-</motion.form>
+        {/* Message Button */}
+        <button
+          type="submit"
+          className="w-full flex items-center justify-center gap-2 bg-blue-600 text-white font-semibold py-3 rounded-lg hover:bg-blue-700 active:scale-[0.98] transition-all"
+        >
+          <SendHorizonal size={18} /> Message
+        </button>
+      </div>
+    </motion.form>
 
       </div>
     </div>
