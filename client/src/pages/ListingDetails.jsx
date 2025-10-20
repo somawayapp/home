@@ -50,13 +50,28 @@ const ListingDetails = () => {
   return (
     <div className="px-4 md:px-16 lg:px-24 xl:px-32 mt-16 mb-20">
       {/* Back button */}
-      <button
+      <div className=" flex-row justify-between flex"> 
+        <div>
+            <h1 className="text-3xl font-bold text-gray-800">{listing.title}</h1>
+            <p className="text-gray-500 flex items-center gap-2">
+              <MapPin size={16} />{" "}
+              {[listing.location?.county, listing.location?.suburb]
+                .filter(Boolean)
+                .join(", ")}
+            </p>
+        </div>
+        
+
+
+          <button
         onClick={() => navigate(-1)}
         className="flex items-center gap-2 mb-6 text-gray-500 cursor-pointer"
       >
         <img src={assets.arrow_icon} alt="" className="rotate-180 opacity-65" />
-        Back to listings
+        Back
       </button>
+      </div>
+    
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
         {/* LEFT: IMAGES & DETAILS */}
@@ -150,13 +165,7 @@ const ListingDetails = () => {
 
           {/* Details */}
           <div className="mt-8 space-y-4">
-            <h1 className="text-3xl font-bold text-gray-800">{listing.title}</h1>
-            <p className="text-gray-500 flex items-center gap-2">
-              <MapPin size={16} />{" "}
-              {[listing.location?.county, listing.location?.suburb]
-                .filter(Boolean)
-                .join(", ")}
-            </p>
+          
             <p className="text-2xl font-semibold text-gray-800">
               KSh {listing.price?.toLocaleString()}
               <span className="text-gray-500 text-base font-normal ml-2">
