@@ -60,7 +60,7 @@ location: {
 listingSchema.pre(/^find/, function (next) {
   this.populate({
     path: "agency",
-    select: "-password -__v", // exclude sensitive felds
+    select: "-password -__v", // exclude sensitive fields
   });
   next();
 });
