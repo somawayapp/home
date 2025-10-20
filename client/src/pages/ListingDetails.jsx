@@ -222,88 +222,83 @@ const ListingDetails = () => {
 
         {/* RIGHT: CONTACT FORM */}
         <motion.form
-          onSubmit={handleSubmit}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 0.6 }}
-          className="sticky top-20 h-max p-6 bg-white shadow-lg rounded-xl space-y-5 border border-gray-100"
-        >
-          {/* Agent Info */}
-          <div>
-            <h3 className="text-lg font-semibold text-gray-800">
-              {listing.agentname || "Agent"} –{" "}
-              <span className="text-primary">{listing.agency?.name || "Tiff Properties"}</span>
-            </h3>
-            <p className="text-gray-500 text-sm flex items-center gap-2 mt-1">
-              <Phone size={14} /> +254 {listing.agentphone}
-            </p>
-            {listing.agentwhatsapp && (
-              <p className="text-gray-500 text-sm flex items-center gap-2 mt-1">
-                <MessageSquare size={14} /> WhatsApp: +254 {listing.agentwhatsapp}
-              </p>
-            )}
-          </div>
+  onSubmit={handleSubmit}
+  initial={{ opacity: 0, y: 20 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ delay: 0.2, duration: 0.6 }}
+  className="sticky top-20 w-full max-w-sm mx-auto rounded-xl overflow-hidden shadow-lg border border-gray-200 bg-white"
+>
+  {/* Top Banner */}
+  <div className="bg-red-600 text-white text-center py-3">
+    <div className="flex items-center justify-center gap-2">
+      <span className="bg-white text-red-600 p-2 rounded-full">
+        <Phone size={18} />
+      </span>
+      <span className="font-bold text-lg">+254 784 2 ....</span>
+    </div>
+    <p className="text-sm mt-1 font-medium opacity-90">Show the number</p>
+  </div>
 
-          <hr className="border-borderColor" />
+  {/* Agent Info */}
+  <div className="flex flex-col items-center py-4">
+    <img
+      src={listing.agency?.logo || "/placeholder-logo.png"}
+      alt="Agent Logo"
+      className="w-12 h-12 object-contain mb-2"
+    />
+    <p className="text-primary font-semibold text-base">{listing.agency?.name || "Ikaya Rentals"}</p>
+  </div>
 
-          {/* Contact Fields */}
-          {["name", "phone", "email"].map((field) => (
-            <div key={field} className="flex flex-col gap-1">
-              <label htmlFor={field} className="font-medium capitalize">
-                {field} *
-              </label>
-              <input
-                type={field === "email" ? "email" : "text"}
-                id={field}
-                required
-                className="border border-gray-300 px-3 py-2 rounded-lg focus:ring-primary focus:border-primary"
-                value={form[field]}
-                onChange={(e) => setForm({ ...form, [field]: e.target.value })}
-              />
-            </div>
-          ))}
+  <div className="px-6 pb-6 space-y-4">
+    {/* Fields */}
+    <input
+      type="text"
+      placeholder="* Full name"
+      className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-primary focus:border-primary"
+      value={form.name}
+      onChange={(e) => setForm({ ...form, name: e.target.value })}
+      required
+    />
+    <input
+      type="text"
+      placeholder="* Phone number"
+      className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-primary focus:border-primary"
+      value={form.phone}
+      onChange={(e) => setForm({ ...form, phone: e.target.value })}
+      required
+    />
+    <input
+      type="email"
+      placeholder="* Your email"
+      className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-primary focus:border-primary"
+      value={form.email}
+      onChange={(e) => setForm({ ...form, email: e.target.value })}
+      required
+    />
+    <textarea
+      placeholder="* Fill text with min of 150 chars and max of 4000..."
+      rows="4"
+      className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm resize-none focus:ring-2 focus:ring-primary focus:border-primary"
+      value={form.message}
+      onChange={(e) => setForm({ ...form, message: e.target.value })}
+      required
+    />
 
-          <div className="flex flex-col gap-1">
-            <label htmlFor="message" className="font-medium">
-              Message *
-            </label>
-            <textarea
-              id="message"
-              rows="3"
-              required
-              className="border border-gray-300 px-3 py-2 rounded-lg resize-none focus:ring-primary focus:border-primary"
-              value={form.message}
-              onChange={(e) => setForm({ ...form, message: e.target.value })}
-            />
-          </div>
+    {/* Checkbox */}
+    <div className="flex items-start gap-2 text-xs text-gray-600">
+      <input type="checkbox" required className="mt-1" />
+      <span>
+        * I agree to buyrentkenya.com Terms & Conditions and Privacy Policy.
+      </span>
+    </div>
 
-          {/* Checkboxes */}
-          <div className="space-y-2 text-sm text-gray-600">
-            <label className="flex items-start gap-2">
-              <input
-                type="checkbox"
-                checked={form.similar}
-                onChange={(e) => setForm({ ...form, similar: e.target.checked })}
-              />
-              Email me about similar properties
-            </label>
-            <label className="flex items-start gap-2">
-              <input
-                type="checkbox"
-                checked={form.allowAgents}
-                onChange={(e) => setForm({ ...form, allowAgents: e.target.checked })}
-              />
-              Allow agents with similar properties to contact me
-            </label>
-            <p className="text-xs text-gray-400 mt-1">
-              * I agree to buyrentkenya.com Terms & Conditions and Privacy Policy.
-            </p>
-          </div>
+    {/* Submit Button */}
+    <button className="w-full bg-blue-600 text-white font-semibold py-3 rounded-md hover:bg-blue-700 transition">
+      Message
+    </button>
+  </div>
+</motion.form>
 
-          <button className="w-full bg-primary text-white font-semibold py-3 rounded-lg hover:bg-primary-dull transition">
-            Send Message
-          </button>
-        </motion.form>
       </div>
     </div>
   );
