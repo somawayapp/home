@@ -48,14 +48,14 @@ const ListingDetails = () => {
   const images = Array.isArray(listing.images) ? listing.images : [listing.images].filter(Boolean);
 
   return (
-    <div className="px-4 md:px-16 lg:px-24 xl:px-32 mt-16 mb-20">
+    <div className="px-4 md:px-16 lg:px-24 xl:px-32 mt-4  mb-20">
       {/* Back button */}
-      <div className=" flex-row justify-between flex"> 
+      <div className=" flex-row justify-between flex mb-4 "> 
         <div>
-            <h1 className="text-3xl font-bold text-gray-800">{listing.title}</h1>
+            <h1 className="text-3xl font-bold text-gray-800 mb-2">{listing.title}</h1>
             <p className="text-gray-500 flex items-center gap-2">
               <MapPin size={16} />{" "}
-              {[listing.location?.county, listing.location?.suburb]
+              {[listing.location?.county, listing.location?.area]
                 .filter(Boolean)
                 .join(", ")}
             </p>
@@ -229,10 +229,10 @@ const ListingDetails = () => {
   className="sticky top-20 w-full max-w-sm mx-auto rounded-xl overflow-hidden shadow-lg border border-gray-200 bg-white"
 >
   {/* Top Banner */}
-  <div className="bg-red-600 text-white text-center py-3">
+  <div className="bg-red-900 text-white text-center py-3">
     <div className="flex items-center justify-center gap-2">
       <span className="bg-white text-red-600 p-2 rounded-full">
-        <Phone size={18} />
+        <Phone size={20} />
       </span>
       <span className="font-bold text-lg">+254 784 2 ....</span>
     </div>
@@ -246,7 +246,7 @@ const ListingDetails = () => {
       alt="Agent Logo"
       className="w-12 h-12 object-contain mb-2"
     />
-    <p className="text-primary font-semibold text-base">{listing.agency?.name || "Ikaya Rentals"}</p>
+    <p className="text-primary font-semibold text-base">{listing.agency?.name || "Agency"}</p>
   </div>
 
   <div className="px-6 pb-6 space-y-4">
