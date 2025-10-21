@@ -193,14 +193,28 @@ if (amenitiesNearby) {
     }
 
     // ✅ Fetch listings
-    const listings = await Listing.find(filter).sort({ createdAt: -1 });
+    // ✅ Fetch listings with agency populated
+    const listings = await Listing.find(filter)
+      .populate({
+        path: "agency",
+        select: "name image", // only return these two fields
+      })
+      .sort({ createdAt: -1 });
 
-    res.json({ success: true, count: listings.length, listings });
+    res.status(200).json({
+      success: true,
+      count: listings.length,
+      listings,
+    });
   } catch (error) {
-    console.error("Error fetching listings:", error.message);
-    res.status(500).json({ success: false, message: error.message });
+    console.error("❌ Error fetching listings:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error while fetching listings.",
+    });
   }
 };
+  
 
 
 
