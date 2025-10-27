@@ -140,12 +140,7 @@ const ListingCard = ({ listing }) => {
       {listing.propertytype ? ` ${listing.propertytype}` : ""}
     </p>
 
-    {/* Phone Number */}
-    {listing.agentphone && (
-      <p className="text-neutral-600 text-[13px] md:text-[14px]">
-        +254 {listing.agentphone}
-      </p>
-    )}
+   
 
     {/* Price */}
     {listing.price && (

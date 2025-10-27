@@ -166,7 +166,8 @@ useEffect(() => {
 
 
   return (
-    <div className="flex border border-bottom border-borderColor flex-col bg-white transition-colors duration-300 px-4 md:px-16 items-center justify-between 
+    <div className="flex border border-bottom border-borderColor flex-col bg-white transition-colors 
+    duration-300 px-4 md:px-16 items-center justify-between 
     w-full sticky top-0 left-0 right-0 z-50  "
      style={{
     background: "linear-gradient(180deg, #ffffff 39.9%, #f8f8f8 100%)",
@@ -181,7 +182,7 @@ useEffect(() => {
 <div className="flex flex-row w-full  items-center justify-between">
 
 
-<Link to="https://houseclient.vercel.app" className="z-50 py-4 md:py-7 ">
+<Link to="https://houseclient.vercel.app" className="z-50  ">
               {/* Small screens → small icon */}
               <motion.img
                 whileHover={{ scale: 1.05 }}
@@ -327,7 +328,7 @@ useEffect(() => {
 
 
 
-   <div className='flex items-center py-4 md:py-7 gap-4'>
+   <div className='flex items-center  gap-4'>
           {/* Dashboard/Add Listing button (hidden on small screens) */}
           <div className='hidden sm:flex items-center gap-4'>
             <button
