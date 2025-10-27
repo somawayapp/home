@@ -168,7 +168,7 @@ useEffect(() => {
   return (
     <div className="flex border border-bottom border-borderColor flex-col bg-white transition-colors 
     duration-300 px-4 md:px-16 items-center justify-between 
-    w-full sticky top-0 left-0 right-0 z-50 py-4 "
+    w-full sticky top-0 left-0 right-0 z-50 my-4 "
   >
 
       {/* === Desktop / MD+ form (expanded) */}
@@ -312,11 +312,11 @@ useEffect(() => {
 
   </div>
 
-  <div className="p-1 md:p-2">
+  <div className="p-1">
     <motion.button
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
-      className="flex items-center justify-center md:ml-2 gap-1 px-3 py-3 btn text-white rounded-full cursor-pointer"
+      className="flex items-center justify-center md:ml-2 gap-1 px-2 py-3 btn text-white rounded-full cursor-pointer"
     >
       <img src={assets.search_icon} alt="search" className="brightness-300" />
     </motion.button>
