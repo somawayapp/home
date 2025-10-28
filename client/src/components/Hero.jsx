@@ -286,7 +286,7 @@ useEffect(() => {
   />
 
   {/* === Text === */}
-<span className=" p-2 font-medium text-neutral-700 text-sm md:text-md rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+<span className=" p-2 font-medium text-neutral-700  rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
   {(filters.location || "Anywhere").slice(0, 10)}
 </span>
 </div>
@@ -295,13 +295,13 @@ useEffect(() => {
     <span className="self-stretch my-2  w-px bg-borderColor"></span>
 
 
-<span className=" font-medium text-neutral-700 p-2  text-sm md:text-mdrounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+<span className=" font-medium text-neutral-700 p-2 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
 {filters.minPrice ? `Ksh ${filters.minPrice}` : "Anyprice"}
 </span>
 
 <span className="self-stretch my-2  w-px bg-borderColor"></span>
 
-<span className="font-medium text-neutral-700 p-2 text-sm md:text-md  rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+<span className="font-medium text-neutral-700 p-2 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
   {(filters.propertytype || "Anytype").slice(0, 10)}
 </span>
 
@@ -309,15 +309,35 @@ useEffect(() => {
   </div>
 
   <div className="p-1 md:p-2">
-    <motion.button
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.85 }}
-      className="flex items-center justify-center md:ml-2 gap-1 px-2 py-2 btn text-white rounded-full cursor-pointer"
-    >
-      <img src={assets.search_icon} alt="search" className="brightness-300" />
-    </motion.button>
-  </div>
+   <motion.button
+  whileHover={{ scale: 1.05 }}
+  whileTap={{ scale: 0.85 }}
+  className="flex items-center justify-center md:ml-2 gap-1 px-2 py-2 btn text-white rounded-full cursor-pointer"
+>
+  <svg
+    viewBox="0 0 32 32"
+    xmlns="http://www.w3.org/2000/svg"
+    aria-hidden="true"
+    role="presentation"
+    focusable="false"
+    style={{
+      display: "block",
+      fill: "none",
+      height: "16px",
+      width: "16px",
+      stroke: "currentColor",
+      strokeWidth: 4,
+      overflow: "visible",
+    }}
+  >
+    <path d="m20.666 20.666 10 10"></path>
+    <path
+      d="m24.0002 12.6668c0 6.2593-5.0741 11.3334-11.3334 11.3334-6.2592 0-11.3333-5.0741-11.3333-11.3334 0-6.2592 5.0741-11.3333 11.3333-11.3333 6.2593 0 11.3334 5.0741 11.3334 11.3333z"
+      fill="none"
+    ></path>
+  </svg>
 </motion.button>
+
 
 
 
