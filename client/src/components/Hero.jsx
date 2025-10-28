@@ -282,12 +282,12 @@ useEffect(() => {
     loop
     muted
     playsInline
-    className="w-15 h-11 rounded-full pl-4 md:pl-7  object-cover"
+    className="w-15 h-11 rounded-full pl-2 md:pl-5  object-cover"
   />
 
   {/* === Text === */}
-<span className="px-2 py-2 font-medium text-neutral-700  rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
-  {(filters.location || "Any where").slice(0, 10)}
+<span className=" py-2 font-medium text-neutral-800  rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+  {(filters.location || "Anywhere").slice(0, 10)}
 </span>
 </div>
 
@@ -295,14 +295,14 @@ useEffect(() => {
     <span className="self-stretch my-2  w-px bg-borderColor"></span>
 
 
-<span className="px-2  font-medium text-neutral-700 py-2 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
-{filters.minPrice ? `Ksh ${filters.minPrice}` : "Any price"}
+<span className=" font-medium text-neutral-800 py-2 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+{filters.minPrice ? `Ksh ${filters.minPrice}` : "Anyprice"}
 </span>
 
 <span className="self-stretch my-2  w-px bg-borderColor"></span>
 
-<span className="px-2  font-medium text-neutral-700 py-2  rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
-  {(filters.propertytype || "Any type").slice(0, 10)}
+<span className="font-medium text-neutral-800 py-2  rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+  {(filters.propertytype || "Anytype").slice(0, 10)}
 </span>
 
 
