@@ -282,7 +282,7 @@ useEffect(() => {
     loop
     muted
     playsInline
-    className="w-15 h-11 rounded-full pl-2 md:pl-3  object-cover"
+    className="w-15 h-11 rounded-full pl-2   object-cover"
   />
 
   {/* === Text === */}
@@ -308,11 +308,11 @@ useEffect(() => {
 
   </div>
 
-  <div className="p-1 ">
+  <div className="p-1 md:p-2 ">
    <motion.button
   whileHover={{ scale: 1.05 }}
   whileTap={{ scale: 0.85 }}
-  className="flex items-center justify-center gap-1 px-2 py-2 btn text-white rounded-full cursor-pointer"
+  className="flex items-center justify-center gap-1 p-2 md:p-3 btn text-white rounded-full cursor-pointer"
 >
   <svg
     viewBox="0 0 32 32"
@@ -323,10 +323,10 @@ useEffect(() => {
     style={{
       display: "block",
       fill: "none",
-      height: "13px",
-      width: "13px",
+      height: "12px",
+      width: "12px",
       stroke: "currentColor",
-      strokeWidth: 6,
+      strokeWidth: 5,
       overflow: "visible",
     }}
   >
