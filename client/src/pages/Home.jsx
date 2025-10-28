@@ -467,7 +467,7 @@ useEffect(() => {
 />
 
         
-         <div className="px-4  md:px-32   ">
+         <div className="px-4   md:px-30    ">
 
         {/* --- Listings Grid --- */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3 mt-6 mx-auto">

@@ -56,7 +56,7 @@ const ListingDetails = () => {
   const images = Array.isArray(listing.images) ? listing.images : [listing.images].filter(Boolean);
 
   return (
-    <div className="px-4  md:px-32  lg:px-24 xl:px-32 mt-4  mb-20">
+    <div className="px-4   md:px-30   lg:px-24 xl:px-32 mt-4  mb-20">
       {/* Back button */}
       <div className=" flex-row justify-between flex mb-4 "> 
         <div>
