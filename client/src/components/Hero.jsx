@@ -166,7 +166,7 @@ useEffect(() => {
 
 
   return (
-    <div className="flex border border-bottom border-borderColor flex-col bg-white transition-colors 
+    <div className="flex border border-bottom border-light flex-col bg-white transition-colors 
     duration-300 px-4 md:px-16 items-center justify-between 
     w-full sticky top-0 left-0 right-0 z-50 py-4 "
   >
@@ -296,14 +296,14 @@ useEffect(() => {
 </div>
 
 
-    <span className="self-stretch  w-px bg-borderColor"></span>
+    <span className="self-stretch py-2  w-px bg-borderColor"></span>
 
 
 <span className="px-2 md:px-4 font-medium text-neutral-500 py-2 text-sm md:text-md rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
 {filters.minPrice ? `Ksh ${filters.minPrice}` : "Any price"}
 </span>
 
-<span className="self-stretch w-px bg-borderColor"></span>
+<span className="self-stretch py-2  w-px bg-borderColor"></span>
 
 <span className="px-2 md:px-4 font-medium text-neutral-400 py-2 text-sm md:text-md rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
   {(filters.propertytype || "Any type").slice(0, 10)}
@@ -339,7 +339,7 @@ useEffect(() => {
                   changeRole()
                 }
               }}
-              className='cursor-pointer  rounded-3xl px-4 py-2 transition hover:bg-bgColor'
+              className='cursor-pointer  text-sm rounded-3xl px-4 py-2 transition hover:bg-bgColor'
             >
               {isOwner ? 'Dashboard' : 'Add listing'}
             </button>
@@ -353,11 +353,11 @@ useEffect(() => {
               aria-label='Menu'
               onClick={() => setOpen(!open)}
             >
-              <img src={assets.menu_icon} alt='menu' className='h-4 w-4 md:h-4 md:w-6' />
+              <img src={assets.menu_icon} alt='menu' className='h-4 w-4 md:h-3 md:w-5' />
               <img
                 src={user?.image || assets.user_profile}
                 alt='user'
-                className='hidden h-8 w-8 rounded-full object-cover lg:block'
+                className='hidden h-7 w-7 rounded-full object-cover lg:block'
               />
             </button>
 
