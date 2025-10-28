@@ -312,7 +312,7 @@ useEffect(() => {
    <motion.button
   whileHover={{ scale: 1.05 }}
   whileTap={{ scale: 0.85 }}
-  className="flex items-center justify-center gap-1 p-[7.5px] btn text-white rounded-full cursor-pointer"
+  className="flex items-center justify-center gap-1 p-[5px] btn text-white rounded-full cursor-pointer"
 >
   <svg
     viewBox="0 0 32 32"
