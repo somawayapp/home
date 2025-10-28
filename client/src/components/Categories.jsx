@@ -80,7 +80,6 @@ export default function CategoryBar({ filters, setFilters, getActiveFilters, han
             className="flex items-center gap-2 border border-borderColor py-3 px-3 md:py-2 md:px-6 rounded-full md:rounded-2xl hover:shadow-xl hover:text-neutral-900 shadow-lg text-neutral-700 hover:border-borderColorhover cursor-pointer transition"
           >
             <FaSlidersH />
-            <span className="hidden sm:inline"> Filters</span>
           </button>
 
           {/* Popup */}
