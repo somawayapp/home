@@ -270,7 +270,7 @@ useEffect(() => {
     gap-1 md:gap-2
     bg-white rounded-full text-gray-600
     shadow-[0px_8px_20px_rgba(0,0,0,0.1)] border border-light
-    md:ml-[5%] max-w-150
+    ml-0 md:ml-[5%] max-w-150
   "
 >
   <div className="flex-1 gap-1 md:gap-2 flex justify-between items-center">

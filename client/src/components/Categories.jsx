@@ -66,7 +66,7 @@ export default function CategoryBar({ filters, setFilters, getActiveFilters, han
   }, []);
 
   return (
-    <div className="relative py-4 mb-4 group border-b border-gray-100">
+    <div className="relative pt-4 mb-4 group ">
       <div className="relative px-4  md:px-32  flex items-center">
         {/* Scroll container */}
         <div
@@ -85,8 +85,8 @@ export default function CategoryBar({ filters, setFilters, getActiveFilters, han
                   transition-all duration-200
                   ${
                     isActive
-                      ? "text-neutral-600 after:block after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-neutral-600"
-                      : "text-neutral-500 hover:text-neutral-600 hover:after:block hover:after:content-[''] hover:after:absolute hover:after:bottom-0 hover:after:left-0 hover:after:right-0 hover:after:h-[2px] hover:after:bg-neutral-600"
+                      ? "text-neutral-700 after:block after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-neutral-700"
+                      : "text-neutral-600 hover:text-neutral-700 hover:after:block hover:after:content-[''] hover:after:absolute hover:after:bottom-0 hover:after:left-0 hover:after:right-0 hover:after:h-[2px] hover:after:bg-neutral-700"
                   }`}
               >
                 <Icon size={24} className="text-inherit" />
@@ -111,10 +111,10 @@ export default function CategoryBar({ filters, setFilters, getActiveFilters, han
           {/* Filters button */}
           <button
             onClick={() => setShowPopup(!showPopup)}
-            className="flex items-center gap-2 border border-borderColor py-4 px-4 md:px-6 rounded-full md:rounded-xl hover:shadow-xl hover:text-gray-900 shadow-lg text-gray-700 hover:border-borderColorhover cursor-pointer transition"
+            className="flex items-center gap-2 border border-borderColor py-4 px-4 md:px-6 rounded-full md:rounded-xl hover:shadow-xl hover:text-neutral-900 shadow-lg text-neutral-700 hover:border-borderColorhover cursor-pointer transition"
           >
             <FaSlidersH />
-            <span className="hidden sm:inline">Current Filters</span>
+            <span className="hidden sm:inline"> Filters</span>
           </button>
 
           {/* Popup */}
