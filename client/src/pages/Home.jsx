@@ -466,6 +466,9 @@ useEffect(() => {
   handleClearAll={handleClearAll}
 />
 
+<h1 className="font-medium text-neutral-700 py-4  text-[18px] ">
+  Popular homes in Nairobi
+</h1>
         
          <div className="px-4   md:px-30    ">
 

@@ -47,7 +47,7 @@ const ListingCard = ({ listing }) => {
   };
 
   return (
-    <div className="relative gap-2 md:gap-4 group mb-2 md:mb-[8px] overflow-hidden rounded-2xl">
+    <div className="relative gap-2 md:gap-4 group mb-2 md:mb-[8px] overflow-hidden ">
       {/* ✅ Updated Link to generic listing page */}
       <Link to={`/listing-details/${listing._id}`} className="block">
         <div className="relative w-full h-full aspect-[3/3] rounded-2xl overflow-hidden">
@@ -73,8 +73,8 @@ const ListingCard = ({ listing }) => {
           </div>
 
           {/* ✅ Status Badge */}
-          <div className={`absolute rounded-full top-3 left-3 px-3 py-1 text-neutral-600 text-9 font-medium
-            ${listing.listingstatus ? "bg-gray-100 hover:gray-100" : " bg-gray-50 hover:gray-100"}`}>
+          <div className={`absolute rounded-full top-3 left-3 px-3 py-1 text-neutral-600 text-[9px] font-medium
+            ${listing.listingstatus ? "bg-gray-200 hover:gray-100" : " bg-gray-50 hover:gray-100"}`}>
             {listing.listingstatus ? "Available" : "Unavailable"}
           </div> 
 
