@@ -282,11 +282,11 @@ useEffect(() => {
     loop
     muted
     playsInline
-    className="w-15 h-11 rounded-full pl-2 md:pl-5  object-cover"
+    className="w-15 h-11 rounded-full pl-2 md:pl-3  object-cover"
   />
 
   {/* === Text === */}
-<span className=" py-2 font-medium text-neutral-800  rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+<span className=" p-2 font-medium text-neutral-700 text-sm md:text-md rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
   {(filters.location || "Anywhere").slice(0, 10)}
 </span>
 </div>
@@ -295,13 +295,13 @@ useEffect(() => {
     <span className="self-stretch my-2  w-px bg-borderColor"></span>
 
 
-<span className=" font-medium text-neutral-800 py-2 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+<span className=" font-medium text-neutral-700 p-2  text-sm md:text-mdrounded-full hover:bg-gray-100 transition-colors cursor-pointer">
 {filters.minPrice ? `Ksh ${filters.minPrice}` : "Anyprice"}
 </span>
 
 <span className="self-stretch my-2  w-px bg-borderColor"></span>
 
-<span className="font-medium text-neutral-800 py-2  rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+<span className="font-medium text-neutral-700 p-2 text-sm md:text-md  rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
   {(filters.propertytype || "Anytype").slice(0, 10)}
 </span>
 
@@ -311,7 +311,7 @@ useEffect(() => {
   <div className="p-1 md:p-2">
     <motion.button
       whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.95 }}
+      whileTap={{ scale: 0.85 }}
       className="flex items-center justify-center md:ml-2 gap-1 px-2 py-2 btn text-white rounded-full cursor-pointer"
     >
       <img src={assets.search_icon} alt="search" className="brightness-300" />
