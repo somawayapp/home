@@ -308,7 +308,7 @@ useEffect(() => {
 
   </div>
 
-  <div className="p-1 md:p-2 ">
+  <div className="p-1 ">
    <motion.button
   whileHover={{ scale: 1.05 }}
   whileTap={{ scale: 0.85 }}
