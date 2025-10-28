@@ -74,7 +74,7 @@ const ListingCard = ({ listing }) => {
 
           {/* ✅ Status Badge 
           <div className={`absolute rounded-full bottom-3 right-3 px-3 py-1 text-white text-sm font-medium
-            ${listing.listingstatus ? "bg-[#2F74FD] hover:bg-[#0556f7]" : " bg-[#FFD700]"}`}>
+            ${listing.listingstatus ? "bg-[#ff385c] hover:bg-[#fd2a51]" : " bg-[#FFD700]"}`}>
             {listing.listingstatus ? "Available" : "Unavailable"}
           </div> */}
 
