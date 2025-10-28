@@ -67,7 +67,7 @@ export default function CategoryBar({ filters, setFilters, getActiveFilters, han
 
   return (
     <div className="relative py-4 mb-4 group border-b border-gray-100">
-      <div className="relative px-4 md:px-16 flex items-center">
+      <div className="relative px-4  md:px-32  flex items-center">
         {/* Scroll container */}
         <div
           ref={scrollRef}
