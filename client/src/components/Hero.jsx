@@ -308,11 +308,11 @@ useEffect(() => {
 
   </div>
 
-  <div className="p-1 md:p-[1.5] ">
+  <div className="p-1 md:p-[5.5] ">
    <motion.button
   whileHover={{ scale: 1.05 }}
   whileTap={{ scale: 0.85 }}
-  className="flex items-center justify-center gap-1 p-[2.5] btn text-white rounded-full cursor-pointer"
+  className="flex items-center justify-center gap-1 p-[12.5] btn text-white rounded-full cursor-pointer"
 >
   <svg
     viewBox="0 0 32 32"
