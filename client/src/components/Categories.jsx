@@ -5,6 +5,8 @@ import { GiBarn, GiCastle, GiCube } from "react-icons/gi";
 import { MdHouse, MdOutlineVilla, MdBusiness } from "react-icons/md";
 import { TbBeach, TbBuildingCommunity, TbBuildingCottage, TbBuildingEstate } from "react-icons/tb";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
+import { FaGlobe } from "react-icons/fa";
+
 
 export const categories = [
   { value: "Apartment", label: "Apartment", icon: FaBuilding, description: "This property is an apartment building!" },
@@ -74,13 +76,26 @@ export default function CategoryBar({ filters, setFilters, getActiveFilters, han
         <div className="relative flex-shrink-0 flex flex-row ml-2 gap-4">
        
 
-          {/* Filters button */}
-          <button
-            onClick={() => setShowPopup(!showPopup)}
-            className="flex items-center gap-2 border border-borderColor py-3 px-3 md:py-2 md:px-6 rounded-full md:rounded-2xl hover:shadow-xl hover:text-neutral-900 shadow-lg text-neutral-700 hover:border-borderColorhover cursor-pointer transition"
-          >
-            <FaSlidersH />
-          </button>
+  {/* Globe icon with tooltip */}
+  <div className="relative group">
+    <button className="flex items-center justify-center border border-borderColor py-3 px-3 md:px-6 rounded-full md:rounded-2xl hover:shadow-xl hover:text-neutral-900 shadow-lg text-neutral-700 hover:border-borderColorhover transition">
+      <FaGlobe />
+    </button>
+
+    {/* Tooltip */}
+    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-neutral-800 text-white text-sm rounded-lg px-2 py-1 whitespace-nowrap shadow-md">
+      Lang: English
+    </div>
+  </div>
+
+  {/* Filters button */}
+  <button
+    onClick={() => setShowPopup(!showPopup)}
+    className="flex items-center gap-2 border border-borderColor py-3 px-3 md:px-6 rounded-full md:rounded-2xl hover:shadow-xl hover:text-neutral-900 shadow-lg text-neutral-700 hover:border-borderColorhover cursor-pointer transition"
+  >
+    <FaSlidersH />
+  </button>
+
 
           {/* Popup */}
           {showPopup && (
