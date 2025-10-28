@@ -286,7 +286,7 @@ useEffect(() => {
   />
 
   {/* === Text === */}
-<span className=" p-2 font-medium text-neutral-700  rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+<span className=" p-2 font-medium text-neutral-700 text-[8.5] rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
   {(filters.location || "Anywhere").slice(0, 10)}
 </span>
 </div>
@@ -295,13 +295,13 @@ useEffect(() => {
     <span className="self-stretch my-2  w-px bg-borderColor"></span>
 
 
-<span className=" font-medium text-neutral-700 p-2 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+<span className=" font-medium text-neutral-700 p-2 text-[8.5] rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
 {filters.minPrice ? `Ksh ${filters.minPrice}` : "Anyprice"}
 </span>
 
 <span className="self-stretch my-2  w-px bg-borderColor"></span>
 
-<span className="font-medium text-neutral-700 p-2 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+<span className="font-medium text-neutral-700 p-2 rounded-full text-[8.5] hover:bg-gray-100 transition-colors cursor-pointer">
   {(filters.propertytype || "Anytype").slice(0, 10)}
 </span>
 
@@ -312,7 +312,7 @@ useEffect(() => {
    <motion.button
   whileHover={{ scale: 1.05 }}
   whileTap={{ scale: 0.85 }}
-  className="flex items-center justify-center gap-1 p-[12.5] btn text-white rounded-full cursor-pointer"
+  className="flex items-center justify-center gap-1 p-[10.5] btn text-white rounded-full cursor-pointer"
 >
   <svg
     viewBox="0 0 32 32"
