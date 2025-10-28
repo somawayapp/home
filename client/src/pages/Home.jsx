@@ -464,9 +464,15 @@ useEffect(() => {
 
         
          <div className="px-4   md:px-30    ">
-         <h1 className="font-medium text-neutral-800   text-[20px] ">
-        Popular homes in Nairobi
-        </h1>
+         <div className="flex items-center justify-between">
+  <h1 className="pt-1 text-[20px] font-medium text-neutral-900">
+    Popular homes in Nairobi &gt;
+  </h1>
+  <CategoryBar />
+</div>
+
+     
+
         {/* --- Listings Grid --- */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3 mt-6 mx-auto">
       {/* --- Loading Preloaders --- */}

@@ -73,8 +73,8 @@ const ListingCard = ({ listing }) => {
           </div>
 
           {/* ✅ Status Badge */}
-          <div className={`absolute rounded-full top-3 left-3 px-3 py-1 text-neutral-600 text-[11px] font-medium
-            ${listing.listingstatus ? "bg-gray-200 hover:gray-100" : " bg-gray-50 hover:gray-100"}`}>
+          <div className={`absolute rounded-full top-3 left-3 px-3 py-1 text-neutral-600 text-[12px] font-medium
+            ${listing.listingstatus ? "bg-gray-100 hover:gray-100" : " bg-gray-100 hover:gray-100"}`}>
             {listing.listingstatus ? "Available" : "Unavailable"}
           </div> 
 
@@ -122,14 +122,14 @@ const ListingCard = ({ listing }) => {
   <Link to={`/listing-details/${listing._id}`} className="block">
     {/* County + Suburb */}
     <div className="flex justify-between mr-1">
-      <p className=" font-semibold text-neutral-800 capitalize text-[12px] md:text-[13px]">
+      <p className=" font-semibold text-neutral-800 capitalize text-[13px] md:text-[14px]">
         {listing.location?.county || ""}
         {listing.location?.suburb ? `, ${listing.location.suburb}` : ""}
       </p>
     </div>
 
     {/* Size + Type (or Bedrooms + Type) */}
-    <p className="text-neutral-600 capitalize text-[12px] md:text-[13px]">
+    <p className="text-neutral-600 capitalize text-[13px] md:text-[14px]">
       {listing.features?.bedrooms
         ? `${listing.features.bedrooms} Bedroom`
         : listing.features?.rooms
@@ -144,7 +144,7 @@ const ListingCard = ({ listing }) => {
 
     {/* Price */}
     {listing.price && (
-      <p className=" font-semibold text-neutral-700 text-[12px] md:text-[13px]">
+      <p className=" font-semibold text-neutral-700 text-[13px] md:text-[14px]">
         KSh {listing.price.toLocaleString()}
         <span className="font-normal text-neutral-600 ">
           {listing.offertype === "rent" ? " /month" : " /sale"}
