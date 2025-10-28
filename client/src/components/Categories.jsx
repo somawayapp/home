@@ -66,47 +66,13 @@ export default function CategoryBar({ filters, setFilters, getActiveFilters, han
   }, []);
 
   return (
-    <div className="relative pt-4 mb-4 group ">
-      <div className="relative px-4  md:px-30  flex items-center">
+    <div className="relative group ">
+      <div className="relative  flex items-center">
         {/* Scroll container */}
-        <div
-          ref={scrollRef}
-          className="flex-1 overflow-x-auto no-scrollbar flex gap-2 md:gap-4 scroll-smooth relative"
-        >
-          {categories.map((cat) => {
-            const Icon = cat.icon;
-            const isActive = filters.propertytype === cat.value;
-            return (
-              <div
-                key={cat.value}
-                onClick={() => handleCategoryClick(cat.value)}
-                className={`flex flex-col items-center justify-center cursor-pointer 
-                  shrink-0 min-w-[80px] pr-2 relative
-                  transition-all duration-200
-                  ${
-                    isActive
-                      ? "text-neutral-700 after:block after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-neutral-700"
-                      : "text-neutral-600 hover:text-neutral-700 hover:after:block hover:after:content-[''] hover:after:absolute hover:after:bottom-0 hover:after:left-0 hover:after:right-0 hover:after:h-[2px] hover:after:bg-neutral-700"
-                  }`}
-              >
-                <Icon size={24} className="text-inherit" />
-                <span className="text-xs md:text-sm mt-1 text-center whitespace-nowrap">{cat.label}</span>
-              </div>
-            );
-          })}
-        </div>
-
+      
         {/* Filters button + popup wrapper */}
         <div className="relative flex-shrink-0 flex flex-row ml-2 gap-4">
-          {/* Right arrow */}
-          {canScrollRight && (
-            <button
-              onClick={() => scroll("right")}
-              className="absolute -left-12 top-1/2 -translate-y-1/2 bg-white text-black border border-borderColor  p-2 rounded-full cursor-pointer shadow-md hover:shadow-xl hover:bg-white/60  transition"
-            >
-              <ChevronRight size={22} />
-            </button>
-          )}
+       
 
           {/* Filters button */}
           <button
@@ -169,15 +135,7 @@ export default function CategoryBar({ filters, setFilters, getActiveFilters, han
         </div>
       </div>
 
-      {/* Left arrow */}
-      {canScrollLeft && (
-        <button
-          onClick={() => scroll("left")}
-          className="absolute hidden md:flex left-16 top-1/2 -translate-y-1/2  bg-white text-black border border-borderColor p-2 rounded-full cursor-pointer shadow-md hover:shadow-xl hover:bg-white/60 transition"
-        >
-          <ChevronLeft size={22} />
-        </button>
-      )}
+     
     </div>
   );
 }

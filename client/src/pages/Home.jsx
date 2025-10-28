@@ -1,4 +1,6 @@
 
+      
+
          
 
           import React, { useEffect, useState } from "react";
@@ -468,12 +470,20 @@ useEffect(() => {
   <h1 className="pt-2 text-[20px] font-medium text-neutral-900">
     Popular homes in Nairobi 
   </h1>
+
+  <CategoryBar
+  filters={filters}
+  setFilters={setFilters}
+  getActiveFilters={getActiveFilters}
+  handleClearAll={handleClearAll}
+/>
+
 </div>
 
      
 
         {/* --- Listings Grid --- */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3 mt-6 mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mt-6 mx-auto">
       {/* --- Loading Preloaders --- */}
       {loading &&
         Array.from({ length: 8 }).map((_, index) => (
