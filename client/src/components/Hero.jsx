@@ -267,7 +267,7 @@ useEffect(() => {
   onClick={() => setShowModal(true)}
   className="
     flex items-center justify-between
-    gap-1 md:gap-4
+    gap-1 md:gap-2
     bg-white rounded-full text-gray-600
     shadow-[0px_8px_20px_rgba(0,0,0,0.1)] border border-light
     md:ml-[5%] max-w-150
@@ -312,7 +312,7 @@ useEffect(() => {
    <motion.button
   whileHover={{ scale: 1.05 }}
   whileTap={{ scale: 0.85 }}
-  className="flex items-center justify-center gap-1 p-2 btn text-white rounded-full cursor-pointer"
+  className="flex items-center justify-center gap-1 p-3 btn text-white rounded-full cursor-pointer"
 >
   <svg
     viewBox="0 0 32 32"
