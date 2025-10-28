@@ -66,6 +66,11 @@ export default function CategoryBar({ filters, setFilters, getActiveFilters, han
   }, []);
 
   return (
+    <div className="relative group ">
+      <div className="relativeflex items-center">
+      
+
+        {/* Filters button + popup wrapper */}
         <div className="relative flex-shrink-0 flex flex-row ml-2 gap-4">
        
 
@@ -127,7 +132,9 @@ export default function CategoryBar({ filters, setFilters, getActiveFilters, han
             </motion.div>
           )}
         </div>
+      </div>
 
     
+    </div>
   );
 }

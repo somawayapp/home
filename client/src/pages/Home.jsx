@@ -465,9 +465,10 @@ useEffect(() => {
         
          <div className="px-4   md:px-30    ">
          <div className="flex items-center justify-between">
-  <h1 className="pt-1 text-[20px] font-medium text-neutral-900">
-    Popular homes in Nairobi &gt;
+  <h1 className="pt-2 text-[20px] font-medium text-neutral-900">
+    Popular homes in Nairobi 
   </h1>
+  <CategoryBar />
 </div>
 
      

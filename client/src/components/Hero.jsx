@@ -295,13 +295,13 @@ useEffect(() => {
     <span className="self-stretch my-2  w-px bg-borderColor"></span>
 
 
-<span className=" font-medium text-neutral-700 p-2 text-[15px] rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+<span className=" font-medium text-neutral-700 p-2 text-[16px] rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
 {filters.minPrice ? `Ksh ${filters.minPrice}` : "Anyprice"}
 </span>
 
 <span className="self-stretch my-2  w-px bg-borderColor"></span>
 
-<span className="font-medium text-neutral-700 p-2 rounded-full text-[15px] hover:bg-gray-100 transition-colors cursor-pointer">
+<span className="font-medium text-neutral-700 p-2 rounded-full text-[14px] hover:bg-gray-100 transition-colors cursor-pointer">
   {(filters.propertytype || "Anytype").slice(0, 10)}
 </span>
 
