@@ -73,7 +73,7 @@ const handleToggleLike = async () => {
         />
         <AiFillHeart
           size={24}
-          className={liked ? "fill-red-500" : "fill-neutral-700/70"}
+          className={liked ? "fill-red-500" : "fill-neutral-700"}
         />
       </button>
     </div>
