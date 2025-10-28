@@ -286,7 +286,7 @@ useEffect(() => {
   />
 
   {/* === Text === */}
-<span className=" p-2 font-medium text-neutral-700 text-[7.5] rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+<span className=" p-2 font-medium text-neutral-700 text-[5.5] rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
   {(filters.location || "Anywhere").slice(0, 10)}
 </span>
 </div>
@@ -295,13 +295,13 @@ useEffect(() => {
     <span className="self-stretch my-2  w-px bg-borderColor"></span>
 
 
-<span className=" font-medium text-neutral-700 p-2 text-[7.5] rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+<span className=" font-medium text-neutral-700 p-2 text-[5.5] rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
 {filters.minPrice ? `Ksh ${filters.minPrice}` : "Anyprice"}
 </span>
 
 <span className="self-stretch my-2  w-px bg-borderColor"></span>
 
-<span className="font-medium text-neutral-700 p-2 rounded-full text-[7.5] hover:bg-gray-100 transition-colors cursor-pointer">
+<span className="font-medium text-neutral-700 p-2 rounded-full text-[5.5] hover:bg-gray-100 transition-colors cursor-pointer">
   {(filters.propertytype || "Anytype").slice(0, 10)}
 </span>
 
@@ -357,7 +357,7 @@ useEffect(() => {
                   changeRole()
                 }
               }}
-              className='cursor-pointer text-neutral-700  text-[7.5] font-medium rounded-3xl px-4 py-2 transition hover:bg-bgColor'
+              className='cursor-pointer text-neutral-700  text-[5.5] font-medium rounded-3xl px-4 py-2 transition hover:bg-bgColor'
             >
               {isOwner ? 'Dashboard' : 'Add listing'}
             </button>
