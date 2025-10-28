@@ -459,12 +459,7 @@ useEffect(() => {
 
       
 
-<CategoryBar
-  filters={filters}
-  setFilters={setFilters}
-  getActiveFilters={getActiveFilters}
-  handleClearAll={handleClearAll}
-/>
+
 
 <h1 className="font-medium text-neutral-700 py-4  text-[18px] ">
   Popular homes in Nairobi
