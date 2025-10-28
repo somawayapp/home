@@ -302,17 +302,17 @@ useEffect(() => {
 <span className="self-stretch my-2  w-px bg-borderColor"></span>
 
 <span className="font-medium text-neutral-700 p-2 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
-  {(filters.propertytype || "Anyhhtype").slice(0, 10)}
+  {(filters.propertytype || "Anytype").slice(0, 10)}
 </span>
 
 
   </div>
 
-  <div className="p-1 md:p-[1px] ">
+  <div className="p-1 md:p-[1.5] ">
    <motion.button
   whileHover={{ scale: 1.05 }}
   whileTap={{ scale: 0.85 }}
-  className="flex items-center justify-center gap-1 p-[5px] btn text-white rounded-full cursor-pointer"
+  className="flex items-center justify-center gap-1 p-[2.5] btn text-white rounded-full cursor-pointer"
 >
   <svg
     viewBox="0 0 32 32"
