@@ -286,7 +286,7 @@ useEffect(() => {
   />
 
   {/* === Text === */}
-<span className="px-2 py-2 font-medium text-neutral-700 text-sm md:text-lg md:pr-4 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+<span className="px-2 py-2 font-medium text-neutral-700  rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
   {(filters.location || "Any where").slice(0, 10)}
 </span>
 </div>
@@ -295,13 +295,13 @@ useEffect(() => {
     <span className="self-stretch my-2  w-px bg-borderColor"></span>
 
 
-<span className="px-2 md:px-4 font-medium text-neutral-700 py-2 text-sm md:text-lg rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+<span className="px-2  font-medium text-neutral-700 py-2 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
 {filters.minPrice ? `Ksh ${filters.minPrice}` : "Any price"}
 </span>
 
 <span className="self-stretch my-2  w-px bg-borderColor"></span>
 
-<span className="px-2 md:px-4 font-medium text-neutral-700 py-2 text-sm md:text-lg rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+<span className="px-2  font-medium text-neutral-700 py-2  rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
   {(filters.propertytype || "Any type").slice(0, 10)}
 </span>
 
