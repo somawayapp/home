@@ -357,7 +357,7 @@ useEffect(() => {
                   changeRole()
                 }
               }}
-              className='cursor-pointer  text-sm rounded-3xl px-4 py-2 transition hover:bg-bgColor'
+              className='cursor-pointer text-neutral-700  text-[7.5] font-medium rounded-3xl px-4 py-2 transition hover:bg-bgColor'
             >
               {isOwner ? 'Dashboard' : 'Add listing'}
             </button>
