@@ -73,8 +73,8 @@ const ListingCard = ({ listing }) => {
           </div>
 
           {/* ✅ Status Badge */}
-          <div className={`absolute rounded-full top-3 left-3 px-3 py-1 text-white text-9 font-medium
-            ${listing.listingstatus ? "bg-gray-50 hover:gray-100" : " bg-gray-50 hover:gray-100"}`}>
+          <div className={`absolute rounded-full top-3 left-3 px-3 py-1 text-neutral-600 text-9 font-medium
+            ${listing.listingstatus ? "bg-gray-100 hover:gray-100" : " bg-gray-50 hover:gray-100"}`}>
             {listing.listingstatus ? "Available" : "Unavailable"}
           </div> 
 
