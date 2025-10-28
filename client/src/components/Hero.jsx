@@ -302,7 +302,7 @@ useEffect(() => {
 <span className="self-stretch my-2  w-px bg-borderColor"></span>
 
 <span className="font-medium text-neutral-700 p-2 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
-  {(filters.propertytype || "Anytype").slice(0, 10)}
+  {(filters.propertytype || "Anyhhtype").slice(0, 10)}
 </span>
 
 
