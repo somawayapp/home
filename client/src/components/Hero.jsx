@@ -273,7 +273,7 @@ useEffect(() => {
     md:ml-[5%] max-w-150
   "
 >
-  <div className="flex-1 gap-1 md:gap-4 flex justify-between items-center">
+  <div className="flex-1 gap-1 md:gap-2 flex justify-between items-center">
    <div className="flex items-center gap-2">
   {/* === House Video Icon === */}
   <video
@@ -323,8 +323,8 @@ useEffect(() => {
     style={{
       display: "block",
       fill: "none",
-      height: "16px",
-      width: "16px",
+      height: "13px",
+      width: "13px",
       stroke: "currentColor",
       strokeWidth: 4,
       overflow: "visible",
