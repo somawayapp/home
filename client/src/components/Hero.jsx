@@ -273,7 +273,7 @@ useEffect(() => {
     gap-1 md:gap-2
     bg-white rounded-full text-gray-600
     shadow-[0px_8px_20px_rgba(0,0,0,0.1)] border border-light
-    ml-0 md:ml-[5%] max-w-150
+     max-w-150
   "
 >
   <div className="flex-1 gap-1 md:gap-2 flex justify-between items-center">
@@ -289,7 +289,7 @@ useEffect(() => {
   />
 
   {/* === Text === */}
-<span className=" p-2 font-medium text-neutral-700 text-[15px] md:text-[13px] rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+<span className=" p-2 font-medium text-neutral-700 text-[13px] md:text-[15px] rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
   {(filters.location || "Anywhere").slice(0, 10)}
 </span>
 </div>
@@ -298,13 +298,13 @@ useEffect(() => {
     <span className="self-stretch my-2  w-px bg-borderColor"></span>
 
 
-<span className=" font-medium text-neutral-700 p-2 text-[15px] md:text-[13px] rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+<span className=" font-medium text-neutral-700 p-2 text-[13px] md:text-[15px] rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
 {filters.minPrice ? `Ksh ${filters.minPrice}` : "Anyprice"}
 </span>
 
 <span className="self-stretch my-2  w-px bg-borderColor"></span>
 
-<span className="font-medium text-neutral-700 p-2 rounded-full text-[15px] md:text-[13px] hover:bg-gray-100 transition-colors cursor-pointer">
+<span className="font-medium text-neutral-700 p-2 rounded-full text-[13px] md:text-[15px] hover:bg-gray-100 transition-colors cursor-pointer">
   {(filters.propertytype || "Anytype").slice(0, 10)}
 </span>
 
