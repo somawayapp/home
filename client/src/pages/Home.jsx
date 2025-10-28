@@ -468,7 +468,6 @@ useEffect(() => {
   <h1 className="pt-2 text-[20px] font-medium text-neutral-900">
     Popular homes in Nairobi 
   </h1>
-  <CategoryBar />
 </div>
 
      
