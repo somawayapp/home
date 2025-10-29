@@ -77,14 +77,14 @@ export default function CategoryBar({ filters, setFilters, getActiveFilters, han
        
 
   {/* Globe icon with tooltip */}
-  <div className="relative group">
-    <button className="flex items-center justify-center border border-borderColor py-2 px-2 rounded-full hover:shadow-lg hover:text-neutral-900 shadow-md text-neutral-700 hover:border-borderColorhover transition">
+  <div className="relative ">
+    <button className="flex group cursor-pointer items-center justify-center border border-borderColor py-2 px-2 rounded-full hover:shadow-lg hover:text-neutral-900 shadow-md text-neutral-700 hover:border-borderColorhover transition">
       <FaGlobe />
     </button>
 
     {/* Tooltip */}
     <div className="absolute z-50 bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-neutral-800 text-white text-sm rounded-lg px-2 py-1 whitespace-nowrap shadow-md">
-      Lang: English
+      Lang: English KE
     </div>
   </div>
 
