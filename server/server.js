@@ -16,12 +16,25 @@ await connectDB()
 // --- CORS Configuration ---
 // Configure CORS to allow a specific origin.
 // Change 'https://houseclient.vercel.app' to your client's actual domain.
+const allowedOrigins = [
+  'https://houseclient.vercel.app',
+  'https://homeclient-git-main-somawayapps-projects.vercel.app',
+];
+
 const corsOptions = {
-  origin: 'https://houseclient.vercel.app', 
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true,
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true); // allow
+    } else {
+      callback(new Error('Not allowed by CORS')); // block
+    }
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
 };
+
+
 app.use(cors(corsOptions));
 //
 // -------------------------
