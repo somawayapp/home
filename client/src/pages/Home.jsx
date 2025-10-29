@@ -468,9 +468,16 @@ useEffect(() => {
          <div className="px-4   md:px-30    ">
          <div className="flex items-center gap-3 justify-between">
 <h1 className="pt-2 text-[16px] md:text-[20px] font-medium text-neutral-900">
-  Latest property listings in{" "}
-  {filters.location ? filters.location.charAt(0).toUpperCase() + filters.location.slice(1) : "Kenya"}
+  Latest{" "}
+  {filters.propertytype
+    ? filters.propertytype.charAt(0).toUpperCase() + filters.propertytype.slice(1)
+    : "property"}{" "}
+  listings in{" "}
+  {filters.location
+    ? filters.location.charAt(0).toUpperCase() + filters.location.slice(1)
+    : "Kenya"}
 </h1>
+
 
 
   <CategoryBar
