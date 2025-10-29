@@ -91,7 +91,7 @@ export default function CategoryBar({ filters, setFilters, getActiveFilters, han
   {/* Filters button */}
   <button
     onClick={() => setShowPopup(!showPopup)}
-    className="flex items-center gap-2 border border-borderColor py-3 px-3 md:px-6 rounded-full md:rounded-2xl hover:shadow-xl hover:text-neutral-900 shadow-lg text-neutral-700 hover:border-borderColorhover cursor-pointer transition"
+    className="flex items-center gap-2 border border-borderColor py-3 px-3 rounded-full md:rounded-2xl hover:shadow-xl hover:text-neutral-900 shadow-lg text-neutral-700 hover:border-borderColorhover cursor-pointer transition"
   >
     <FaSlidersH />
   </button>
