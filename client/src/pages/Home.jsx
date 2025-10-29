@@ -467,7 +467,7 @@ useEffect(() => {
         
          <div className="px-4   md:px-30    ">
          <div className="flex items-center gap-3 justify-between">
-<h1 className="pt-2 text-[16px] md:text-[20px] font-medium text-neutral-900">
+<h1 className="py-2 text-[16px] md:text-[20px] font-medium text-neutral-900">
   Latest{" "}
   {filters.propertytype
     ? filters.propertytype.charAt(0).toUpperCase() + filters.propertytype.slice(1)
@@ -492,7 +492,7 @@ useEffect(() => {
      
 
         {/* --- Listings Grid --- */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 mt-6 mx-auto">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 mx-auto">
       {/* --- Loading Preloaders --- */}
       {loading &&
         Array.from({ length: 8 }).map((_, index) => (
