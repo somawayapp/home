@@ -78,7 +78,7 @@ export default function CategoryBar({ filters, setFilters, getActiveFilters, han
 
   {/* Globe icon with tooltip */}
   <div className="relative group">
-    <button className="flex items-center justify-center border border-borderColor py-3 px-3 rounded-full hover:shadow-lg hover:text-neutral-900 shadow-md text-neutral-700 hover:border-borderColorhover transition">
+    <button className="flex items-center justify-center border border-borderColor py-2 px-2 rounded-full hover:shadow-lg hover:text-neutral-900 shadow-md text-neutral-700 hover:border-borderColorhover transition">
       <FaGlobe />
     </button>
 
@@ -91,7 +91,7 @@ export default function CategoryBar({ filters, setFilters, getActiveFilters, han
   {/* Filters button */}
   <button
     onClick={() => setShowPopup(!showPopup)}
-    className="flex items-center gap-2 border border-borderColor py-3 px-3 rounded-full hover:shadow-lg hover:text-neutral-900 shadow-md text-neutral-700 hover:border-borderColorhover cursor-pointer transition"
+    className="flex items-center gap-2 border border-borderColor py-2 px-2 rounded-full hover:shadow-lg hover:text-neutral-900 shadow-md text-neutral-700 hover:border-borderColorhover cursor-pointer transition"
   >
     <FaSlidersH />
   </button>

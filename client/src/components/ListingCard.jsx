@@ -104,13 +104,13 @@ const ListingCard = ({ listing }) => {
         <>
           <button
             onClick={handlePrev}
-            className="block absolute cursor-pointer left-3 top-[37%] -translate-y-1/2 bg-black/50 text-gray-50 p-2 rounded-full opacity-0 group-hover:opacity-100 transition"
+            className="block absolute cursor-pointer left-3 top-[37%] -translate-y-1/2 bg-black/50 text-gray-100 p-2 rounded-full opacity-0 group-hover:opacity-100 transition"
           >
             <ChevronLeft size={18} />
           </button>
           <button
             onClick={handleNext}
-            className="block absolute cursor-pointer right-3 top-[37%] -translate-y-1/2 bg-black/50 text-gray-50 p-2 rounded-full opacity-0 group-hover:opacity-100 transition"
+            className="block absolute cursor-pointer right-3 top-[37%] -translate-y-1/2 bg-black/50 text-gray-100 p-2 rounded-full opacity-0 group-hover:opacity-100 transition"
           >
             <ChevronRight size={18} />
           </button>
