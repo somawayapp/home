@@ -72,8 +72,11 @@ const ListingCard = ({ listing }) => {
             )}
           </div>
 
-              {/* Price */}
-       
+          {/* ✅ Status Badge 
+          <div className={`absolute rounded-full top-3 left-3 px-3 py-1 text-neutral-600 text-[12px] font-bold
+            ${listing.listingstatus ? "bg-gray-100 hover:gray-100" : " bg-gray-100 hover:gray-100"}`}>
+            {listing.listingstatus ? "Available" : "Unavailable"}
+          </div>  */}
 
           {/* ✅ Image Dots */}
           {images.length > 1 && (
@@ -139,7 +142,15 @@ const ListingCard = ({ listing }) => {
 
    
 
-  
+    {/* Price */}
+    {listing.price && (
+      <p className="  text-neutral-600 text-[13px] md:text-[14px]">
+        KSh {listing.price.toLocaleString()}
+        <span className=" text-neutral-600 ">
+          {listing.offertype === "rent" ? " for month" : " for sale"}
+        </span>
+      </p>
+    )}
   </Link>
 </div>
 
