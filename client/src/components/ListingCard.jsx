@@ -123,11 +123,11 @@ const ListingCard = ({ listing }) => {
     {/* County + Suburb */}
     <div className="flex justify-between mr-1">
       <p className=" font-semibold text-neutral-900 capitalize text-[13px] md:text-[14px]">
-          {listing.propertytype ? ` ${listing.propertytype}` : ""} in 
+          {listing.propertytype ? ` ${listing.propertytype}` : ""}
 
              <span >
   {listing.location?.area
-    ? `, ${listing.location.area.replace(/(division|location)/gi, "").trim()}`
+    ? `in ${listing.location.area.replace(/(division|location)/gi, "").trim()}`
     : ""}
 </span>
       </p>
@@ -136,29 +136,24 @@ const ListingCard = ({ listing }) => {
     </div>
 
     {/* Size + Type (or Bedrooms + Type) */}
-    <p className="text-neutral-600 capitalize text-[13px] md:text-[14px]">
-      {listing.features?.bedrooms
-        ? `${listing.features.bedrooms} Bedroom`
-        : listing.features?.rooms
-        ? `${listing.features.rooms} Room`
-        : listing.features?.size
-        ? `${listing.features.size}`
-        : ""}
+ <p className="text-neutral-600 text-[13px] md:text-[14px] capitalize">
+  {listing.features?.bedrooms
+    ? `${listing.features.bedrooms} Bedroom`
+    : listing.features?.rooms
+    ? `${listing.features.rooms} Rooms`
+    : listing.features?.size
+    ? `${listing.features.size} sq ft`
+    : ""}
 
-        <span> {listing.price && (
-      <p className="  text-neutral-600 text-[13px] md:text-[14px]">
-        KSh {listing.price.toLocaleString()}
-        <span className=" text-neutral-600 ">
-          {listing.offertype === "rent" ? " for month" : " for sale"}
-        </span>
-      </p>
-    )}</span>
-      
-    </p>
+  {" for "}
+  {listing.status?.toLowerCase()}
+
+  {" • KSh "}
+  {listing.price?.toLocaleString()}
+</p>
+
 
    
-
-    {/* Price */}
    
   </Link>
 </div>
