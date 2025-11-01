@@ -50,7 +50,7 @@ const ListingCard = ({ listing }) => {
     <div className="relative gap-2 md:gap-4 group mb-2 md:mb-[8px] overflow-hidden ">
       {/* ✅ Updated Link to generic listing page */}
       <Link to={`/listing-details/${listing._id}`} className="block">
-        <div className="relative w-full h-full aspect-[3/2.9] rounded-2.5xl overflow-hidden">
+        <div className="relative w-full h-full aspect-[3/2.9] rounded-14 overflow-hidden">
           <div
             ref={scrollRef}
             onScroll={handleScroll}
@@ -61,7 +61,7 @@ const ListingCard = ({ listing }) => {
                 <img
                   key={index}
                   src={image}
-                  className="w-full h-full bg-bgColor object-cover rounded-2.5xl flex-shrink-0 snap-center"
+                  className="w-full h-full bg-bgColor object-cover rounded-14 flex-shrink-0 snap-center"
                   alt={`image-${index}`}
                 />
               ))

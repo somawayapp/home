@@ -506,7 +506,7 @@ useEffect(() => {
 
             <div className="p-4 space-y-2">
               <div className="h-4 bg-bgColor rounded w-3/4"></div>
-              <div className="h-4 bg-bgColor rounded w-1"></div>
+              <div className="h-4 bg-bgColor rounded w-full"></div>
             </div>
                       </div>
 
