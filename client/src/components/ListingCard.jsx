@@ -73,15 +73,13 @@ const ListingCard = ({ listing }) => {
           </div>
 
               {/* Price */}
-          <div className="absolute rounded-full top-3 left-3 px-3 py-1 text-neutral-600 text-[12px] font-bold
+          <div className="absolute rounded-full top-3 left-3 px-3 py-1 
            bg-gray-100 hover:gray-100">
 
     {listing.price && (
-      <p>
+      <p className="text-neutral-600 text-[9px] font-bold">
         KSh {listing.price.toLocaleString()}
-        <span>
-          {listing.offertype === "rent" ? " /month" : " /sale"}
-        </span>
+       
       </p>
     )}
           </div> 
