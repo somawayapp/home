@@ -467,7 +467,7 @@ useEffect(() => {
          <div className="px-4   md:px-30    ">
          <div className="flex items-center gap-3 justify-between">
 <h1 className="py-3.5 text-[16px] md:text-[20px] font-medium text-black">
-  Latestu{" "}
+  Latest{" "}
   {filters.propertytype
     ? filters.propertytype.charAt(0).toUpperCase() + filters.propertytype.slice(1)
     : "property"}{" "}
