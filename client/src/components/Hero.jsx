@@ -195,7 +195,7 @@ useEffect(() => {
 
             <div className="text-primary block sm:hidden">
   <svg
-    width="102"
+    width="32"
     height="32"
     viewBox="300 0 400 1080"
     preserveAspectRatio="xMidYMid meet"
