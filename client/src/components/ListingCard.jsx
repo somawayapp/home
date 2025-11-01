@@ -73,16 +73,7 @@ const ListingCard = ({ listing }) => {
           </div>
 
               {/* Price */}
-          <div className="absolute rounded-full top-3 left-3 px-3 py-1 
-           bg-gray-100 hover:gray-100">
-
-    {listing.price && (
-      <p className="text-neutral-600 text-[9px] font-bold">
-        KSh {listing.price.toLocaleString()}
        
-      </p>
-    )}
-          </div> 
 
           {/* ✅ Image Dots */}
           {images.length > 1 && (
