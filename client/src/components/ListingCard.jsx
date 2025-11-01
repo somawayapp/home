@@ -50,18 +50,18 @@ const ListingCard = ({ listing }) => {
     <div className="relative gap-2 md:gap-4 group mb-2 md:mb-[8px] overflow-hidden ">
       {/* ✅ Updated Link to generic listing page */}
       <Link to={`/listing-details/${listing._id}`} className="block">
-        <div className="relative w-full h-full aspect-[3/2.8] rounded-2xl overflow-hidden">
+        <div className="relative w-full h-full aspect-[3/2.9] rounded-3xl overflow-hidden">
           <div
             ref={scrollRef}
             onScroll={handleScroll}
-            className="flex overflow-x-auto aspect-[3/3] snap-x snap-mandatory scroll-smooth scrollbar-none transition-transform duration-200 group-hover:scale-105"
+            className="flex overflow-x-auto aspect-[3/2.9] snap-x snap-mandatory scroll-smooth scrollbar-none transition-transform duration-200 group-hover:scale-105"
           >
             {images.length > 0 ? (
               images.map((image, index) => (
                 <img
                   key={index}
                   src={image}
-                  className="w-full h-full bg-bgColor object-cover rounded-2xl flex-shrink-0 snap-center"
+                  className="w-full h-full bg-bgColor object-cover rounded-3xl flex-shrink-0 snap-center"
                   alt={`image-${index}`}
                 />
               ))
