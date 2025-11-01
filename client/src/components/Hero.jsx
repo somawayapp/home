@@ -197,7 +197,7 @@ useEffect(() => {
   <svg
     width="102"
     height="32"
-    viewBox="350 200 300 700"
+    viewBox="300 0 400 1080"
     preserveAspectRatio="xMidYMid meet"
     style={{ display: "block" }}
   >
