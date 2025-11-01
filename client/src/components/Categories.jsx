@@ -83,7 +83,7 @@ export default function CategoryBar({ filters, setFilters, getActiveFilters, han
     </button>
 
     {/* Tooltip */}
-    <div className="absolute z-50 bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-neutral-800 text-white text-sm rounded-lg px-2 py-1 whitespace-nowrap shadow-md">
+    <div className="absolute z-50 bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-neutral-800 text-white text-xs rounded-lg px-2 py-1 whitespace-nowrap shadow-md">
       Lang: English KE
     </div>
   </div>
