@@ -455,7 +455,6 @@ useEffect(() => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.6, duration: 0.5 }}
-        className="mt-2"
       >
        
 
@@ -467,7 +466,7 @@ useEffect(() => {
         
          <div className="px-4   md:px-30    ">
          <div className="flex items-center gap-3 justify-between">
-<h1 className="py-2 text-[16px] md:text-[20px] font-medium text-neutral-900">
+<h1 className="py-3 text-[16px] md:text-[20px] font-medium text-neutral-900">
   Latest{" "}
   {filters.propertytype
     ? filters.propertytype.charAt(0).toUpperCase() + filters.propertytype.slice(1)
@@ -492,7 +491,7 @@ useEffect(() => {
      
 
         {/* --- Listings Grid --- */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7 gap-4 mx-auto">
+        <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7 gap-3 mx-auto">
       {/* --- Loading Preloaders --- */}
       {loading &&
         Array.from({ length: 8 }).map((_, index) => (
