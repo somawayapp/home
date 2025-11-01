@@ -72,11 +72,14 @@ const ListingCard = ({ listing }) => {
             )}
           </div>
 
-          {/* ✅ Status Badge 
+          {/* ✅ Status Badge  */}
+
           <div className={`absolute rounded-full top-3 left-3 px-3 py-1 text-neutral-600 text-[12px] font-bold
             ${listing.listingstatus ? "bg-gray-100 hover:gray-100" : " bg-gray-100 hover:gray-100"}`}>
-            {listing.listingstatus ? "Available" : "Unavailable"}
-          </div>  */}
+          {listing.offertype === "rent" ? " for rent" : " for sale"}
+          </div> 
+          
+
 
           {/* ✅ Image Dots */}
           {images.length > 1 && (
@@ -136,7 +139,7 @@ const ListingCard = ({ listing }) => {
     </div>
 
     {/* Size + Type (or Bedrooms + Type) */}
- <p className="text-neutral-600 text-[13px] md:text-[14px] capitalize">
+ <p className="text-neutral-600 text-[13px] capitalize">
   {listing.features?.bedrooms
     ? `${listing.features.bedrooms} Bedroom`
     : listing.features?.rooms
