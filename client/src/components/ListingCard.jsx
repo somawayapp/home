@@ -72,10 +72,18 @@ const ListingCard = ({ listing }) => {
             )}
           </div>
 
-          {/* ✅ Status Badge */}
-          <div className={`absolute rounded-full top-3 left-3 px-3 py-1 text-neutral-600 text-[12px] font-bold
-            ${listing.listingstatus ? "bg-gray-100 hover:gray-100" : " bg-gray-100 hover:gray-100"}`}>
-            {listing.listingstatus ? "Available" : "Unavailable"}
+              {/* Price */}
+          <div className="absolute rounded-full top-3 left-3 px-3 py-1 text-neutral-600 text-[12px] font-bold
+           bg-gray-100 hover:gray-100">
+
+    {listing.price && (
+      <p>
+        KSh {listing.price.toLocaleString()}
+        <span>
+          {listing.offertype === "rent" ? " /month" : " /sale"}
+        </span>
+      </p>
+    )}
           </div> 
 
           {/* ✅ Image Dots */}
@@ -142,8 +150,7 @@ const ListingCard = ({ listing }) => {
 
    
 
-    {/* Price */}
-   
+  
   </Link>
 </div>
 
