@@ -124,12 +124,14 @@ const ListingCard = ({ listing }) => {
     <div className="flex justify-between mr-1">
       <p className=" font-semibold text-neutral-900 capitalize text-[13px] md:text-[14px]">
           {listing.propertytype ? ` ${listing.propertytype}` : ""} in 
-      </p>
-     <span className="text-neutral-600">
+
+             <span >
   {listing.location?.area
     ? `, ${listing.location.area.replace(/(division|location)/gi, "").trim()}`
     : ""}
 </span>
+      </p>
+  
 
     </div>
 
