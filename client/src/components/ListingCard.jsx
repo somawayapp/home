@@ -50,7 +50,7 @@ const ListingCard = ({ listing }) => {
     <div className="relative gap-2 md:gap-4 group mb-2 md:mb-[8px] overflow-hidden ">
       {/* ✅ Updated Link to generic listing page */}
       <Link to={`/listing-details/${listing._id}`} className="block">
-        <div className="relative w-full h-full aspect-[3/2.9] rounded-3xl overflow-hidden">
+        <div className="relative w-full h-full aspect-[3/2.9] rounded-[1.25rem] overflow-hidden">
           <div
             ref={scrollRef}
             onScroll={handleScroll}
@@ -61,7 +61,7 @@ const ListingCard = ({ listing }) => {
                 <img
                   key={index}
                   src={image}
-                  className="w-full h-full bg-bgColor object-cover rounded-3xl flex-shrink-0 snap-center"
+                  className="w-full h-full bg-bgColor object-cover rounded-[1.25rem] flex-shrink-0 snap-center"
                   alt={`image-${index}`}
                 />
               ))
@@ -75,7 +75,7 @@ const ListingCard = ({ listing }) => {
           {/* ✅ Status Badge  */}
 
           <div className={`absolute rounded-full top-3 left-3 px-3 py-1 transition-transform duration-200 group-hover:scale-105 text-neutral-600 text-[12px] font-bold
-            ${listing.listingstatus ? "bg-gray-100/80 " : " bg-gray-100/80"}`}>
+            ${listing.listingstatus ? "bg-gray-100/90 " : " bg-gray-100/90"}`}>
           {listing.offertype === "rent" ? " " : " Sale offer"}
           </div> 
           
