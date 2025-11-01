@@ -74,7 +74,7 @@ const ListingCard = ({ listing }) => {
 
           {/* ✅ Status Badge  */}
 
-          <div className={`absolute rounded-full top-3 left-3 px-3 py-1 text-neutral-600 text-[12px] font-bold
+          <div className={`absolute rounded-full top-3 left-3 px-3 py-1 transition-transform duration-200 group-hover:scale-105 text-neutral-600 text-[12px] font-bold
             ${listing.listingstatus ? "bg-gray-100/80 " : " bg-gray-100/80"}`}>
           {listing.offertype === "rent" ? " " : " Sale offer"}
           </div> 
@@ -130,7 +130,7 @@ const ListingCard = ({ listing }) => {
 
              <span >
   {listing.location?.area
-    ? `in ${listing.location.area.replace(/(division|location)/gi, "").trim()}`
+    ? ` in ${listing.location.area.replace(/(division|location)/gi, "").trim()}`
     : ""}
 </span>
       </p>
