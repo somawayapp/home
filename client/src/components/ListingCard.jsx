@@ -118,13 +118,13 @@ const ListingCard = ({ listing }) => {
       )}
 
      {/* ✅ Info Section */}
-<div className="mt-3 gap-1">
+<div className="mt-1.5  ">
   <Link to={`/listing-details/${listing._id}`} className="block">
     {/* County + Suburb */}
     <div className="flex justify-between mr-1">
       <p className=" font-semibold text-neutral-900 capitalize text-[13px] md:text-[14px]">
-        {listing.location?.county || ""}
-        {listing.location?.suburb ? `, ${listing.location.suburb}` : ""}
+        {listing.location?.city || ""}
+        {listing.location?.area ? `, ${listing.location.area}` : ""}
       </p>
     </div>
 
