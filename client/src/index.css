@@ -73,7 +73,6 @@
   .btn:hover {
     background-position: right center;
     transform: scale(1.05);
-  filter: brightness(0.85) saturate(1.3);
   }
 
   /* 🖱️ Click (active) state: subtle press-in effect */
@@ -99,7 +98,7 @@
 
 /* Rail (inactive background) */
 .rc-slider .rc-slider-rail {
-  background-color: #cedeff !important; /* pink-200 */
+  background-color: #ffced9 !important; /* pink-200 */
 }
 
 /* Handle (draggable dots) */

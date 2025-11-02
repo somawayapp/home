@@ -80,7 +80,7 @@ L.Icon.Default.mergeOptions({
 
 // Create a new custom icon that is a simple red dot or pin
 const redPinIcon = new L.Icon({
-  iconUrl: `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png`,
+  iconUrl: `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-pink.png`,
   shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
   iconSize: [25, 41],
   iconAnchor: [12, 41],
@@ -566,7 +566,7 @@ useEffect(() => {
             onClick={(e) => e.stopPropagation()}
             className="bg-white rounded-2xl  w-full max-w-3xl border border-light shadow-xl p-3 md:p-8"
           >
-            <div className="  max-h-[80vh] md:max-h-[90vh] overflow-y-auto p-1 ">
+            <div className="  max-h-[85vh]  overflow-y-auto p-1 ">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-lg font-semibold">Filter Listings</h2>
               <button
@@ -657,7 +657,7 @@ useEffect(() => {
                 {/* New Input Fields */}
                 <div className="flex gap-4 mt-5">
                   <div className="w-1/2">
-                    <label className="block text-sm text-gray-500 mb-1" htmlFor="min-price">Min Price ($)</label>
+                    <label className="block text-sm text-gray-700 mb-1" htmlFor="min-price">Min Price ($)</label>
                     <input
                       id="min-price"
                       type="number"
@@ -668,7 +668,7 @@ useEffect(() => {
                     />
                   </div>
                   <div className="w-1/2">
-                    <label className="block text-sm text-gray-500  mb-1" htmlFor="max-price">Max Price ($)</label>
+                    <label className="block text-sm text-gray-700  mb-1" htmlFor="max-price">Max Price ($)</label>
                     <input
                       id="max-price"
                       type="number"
