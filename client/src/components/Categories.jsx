@@ -90,13 +90,20 @@ export default function CategoryBar({ filters, setFilters, getActiveFilters, han
       </div>
 
   {/* Filters button */}
-  <button
+
+           <div className="relative group/filters">
+       <button
     onClick={() => setShowPopup(!showPopup)}
     className="flex items-center gap-2 border border-borderColor py-2 px-2 rounded-full hover:shadow-lg hover:text-neutral-900 shadow-md text-neutral-700 hover:border-borderColorhover cursor-pointer transition"
   >
     <FaSlidersH />
   </button>
 
+        {/* Tooltip (only shows when hovering globe) */}
+        <div className="absolute z-50 bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover/filters:block bg-neutral-800 text-white text-xs rounded-lg px-2 py-1 whitespace-nowrap shadow-md">
+          Filters
+        </div>
+      </div>
 
           {/* Popup */}
           {showPopup && (
