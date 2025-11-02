@@ -188,7 +188,6 @@ useEffect(() => {
 
              <div className='text-primary hidden sm:block'>
   <svg viewBox="0 0 3490 1080" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Hodii logo">
-    <!-- Combined path: each letter is a subpath (M ... Z). Original rounded geometric shapes -->
     <path fill="currentColor" d="
       /* H */
       M 160 180
