@@ -145,7 +145,7 @@ const ListingCard = ({ listing }) => {
     </div>
 
     {/* Size + Type (or Bedrooms + Type) */}
- <p className="text-neutral-600 text-[12px] capitalize">
+ <p className="text-neutral-600 text-[11px] md:text-[13px] capitalize">
   {listing.features?.bedrooms
     ? `${listing.features.bedrooms} Bedroom`
     : listing.features?.rooms

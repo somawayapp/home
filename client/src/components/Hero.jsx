@@ -352,7 +352,7 @@ useEffect(() => {
   "
 >
   <div className="flex-1 gap-0 md:gap-2 flex justify-between items-center">
-   <div className="flex items-center gap-2">
+   <div className="flex items-center">
   {/* === House Video Icon === */}
   <video
     src={assets.housevid}
@@ -360,7 +360,7 @@ useEffect(() => {
     loop
     muted
     playsInline
-    className="w-15 h-11 rounded-full pl-2   object-cover"
+    className="w-15 h-11 rounded-full pl-0 md:pl-2  object-cover"
   />
 
   {/* === Text === */}
