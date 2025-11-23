@@ -66,7 +66,8 @@ const { listings, loading } = useAppContext();
 
   const [filteredListings, setFilteredListings] = useState([]);
   const [locationSuggestions, setLocationSuggestions] = useState([]);
-  const [mapCenter, setMapCenter] = useState([51.505, -0.09]);
+  const [mapCenter, setMapCenter] = useState([-1.286389, 36.817223]);  
+
   const [markerPosition, setMarkerPosition] = useState(null);
   const [isFetchingLocation, setIsFetchingLocation] = useState(false);
 
