@@ -351,7 +351,7 @@ useEffect(() => {
     ml-0 md:ml-[5%] max-w-150
   "
 >
-  <div className="flex-1 gap-1 md:gap-2 flex justify-between items-center">
+  <div className="flex-1 gap-0 md:gap-2 flex justify-between items-center">
    <div className="flex items-center gap-2">
   {/* === House Video Icon === */}
   <video
@@ -370,7 +370,7 @@ useEffect(() => {
 </div>
 
 
-    <span className="self-stretch my-2  w-px bg-borderColor"></span>
+    <span className="self-stretch my-2 hidden sm:block  w-px bg-borderColor"></span>
 
 
 <span className="font-medium hidden sm:block text-neutral-700 p-2 text-[13px] md:text-[15px] rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
