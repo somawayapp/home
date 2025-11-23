@@ -188,6 +188,7 @@ useEffect(() => {
 
              <div className='text-primary hidden sm:block'>
   <svg viewBox="0 0 3490 1080" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Hodii logo">
+    <!-- Combined path: each letter is a subpath (M ... Z). Original rounded geometric shapes -->
     <path fill="currentColor" d="
       /* H */
       M 160 180
@@ -373,7 +374,7 @@ useEffect(() => {
     <span className="self-stretch my-2  w-px bg-borderColor"></span>
 
 
-<span className=" font-medium text-neutral-700 p-2 text-[13px] md:text-[15px] rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+<span className=" font-medium block sm:hidden text-neutral-700 p-2 text-[13px] md:text-[15px] rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
 {filters.minPrice ? `Ksh ${filters.minPrice}` : "Anyprice"}
 </span>
 

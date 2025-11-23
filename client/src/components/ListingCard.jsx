@@ -77,7 +77,7 @@ const ListingCard = ({ listing }) => {
         {listing.offertype === "sale" && (
   <div
     className={`absolute rounded-full top-3 left-3 px-3 py-1 transition-transform duration-200 group-hover:scale-105 text-neutral-600 text-[12px] font-bold
-      ${listing.listingstatus ? "bg-gray-100/90" : "bg-gray-100/90"}`}
+      ${listing.listingstatus ? "bg-gray-100/90" : "bg-gray-100/95"}`}
   >
     Sale offer
   </div>
@@ -129,7 +129,7 @@ const ListingCard = ({ listing }) => {
   <Link to={`/listing-details/${listing._id}`} className="block">
     {/* County + Suburb */}
     <div className="flex justify-between mr-1">
-      <p className=" font-semibold text-neutral-900  text-[13px] md:text-[14px]">
+      <p className=" font-semibold text-neutral-900  text-[12px] md:text-[14px]">
 
         <span className="capitalize">  {listing.propertytype ? ` ${listing.propertytype}` : ""}   </span>
 
@@ -145,7 +145,7 @@ const ListingCard = ({ listing }) => {
     </div>
 
     {/* Size + Type (or Bedrooms + Type) */}
- <p className="text-neutral-600 text-[13px] capitalize">
+ <p className="text-neutral-600 text-[12px] capitalize">
   {listing.features?.bedrooms
     ? `${listing.features.bedrooms} Bedroom`
     : listing.features?.rooms
