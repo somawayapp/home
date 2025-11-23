@@ -373,9 +373,10 @@ useEffect(() => {
     <span className="self-stretch my-2  w-px bg-borderColor"></span>
 
 
-<span className=" font-medium block sm:hidden text-neutral-700 p-2 text-[13px] md:text-[15px] rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
-{filters.minPrice ? `Ksh ${filters.minPrice}` : "Anyprice"}
+<span className="font-medium hidden sm:block text-neutral-700 p-2 text-[13px] md:text-[15px] rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+  {filters.minPrice ? `Ksh ${filters.minPrice}` : "Anyprice"}
 </span>
+
 
 <span className="self-stretch my-2  w-px bg-borderColor"></span>
 
