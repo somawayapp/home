@@ -854,17 +854,17 @@ useEffect(() => {
                 </div>
               </div>
             </div>
-         </div> 
-         
-         {/* --- Apply Filters Button (floating bottom) --- */}
-<div className="sticky bottom-0 left-0 bg-white p-4 border-t mt-4 flex justify-center">
+            <div className="sticky bottom-0 left-0 flex justify-center">
   <button
     onClick={() => setShowModal(false)}
-    className="px-6 py-3 bg-primary text-white rounded-xl font-semibold shadow-lg hover:bg-primary/90 transition"
+    className="px-6 py-3 bg-primary text-white rounded-3xl font-semibold text-[13px] md:text-[15px] shadow-lg hover:bg-primary/90 transition"
   >
     Apply New Filters
   </button>
 </div>
+         </div> 
+         
+
 
  </motion.div>       
 
