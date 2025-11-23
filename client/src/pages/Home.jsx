@@ -856,7 +856,7 @@ useEffect(() => {
               </div>
             </div>
             <div className="sticky bottom-0 left-0 flex justify-center">
-  <div className="p-[6px] bg-white rounded-3xl shadow-lg">
+  <div className="p-[6px] bg-primary/90 rounded-3xl shadow-lg">
     <button
       onClick={() => setShowModal(false)}
       className="px-6 py-3 bg-primary text-white rounded-3xl font-semibold text-[13px] md:text-[15px] hover:bg-primary/90 transition"
