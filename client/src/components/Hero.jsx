@@ -360,11 +360,11 @@ useEffect(() => {
     loop
     muted
     playsInline
-    className="w-15 h-11 rounded-full pl-0 md:pl-2  object-cover"
+    className="w-13 h-9 md:h-11 md:w-15 rounded-full pl-0 md:pl-2  object-cover"
   />
 
   {/* === Text === */}
-<span className=" p-2 font-medium text-neutral-700 text-[13px] md:text-[15px] rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+<span className=" pl-1 py_2 pr-2 font-medium text-neutral-700 text-[13px] md:text-[15px] rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
   {(filters.location || "Anywhere").slice(0, 10)}
 </span>
 </div>
