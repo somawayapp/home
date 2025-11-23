@@ -73,7 +73,7 @@ export default function CategoryBar({ filters, setFilters, getActiveFilters, han
         {/* Scroll container */}
       
         {/* Filters button + popup wrapper */}
-        <div className="relative flex-shrink-0 flex flex-row ml-2 gap-4">
+        <div className="relative flex-shrink-0 flex flex-row ml-2 gap-2 md:gap-4">
        
 
   {/* Globe icon with tooltip */}
