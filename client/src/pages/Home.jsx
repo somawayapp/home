@@ -3,7 +3,7 @@
 
          
 
-          import React, { useEffect, useState, useRef} from "react";
+          import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
 import Slider from "rc-slider";
@@ -42,7 +42,6 @@ const Home = () => {
 const { listings, loading } = useAppContext();
   const location = useLocation();
   const navigate = useNavigate();
-const fallbackAttempted = useRef(false);
 
   const [filters, setFilters] = useState({
     location: "",
@@ -63,8 +62,6 @@ const fallbackAttempted = useRef(false);
     lng: null,
   });
 
-
-  
   const { showModal, setShowModal } = useAppContext();
 
   const [filteredListings, setFilteredListings] = useState([]);
@@ -223,15 +220,7 @@ newFilteredListings = newFilteredListings.filter((listing) => {
     //    });
     // }
 
-setFilteredListings(newFilteredListings);
-
-if (newFilteredListings.length === 0 && markerPosition && !fallbackAttempted.current) {
-  fallbackAttempted.current = true;
-  getCityLevelLocation(markerPosition).then((cityLevel) => {
-    handleFilterChange("location", cityLevel);
-    toast("No listings for precise spot, falling back to broader area.");
-  });
-}
+    setFilteredListings(newFilteredListings);
   };
 
   // Sync URL with filters
@@ -446,67 +435,49 @@ useEffect(() => {
     setMarkerPosition([parseFloat(savedLat), parseFloat(savedLng)]);
     setMapCenter([parseFloat(savedLat), parseFloat(savedLng)]);
   } else if ("geolocation" in navigator) {
-    navigator.geolocation.getCurrentPosition(
-      async (pos) => {
-        const { latitude, longitude } = pos.coords;
-        setMarkerPosition([latitude, longitude]);
-        setMapCenter([latitude, longitude]);
+  navigator.geolocation.getCurrentPosition(
+  async (pos) => {
+    const { latitude, longitude } = pos.coords;
+    setMarkerPosition([latitude, longitude]);
+    setMapCenter([latitude, longitude]);
 
-        const locationName = await getCityLevelLocation([latitude, longitude]);
-        setLocation(locationName, latitude, longitude);
-      },
-      () => {
-        toast.error("Unable to retrieve location.");
-      }
+    await fallbackLocations(latitude, longitude);
+  },
+  () => {
+    toast.error("Unable to retrieve location.");
+  }
+
     );
   }
 }, []);
 
 
 
-const locationHierarchy = async ([lat, lng]) => {
-  try {
-    const res = await fetch(
-      `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
-    );
+
+const fallbackLocations = async (lat, lng, levels = ["road", "neighbourhood", "ward", "suburb", "village", "town", "city", "county", "country"]) => {
+  for (const level of levels) {
+    const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`);
     const data = await res.json();
-    if (!data.address) return ["Kenya"];
+    let name = data?.address?.[level];
+    if (!name) continue;
 
-    const a = data.address;
+    handleFilterChange("location", name);
+    applyFilter(); // immediately filter with this location
 
-    // Ordered from precise to broadest
-    return [
-      a.road,
-      a.neighbourhood,
-      a.hamlet,
-      a.suburb,
-      a.city_district,
-      a.city,
-      a.town,
-      a.village,
-      a.county,
-      a.state,
-      a.country,
-    ].filter(Boolean);
-  } catch (err) {
-    console.error(err);
-    return ["Kenya"];
+    // Wait for filteredListings to update
+    await new Promise((resolve) => setTimeout(resolve, 100)); 
+
+    if (filteredListings.length > 0) {
+      toast.success(`Location set to: ${name}`);
+      return name; // Found listings, stop
+    }
   }
+
+  // If nothing found
+  handleFilterChange("location", "kenya");
+  toast("No listings found nearby, showing all Kenya");
+  return "kenya";
 };
-
-
-
-const tryFallbacks = async () => {
-  const hierarchy = await locationHierarchy(markerPosition);
-
-  for (let loc of hierarchy) {
-    handleFilterChange("location", loc);
-    applyFilter();
-
-    if (filteredListings.length > 0) break; // stop when listings found
-  }
-};
-
 
 
   return (
@@ -682,20 +653,17 @@ const tryFallbacks = async () => {
               </ul>
             )}
            
-            <div className="flex justify-center mt-4">
-  <div className="p-[6px] bg-primary/40 rounded-3xl shadow-lg inline-block">
-    <button
-      type="button"
-      onClick={handleUseCurrentLocation}
-      className={`px-4 py-3 btn text-sm inline-flex items-center justify-center rounded-3xl text-white font-semibold
-        ${isFetchingLocation ? "animate-pulse" : ""}`}
-    >
-      <FontAwesomeIcon icon={faCrosshairs} className="mr-2" />
-      {isFetchingLocation ? "Fetching location..." : "Use Current Location"}
-    </button>
-  </div>
+             <div className="p-[6px] bg-primary/40 rounded-3xl mt-4 shadow-lg inline-block">
+  <button
+    type="button"
+    onClick={handleUseCurrentLocation}
+    className={`px-4 py-3 btn text-sm inline-flex items-center  justify-center rounded-3xl text-white font-semibold
+      ${isFetchingLocation ? "animate-pulse" : ""}`}
+  >
+    <FontAwesomeIcon icon={faCrosshairs} className="mr-2" />
+    {isFetchingLocation ? "Fetching location..." : "Use Current Location"}
+  </button>
 </div>
-
 
 
               
