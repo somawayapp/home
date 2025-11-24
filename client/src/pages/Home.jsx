@@ -221,7 +221,15 @@ newFilteredListings = newFilteredListings.filter((listing) => {
     //    });
     // }
 
-    setFilteredListings(newFilteredListings);
+setFilteredListings(newFilteredListings);
+
+if (newFilteredListings.length === 0 && markerPosition && !fallbackAttempted.current) {
+  fallbackAttempted.current = true;
+  getCityLevelLocation(markerPosition).then((cityLevel) => {
+    handleFilterChange("location", cityLevel);
+    toast("No listings for precise spot, falling back to broader area.");
+  });
+}
   };
 
   // Sync URL with filters
@@ -422,28 +430,6 @@ const handleMapClick = async (latlng) => {
 
 
 
-// Fallback effect
-useEffect(() => {
-  // Only run if listings exist
-  if (!listings.length) return;
-
-  // Already attempted fallback for this marker? Prevent loops
-  if (fallbackAttempted.current) return;
-
-  if (filteredListings.length === 0 && markerPosition) {
-    fallbackAttempted.current = true;
-
-    // Broader fallback
-    getCityLevelLocation(markerPosition).then((cityLevel) => {
-      handleFilterChange("location", cityLevel);
-
-      // Update markerPosition too if you want URL sync to pick it up
-      setMarkerPosition(markerPosition);
-
-      toast("No listings for precise spot, showing broader area.");
-    });
-  }
-}, [filteredListings, markerPosition, listings]);
 
 
 
