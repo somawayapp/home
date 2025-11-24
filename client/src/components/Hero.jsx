@@ -256,11 +256,10 @@ useEffect(() => {
                 {/* Small screens → small icon */}
 
             <div className="text-primary block sm:hidden">
- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
-  <path fill="#FF5A5F" d="M16 0C12.686 0 9.483 1.316 7 3.464 4.517 5.612 3 8.383 3 12c0 6.627 13 20 13 20s13-13.373 13-20c0-3.617-1.517-6.388-4-8.536C22.517 1.316 19.314 0 16 0z"/>
-  <line x1="12" y1="11" x2="12" y2="17" stroke="white" stroke-width="2"/>
-  <line x1="20" y1="11" x2="20" y2="17" stroke="white" stroke-width="2"/>
-  <line x1="12" y1="14" x2="20" y2="14" stroke="white" stroke-width="2"/>
+ <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="200" height="200">
+  <path fill="#FF5A5F" d="M512 0C362 0 234 128 234 278c0 266 278 678 278 678s278-412 278-678C790 128 662 0 512 0z"/>
+  
+  <path fill="white" d="M412 400h40v160h80V400h40v200h-40v-80h-80v80h-40V400z"/>
 </svg>
 
 </div>
