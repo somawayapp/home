@@ -567,17 +567,32 @@ useEffect(() => {
             onClick={(e) => e.stopPropagation()}
             className="bg-white rounded-2xl  w-full max-w-3xl border border-light shadow-xl p-3 md:p-8"
           >
-            <div className="  max-h-[85vh]  overflow-y-auto p-1 ">
+            <div className="  max-h-[85vh]  irem-center overflow-y-auto p-1 ">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-lg font-semibold">Filter Listings</h2>
-              <button
-                onClick={() => setShowModal(false)}
-                className="text-gray-500 hover:text-gray-700 cursor-pointer"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
+           <button
+  onClick={() => setShowModal(false)}
+  className="cursor-pointer flex items-center justify-center 
+             rounded-full border border-gray-300 
+             text-gray-500 hover:text-gray-700 
+             h-8 w-8 sm:h-10 sm:w-10"
+>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className="h-4 w-4 sm:h-5 sm:w-5"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M6 18L18 6M6 6l12 12"
+    />
+  </svg>
+</button>
+
             </div>
 
             {/* --- Location Input with Autocomplete --- */}
@@ -609,18 +624,18 @@ useEffect(() => {
               </ul>
             )}
            
-             <div className="p-[6px] bg-primary/40 rounded-3xl shadow-lg">
+             <div className="p-[6px] bg-primary/40 rounded-3xl shadow-lg inline-block">
+  <button
+    type="button"
+    onClick={handleUseCurrentLocation}
+    className={`px-4 py-3 btn text-sm inline-flex items-center mt-4 justify-center rounded-3xl text-white font-semibold
+      ${isFetchingLocation ? "animate-pulse" : ""}`}
+  >
+    <FontAwesomeIcon icon={faCrosshairs} className="mr-2" />
+    {isFetchingLocation ? "Fetching location..." : "Use Current Location"}
+  </button>
+</div>
 
-            <button
-              type="button"
-              onClick={handleUseCurrentLocation }
-              className={`px-4 py-3 btn text-sm inline-flex items-center mt-4 justify-center rounded-3xl text-white font-semibold
-                ${isFetchingLocation ? "animate-pulse" : ""}`}
-            >
-              <FontAwesomeIcon icon={faCrosshairs} className="mr-2" />
-              {isFetchingLocation ? "Fetching location..." : "Use Current Location"}
-            </button>
-              </div>
 
               
 
