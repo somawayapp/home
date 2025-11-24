@@ -219,10 +219,11 @@ newFilteredListings = newFilteredListings.filter((listing) => {
     //      return true; // Placeholder
     //    });
     // }
-    
-  setFilteredListings(newFilteredListings);
-  return newFilteredListings; // return the filtered result
-};
+
+    setFilteredListings(newFilteredListings);
+  return newFilteredListings; 
+
+
   };
 
   // Sync URL with filters
