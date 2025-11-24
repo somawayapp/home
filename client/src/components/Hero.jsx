@@ -381,7 +381,7 @@ useEffect(() => {
 
 
 <span className="font-medium hidden sm:block text-neutral-800 p-2 text-[13px] md:text-[15px] rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
-  {filters.minPrice ? `Ksh ${filters.minPrice}` : "Anyprice"}
+  {filters.minPrice ? `Ksh ${filters.minPrice}` : "Anyrice"}
 </span>
 
 
