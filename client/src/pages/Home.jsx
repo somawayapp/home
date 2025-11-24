@@ -573,7 +573,7 @@ useEffect(() => {
            <button
   onClick={() => setShowModal(false)}
   className="cursor-pointer flex items-center justify-center 
-             rounded-full border border-gray-500 
+             rounded-full border-2 border-gray-500 hover:border-geay-700
              text-gray-500 hover:text-gray-700 
              h-6 w-6 sm:h-8 sm:w-8"
 >
@@ -597,8 +597,7 @@ useEffect(() => {
 
             {/* --- Location Input with Autocomplete --- */}
             <label className="block mb-2">Location</label>
-            <input
-              type="text"
+            <input type="text"
               name="location"
               value={filters.location}
               onChange={(e) => handleFilterChange(e.target.name, e.target.value)}
@@ -624,17 +623,20 @@ useEffect(() => {
               </ul>
             )}
            
-             <div className="p-[6px] bg-primary/40 rounded-3xl mt-4 shadow-lg inline-block">
-  <button
-    type="button"
-    onClick={handleUseCurrentLocation}
-    className={`px-4 py-3 btn text-sm inline-flex items-center  justify-center rounded-3xl text-white font-semibold
-      ${isFetchingLocation ? "animate-pulse" : ""}`}
-  >
-    <FontAwesomeIcon icon={faCrosshairs} className="mr-2" />
-    {isFetchingLocation ? "Fetching location..." : "Use Current Location"}
-  </button>
+            <div className="flex justify-center mt-4">
+  <div className="p-[6px] bg-primary/40 rounded-3xl shadow-lg inline-block">
+    <button
+      type="button"
+      onClick={handleUseCurrentLocation}
+      className={`px-4 py-3 btn text-sm inline-flex items-center justify-center rounded-3xl text-white font-semibold
+        ${isFetchingLocation ? "animate-pulse" : ""}`}
+    >
+      <FontAwesomeIcon icon={faCrosshairs} className="mr-2" />
+      {isFetchingLocation ? "Fetching location..." : "Use Current Location"}
+    </button>
+  </div>
 </div>
+
 
 
               

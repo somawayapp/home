@@ -75,7 +75,7 @@
   .btn:hover {
     background-position: right center;
     background-color: #fd2a51;
-    transform: scale(1.01);
+    transform: scale(1.02);
   }
 
   /* 🖱️ Click (active) state: subtle press-in effect */
