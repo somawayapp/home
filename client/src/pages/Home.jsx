@@ -452,17 +452,8 @@ const handleMapClick = async (latlng) => {
 
 // ------------------ Mount Logic ------------------
 useEffect(() => {
-  const savedLocation = localStorage.getItem("lastLocation");
-  const savedLat = localStorage.getItem("lastLat");
-  const savedLng = localStorage.getItem("lastLng");
-
-  // 1. If user has saved location, use it directly
-  if (savedLocation && savedLat && savedLng) {
-    handleFilterChange("location", savedLocation);
-    setMarkerPosition([parseFloat(savedLat), parseFloat(savedLng)]);
-    setMapCenter([parseFloat(savedLat), parseFloat(savedLng)]);
-    return;
-  }
+ 
+  
 
   // 2. Otherwise attempt auto-geolocation
   if ("geolocation" in navigator) {
