@@ -63,6 +63,8 @@ const fallbackAttempted = useRef(false);
     lng: null,
   });
 
+
+  
   const { showModal, setShowModal } = useAppContext();
 
   const [filteredListings, setFilteredListings] = useState([]);
@@ -459,6 +461,51 @@ useEffect(() => {
     );
   }
 }, []);
+
+
+
+const locationHierarchy = async ([lat, lng]) => {
+  try {
+    const res = await fetch(
+      `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
+    );
+    const data = await res.json();
+    if (!data.address) return ["Kenya"];
+
+    const a = data.address;
+
+    // Ordered from precise to broadest
+    return [
+      a.road,
+      a.neighbourhood,
+      a.hamlet,
+      a.suburb,
+      a.city_district,
+      a.city,
+      a.town,
+      a.village,
+      a.county,
+      a.state,
+      a.country,
+    ].filter(Boolean);
+  } catch (err) {
+    console.error(err);
+    return ["Kenya"];
+  }
+};
+
+
+
+const tryFallbacks = async () => {
+  const hierarchy = await locationHierarchy(markerPosition);
+
+  for (let loc of hierarchy) {
+    handleFilterChange("location", loc);
+    applyFilter();
+
+    if (filteredListings.length > 0) break; // stop when listings found
+  }
+};
 
 
 
