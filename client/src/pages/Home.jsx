@@ -134,23 +134,7 @@ const redPinIcon = new L.Icon({
 
   
   // Attempts each fallback level until listings appear
-const tryLocationFallback = async (levels) => {
-  for (const lvl of levels) {
-    handleFilterChange("location", lvl);
 
-    // allow state update + filter re-run
-    await new Promise((res) => setTimeout(res, 150));
-
-    if (filteredListings.length > 0) {
-      toast.success(`Showing listings for: ${lvl}`);
-      return lvl;
-    }
-  }
-
-  // absolutely nothing found
-  toast.error("No listings found anywhere near your area.");
-  return null;
-};
 
 
   // Function to apply all filters
@@ -272,6 +256,30 @@ newFilteredListings = newFilteredListings.filter((listing) => {
     setFilteredListings(newFilteredListings);
   };
 
+
+
+  
+
+    const tryLocationFallback = async (levels) => {
+  for (const lvl of levels) {
+    handleFilterChange("location", lvl);
+
+    // allow state update + filter re-run
+    await new Promise((res) => setTimeout(res, 150));
+
+    if (filteredListings.length > 0) {
+      toast.success(`Showing listings for: ${lvl}`);
+      return lvl;
+    }
+  }
+
+  // absolutely nothing found
+  toast.error("No listings found anywhere near your area.");
+  return null;
+};
+
+
+
   // Sync URL with filters
   useEffect(() => {
     const params = new URLSearchParams();
@@ -352,55 +360,7 @@ newFilteredListings = newFilteredListings.filter((listing) => {
 
 // Function to get the most specific available location name
 // Only city/town/village (for default auto-fetch)
-const getCityLevelLocation = async ([lat, lng]) => {
-  try {
-    const res = await fetch(
-      `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
-    );
-    const data = await res.json();
-    if (data && data.address) {
-      const address = data.address;
-      return (
-        address.city ||
-        address.town ||
-        address.village ||
-        "kenya"
-      );
-    }
-    return "kenya";
-  } catch (err) {
-    console.error("City-level geocode error:", err);
-    return "kenya";
-  }
-};
 
-// Full fallback chain (for button click + map click)
-const getPreciseLocationName = async ([lat, lng]) => {
-  try {
-    const res = await fetch(
-      `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
-    );
-    const data = await res.json();
-    if (data && data.address) {
-      const a = data.address;
-      return (
-        a.road ||
-        a.neighbourhood ||
-        a.hamlet ||
-        a.suburb ||
-        a.city ||
-        a.town ||
-        a.village ||
-        a.county ||
-        "kenya"
-      );
-    }
-    return "kenya";
-  } catch (err) {
-    console.error("Precise geocode error:", err);
-    return "kenya";
-  }
-};
 
 
 
@@ -503,6 +463,9 @@ useEffect(() => {
         const fallbackLevels = extractFallbackLevels(data.address);
 
         // Try each level until results appear
+        navigate("?", { replace: true }); // RESET URL
+
+
         const selected = await tryLocationFallback(fallbackLevels);
 
         if (selected) {
