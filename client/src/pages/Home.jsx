@@ -42,6 +42,36 @@ const Home = () => {
 const { listings, loading } = useAppContext();
   const location = useLocation();
   const navigate = useNavigate();
+  const extractFallbackLevels = (address) => {
+  if (!address) return ["kenya"];
+
+  const {
+    road,
+    neighbourhood,
+    hamlet,
+    suburb,
+    city,
+    town,
+    village,
+    county,
+    state,
+    country
+  } = address;
+
+  return [
+    road,
+    neighbourhood,
+    hamlet,
+    suburb,
+    city,
+    town,
+    village,
+    county,
+    state,
+    country || "kenya"
+  ].filter(Boolean);  // remove empty ones
+};
+
 
   const [filters, setFilters] = useState({
     location: "",
@@ -103,6 +133,25 @@ const redPinIcon = new L.Icon({
   };
 
   
+  // Attempts each fallback level until listings appear
+const tryLocationFallback = async (levels) => {
+  for (const lvl of levels) {
+    handleFilterChange("location", lvl);
+
+    // allow state update + filter re-run
+    await new Promise((res) => setTimeout(res, 150));
+
+    if (filteredListings.length > 0) {
+      toast.success(`Showing listings for: ${lvl}`);
+      return lvl;
+    }
+  }
+
+  // absolutely nothing found
+  toast.error("No listings found anywhere near your area.");
+  return null;
+};
+
 
   // Function to apply all filters
   const applyFilter = () => {
@@ -303,10 +352,6 @@ newFilteredListings = newFilteredListings.filter((listing) => {
 
 // Function to get the most specific available location name
 // Only city/town/village (for default auto-fetch)
-
-
-
-
 const getCityLevelLocation = async ([lat, lng]) => {
   try {
     const res = await fetch(
@@ -379,12 +424,10 @@ const handleUseCurrentLocation = async () => {
         setMarkerPosition([latitude, longitude]);
         setMapCenter([latitude, longitude]);
 
+        // full fallback chain
         const precise = await getPreciseLocationName([latitude, longitude]);
-handleFilterChange("location", precise);
-// no need to do setTimeout check anymore
-toast.success(`Location set to: ${precise}`);
+        handleFilterChange("location", precise);
 
-      
         // run filter immediately and check if empty
         setTimeout(() => {
           if (filteredListings.length === 0) {
@@ -425,22 +468,6 @@ const handleMapClick = async (latlng) => {
 
 
 
-// Track if fallback has already run
-const [fallbackAttempted, setFallbackAttempted] = useState(false);
-
-useEffect(() => {
-  if (filteredListings.length === 0 && !fallbackAttempted && markerPosition) {
-    setFallbackAttempted(true); // prevent infinite loop
-    const [lat, lng] = markerPosition;
-    getCityLevelLocation([lat, lng]).then((cityLevel) => {
-      handleFilterChange("location", cityLevel);
-      toast("No listings for precise spot, falling back to broader area.");
-    });
-  }
-}, [filteredListings]);
-
-
-
 
 
 // ------------------ Mount Logic ------------------
@@ -449,19 +476,39 @@ useEffect(() => {
   const savedLat = localStorage.getItem("lastLat");
   const savedLng = localStorage.getItem("lastLng");
 
+  // 1. If user has saved location, use it directly
   if (savedLocation && savedLat && savedLng) {
     handleFilterChange("location", savedLocation);
     setMarkerPosition([parseFloat(savedLat), parseFloat(savedLng)]);
     setMapCenter([parseFloat(savedLat), parseFloat(savedLng)]);
-  } else if ("geolocation" in navigator) {
+    return;
+  }
+
+  // 2. Otherwise attempt auto-geolocation
+  if ("geolocation" in navigator) {
     navigator.geolocation.getCurrentPosition(
       async (pos) => {
         const { latitude, longitude } = pos.coords;
+
         setMarkerPosition([latitude, longitude]);
         setMapCenter([latitude, longitude]);
 
-        const locationName = await getCityLevelLocation([latitude, longitude]);
-        setLocation(locationName, latitude, longitude);
+        // Hit nominatim once
+        const res = await fetch(
+          `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
+        );
+        const data = await res.json();
+
+        // Extract possible fallback levels
+        const fallbackLevels = extractFallbackLevels(data.address);
+
+        // Try each level until results appear
+        const selected = await tryLocationFallback(fallbackLevels);
+
+        if (selected) {
+          // Save for next visit
+          setLocation(selected, latitude, longitude);
+        }
       },
       () => {
         toast.error("Unable to retrieve location.");
@@ -469,6 +516,7 @@ useEffect(() => {
     );
   }
 }, []);
+
 
 
 
@@ -619,7 +667,8 @@ useEffect(() => {
 
             {/* --- Location Input with Autocomplete --- */}
             <label className="block mb-2">Location</label>
-            <input type="text"
+            <input
+             type="text"
               name="location"
               value={filters.location}
               onChange={(e) => handleFilterChange(e.target.name, e.target.value)}
