@@ -187,9 +187,11 @@ React.useEffect(() => {
           )}
         </p>
 
+  <div className="p-[6px] bg-primary/40 rounded-3xl shadow-lg">
+
         <button
           disabled={loading}
-          className={`bg-primary hover:bg-blue-800 transition-all text-white w-full py-2 rounded-md cursor-pointer ${
+          className={`bg-primary hover:bg-primaryhover transition-all text-white w-full py-2 rounded-3xl cursor-pointer ${
             loading ? "opacity-60 cursor-not-allowed" : ""
           }`}
         >
@@ -201,6 +203,7 @@ React.useEffect(() => {
             ? "Create Account"
             : "Login"}
         </button>
+        </div>
       </form>
     </div>
   );

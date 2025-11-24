@@ -608,17 +608,19 @@ useEffect(() => {
                 ))}
               </ul>
             )}
+           
+             <div className="p-[6px] bg-primary/40 rounded-3xl shadow-lg">
 
             <button
               type="button"
               onClick={handleUseCurrentLocation }
-              className={`px-4 py-3 btn text-sm inline-flex items-center mt-4 justify-center rounded-xl text-white font-semibold
+              className={`px-4 py-3 btn text-sm inline-flex items-center mt-4 justify-center rounded-3xl text-white font-semibold
                 ${isFetchingLocation ? "animate-pulse" : ""}`}
             >
               <FontAwesomeIcon icon={faCrosshairs} className="mr-2" />
               {isFetchingLocation ? "Fetching location..." : "Use Current Location"}
             </button>
-
+              </div>
 
               
 
