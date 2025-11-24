@@ -303,6 +303,22 @@ newFilteredListings = newFilteredListings.filter((listing) => {
 
 // Function to get the most specific available location name
 // Only city/town/village (for default auto-fetch)
+
+// fallback flag
+const [fallbackAttempted, setFallbackAttempted] = useState(false);
+
+useEffect(() => {
+  if (filteredListings.length === 0 && !fallbackAttempted && markerPosition) {
+    setFallbackAttempted(true); // prevent infinite loop
+    const [lat, lng] = markerPosition;
+    getCityLevelLocation([lat, lng]).then((cityLevel) => {
+      handleFilterChange("location", cityLevel);
+      toast("No listings for precise spot, falling back to broader area.");
+    });
+  }
+}, [filteredListings]);
+
+
 const getCityLevelLocation = async ([lat, lng]) => {
   try {
     const res = await fetch(
@@ -375,10 +391,12 @@ const handleUseCurrentLocation = async () => {
         setMarkerPosition([latitude, longitude]);
         setMapCenter([latitude, longitude]);
 
-        // full fallback chain
         const precise = await getPreciseLocationName([latitude, longitude]);
-        handleFilterChange("location", precise);
+handleFilterChange("location", precise);
+// no need to do setTimeout check anymore
+toast.success(`Location set to: ${precise}`);
 
+      
         // run filter immediately and check if empty
         setTimeout(() => {
           if (filteredListings.length === 0) {
