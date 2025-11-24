@@ -354,7 +354,7 @@ useEffect(() => {
     flex items-center justify-between
     gap-1 md:gap-2
     bg-white rounded-full text-gray-600
-    shadow-[0px_8px_20px_rgba(0,0,0,0.1)] border border-light
+    shadow-[0px_8px_20px_rgba(0,0,0,0.1)] border border-lightb
     ml-0 md:ml-[5%] max-w-150
   "
 >
