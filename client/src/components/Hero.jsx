@@ -256,8 +256,14 @@ useEffect(() => {
                 {/* Small screens → small icon */}
 
             <div className="text-primary block sm:hidden">
- 
-<svg width="102" height="108" viewBox="0 0 1007 1080" xmlns="http://www.w3.org/2000/svg">
+  <svg
+    width="32"
+    height="32"
+    viewBox="300 0 400 1080"
+    preserveAspectRatio="xMidYMid meet"
+    style={{ display: "block" }}
+  >
+    
   <path d="
     M949.278 666.715
     C875.957 506.859 795.615 344.664 713.713 184.809
@@ -269,26 +275,26 @@ useEffect(() => {
     C47.5802 687.769 24.9598 737.675 16.3796 760.289
     C6.23941 787.581 0.779297 817.213 0.779297 846.845
     C0.779297 975.509 101.401 1079.22 235.564 1079.22
-    C346.326 1079.22 400 1015 420 940
+    C346.326 1079.22 400 1015 400 940
   " fill="none" stroke="currentColor" stroke-width="35" stroke-linecap="round" stroke-linejoin="round"/>
 
   <path d="
-    M420 940
-    C420 930 420 470 420 470
-    M420 705 L580 705
-    M580 470
-    C580 470 580 930 580 940
+    M400 940
+    C400 930 400 470 400 470
+    M400 705 L600 705
+    M600 470
+    C600 470 600 930 600 940
   " fill="none" stroke="currentColor" stroke-width="35" stroke-linecap="round" stroke-linejoin="round"/>
 
   <path d="
-    M580 940
-    C590 1010 640 1079.22 770.655 1079.22
+    M600 940
+    C610 1010 640 1079.22 770.655 1079.22
     C904.817 1079.22 1006.22 975.509 1006.22 846.845
     C1006.22 817.213 999.979 787.581 989.839 760.289
     C981.259 737.675 958.638 687.769 949.278 666.715
   " fill="none" stroke="currentColor" stroke-width="35" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
 
-  </svg>
 </div>
 
             </Link>
