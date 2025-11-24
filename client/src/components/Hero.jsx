@@ -255,7 +255,7 @@ useEffect(() => {
 
                 {/* Small screens → small icon */}
 
-            <div className="text-primary block sm:hidden">
+             <div className="text-primary block sm:hidden">
   <svg
     width="32"
     height="32"
@@ -276,7 +276,7 @@ useEffect(() => {
     C6.23941 787.581 0.779297 817.213 0.779297 846.845
     C0.779297 975.509 101.401 1079.22 235.564 1079.22
     C346.326 1079.22 400 1015 400 940
-  " fill="none" stroke="currentColor" stroke-width="35" stroke-linecap="round" stroke-linejoin="round"/>
+  " fill="none" stroke="currentColor" stroke-width="45" stroke-linecap="round" stroke-linejoin="round"/>
 
   <path d="
     M400 940
@@ -284,7 +284,7 @@ useEffect(() => {
     M400 705 L600 705
     M600 470
     C600 470 600 930 600 940
-  " fill="none" stroke="currentColor" stroke-width="35" stroke-linecap="round" stroke-linejoin="round"/>
+  " fill="none" stroke="currentColor" stroke-width="45" stroke-linecap="round" stroke-linejoin="round"/>
 
   <path d="
     M600 940
@@ -292,17 +292,11 @@ useEffect(() => {
     C904.817 1079.22 1006.22 975.509 1006.22 846.845
     C1006.22 817.213 999.979 787.581 989.839 760.289
     C981.259 737.675 958.638 687.769 949.278 666.715
-  " fill="none" stroke="currentColor" stroke-width="35" stroke-linecap="round" stroke-linejoin="round"/>
+  " fill="none" stroke="currentColor" stroke-width="45" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
 
 </div>
-
             </Link>
-
-
-
-
-            
 
               
 
