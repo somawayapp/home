@@ -225,7 +225,7 @@ useEffect(() => {
     C981.259 737.675 958.638 687.769 949.278 666.715
   " fill="none" stroke="currentColor" stroke-width="85" stroke-linecap="round" stroke-linejoin="round"/>
 
-  <text x="1100" y="540" font-family="Arial, sans-serif" font-size="460" font-weight="semibold" fill="currentColor" dominant-baseline="middle">hodii</text>
+  <text x="1100" y="540" font-family="Arial, sans-serif" font-size="660" font-weight="semibold" fill="currentColor" dominant-baseline="middle">hodii</text>
 </svg>
 
 </div>
