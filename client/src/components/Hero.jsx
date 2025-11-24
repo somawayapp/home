@@ -371,7 +371,7 @@ useEffect(() => {
   />
 
   {/* === Text === */}
-<span className=" pl-1 py_2 pr-2 font-medium text-neutral-700 text-[13px] md:text-[15px] rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+<span className=" pl-1 py_2 pr-2 font-medium text-neutral-800 text-[13px] md:text-[15px] rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
   {(filters.location || "Anywhere").slice(0, 10)}
 </span>
 </div>
@@ -380,14 +380,14 @@ useEffect(() => {
     <span className="self-stretch my-2 hidden sm:block  w-px bg-borderColor"></span>
 
 
-<span className="font-medium hidden sm:block text-neutral-700 p-2 text-[13px] md:text-[15px] rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+<span className="font-medium hidden sm:block text-neutral-800 p-2 text-[13px] md:text-[15px] rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
   {filters.minPrice ? `Ksh ${filters.minPrice}` : "Anyprice"}
 </span>
 
 
 <span className="self-stretch my-2  w-px bg-borderColor"></span>
 
-<span className="font-medium text-neutral-700 p-2 rounded-full text-[13px] md:text-[15px] hover:bg-gray-100 transition-colors cursor-pointer">
+<span className="font-medium text-neutral-800 p-2 rounded-full text-[13px] md:text-[15px] hover:bg-gray-100 transition-colors cursor-pointer">
   {(filters.propertytype || "Anytype").slice(0, 10)}
 </span>
 
@@ -443,14 +443,14 @@ useEffect(() => {
                   changeRole()
                 }
               }}
-              className='cursor-pointer text-neutral-700  text-[15px] font-medium rounded-3xl px-4 py-2 transition hover:bg-bgColor'
+              className='cursor-pointer text-neutral-800  text-[15px] font-medium rounded-3xl px-4 py-2 transition hover:bg-bgColor'
             >
               {isOwner ? 'Dashboard' : 'Become an agent'}
             </button>
           </div>
 
           {/* Toggle Menu Button */}
-          <div className='relative text-neutral-700 hover:text-neutral-900 '>
+          <div className='relative text-neutral-800 hover:text-neutral-900 '>
             <button
               className='flex cursor-pointer items-center gap-3 rounded-full border border-borderColor 
               px-3 py-3  transition shadow-md hover:shadow-lg md:px-2 md:py-1'
