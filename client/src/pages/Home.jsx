@@ -303,6 +303,18 @@ newFilteredListings = newFilteredListings.filter((listing) => {
 
 // Function to get the most specific available location name
 // Only city/town/village (for default auto-fetch)
+// Helper to clean up location names
+const cleanLocationName = (name) => {
+  if (!name) return "kenya";
+  return name
+    .toLowerCase()
+    .replace(/\b(ward|sub location|vilage|city|town|estate|county|road|location)\b/gi, "") // remove unwanted words
+    .replace(/\s{2,}/g, " ") // collapse multiple spaces
+    .trim()
+    .replace(/\b\w/g, (c) => c.toUpperCase()); // capitalize first letters
+};
+
+// Updated getCityLevelLocation
 const getCityLevelLocation = async ([lat, lng]) => {
   try {
     const res = await fetch(
@@ -311,21 +323,21 @@ const getCityLevelLocation = async ([lat, lng]) => {
     const data = await res.json();
     if (data && data.address) {
       const address = data.address;
-      return (
+      const rawName =
         address.city ||
         address.town ||
         address.village ||
-        "kenya"
-      );
+        "kenya";
+      return cleanLocationName(rawName);
     }
-    return "kenya";
+    return "Kenya";
   } catch (err) {
     console.error("City-level geocode error:", err);
-    return "kenya";
+    return "Kenya";
   }
 };
 
-// Full fallback chain (for button click + map click)
+// Updated getPreciseLocationName
 const getPreciseLocationName = async ([lat, lng]) => {
   try {
     const res = await fetch(
@@ -334,7 +346,7 @@ const getPreciseLocationName = async ([lat, lng]) => {
     const data = await res.json();
     if (data && data.address) {
       const a = data.address;
-      return (
+      const rawName =
         a.road ||
         a.neighbourhood ||
         a.hamlet ||
@@ -343,15 +355,16 @@ const getPreciseLocationName = async ([lat, lng]) => {
         a.town ||
         a.village ||
         a.county ||
-        "kenya"
-      );
+        "kenya";
+      return cleanLocationName(rawName);
     }
-    return "kenya";
+    return "Kenya";
   } catch (err) {
     console.error("Precise geocode error:", err);
-    return "kenya";
+    return "Kenya";
   }
 };
+
 
 
 
