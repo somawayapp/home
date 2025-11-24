@@ -841,14 +841,16 @@ useEffect(() => {
               </label>
             </div>             </div>
 
+          <div className="p-[6px] bg-primary/40 rounded-3xl mt-4 shadow-lg inline-block">
 
             <button
               type="submit"
-              className="flex items-center gap-2 px-4 py-2.5 mt-4 btn text-white rounded-md font-medium w-max cursor-pointer"
+              className="flex items-center gap-2 px-4 py-2.5 btn text-white rounded-3xl font-medium w-max cursor-pointer"
             >
               <img src={assets.tick_icon} alt="" />
               {isLoading ? 'Creating listing...' : 'Create listing'}
             </button>
+            </div>
 
             {/* Listing Progress */}
            {/* Listing Progress */}

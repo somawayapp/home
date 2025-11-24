@@ -68,13 +68,14 @@
 @layer components {
   .btn {
     @apply  tracking-wide cursor-pointer select-none transition-all duration-300 ease-out;
-    background: linear-gradient(135deg, #ff385c, #fd2a51);
+    background: linear-gradient(135deg, #ff385c);
     background-size: 200% 200%;
   }
   /* ✨ Hover effect: gradient shifts + glow + smooth scale */
   .btn:hover {
     background-position: right center;
-    transform: scale(1.05);
+    background-color: #fd2a51;
+    transform: scale(1.01);
   }
 
   /* 🖱️ Click (active) state: subtle press-in effect */
