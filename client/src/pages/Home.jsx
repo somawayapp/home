@@ -264,27 +264,39 @@ newFilteredListings = newFilteredListings.filter((listing) => {
 };
 
 
+
+const [isFallbackRunning, setIsFallbackRunning] = useState(false);
+
   
 
-   const tryLocationFallback = async (levels) => {
+  const tryLocationFallback = async (levels) => {
+  setIsFallbackRunning(true);
+
   for (const lvl of levels) {
     handleFilterChange("location", lvl);
-
     await new Promise((res) => setTimeout(res, 150));
 
-    const results = applyFilter();      // <- compute fresh results instantly
+    const results = applyFilter();
 
     if (results.length > 0) {
-      setFilteredListings(results);     // <- update UI AFTER selection
+      setFilteredListings(results);
+      setIsFallbackRunning(false);
       toast.success(`Showing listings for: ${lvl}`);
       return lvl;
     }
   }
 
-  toast.error("No listings found anywhere near your area.");
+  toast.error("No listings found.");
+  setIsFallbackRunning(false);
   return null;
 };
 
+
+useEffect(() => {
+  if (!isFallbackRunning && listings.length > 0) {
+    applyFilter();
+  }
+}, [listings, filters, isFallbackRunning]);
 
 
 
