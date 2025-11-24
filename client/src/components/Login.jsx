@@ -191,7 +191,7 @@ React.useEffect(() => {
 
         <button
           disabled={loading}
-          className={`bg-primary hover:bg-primary-dull transition-all text-white w-full py-2 rounded-3xl cursor-pointer ${
+          className={`bg-primary btn transition-all text-white w-full py-2 rounded-3xl cursor-pointer ${
             loading ? "opacity-60 cursor-not-allowed" : ""
           }`}
         >

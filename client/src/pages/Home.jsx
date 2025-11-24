@@ -37,6 +37,7 @@ const LocationSelector = ({ onMapClick }) => {
 const internalAmenities = ["AC", "Heating", "Wi-Fi", "Bathtub", "Dishwasher", "Built-in washer", "Built-in dryer", "Smart home", "Balcony", "Security systems", "CCTV cameras", "Intercoms"];
 const externalAmenities = ["Parking", "Pool", "Gym & Fitness center", "Social areas", "Rooftop gardens", "Back garden", "Bike parking", "Covered parking", "Package lockers", "Party room", "Billiards table", "Clubhouse", "Spa", "Playgrounds", "Walking paths", "Friendly spaces", "Valet trash", "Surveillance cameras", "Building Wi-Fi", "Greenery around the space"];
 const nearbyAmenities = ["Gym", "Shopping Mall", "Public transportation access", "Airport", "Train", "Beach", "Parks", "Restaurants", "Coffee shops", "Grocery stores", "Schools", "Hospitals/Clinics", "Banks/ATMs", "Movie theaters", "Libraries"];
+const fallbackAttempted = React.useRef(false);
 
 const Home = () => {
 const { listings, loading } = useAppContext();
@@ -417,6 +418,24 @@ const handleMapClick = async (latlng) => {
   toast.success(`Location set to: ${locationName}`);
 };
 
+
+
+
+useEffect(() => {
+  if (!filters.location) return;
+  if (fallbackAttempted.current) return;   // prevent infinite loop
+
+  // Only run after filtering actually happened
+  if (filteredListings.length === 0) {
+    fallbackAttempted.current = true;
+
+    getCityLevelLocation([markerPosition[0], markerPosition[1]])
+      .then((cityLevel) => {
+        handleFilterChange("location", cityLevel);
+        toast("No listings for precise spot, showing broader area.");
+      });
+  }
+}, [filteredListings, filters.location]);
 
 
 
