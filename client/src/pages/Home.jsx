@@ -304,19 +304,7 @@ newFilteredListings = newFilteredListings.filter((listing) => {
 // Function to get the most specific available location name
 // Only city/town/village (for default auto-fetch)
 
-// fallback flag
-const [fallbackAttempted, setFallbackAttempted] = useState(false);
 
-useEffect(() => {
-  if (filteredListings.length === 0 && !fallbackAttempted && markerPosition) {
-    setFallbackAttempted(true); // prevent infinite loop
-    const [lat, lng] = markerPosition;
-    getCityLevelLocation([lat, lng]).then((cityLevel) => {
-      handleFilterChange("location", cityLevel);
-      toast("No listings for precise spot, falling back to broader area.");
-    });
-  }
-}, [filteredListings]);
 
 
 const getCityLevelLocation = async ([lat, lng]) => {
@@ -437,6 +425,19 @@ const handleMapClick = async (latlng) => {
 
 
 
+// Track if fallback has already run
+const [fallbackAttempted, setFallbackAttempted] = useState(false);
+
+useEffect(() => {
+  if (filteredListings.length === 0 && !fallbackAttempted && markerPosition) {
+    setFallbackAttempted(true); // prevent infinite loop
+    const [lat, lng] = markerPosition;
+    getCityLevelLocation([lat, lng]).then((cityLevel) => {
+      handleFilterChange("location", cityLevel);
+      toast("No listings for precise spot, falling back to broader area.");
+    });
+  }
+}, [filteredListings]);
 
 
 
