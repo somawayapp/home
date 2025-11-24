@@ -421,21 +421,6 @@ const handleMapClick = async (latlng) => {
 
 
 
-useEffect(() => {
-  if (!filters.location) return;
-  if (fallbackAttempted.current) return;   // prevent infinite loop
-
-  // Only run after filtering actually happened
-  if (filteredListings.length === 0) {
-    fallbackAttempted.current = true;
-
-    getCityLevelLocation([markerPosition[0], markerPosition[1]])
-      .then((cityLevel) => {
-        handleFilterChange("location", cityLevel);
-        toast("No listings for precise spot, showing broader area.");
-      });
-  }
-}, [filteredListings, filters.location]);
 
 // Fallback effect
 useEffect(() => {
