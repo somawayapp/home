@@ -186,7 +186,7 @@ useEffect(() => {
 <Link to="https://houseclient.vercel.app" className="z-50  ">
                 {/* Larger screens → full logo */}
 
-             <div className='text-primary hidden sm:block'>
+             <div className='text-primary'>
   <svg viewBox="0 0 3490 1080" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Hodii logo">
   
   <path d="
@@ -201,7 +201,7 @@ useEffect(() => {
     C6.23941 787.581 0.779297 817.213 0.779297 846.845
     C0.779297 975.509 101.401 1079.22 235.564 1079.22
     C346.326 1079.22 400 1015 400 940
-  " fill="none" stroke="currentColor" stroke-width="35" stroke-linecap="round" stroke-linejoin="round"/>
+  " fill="none" stroke="currentColor" stroke-width="85" stroke-linecap="round" stroke-linejoin="round"/>
 
   <path d="
     M400 940
@@ -209,7 +209,7 @@ useEffect(() => {
     M400 705 L600 705
     M600 470
     C600 470 600 930 600 940
-  " fill="none" stroke="currentColor" stroke-width="35" stroke-linecap="round" stroke-linejoin="round"/>
+  " fill="none" stroke="currentColor" stroke-width="85" stroke-linecap="round" stroke-linejoin="round"/>
 
   <path d="
     M600 940
@@ -217,7 +217,7 @@ useEffect(() => {
     C904.817 1079.22 1006.22 975.509 1006.22 846.845
     C1006.22 817.213 999.979 787.581 989.839 760.289
     C981.259 737.675 958.638 687.769 949.278 666.715
-  " fill="none" stroke="currentColor" stroke-width="35" stroke-linecap="round" stroke-linejoin="round"/>
+  " fill="none" stroke="currentColor" stroke-width="85" stroke-linecap="round" stroke-linejoin="round"/>
 
   <text x="1100" y="540" font-family="Arial, sans-serif" font-size="360" font-weight="normal" fill="#000" dominant-baseline="middle">Hodii</text>
 </svg>
