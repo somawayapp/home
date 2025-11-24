@@ -492,7 +492,7 @@ useEffect(() => {
      
 
         {/* --- Listings Grid --- */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-3 mx-auto">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7  gap-3 mx-auto">
       {/* --- Loading Preloaders --- */}
       {loading &&
         Array.from({ length: 8 }).map((_, index) => (
