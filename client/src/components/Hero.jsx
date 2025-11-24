@@ -186,7 +186,7 @@ useEffect(() => {
 <Link to="https://houseclient.vercel.app" className="z-50  ">
                 {/* Larger screens → full logo */}
 
-             <div className='text-primary'>
+             <div className='text-primary hidden sm:block'>
               <svg
     width="92"
     height="32"

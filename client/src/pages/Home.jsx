@@ -567,15 +567,15 @@ useEffect(() => {
             onClick={(e) => e.stopPropagation()}
             className="bg-white rounded-2xl  w-full max-w-3xl border border-light shadow-xl p-3 md:p-8"
           >
-            <div className="  max-h-[85vh]  irem-center overflow-y-auto p-1 ">
+            <div className="  max-h-[85vh]  items-center justify-center overflow-y-auto p-1 ">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-lg font-semibold">Filter Listings</h2>
            <button
   onClick={() => setShowModal(false)}
   className="cursor-pointer flex items-center justify-center 
-             rounded-full border border-gray-300 
+             rounded-full border border-gray-500 
              text-gray-500 hover:text-gray-700 
-             h-8 w-8 sm:h-10 sm:w-10"
+             h-6 w-6 sm:h-8 sm:w-8"
 >
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -624,11 +624,11 @@ useEffect(() => {
               </ul>
             )}
            
-             <div className="p-[6px] bg-primary/40 rounded-3xl shadow-lg inline-block">
+             <div className="p-[6px] bg-primary/40 rounded-3xl mt-4 shadow-lg inline-block">
   <button
     type="button"
     onClick={handleUseCurrentLocation}
-    className={`px-4 py-3 btn text-sm inline-flex items-center mt-4 justify-center rounded-3xl text-white font-semibold
+    className={`px-4 py-3 btn text-sm inline-flex items-center  justify-center rounded-3xl text-white font-semibold
       ${isFetchingLocation ? "animate-pulse" : ""}`}
   >
     <FontAwesomeIcon icon={faCrosshairs} className="mr-2" />

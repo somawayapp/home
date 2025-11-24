@@ -853,7 +853,10 @@ useEffect(() => {
             {/* Listing Progress */}
            {/* Listing Progress */}
 {isLoading && (
-  <div className="w-full bg-gray-200 rounded-md overflow-hidden mt-2 relative">
+  <div className="p-[6px] bg-primary/40 rounded-3xl shadow-lg inline-block">
+
+
+  <div className="w-full bg-gray-200 rounded-3xl overflow-hidden mt-2 relative">
     {/* Fill */}
     <div
       className="bg-green-500 h-4 transition-all"
@@ -864,6 +867,7 @@ useEffect(() => {
     <p className="absolute inset-0 flex items-center pl-2 text-xs font-medium text-white">
       Creating listing... {listingProgress}%
     </p>
+  </div>
   </div>
 )}
 
