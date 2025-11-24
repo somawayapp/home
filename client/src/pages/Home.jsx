@@ -219,8 +219,10 @@ newFilteredListings = newFilteredListings.filter((listing) => {
     //      return true; // Placeholder
     //    });
     // }
-
-    setFilteredListings(newFilteredListings);
+    
+  setFilteredListings(newFilteredListings);
+  return newFilteredListings; // return the filtered result
+};
   };
 
   // Sync URL with filters
@@ -465,8 +467,6 @@ useEffect(() => {
 }, []);
 
 
-
-
 const fallbackLocations = async (lat, lng, levels = ["road", "neighbourhood", "ward", "suburb", "village", "town", "city", "county", "country"]) => {
   for (const level of levels) {
     const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`);
@@ -475,22 +475,19 @@ const fallbackLocations = async (lat, lng, levels = ["road", "neighbourhood", "w
     if (!name) continue;
 
     handleFilterChange("location", name);
-    applyFilter(); // immediately filter with this location
+    const filtered = applyFilter(); // get filtered results immediately
 
-    // Wait for filteredListings to update
-    await new Promise((resolve) => setTimeout(resolve, 100)); 
-
-    if (filteredListings.length > 0) {
+    if (filtered.length > 0) {
       toast.success(`Location set to: ${name}`);
-      return name; // Found listings, stop
+      return name; // stop fallback
     }
   }
 
-  // If nothing found
   handleFilterChange("location", "kenya");
   toast("No listings found nearby, showing all Kenya");
   return "kenya";
 };
+
 
 
   return (
