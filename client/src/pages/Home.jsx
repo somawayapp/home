@@ -467,26 +467,37 @@ useEffect(() => {
   }
 }, []);
 
-
-const fallbackLocations = async (lat, lng, levels = ["road", "neighbourhood", "ward", "suburb", "village", "town", "city", "county", "country"]) => {
+const fallbackLocations = async (
+  lat,
+  lng,
+  levels = ["road", "neighbourhood", "ward", "suburb", "village", "town", "city", "county", "country"]
+) => {
   for (const level of levels) {
-    const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`);
-    const data = await res.json();
-    let name = data?.address?.[level];
-    if (!name) continue;
+    try {
+      const res = await fetch(
+        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
+      );
+      const data = await res.json();
+      let name = data?.address?.[level];
+      if (!name) continue;
 
-    handleFilterChange("location", name);
-    const filtered = applyFilter(); // get filtered results immediately
+      handleFilterChange("location", name);
+      const filtered = applyFilter(); // get filtered results immediately
 
-    if (filtered.length > 0) {
-      toast.success(`Location set to: ${name}`);
-      return name; // stop fallback
+      // Stop only if there are more than 6 listings
+      if (filtered.length > 1) {
+        toast.success(`Location set to: ${name} (${filtered.length} listings found)`);
+        return name;
+      }
+    } catch (err) {
+      console.error(`Fallback error at level ${level}:`, err);
+      continue;
     }
   }
 
-  handleFilterChange("location", "kenya");
-  toast("No listings found nearby, showing all Kenya");
-  return "kenya";
+  handleFilterChange("location", "Kenya");
+  toast("No location with more than 6 listings found, showing all Kenya");
+  return "Kenya";
 };
 
 
