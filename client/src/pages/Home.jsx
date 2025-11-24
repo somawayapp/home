@@ -221,9 +221,6 @@ newFilteredListings = newFilteredListings.filter((listing) => {
     // }
 
     setFilteredListings(newFilteredListings);
-  return newFilteredListings; 
-
-
   };
 
   // Sync URL with filters
@@ -306,18 +303,6 @@ newFilteredListings = newFilteredListings.filter((listing) => {
 
 // Function to get the most specific available location name
 // Only city/town/village (for default auto-fetch)
-// Helper to clean up location names
-const cleanLocationName = (name) => {
-  if (!name) return "kenya";
-  return name
-    .toLowerCase()
-    .replace(/\b(ward|sub location|vilage|city|town|estate|county|road|location)\b/gi, "") // remove unwanted words
-    .replace(/\s{2,}/g, " ") // collapse multiple spaces
-    .trim()
-    .replace(/\b\w/g, (c) => c.toUpperCase()); // capitalize first letters
-};
-
-// Updated getCityLevelLocation
 const getCityLevelLocation = async ([lat, lng]) => {
   try {
     const res = await fetch(
@@ -326,21 +311,21 @@ const getCityLevelLocation = async ([lat, lng]) => {
     const data = await res.json();
     if (data && data.address) {
       const address = data.address;
-      const rawName =
+      return (
         address.city ||
         address.town ||
         address.village ||
-        "kenya";
-      return cleanLocationName(rawName);
+        "kenya"
+      );
     }
-    return "Kenya";
+    return "kenya";
   } catch (err) {
     console.error("City-level geocode error:", err);
-    return "Kenya";
+    return "kenya";
   }
 };
 
-// Updated getPreciseLocationName
+// Full fallback chain (for button click + map click)
 const getPreciseLocationName = async ([lat, lng]) => {
   try {
     const res = await fetch(
@@ -349,7 +334,7 @@ const getPreciseLocationName = async ([lat, lng]) => {
     const data = await res.json();
     if (data && data.address) {
       const a = data.address;
-      const rawName =
+      return (
         a.road ||
         a.neighbourhood ||
         a.hamlet ||
@@ -358,16 +343,15 @@ const getPreciseLocationName = async ([lat, lng]) => {
         a.town ||
         a.village ||
         a.county ||
-        "kenya";
-      return cleanLocationName(rawName);
+        "kenya"
+      );
     }
-    return "Kenya";
+    return "kenya";
   } catch (err) {
     console.error("Precise geocode error:", err);
-    return "Kenya";
+    return "kenya";
   }
 };
-
 
 
 
@@ -451,54 +435,21 @@ useEffect(() => {
     setMarkerPosition([parseFloat(savedLat), parseFloat(savedLng)]);
     setMapCenter([parseFloat(savedLat), parseFloat(savedLng)]);
   } else if ("geolocation" in navigator) {
-  navigator.geolocation.getCurrentPosition(
-  async (pos) => {
-    const { latitude, longitude } = pos.coords;
-    setMarkerPosition([latitude, longitude]);
-    setMapCenter([latitude, longitude]);
+    navigator.geolocation.getCurrentPosition(
+      async (pos) => {
+        const { latitude, longitude } = pos.coords;
+        setMarkerPosition([latitude, longitude]);
+        setMapCenter([latitude, longitude]);
 
-    await fallbackLocations(latitude, longitude);
-  },
-  () => {
-    toast.error("Unable to retrieve location.");
-  }
-
+        const locationName = await getCityLevelLocation([latitude, longitude]);
+        setLocation(locationName, latitude, longitude);
+      },
+      () => {
+        toast.error("Unable to retrieve location.");
+      }
     );
   }
 }, []);
-
-const fallbackLocations = async (
-  lat,
-  lng,
-  levels = ["road", "neighbourhood", "ward", "suburb", "village", "town", "city", "county", "country"]
-) => {
-  for (const level of levels) {
-    try {
-      const res = await fetch(
-        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
-      );
-      const data = await res.json();
-      let name = data?.address?.[level];
-      if (!name) continue;
-
-      handleFilterChange("location", name);
-      const filtered = applyFilter(); // get filtered results immediately
-
-      // Stop only if there are more than 6 listings
-      if (filtered.length > 1) {
-        toast.success(`Location set to: ${name} (${filtered.length} listings found)`);
-        return name;
-      }
-    } catch (err) {
-      console.error(`Fallback error at level ${level}:`, err);
-      continue;
-    }
-  }
-
-  handleFilterChange("location", "Kenya");
-  toast("No location with more than 6 listings found, showing all Kenya");
-  return "Kenya";
-};
 
 
 
