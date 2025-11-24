@@ -136,11 +136,14 @@ const redPinIcon = new L.Icon({
   // Attempts each fallback level until listings appear
 
 
+const applyFilter = () => {
+  let newFilteredListings = [...listings];
 
+  // all your filter logic…
+
+ 
   // Function to apply all filters
-  const applyFilter = () => {
-    let newFilteredListings = [...listings];
-    const {
+ const {
       location,
       minPrice,
       maxPrice,
@@ -253,30 +256,35 @@ newFilteredListings = newFilteredListings.filter((listing) => {
     //    });
     // }
 
-    setFilteredListings(newFilteredListings);
-  };
 
+
+    setFilteredListings(newFilteredListings);
+
+  return newFilteredListings;
+};
 
 
   
 
-    const tryLocationFallback = async (levels) => {
+   const tryLocationFallback = async (levels) => {
   for (const lvl of levels) {
     handleFilterChange("location", lvl);
 
-    // allow state update + filter re-run
     await new Promise((res) => setTimeout(res, 150));
 
-    if (filteredListings.length > 0) {
+    const results = applyFilter();      // <- compute fresh results instantly
+
+    if (results.length > 0) {
+      setFilteredListings(results);     // <- update UI AFTER selection
       toast.success(`Showing listings for: ${lvl}`);
       return lvl;
     }
   }
 
-  // absolutely nothing found
   toast.error("No listings found anywhere near your area.");
   return null;
 };
+
 
 
 
