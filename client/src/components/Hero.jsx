@@ -257,9 +257,9 @@ useEffect(() => {
 
             <div className="text-primary block sm:hidden">
  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="200" height="200">
-  <path fill="#FF5A5F" d="M512 0C362 0 234 128 234 278c0 266 278 678 278 678s278-412 278-678C790 128 662 0 512 0z"/>
+  <path fill="#FF5A5F" d="M512 64c-162.4 0-294 131.6-294 294 0 187.6 294 592 294 592s294-404.4 294-592c0-162.4-131.6-294-294-294z"/>
   
-  <path fill="white" d="M412 400h40v160h80V400h40v200h-40v-80h-80v80h-40V400z"/>
+  <path fill="white" d="M440 400h40v80h80v-80h40v200h-40v-80h-80v80h-40V400z"/>
 </svg>
 
 </div>
